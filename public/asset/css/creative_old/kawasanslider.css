@@ -1,0 +1,55 @@
+.kawasan-slider {
+  display: flex;
+  flex-direction: column;
+  clear: both;
+  height: auto;
+}
+.kawasan-slider .carousel {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.kawasan-slider .carousel .carousel-item {
+  min-width: auto;
+}
+.kawasan-slider ol.carousel-indicators {
+  position: relative;
+  padding: 20px 0px;
+  margin-right: 2%;
+  margin-left: 2%;
+  margin-bottom: 0px !important;
+  font-family: 'Montserrat', sans-serif;
+}
+.kawasan-slider ol.carousel-indicators li {
+  cursor: pointer;
+  width: 100%;
+  height: 50px;
+  flex: 0 1 auto;
+  text-indent: 0 !important;
+  margin: 0px 20px;
+  color: #a9aaac;
+  border-bottom: 5px solid #a9aaac;
+}
+.kawasan-slider ol.carousel-indicators li .wrapper-box {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.kawasan-slider ol.carousel-indicators li .wrapper-box h4.title {
+  margin-bottom: 0px !important;
+  font-weight: bold;
+  font-size: 18px;
+}
+.kawasan-slider ol.carousel-indicators li .wrapper-box span.area {
+  text-align: left;
+  font-size: 24px !important;
+  font-weight: 400;
+  letter-spacing: -0.04px;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+.kawasan-slider ol.carousel-indicators li.active {
+  color: #53565A !important;
+  border-bottom-color: #53565A !important;
+}

@@ -1,0 +1,99 @@
+/*section faq */
+.faq-jippe{
+    position: relative;
+    font-family: 'Montserrat', sans-serif;
+    .main-header{
+        font-weight: bold;
+        font-size: 40px;
+        line-height: 72px;
+        text-align: center;
+        color: #53565a;
+
+    }
+
+    .faq-accordian{
+        padding: 40px 0;
+        .card{
+            border-radius: 0;
+            border: none;
+            .card-header{
+                padding: 0;
+                border: none;
+                background-color: #fff;
+                border-bottom: #53565A 1px solid;
+                a{
+                    display: block;
+                    position: relative;
+                    padding: 0.25rem 0.5rem !important;
+                    color: #53565A;
+                    text-decoration: none;
+                    font-weight: normal;
+                    font-size: 16px;
+                    line-height: 28px;
+                    text-align: left;
+
+                }
+                a[aria-expanded]:after{
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    content: '\f105';
+                    font-weight: 600;
+                    font-family: 'Font Awesome 5 Pro';
+                    width: 28px;
+                    height: 28px;
+                    color: #53565A;
+                    font-size: 16px;
+                    text-decoration: none;
+                }
+                a[aria-expanded="true"]{
+                    color: #53565A;
+                }
+                a[aria-expanded="true"]:after{
+                    background-color: transparent;
+                    content: '\f106';
+                }
+            }
+            .card-body{
+                background-color: #f8f8f8;
+                padding: 15px 30px;
+                font-weight: 500;
+                font-size: 15px;
+                line-height: 26px;
+            }
+        }
+    }
+}
+
+
+.faq-jippe-red{
+    background-color: #DA291C !important;
+
+    .faq-accordian{
+        .card{
+            color: #fff !important;
+            background-color: #DA291C !important;
+            .card-header{
+                background-color: #DA291C !important;
+                border-bottom: #fff 1px solid !important;
+                a{
+                    color: #fff !important;
+                }
+                a[aria-expanded]:after{
+                    color: #fff !important;
+                }
+                a[aria-expanded="true"]{
+                    color: #fff !important;
+                }
+            }
+    
+            .card-body{
+                background-color: #e4382c !important;
+            }    
+        }
+        
+    }
+}

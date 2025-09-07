@@ -45,6 +45,16 @@
                                 Register
                             </a>
                         @endif
+                        <ul>
+                            @foreach($languages as $localeCode => $properties)
+                                <li>
+                                    <a href="{{ \LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                        {{ $properties['native'] }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+
                     @endauth
                 </nav>
             @endif

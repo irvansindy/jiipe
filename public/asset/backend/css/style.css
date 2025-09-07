@@ -1,0 +1,188 @@
+#footer{
+	text-align: center;
+	margin-top: 20px;
+	border-top: 1px solid #ccc;
+	padding-top: 20px
+}
+.text-tengah{
+	text-align: center;
+}
+.hero-unit{
+	padding: 20px !important;
+}
+.notification_data{
+	border: 1px solid red;
+	position: absolute;
+	top: -10px;
+	right: -10px;
+	background: red;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	padding: 2px 3px;
+	color: #fff;
+	font-weight: bold;
+}
+.prelatife{
+	position: relative;
+}
+ul.tagit{
+	margin: 0px;
+}
+.redactor_editor{
+	float: none;
+}
+/*-------------- upload foto product ---------------------*/
+.upload-foto-container{
+	margin-right: -15px;
+	clear: both;
+}
+.upload-foto-list{
+	width: 298px;
+	height: 203px;
+	padding: 5px;
+	border: 1px solid #ccc;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	text-align: center;
+	line-height: 203px;
+	position: relative;
+}
+.upload-foto-list img{
+	vertical-align: middle;
+}
+.upload-foto-list a{
+	display: block;
+	background: #eee;
+}
+.upload-foto-utama{
+	position: absolute;
+	color: #fff;
+	font-size: 11px;
+	top: -7px;
+	left: 120px;
+	background: #E30000;
+	line-height: 1;
+	padding: 3px 7px;
+	border: 1px solid #ccc;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+.upload-foto-delete{
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	right: -8px;
+	top: -8px;
+	display: none;
+}
+.upload-foto-delete img{
+	display: block;
+}
+
+
+.pelanggan-list{
+	width: 200px;
+	height: 200px;
+	padding: 5px;
+	border: 1px solid #ccc;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	text-align: center;
+	line-height: 200px;
+	position: relative;
+}
+.pelanggan-list img{
+	vertical-align: middle;
+}
+.pelanggan-list a{
+	display: block;
+	background: #fff;
+}
+.product-list{
+	width: 200px;
+	height: 200px;
+	padding: 5px;
+	border: 1px solid #ccc;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	text-align: center;
+	line-height: 200px;
+	position: relative;
+}
+.product-list img{
+	vertical-align: middle;
+}
+.product-list a{
+	display: block;
+	background: #fff;
+}
+/*
+.best-list{
+	width: 200px;
+	height: 200px;
+	padding: 5px;
+	border: 1px solid #ccc;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	text-align: center;
+	line-height: 200px;
+	position: relative;
+}
+.best-list img{
+	vertical-align: middle;
+}
+.best-list a{
+	display: block;
+	background: #fff;
+}
+
+.terlaris-list{
+	width: 200px;
+	height: 200px;
+	padding: 5px;
+	border: 1px solid #ccc;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	text-align: center;
+	line-height: 200px;
+	position: relative;
+}
+.terlaris-list img{
+	vertical-align: middle;
+}
+.terlaris-list a{
+	display: block;
+	background: #fff;
+}
+*/
+.featured-list{
+	width: 200px;
+	height: 200px;
+	padding: 5px;
+	border: 1px solid #ccc;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	text-align: center;
+	line-height: 200px;
+	position: relative;
+}
+.featured-list img{
+	vertical-align: middle;
+}
+.featured-list a{
+	display: block;
+	background: #fff;
+}
+
+.bagidua{
+	width: 470px;
+	float: left;
+}

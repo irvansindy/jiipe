@@ -1,0 +1,271 @@
+.instagram-feed{
+    font-family: 'Montserrat', sans-serif;
+    ul { 
+        list-style: none; 
+        margin: 0; padding: 0;
+        li{
+            border-radius: 5px;
+            background: #fff;
+            box-shadow: 0px 0px 42px rgba(0, 0, 0, 0.26);
+            padding: 2px !important;
+        }
+    }
+    figure { 
+        margin: 0; 
+    }
+    figcaption { 
+        font-style: italic; 
+        font-size: 0.8em; 
+        color: grey; 
+        line-height: 1.4; 
+    }
+
+    .grid {
+        display: grid;
+        grid-auto-flow: column; // display the items in columns only, ie horizontal
+        //grid-auto-columns: 100%; // create as many columns as there are items. 90% so we can see next item on the right.
+        grid-gap: 1em;
+        //overflow-x: scroll; // scroll only within the grid, not entire page
+        //-webkit-overflow-scrolling: touch; // better scrolling on touch
+        padding: 2em 1em;
+        background: white;
+    
+        &__figure {
+            display: grid;
+            grid-template-rows: 25em 1fr; // 15em high row for image – value could be whatever
+            //grid-gap: 1em;
+            
+            img {
+                margin-top: unset !important;
+                width: 100%;
+                height: 100%;
+                object-fit:fill; // crop image within its cell
+            }
+        }
+
+        @media only screen and (min-width: 1200px) and (max-width: 1800px) {
+            grid-auto-flow: initial; // default: display items in rows and cols
+            grid-template-columns: repeat(auto-fit, minmax(auto,10em)); // as many columns with max-width of 20em;
+            justify-content: center; // center the items - this is optional
+            &__figure {
+                grid-template-rows: 15em 1fr !important; // 15em high row for image – value could be whatever
+            }
+        }
+
+
+        @media only screen and (min-width: 992px) and (max-width: 1199px) {
+            grid-auto-flow: initial; // default: display items in rows and cols
+            grid-template-columns: repeat(auto-fit, minmax(auto,10em)); // as many columns with max-width of 20em;
+            justify-content: center; // center the items - this is optional
+            &__figure {
+                grid-template-rows: 15em 1fr !important; // 15em high row for image – value could be whatever
+            }
+        
+        }
+        @media (max-width: 991px) {
+            grid-auto-flow: initial; // default: display items in rows and cols
+            grid-template-columns: repeat(auto-fit, minmax(auto,10em)); // as many columns with max-width of 20em;
+            justify-content: center; // center the items - this is optional
+            &__figure {
+                grid-template-rows: 15em 1fr !important; // 15em high row for image – value could be whatever
+            }
+        }
+
+        @media only screen and (min-width: 768px) and (max-width: 991px) {
+            grid-auto-flow: initial; // default: display items in rows and cols
+            grid-template-columns: repeat(auto-fit, minmax(auto,10em)); // as many columns with max-width of 20em;
+            justify-content: center; // center the items - this is optional
+            &__figure {
+                grid-template-rows: 15em 1fr !important; // 15em high row for image – value could be whatever
+            }    
+        }
+
+        @media (max-width: 767px){
+            grid-auto-flow: initial; // default: display items in rows and cols
+            grid-template-columns: repeat(auto-fit, minmax(auto,10em)); // as many columns with max-width of 20em;
+            justify-content: center; // center the items - this is optional
+            &__figure {
+                grid-template-rows: 15em 1fr !important; // 15em high row for image – value could be whatever
+            }
+        }
+
+        @media (max-width: 400px) {
+            grid-auto-flow: initial; // default: display items in rows and cols
+            grid-template-columns: repeat(auto-fit, minmax(auto,10em)); // as many columns with max-width of 20em;
+            justify-content: center; // center the items - this is optional
+            &__figure {
+                grid-template-rows: 15em 1fr !important; // 15em high row for image – value could be whatever
+            }
+        }
+
+
+        @media only screen and (min-width: 415px) and (max-width: 767px) {
+            grid-auto-flow: initial; // default: display items in rows and cols
+            grid-template-columns: repeat(auto-fit, minmax(auto,10em)); // as many columns with max-width of 20em;
+            justify-content: center; // center the items - this is optional
+            &__figure {
+                grid-template-rows: 15em 1fr !important; // 15em high row for image – value could be whatever
+            }
+        }
+    
+        
+    }
+
+}
+
+
+
+.gallery-instagram {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    img {
+        height: 300px;
+        width: 300px;
+        transform: scale(1);
+        transition: transform 0.4s ease;
+        margin-top:unset !important;
+        display: unset !important;
+        position: unset !important;
+    }
+
+
+    .img-box {
+        box-sizing: content-box;
+        margin: 10px;
+        height: 300px;
+        width: 300px;
+        overflow: hidden;
+        display: inline-block;
+        color: white;
+        position: relative;
+        background-color: white;
+      }
+
+
+      .caption {
+        position: absolute;
+        bottom: 5px;
+        left: 20px;
+        opacity: 0.0;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+      }
+      
+      .transparent-box {
+        height: 300px;
+        width: 300px;
+        background-color:rgba(0, 0, 0, 0);
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: background-color 0.3s ease;
+      }
+
+
+      .img-box:hover {
+        cursor: pointer;
+        img { 
+            transform: scale(1.1);
+          }
+
+        .transparent-box {
+            background-color:rgba(0, 0, 0, 0.5);
+        }
+
+        .caption {
+            transform: translateY(-20px);
+            opacity: 1.0;
+        }
+          
+      }
+      
+      .caption > p:nth-child(2) {
+        font-size: 0.8em;
+      }
+      
+      .opacity-low {
+        opacity: 0.5;
+      }
+
+
+  }
+
+
+  @media only screen and (min-width: 1200px) and (max-width: 1800px) {
+
+  }
+
+  @media (max-width: 1199px){
+
+  }
+
+  @media only screen and (min-width: 992px) and (max-width: 1199px) {
+
+  }
+
+  @media (max-width: 991px) {
+    .gallery-instagram {
+        img {
+            height: 200px;
+            width: 200px;
+        }
+
+
+        .img-box {
+            height: 200px;
+            width: 200px;
+        }
+    }
+  }
+
+  @media only screen and (min-width: 768px) and (max-width: 991px){
+    .gallery-instagram {
+        img {
+            height: 200px;
+            width: 200px;
+        }
+
+
+        .img-box {
+            height: 200px;
+            width: 200px;
+        }
+    }
+  }
+
+
+  @media (max-width: 767px){
+    
+  }
+
+  @media (max-width: 400px){
+    .gallery-instagram {
+        img {
+            height: 150px;
+            width: 150px;
+        }
+
+
+        .img-box {
+            height: 150px;
+            width: 150px;
+        }
+    }
+  }
+
+  @media only screen and (min-width: 415px) and (max-width: 767px){
+    .gallery-instagram {
+        img {
+            height: 150px;
+            width: 150px;
+        }
+
+
+        .img-box {
+            height: 150px;
+            width: 150px;
+        }
+    }
+  }

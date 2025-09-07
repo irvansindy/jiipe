@@ -1,0 +1,179 @@
+
+.block-logo-main.d-inline-block.lgo2 {
+    max-width: 45px;
+    margin-left: 0.4rem;
+}
+
+section.artikel-sec-1 .prelative.container .row .content{}
+section.artikel-sec-1 .prelative.container .row .content table{
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border-collapse: collapse;
+}
+
+section.artikel-sec-1 .prelative.container .row .content table td, 
+section.artikel-sec-1 .prelative.container .row .content table th {
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+section.artikel-sec-1 .prelative.container .row .content table td p, 
+section.artikel-sec-1 .prelative.container .row .content table th p{
+    margin: 0;
+    margin-bottom: 0;
+}
+section.artikel-sec-1 .prelative.container .row .content table td ul,
+section.artikel-sec-1 .prelative.container .row .content table td ol{
+    padding-left: 1rem;
+}
+
+section.artikel-sec-1 .prelative.container .row .content table th{
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+
+@media (max-width: 1300px){
+
+	header.header .rights_headmenu .nls_bottom ul li{
+		padding: 0 0.2rem;
+	}
+	header.header .rights_headmenu .nls_bottom ul li a{
+		font-size: 13px;
+	}
+
+    .block-logo-main {
+        max-width: 70px;
+        position: relative;
+        margin-top: 0.6rem;
+    }
+    .lefts_logo .right-snbrand ul li.pelindo{
+        margin-right: 0.5rem !important;
+    }
+
+    .block-logo-main.d-inline-block.lgo2{
+        max-width: 37px;
+    }
+
+    .lefts_logo .right-snbrand ul li.pelindo{
+        max-width: 110px
+    }
+    .lefts_logo .right-snbrand ul li.akr{
+        max-width: 33px
+    }
+    .lefts_logo .right-snbrand ul li.ml-3{
+        margin-left: 0.5rem !important;
+    }
+
+
+}
+
+ul.pagination .page-link{
+	border-color: transparent;
+	color: #000;
+}
+
+ul.pagination .page-item.active .page-link{
+	background-color: transparent;
+	border-color: transparent;
+	color: #d52827;
+}
+
+section.artikel-sec-1 .prelative.container .row.tanggal .back{
+	text-align: right !important;
+}
+section.artikel-sec-1 .prelative.container .row.tanggal{
+	max-width: 895px;
+}
+
+section.home-sec-3 .prelative.container .row.artikel .judul h2 {
+    margin-bottom: 0;
+    line-height: 1.3;
+    font-size: 20px;
+    font-weight: 500;
+    color: #d52827;
+    font-family: Montserrat,sans-serif;
+    height: 53px;
+    overflow: hidden;
+}
+
+section.blog-sec-1 .prelative.container .row.artikel .judul h2 {
+    margin-bottom: 0;
+    display: block;
+    line-height: 1.3;
+    font-size: 20px;
+    font-weight: 500;
+    color: #d52827;
+    font-family: Montserrat,sans-serif;
+    height: 78px;
+    overflow: hidden;
+}
+
+section.blog-sec-1 .prelative.container .row.artikel-atas .artikel-berita-atas .judul-blog h2{
+	font-size: 30px;
+    font-family: Montserrat,sans-serif;
+    color: #d22c12;
+    font-weight: 700;
+    line-height: 1.3em;
+}
+
+@media screen and (max-width:  1625px){
+
+    section.blog-sec-1 .prelative.container .row.artikel .judul h2{
+        font-size: 17px;
+    }
+    section.blog-sec-1 .prelative.container .row.artikel .content p{
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+}
+
+@media screen and (max-width:  1400px){
+
+    section.blog-sec-1 .prelative.container .row.artikel .judul h2{
+        font-size: 13px;
+    }
+    section.blog-sec-1 .prelative.container .row.artikel .content p{
+        font-size: 11px;
+        line-height: 1.55;
+    }
+
+}
+
+@media screen and (max-width: 767px) {
+    
+    section.blog-sec-1 .prelative.container .row.artikel .judul a,
+    section.blog-sec-1 .prelative.container .row.artikel .judul a h2{
+        text-decoration: none;
+    }
+
+    ul.pagination .page-link{
+        font-size: 11px;
+    }
+    section.artikel-sec-1 .prelative.container .row .judul h1{
+        font-size: 22px !important;
+    }
+    section.artikel-sec-1 .prelative.container .row .content ol li,
+    section.artikel-sec-1 .prelative.container .row .content ul li,
+    section.artikel-sec-1 .prelative.container .row .content p{
+        font-size: 15px;
+    }
+
+    .block-logo-main.d-inline-block.lgo2 {
+        max-width: 35px;
+        margin-left: 0;
+    }
+
+}
+
+section.footer-copyright .prelative.container .row span p a{
+    text-decoration: none;
+    color: #bcbcbc;
+}
+section.footer-copyright .prelative.container .row span p a:hover,
+section.footer-copyright .prelative.container .row span p a:focus{
+    text-decoration: none;
+    color: #909090;
+}

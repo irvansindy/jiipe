@@ -1,0 +1,240 @@
+.jiipe-contact{
+    .form-control{
+      line-height: 2em !important;
+      border: #53565a 1px solid !important;
+    }
+    .btn-danger{
+      background: #da291c;
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.12);
+      padding: 10px 0 !important;
+    }
+    .custom-control {
+      position: relative;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      min-height: 1.5rem;
+      padding-left: 1.5rem;
+      margin-right: 1rem;
+    }
+      
+    .custom-control-input {
+      position: absolute;
+      z-index: -1;
+      opacity: 0;
+    }
+      
+    .custom-control-input:checked ~ .custom-control-indicator {
+      color: #fff;
+      background-color: #363535;
+    }
+
+    .custom-control-input:checked ~ .custom-control-description {
+      //color: #da291c;
+      //font-weight: bold;
+    }
+      
+    .custom-control-input:focus ~ .custom-control-indicator {
+      box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+      
+    .custom-control-input:active ~ .custom-control-indicator {
+      color: #fff;
+      background-color: #363535;
+    }
+    .custom-control-input:active ~ .custom-control-description {
+      //color: #da291c;
+      //font-weight: bold;
+    }
+    .custom-control-input:disabled ~ .custom-control-indicator {
+      background-color: #e9ecef;
+    }
+    
+    .custom-control-input:disabled ~ .custom-control-description {
+      color: #868e96;
+    }
+      
+    .custom-control-indicator {
+      position: absolute;
+      top: 0.25rem;
+      left: 0;
+      display: block;
+      width: 1rem;
+      height: 1rem;
+      pointer-events: none;
+      -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+      background-color: #ddd;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 50% 50%;
+    }
+      
+    .custom-checkbox .custom-control-indicator {
+      border-radius: 0.25rem;
+    }
+    
+    .custom-checkbox .custom-control-input:checked ~ .custom-control-indicator {
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3E%3C/svg%3E");
+    }
+    
+    .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-indicator {
+      background-color: #da291c;
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 4'%3E%3Cpath stroke='%23fff' d='M0 2h4'/%3E%3C/svg%3E");
+    }
+    
+    .custom-radio .custom-control-indicator {
+      border-radius: 50%;
+    }
+    
+    .custom-radio .custom-control-input:checked ~ .custom-control-indicator {
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23fff'/%3E%3C/svg%3E");
+    }
+    
+    .custom-controls-stacked {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-direction: column;
+          flex-direction: column;
+    }
+    
+    .custom-controls-stacked .custom-control {
+      margin-bottom: 0.25rem;
+    }
+    
+    .custom-controls-stacked .custom-control + .custom-control {
+      margin-left: 0;
+    }
+
+    .custom-select {
+      min-height: 3em !important;
+      line-height: 2em !important;
+      color: #495057;
+      border: 1px solid #53565a;
+      border-radius: 0.25rem;
+      padding-left: 1.5rem;
+      margin-right: 1rem;
+      
+      > option{
+        padding: 5px 2px !important;
+      }
+    }
+    
+    .custom-select:focus {
+      border-color: #80bdff;
+      outline: 0;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075), 0 0 5px rgba(128, 189, 255, 0.5);
+    }
+    
+    .custom-select:focus::-ms-value {
+      color: #495057;
+      background-color: #fff;
+    }
+    
+    .custom-select[multiple], .custom-select[size]:not([size="1"]) {
+      height: auto;
+      padding-right: 0.75rem;
+      background-image: none;
+    }
+    
+    .custom-select:disabled {
+      color: #6c757d;
+      background-color: #e9ecef;
+    }
+    
+    .custom-select::-ms-expand {
+      opacity: 0;
+    }
+    
+    .custom-select-sm {
+      height: calc(1.8125rem + 2px);
+      padding-top: 0.375rem;
+      padding-bottom: 0.375rem;
+      font-size: 75%;
+    }
+    
+    .custom-select-lg {
+      height: calc(2.875rem + 2px);
+      padding-top: 0.375rem;
+      padding-bottom: 0.375rem;
+      font-size: 125%;
+    }
+    
+
+      
+}
+
+.contact-images{
+    background-image: url('../../images/business-handshake-two-men-dem@2x.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Montserrat', sans-serif;
+    color: #ffffff;
+    font-style: normal;
+    font-weight: normal;
+    padding : 60px 0 !important;
+    h2 {
+        font-size: 32px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    p{
+        text-align: center;
+        font-size: 22px;
+        letter-spacing: 1px;
+        line-height: 38px;
+    }
+}
+
+
+.contact-form{
+    padding: 20px 0 !important;
+    background-color: #f3f3f3;
+    h5{
+        font-weight: bold;
+        font-size: 16px !important;
+        line-height: 20px;
+        text-align: left;
+        color: #53565a;
+
+    }
+    
+    hr{
+      border-top: 1px solid #53565a;
+      padding: 2px 30px !important;
+    }
+    p{  
+      font-weight:600;
+      font-size: 12px;
+      color: #da291c;
+      line-height: 20px;
+  
+    }
+    h5.title{
+      font-style: italic;
+      font-weight: 600;
+      color: #53565a;
+      font-size: 17px !important;
+      line-height: 20px !important;
+
+    }
+    h6.subtitle{
+      font-style: italic;
+      font-weight: 600;
+      color: #53565a;
+      font-size: 14px !important;
+      line-height: 20px !important;
+
+    }
+
+    .garis-lurus-left {
+        border-left: #707070 solid 2px !important;
+    }
+
+    .garis-lurus-right {
+        border-right: #707070 solid 2px !important;
+    }
+}

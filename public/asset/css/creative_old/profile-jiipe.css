@@ -1,0 +1,49 @@
+.profile-jiipe {
+  font-family: 'Montserrat', sans-serif;
+}
+.profile-jiipe .jiipe-images img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
+.profile-jiipe .jiipe-content {
+  display: flex;
+  flex-direction: column;
+}
+.profile-jiipe .jiipe-content .jiipe-top h1 {
+  font-weight: bold;
+  font-size: 35px;
+  line-height: 60px;
+  color: #53565a;
+}
+.profile-jiipe .jiipe-content .jiipe-top p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 30px;
+  color: #707070;
+}
+.profile-jiipe .jiipe-content .jiipe-top ul.button {
+  margin-top: 50px !important;
+  padding-left: 0px !important;
+  list-style: none;
+}
+.profile-jiipe .jiipe-content .jiipe-top ul.button li {
+  display: inline-block;
+  margin-right: 20px;
+}
+.profile-jiipe .jiipe-content .jiipe-top ul.button li a {
+  color: #dd4237;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.profile-jiipe .jiipe-content .jiipe-top ul.button li a i {
+  color: #dd4237;
+  font-size: 16px;
+}
+.profile-jiipe .jiipe-content .jiipe-top ul.button li a:focus,
+.profile-jiipe .jiipe-content .jiipe-top ul.button li a:hover {
+  color: #b0342c;
+}

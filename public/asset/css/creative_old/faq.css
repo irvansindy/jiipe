@@ -1,0 +1,66 @@
+/*section faq */
+.faq-jippe {
+  position: relative;
+  font-family: 'Montserrat', sans-serif;
+}
+.faq-jippe .main-header {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 72px;
+  text-align: center;
+  color: #53565a;
+}
+.faq-jippe .faq-accordian {
+  padding: 40px 0;
+}
+.faq-jippe .faq-accordian .card {
+  border-radius: 0;
+  border: none;
+}
+.faq-jippe .faq-accordian .card .card-header {
+  padding: 0;
+  border: none;
+  background-color: #fff;
+  border-bottom: #53565A 1px solid;
+}
+.faq-jippe .faq-accordian .card .card-header a {
+  display: block;
+  position: relative;
+  padding: 0.25rem 0.5rem !important;
+  color: #53565A;
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 28px;
+  text-align: left;
+}
+.faq-jippe .faq-accordian .card .card-header a[aria-expanded]:after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  content: '\f105';
+  font-weight: 600;
+  font-family: 'Font Awesome 5 Pro';
+  width: 28px;
+  height: 28px;
+  color: #53565A;
+  font-size: 16px;
+  text-decoration: none;
+}
+.faq-jippe .faq-accordian .card .card-header a[aria-expanded="true"] {
+  color: #53565A;
+}
+.faq-jippe .faq-accordian .card .card-header a[aria-expanded="true"]:after {
+  background-color: transparent;
+  content: '\f106';
+}
+.faq-jippe .faq-accordian .card .card-body {
+  background-color: #f8f8f8;
+  padding: 15px 30px;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 26px;
+}

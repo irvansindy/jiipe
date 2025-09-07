@@ -1,0 +1,25 @@
+.video-jiipe {
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+.video-jiipe .embed-responsive {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.video-jiipe .embed-responsive video {
+  /** Simulationg background-size: cover */
+  position: relative;
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+.video-jiipe .patner-items img {
+  max-height: 75px !important;
+}
+.video-jiipe .patner-items .img-thumbnail {
+  border: none !important;
+  border-radius: none !important;
+}
