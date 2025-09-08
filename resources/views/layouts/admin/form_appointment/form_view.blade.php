@@ -40,13 +40,18 @@
                                                     data-bs-target="#appointment-{{ $locale }}" type="button"
                                                     role="tab" aria-controls="appointment-{{ $locale }}"
                                                     aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                                    {{ strtoupper($locale) }}
+                                                    {{ strtoupper($properties['native']) }}
                                                 </button>
                                             </li>
                                         @endforeach
                                     </ul>
                                     <div class="tab-content border border-top-0 p-3">
                                         @foreach ($locales as $locale => $properties)
+                                            @php
+                                                $appointmentTrans = $appointment
+                                                    ? $appointment->translations->where('locale', $locale)->first()
+                                                    : null;
+                                            @endphp
                                             <div class="tab-pane fade @if ($loop->first) show active @endif"
                                                 id="appointment-{{ $locale }}" role="tabpanel"
                                                 aria-labelledby="tab-appointment-{{ $locale }}">
@@ -57,7 +62,8 @@
                                                     </label>
                                                     <input type="text" class="form-control"
                                                         id="title_quick_appointment_{{ $locale }}"
-                                                        name="title_quick_appointment[{{ $locale }}]" required>
+                                                        name="title_quick_appointment[{{ $locale }}]" required
+                                                        value="{{ old('title_quick_appointment.' . $locale, $appointmentTrans ? $appointmentTrans->title_quick_appointment : '') }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="appointment_description_{{ $locale }}"
@@ -65,13 +71,15 @@
                                                         Description ({{ strtoupper($locale) }})
                                                     </label>
                                                     <textarea class="form-control summernote" id="appointment_description_{{ $locale }}"
-                                                        name="appointment_description[{{ $locale }}]" rows="3" required></textarea>
+                                                        name="appointment_description[{{ $locale }}]" rows="3" required>{{ old('appointment_description.' . $locale, $appointmentTrans ? $appointmentTrans->appointment_description : '') }}</textarea>
                                                 </div>
                                             </div>
                                         @endforeach
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Create Appointment</button>
+                                <button type="submit" class="btn btn-primary">
+                                    {{ $appointment ? 'Update Appointment' : 'Create Appointment' }}
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -80,7 +88,7 @@
             <div class="row">
                 <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-danger">
+                        <div class="card-header bg-primary">
                             <h4 class="text-white m-0">Basic Information</h4>
                         </div>
                         <div class="card-body">
@@ -90,25 +98,30 @@
                             <form method="POST" action="{{ route('store-basic-information') }}">
                                 @csrf
                                 <div class="mb-3">
-                                    <ul class="nav nav-tabs mb-3" id="localeTab" role="tablist">
+                                    <ul class="nav nav-tabs mb-3" id="basicInformationTab" role="tablist">
                                         @foreach ($locales as $locale => $properties)
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link @if ($loop->first) active @endif"
-                                                    id="tab-{{ $locale }}" data-bs-toggle="tab"
+                                                    id="tab-basic-{{ $locale }}" data-bs-toggle="tab"
                                                     data-bs-target="#tab-content-{{ $locale }}" type="button"
                                                     role="tab" aria-controls="tab-content-{{ $locale }}"
                                                     aria-selected="{{ $loop->first ? 'true' : 'false' }}">
                                                     <span class="flag-icon flag-icon-{{ $locale }}"></span>
-                                                    {{ strtoupper($locale) }}
+                                                    {{ strtoupper($properties['native']) }}
                                                 </button>
                                             </li>
                                         @endforeach
                                     </ul>
                                     <div class="tab-content">
                                         @foreach ($locales as $locale => $properties)
+                                            @php
+                                                $basicTrans = $basicInfo
+                                                    ? $basicInfo->translations->where('locale', $locale)->first()
+                                                    : null;
+                                            @endphp
                                             <div class="tab-pane fade @if ($loop->first) show active @endif"
                                                 id="tab-content-{{ $locale }}" role="tabpanel"
-                                                aria-labelledby="tab-{{ $locale }}">
+                                                aria-labelledby="tab-basic-{{ $locale }}">
                                                 <div class="mb-3">
                                                     <label for="title_basic_information_{{ $locale }}"
                                                         class="form-label">
@@ -116,57 +129,67 @@
                                                     </label>
                                                     <input type="text" class="form-control"
                                                         id="title_basic_information_{{ $locale }}"
-                                                        name="title_basic_information[{{ $locale }}]" required>
+                                                        name="title_basic_information[{{ $locale }}]" required
+                                                        value="{{ old('title_basic_information.' . $locale, $basicTrans ? $basicTrans->title_basic_information : '') }}">
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-4">
                                                         <label class="form-label">Label Full Name</label>
                                                         <input type="text" class="form-control"
-                                                            name="label_full_name[{{ $locale }}]" required>
+                                                            name="label_full_name[{{ $locale }}]" required
+                                                            value="{{ old('label_full_name.' . $locale, $basicTrans ? $basicTrans->label_full_name : '') }}">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label class="form-label">Placeholder Full Name 1</label>
                                                         <input type="text" class="form-control"
-                                                            name="placeholder_full_name_1[{{ $locale }}]" required>
+                                                            name="placeholder_full_name_1[{{ $locale }}]" required
+                                                            value="{{ old('placeholder_full_name_1.' . $locale, $basicTrans ? $basicTrans->placeholder_full_name_1 : '') }}">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label class="form-label">Placeholder Full Name 2</label>
                                                         <input type="text" class="form-control"
-                                                            name="placeholder_full_name_2[{{ $locale }}]" required>
+                                                            name="placeholder_full_name_2[{{ $locale }}]" required
+                                                            value="{{ old('placeholder_full_name_2.' . $locale, $basicTrans ? $basicTrans->placeholder_full_name_2 : '') }}">
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-md-4">
                                                         <label class="form-label">Label Phone Number</label>
                                                         <input type="text" class="form-control"
-                                                            name="label_phone_number[{{ $locale }}]" required>
+                                                            name="label_phone_number[{{ $locale }}]" required
+                                                            value="{{ old('label_phone_number.' . $locale, $basicTrans ? $basicTrans->label_phone_number : '') }}">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label class="form-label">Placeholder Phone Number</label>
                                                         <input type="text" class="form-control"
-                                                            name="placeholder_phone_number[{{ $locale }}]" required>
+                                                            name="placeholder_phone_number[{{ $locale }}]" required
+                                                            value="{{ old('placeholder_phone_number.' . $locale, $basicTrans ? $basicTrans->placeholder_phone_number : '') }}">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label class="form-label">Label Email</label>
                                                         <input type="text" class="form-control"
-                                                            name="label_email[{{ $locale }}]" required>
+                                                            name="label_email[{{ $locale }}]" required
+                                                            value="{{ old('label_email.' . $locale, $basicTrans ? $basicTrans->label_email : '') }}">
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-md-4">
                                                         <label class="form-label">Placeholder Email</label>
                                                         <input type="text" class="form-control"
-                                                            name="placeholder_email[{{ $locale }}]" required>
+                                                            name="placeholder_email[{{ $locale }}]" required
+                                                            value="{{ old('placeholder_email.' . $locale, $basicTrans ? $basicTrans->placeholder_email : '') }}">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label class="form-label">Label Company Name</label>
                                                         <input type="text" class="form-control"
-                                                            name="label_company_name[{{ $locale }}]" required>
+                                                            name="label_company_name[{{ $locale }}]" required
+                                                            value="{{ old('label_company_name.' . $locale, $basicTrans ? $basicTrans->label_company_name : '') }}">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label class="form-label">Placeholder Company Name</label>
                                                         <input type="text" class="form-control"
-                                                            name="placeholder_company_name[{{ $locale }}]" required>
+                                                            name="placeholder_company_name[{{ $locale }}]" required
+                                                            value="{{ old('placeholder_company_name.' . $locale, $basicTrans ? $basicTrans->placeholder_company_name : '') }}">
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
@@ -174,21 +197,152 @@
                                                         <label class="form-label">Label Company Origin Country</label>
                                                         <input type="text" class="form-control"
                                                             name="label_company_origin_country[{{ $locale }}]"
-                                                            required>
+                                                            required
+                                                            value="{{ old('label_company_origin_country.' . $locale, $basicTrans ? $basicTrans->label_company_origin_country : '') }}">
                                                     </div>
                                                     <div class="col-md-4">
                                                         <label class="form-label">Placeholder Company Origin
                                                             Country</label>
                                                         <input type="text" class="form-control"
                                                             name="placeholder_company_origin_country[{{ $locale }}]"
-                                                            required>
+                                                            required
+                                                            value="{{ old('placeholder_company_origin_country.' . $locale, $basicTrans ? $basicTrans->placeholder_company_origin_country : '') }}">
                                                     </div>
                                                 </div>
                                             </div>
                                         @endforeach
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary mt-3">Save</button>
+                                <button type="submit" class="btn btn-primary mt-3">
+                                    {{ $basicInfo ? 'Update' : 'Save' }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-xl-12 col-sm-12">
+                    <div class="card">
+                        <div class="card-header bg-primary">
+                            <h4 class="text-white m-0">The reason for considering JIIPE</h4>
+                        </div>
+                        <div class="card-body">
+                            @php
+                                $locales = config('laravellocalization.supportedLocales');
+                            @endphp
+                            <form method="POST" action="{{ route('store-reason') }}">
+                                @csrf
+                                <ul class="nav nav-tabs mb-3" id="reasonTab" role="tablist">
+                                    @foreach ($locales as $locale => $properties)
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link @if ($loop->first) active @endif"
+                                                id="tab-{{ $locale }}" data-bs-toggle="tab"
+                                                data-bs-target="#tab-reason-{{ $locale }}" type="button"
+                                                role="tab" aria-controls="tab-reason-{{ $locale }}"
+                                                aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                                                {{ strtoupper($properties['native']) }}
+                                            </button>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                                <div class="tab-content">
+                                    @foreach ($locales as $locale => $properties)
+                                        @php
+                                            $reasonTrans = $reason
+                                                ? $reason->translations->where('locale', $locale)->first()
+                                                : null;
+                                        @endphp
+                                        <div class="tab-pane fade @if ($loop->first) show active @endif"
+                                            id="tab-reason-{{ $locale }}" role="tabpanel"
+                                            aria-labelledby="tab-{{ $locale }}">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label>Label The reason</label>
+                                                        <input type="text" class="form-control"
+                                                            name="label_reason[{{ $locale }}]" required
+                                                            value="{{ old('label_reason.' . $locale, $reasonTrans ? $reasonTrans->label_reason : '') }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>Label Industry</label>
+                                                        <input type="text" class="form-control"
+                                                            name="label_industry[{{ $locale }}]" required
+                                                            value="{{ old('label_industry.' . $locale, $reasonTrans ? $reasonTrans->label_industry : '') }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>Label Required Industrial Land Plot</label>
+                                                        <input type="text" class="form-control"
+                                                            name="label_land_plot[{{ $locale }}]" required
+                                                            value="{{ old('label_land_plot.' . $locale, $reasonTrans ? $reasonTrans->label_land_plot : '') }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>Label Timeline Construction</label>
+                                                        <input type="text" class="form-control"
+                                                            name="label_timeline_construction[{{ $locale }}]"
+                                                            required
+                                                            value="{{ old('label_timeline_construction.' . $locale, $reasonTrans ? $reasonTrans->label_timeline_construction : '') }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>Label Energy & Utility Needs</label>
+                                                        <input type="text" class="form-control"
+                                                            name="label_energy_utility[{{ $locale }}]" required
+                                                            value="{{ old('label_energy_utility.' . $locale, $reasonTrans ? $reasonTrans->label_energy_utility : '') }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label>Placeholder Industry</label>
+                                                        <input type="text" class="form-control"
+                                                            name="placeholder_industry[{{ $locale }}]" required
+                                                            value="{{ old('placeholder_industry.' . $locale, $reasonTrans ? $reasonTrans->placeholder_industry : '') }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>Placeholder Required Industrial Land Plot</label>
+                                                        <input type="text" class="form-control"
+                                                            name="placeholder_land_plot[{{ $locale }}]" required
+                                                            value="{{ old('placeholder_land_plot.' . $locale, $reasonTrans ? $reasonTrans->placeholder_land_plot : '') }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>Placeholder Timeline Construction</label>
+                                                        <input type="text" class="form-control"
+                                                            name="placeholder_timeline_construction[{{ $locale }}]"
+                                                            required
+                                                            value="{{ old('placeholder_timeline_construction.' . $locale, $reasonTrans ? $reasonTrans->placeholder_timeline_construction : '') }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>Placeholder Total Required Power</label>
+                                                        <input type="text" class="form-control"
+                                                            name="placeholder_total_power[{{ $locale }}]" required
+                                                            value="{{ old('placeholder_total_power.' . $locale, $reasonTrans ? $reasonTrans->placeholder_total_power : '') }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>Placeholder Total Industrial Water</label>
+                                                        <input type="text" class="form-control"
+                                                            name="placeholder_total_water[{{ $locale }}]" required
+                                                            value="{{ old('placeholder_total_water.' . $locale, $reasonTrans ? $reasonTrans->placeholder_total_water : '') }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>Placeholder Total Required Natural Gas</label>
+                                                        <input type="text" class="form-control"
+                                                            name="placeholder_total_gas[{{ $locale }}]" required
+                                                            value="{{ old('placeholder_total_gas.' . $locale, $reasonTrans ? $reasonTrans->placeholder_total_gas : '') }}">
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label>Placeholder Est. Vol. Throughput Via Seaport</label>
+                                                        <input type="text" class="form-control"
+                                                            name="placeholder_throughput_seaport[{{ $locale }}]"
+                                                            required
+                                                            value="{{ old('placeholder_throughput_seaport.' . $locale, $reasonTrans ? $reasonTrans->placeholder_throughput_seaport : '') }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3">
+                                    {{ $reason ? 'Update' : 'Save' }}
+                                </button>
                             </form>
                         </div>
                     </div>

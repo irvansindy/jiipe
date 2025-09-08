@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Laravel\Fortify\Fortify;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 // admin side
@@ -10,6 +9,7 @@ use App\Http\Controllers\Admin\NewsAndArticleController;
 use App\Http\Controllers\Admin\CareerController;
 use App\Http\Controllers\Admin\MenuPermissionController;
 use App\Http\Controllers\Admin\FormAppointment;
+use App\Http\Controllers\Admin\AboutUsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -60,6 +60,12 @@ Route::group([
         Route::get('/list-appointment', [FormAppointment::class, 'index'])->name('list-appointment');
         Route::get('/form-appointment', [FormAppointment::class, 'formView'])->name('form-appointment');
         Route::post('/store-quick-appointment', [FormAppointment::class, 'store'])->name('store-quick-appointment');
-        Route::post('/store-basic-information', [FormAppointment::class, 'store'])->name('store-basic-information');
+        Route::post('/store-basic-information', [FormAppointment::class, 'storeBasicInformation'])->name('store-basic-information');
+        Route::post('/store-reason', [FormAppointment::class, 'storeReason'])->name('store-reason');
+        
+        Route::get('/about-us', [AboutUsController::class, 'index'])->name('about-us');
+        Route::post('/store-about-us-header', [AboutUsController::class, 'storeHeader'])->name('store-about-us-header');
+        Route::post('/store-about-us-content', [AboutUsController::class, 'storeContent'])->name('store-about-us-content');
+        Route::post('/store-about-us-vision-mission', [AboutUsController::class, 'storeVisionMission'])->name('store-about-us-vision-mission');
     });
 });
