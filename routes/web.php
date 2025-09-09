@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\CareerController;
 use App\Http\Controllers\Admin\MenuPermissionController;
 use App\Http\Controllers\Admin\FormAppointment;
 use App\Http\Controllers\Admin\AboutUsController;
+use App\Http\Controllers\Admin\ZoneController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -67,5 +68,13 @@ Route::group([
         Route::post('/store-about-us-header', [AboutUsController::class, 'storeHeader'])->name('store-about-us-header');
         Route::post('/store-about-us-content', [AboutUsController::class, 'storeContent'])->name('store-about-us-content');
         Route::post('/store-about-us-vision-mission', [AboutUsController::class, 'storeVisionMission'])->name('store-about-us-vision-mission');
+
+        Route::get('special-economic-zone', [ZoneController::class, 'index'])->name('special-economic-zone');
+        Route::get('fetch-zone', [ZoneController::class, 'fetchZone'])->name('fetch-zone');
+        Route::get('fetch-special-zone', [ZoneController::class, 'fetchSpecialZone'])->name('fetch-special-zone');
+        Route::get('fetch-zone-class', [ZoneController::class, 'fetchZoneClass'])->name('fetch-zone-class');
+        Route::get('zone/{id}/detail', [ZoneController::class, 'getZoneDetail'])->name('zone-detail');
+        Route::post('store-zone', [ZoneController::class, 'storeZone'])->name('store-zone');
+        Route::post('zone/{id}/update', [ZoneController::class, 'updateZone'])->name('zone-update');
     });
 });

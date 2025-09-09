@@ -52,7 +52,6 @@ class AppServiceProvider extends ServiceProvider
         }
         // Share menu ke semua view
         View::composer('*', function ($view) {
-            // $menus = Menu::with('children.translations', 'translations')->get();
             $menus = Menu::with(['translations', 'children']) // children sudah sorted + active
                 ->roots()   // <- kunci: hanya parent_id = null
                 ->active()

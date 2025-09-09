@@ -205,8 +205,11 @@
             <div class="row">
                 <div class="col-md-12 col-xl-12 col-sm-6">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-primary d-flex justify-content-between align-items-center">
                             <h4 class="text-white m-0">Content Detail</h4>
+                            <button class="btn btn-light btn-sm float-end">
+                                <i class="ti ti-plus"></i>
+                            </button>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
