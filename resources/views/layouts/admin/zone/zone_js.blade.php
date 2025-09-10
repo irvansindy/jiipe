@@ -25,20 +25,12 @@
                     render: function(item) {
                         return `
                         <button type="button" 
-                            data-menu_id="${item.id}" 
+                            data-zone_id="${item.id}" 
                             class="btn btn-outline-info me-1 mt-2 detail_zone" 
                             data-bs-toggle="modal" 
                             data-bs-target="#ModalZone" 
-                            title="Detail Menu">
+                            title="Detail Zone">
                             <i class="ti ti-edit"></i>
-                        </button>
-                        <button type="button" 
-                            data-menu_id="${item.id}" 
-                            class="btn btn-outline-secondary me-1 mt-2 list_sub_menu" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#modalChildMenu"
-                            title="List Submenu">
-                            <i class="ti ti-list"></i>
                         </button>
                     `;
                     }
@@ -67,20 +59,12 @@
                     render: function(item) {
                         return `
                         <button type="button" 
-                            data-menu_id="${item.id}" 
-                            class="btn btn-outline-info me-1 mt-2 detail_menu" 
+                            data-zone_id="${item.id}" 
+                            class="btn btn-outline-info me-1 mt-2 detail_zone" 
                             data-bs-toggle="modal" 
-                            data-bs-target="#modalMenuPermission" 
-                            title="Detail Menu">
+                            data-bs-target="#modalZone" 
+                            title="Detail Zone">
                             <i class="ti ti-edit"></i>
-                        </button>
-                        <button type="button" 
-                            data-menu_id="${item.id}" 
-                            class="btn btn-outline-secondary me-1 mt-2 list_sub_menu" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#modalChildMenu"
-                            title="List Submenu">
-                            <i class="ti ti-list"></i>
                         </button>
                     `;
                     }
@@ -124,6 +108,26 @@
                 }
             })
         })
+
+        $(document).on('click', '.detail_zone', function() {
+            $('.form_zone').attr('id', 'form_zone_update'); // Set id ke form_zone_update
+            // Lakukan AJAX get detail zone dan isi form
+            alert('Edit Zone ID: ' + $(this).data('zone_id'));
+            let zoneId = $(this).data('zone_id');
+            $.get("zone/" + zoneId + "/detail", function(res) {
+                if(res.status === 'success') {
+                    $('#zone_class').val(res.data.zone_class_id).trigger('change');
+                    Object.keys(res.data.translations).forEach(function(locale) {
+                        $(`[name="zone_name[${locale}]"]`).val(res.data.translations[locale].name);
+                        $(`[name="zone_subtitle[${locale}]"]`).val(res.data.translations[locale].subtitle);
+                        $(`[name="zone_description[${locale}]"]`).val(res.data.translations[locale].description);
+                        $(`[name="zone_note[${locale}]"]`).val(res.data.translations[locale].note);
+                    });
+                    $('#modalZoneLabel').text('Edit Zone');
+                    $('#modalZone').modal('show');
+                }
+            });
+        });
 
         // $('#form_zone').on('submit', function(e) {
         //     e.preventDefault();

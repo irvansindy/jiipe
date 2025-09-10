@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Schema::defaultStringLength(191);
         if (Schema::hasTable('languages')) {
             $languages = Language::all();
             if ($languages->count()) {

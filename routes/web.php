@@ -76,5 +76,7 @@ Route::group([
         Route::get('zone/{id}/detail', [ZoneController::class, 'getZoneDetail'])->name('zone-detail');
         Route::post('store-zone', [ZoneController::class, 'storeZone'])->name('store-zone');
         Route::post('zone/{id}/update', [ZoneController::class, 'updateZone'])->name('zone-update');
+
+        Route::get('article-and-news', [NewsAndArticleController::class, 'index'])->name('article-and-news');
     });
 });
