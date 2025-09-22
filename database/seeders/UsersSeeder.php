@@ -34,22 +34,22 @@ class UsersSeeder extends Seeder
             [
                 'name' => 'Admin Postingan',
                 'email' => 'admin_postingan@jiipe.com',
-                'password' => Hash::make("pass12345"),
+                'password' => Hash::make("G7!p9R#t2XvLm8Qz4bWc6sF"),
             ],
             [
                 'name' => 'Admin Loker',
                 'email' => 'admin_loker@jiipe.com',
-                'password' => Hash::make("pass12345"),
+                'password' => Hash::make("G7!p9R#t2XvLm8Qz4bWc6sF"),
             ],
             [
                 'name' => 'Admin Jiipe',
                 'email' => 'Info@jiipe.com',
-                'password' => Hash::make("pass12345"),
+                'password' => Hash::make("G7!p9R#t2XvLm8Qz4bWc6sF"),
             ],
             [
                 'name' => 'Irvan Muhammad S',
                 'email' => 'irvansindy7@gmail.com',
-                'password' => Hash::make("joykowi132"),
+                'password' => Hash::make("G7!p9R#t2XvLm8Qz4bWc6sF"),
             ]
         ];
 

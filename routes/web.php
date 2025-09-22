@@ -8,13 +8,13 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsAndArticleController;
 use App\Http\Controllers\Admin\CareerController;
 use App\Http\Controllers\Admin\MenuPermissionController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\FormAppointment;
 use App\Http\Controllers\Admin\AboutUsController;
 use App\Http\Controllers\Admin\ZoneController;
-
-Route::get('/', function () {
-    return view('welcome');
-});
+use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\BrochureController;
+use App\Http\Controllers\Admin\GalleryController;
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
@@ -25,7 +25,7 @@ Route::group([
     ]
 ], function () {
     Route::get('/', function () {
-        return view('welcome');
+        return view('layouts.client.home.index');
     })->name('home');
 
     // 🔹 Fortify routes dengan prefix section-admin
@@ -45,8 +45,7 @@ Route::group([
     //     return view('layouts.admin.dashboard.index');
     // })->name('dashboard');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/news-blog', [NewsAndArticleController::class, 'index'])->name('news-blog');
-    Route::get('/career', [CareerController::class, 'index'])->name('career');
+    Route::get('/news-blog', [NewsAndArticleController::class, 'index'])->name('news-blog');    
 
     Route::group(['middleware' => ['auth']], function () {
         Route::get('/menu-permission', [MenuPermissionController::class, 'index'])->name('menu-permission');
@@ -57,6 +56,9 @@ Route::group([
         Route::get('/fetch-parent-menu', [MenuPermissionController::class, 'getChildMenus'])->name('fetch-parent-menu');
         Route::post('/store-menu-permission', [MenuPermissionController::class, 'storeData'])->name('store-menu-permission');
         Route::post('/update-menu-permission', [MenuPermissionController::class, 'updateData'])->name('update-menu-permission');
+
+        Route::get('users', [UserController::class,'index'])->name('users');
+        Route::get('fetch-users', [UserController::class,'fetch'])->name('fetch-users');
         
         Route::get('/list-appointment', [FormAppointment::class, 'index'])->name('list-appointment');
         Route::get('/form-appointment', [FormAppointment::class, 'formView'])->name('form-appointment');
@@ -78,5 +80,34 @@ Route::group([
         Route::post('zone/{id}/update', [ZoneController::class, 'updateZone'])->name('zone-update');
 
         Route::get('article-and-news', [NewsAndArticleController::class, 'index'])->name('article-and-news');
+        Route::get('fetch-article-and-news', [NewsAndArticleController::class, 'fetch'])->name('fetch-article-and-news');
+        Route::get('fetch-article-and-news-categories', [NewsAndArticleController::class, 'fetchCategories'])->name('fetch-article-and-news-categories');
+        // News
+        Route::get('get-article-and-news-id', [NewsAndArticleController::class, 'showNews'])->name('get-article-and-news-id');
+
+        // News Category
+        Route::get('get-article-and-news-category-id', [NewsAndArticleController::class, 'showNewsCategories'])->name('get-article-and-news-category-id');
+
+        Route::post('store-article-and-news', [NewsAndArticleController::class, 'storeNews'])->name('store-article-and-news');
+        Route::post('store-article-and-news-category', [NewsAndArticleController::class, 'storeCategories'])->name('store-article-and-news-category');
+        Route::post('update-article-and-news', [NewsAndArticleController::class, 'updateNews'])->name('update-article-and-news');
+        Route::post('update-article-and-news-category', [NewsAndArticleController::class, 'updateCategories'])->name('update-article-and-news-category');
+
+
+        Route::get('gallery', [GalleryController::class,'index'])->name('gallery');
+        Route::get('fetch-gallery-id', [GalleryController::class,'fetchById'])->name('fetch-gallery-id');
+        Route::post('store-gallery', [GalleryController::class,'store'])->name('store-gallery');
+        Route::post('update-gallery', [GalleryController::class,'update'])->name('update-gallery');
+        
+        Route::get('brochures', [BrochureController::class,'index'])->name('brochures');
+        Route::get('fetch-brochures', [BrochureController::class,'fetch'])->name('fetch-brochures');
+        Route::get('fetch-brochures-id', [BrochureController::class,'fetchById'])->name('fetch-brochures-id');
+        Route::post('store-brochures', [BrochureController::class,'store'])->name('store-brochures');
+
+        Route::get('career-list', [CareerController::class, 'index'])->name('career');
+
+        Route::get('contact-overview', [ContactController::class,'index'])->name('contact-overview');
     });
+
+
 });

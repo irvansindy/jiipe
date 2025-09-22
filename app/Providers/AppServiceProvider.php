@@ -8,6 +8,7 @@ use App\Models\Language;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use App\Models\Menu;
+use Illuminate\Support\Facades\URL;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // if (app()->environment('local')) {
+        //     URL::forceScheme('https');
+        // }
         Schema::defaultStringLength(191);
         if (Schema::hasTable('languages')) {
             $languages = Language::all();

@@ -13,6 +13,7 @@
     <meta name="keywords"
         content="Mantis, Dashboard UI Kit, Bootstrap 5, Admin Template, Admin Dashboard, CRM, CMS, Bootstrap Admin Template">
     <meta name="author" content="CodedThemes">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- [Favicon] icon -->
     <link rel="icon" href="{{ asset('dist/assets/images/favicon.svg') }}" type="image/x-icon">
@@ -85,7 +86,7 @@
             right: 20px;
             z-index: 1050;
         }
-        
+
         .modal-loader {
             position: fixed;
             top: 0;
@@ -133,13 +134,114 @@
     <script src="{{ asset('dist/assets/js/fonts/custom-font.js') }}"></script>
     <script src="{{ asset('dist/assets/js/pcoded.js') }}"></script>
     <script src="{{ asset('dist/assets/js/plugins/feather.min.js') }}"></script>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         layout_change('light');
         change_box_container('false');
         layout_rtl_change('false');
         preset_change("preset-1");
         font_change("Public-Sans");
+
+        /**
+         * ajaxRequest
+         *  - Bisa GET/POST/PUT/PATCH/DELETE
+         *  - Bisa pakai formSelector ATAU data object manual
+         *  - Sudah include loader + error Laravel
+         *
+         * @param {object} opts
+         *   formSelector : string | null -> contoh '#myForm', null jika kirim data manual
+         *   url          : string        -> endpoint Laravel
+         *   method       : string        -> GET | POST | PUT | PATCH | DELETE
+         *   data         : object        -> data manual jika tanpa formSelector
+         *   onSuccess    : function      -> callback sukses
+         *   onError      : function      -> callback error
+         */
+        function ajaxRequest(opts = {}) {
+            const {
+                formSelector = null,
+                    url = '',
+                    method = 'GET',
+                    data = {},
+                    onSuccess = null,
+                    onError = null
+            } = opts;
+
+            if (!url) {
+                console.error('ajaxRequest error: url wajib diisi.');
+                return;
+            }
+
+            let ajaxType = method.toUpperCase();
+            let ajaxData;
+            let process = true;
+            let content = 'application/x-www-form-urlencoded; charset=UTF-8';
+            let $allButtons;
+
+            // Jika ada formSelector → gunakan FormData
+            if (formSelector) {
+                const $form = $(formSelector);
+                const formEl = $form[0];
+                ajaxData = new FormData(formEl);
+
+                if (!['POST', 'GET'].includes(ajaxType)) {
+                    // Laravel method spoofing
+                    ajaxData.append('_method', ajaxType);
+                    ajaxType = 'POST';
+                }
+
+                process = false;
+                content = false;
+                $allButtons = $form.find('button, input[type=button], input[type=submit]');
+            } else {
+                // Tidak ada formSelector → data manual
+                ajaxData = data;
+            }
+
+            $.ajax({
+                url: url,
+                type: ajaxType,
+                data: ajaxData,
+                processData: process,
+                contentType: content,
+                cache: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function() {
+                    showLoader();
+                    if ($allButtons) {
+                        $allButtons.prop('disabled', true);
+                        $('.text-danger').text('');
+                    }
+                },
+                success: function(res) {
+                    if (typeof onSuccess === 'function') onSuccess(res);
+                },
+                error: function(xhr) {
+                    // validasi Laravel (jika pakai form)
+                    if ($allButtons && xhr.responseText) {
+                        try {
+                            const response_error = JSON.parse(xhr.responseText);
+                            $('.text-danger').text('');
+                            if (response_error.meta?.message?.errors) {
+                                $.each(response_error.meta.message.errors, function(i, value) {
+                                    $('#message_' + i.replace(/\./g, '_')).text(value);
+                                });
+                            }
+                        } catch (e) {
+                            console.error('Parse error response:', e);
+                        }
+                    }
+                    if (typeof onError === 'function') onError(xhr);
+                },
+                complete: function() {
+                    hideLoader();
+                    if ($allButtons) $allButtons.prop('disabled', false);
+                }
+            });
+        }
     </script>
     @stack('js')
 </body>
