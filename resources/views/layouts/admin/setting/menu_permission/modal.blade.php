@@ -80,6 +80,7 @@
 
                     {{-- Parent Menu dropdown --}}
                     <div class="mb-3" id="parent_menu"></div>
+                    <div class="mb-3" id="list_role"></div>
 
                 </div>
                 <div class="modal-footer" id="button_action_menu">

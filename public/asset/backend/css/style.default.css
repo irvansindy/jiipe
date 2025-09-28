@@ -278,11 +278,11 @@ h1,h2,h3,h4,h5 { font-weight: normal; line-height: normal; }
 .shortcuts li .iconsi-help { background: url(../images/icons/icon-help.png) no-repeat center center; }
 .shortcuts li .iconsi-images { background: url(../images/icons/icon-images.png) no-repeat center center; }
 
-.widget {
-	-moz-box-shadow: 1px 1px 8px rgba(0,0,0,0.3);
-	-webkit-box-shadow: 1px 1px 8px rgba(0,0,0,0.3);
-	box-shadow: 1px 1px 8px rgba(0,0,0,0.3);
-}
+/* .widget { */
+	/* -moz-box-shadow: 1px 1px 8px rgba(0,0,0,0.3); */
+	/* -webkit-box-shadow: 1px 1px 8px rgba(0,0,0,0.3); */
+	/* box-shadow: 1px 1px 8px rgba(0,0,0,0.3); */
+/* } */
 .maincontentinner.inside h1,
 .widgettitle { background: #D10808; color: #fff; padding: 12px 15px; font-size: 14px; font-weight: bold; }
 .widgettitle span { vertical-align: middle; display: inline-block; margin-right: 8px; }

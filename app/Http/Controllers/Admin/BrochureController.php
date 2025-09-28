@@ -120,6 +120,7 @@ class BrochureController extends Controller
             return FormatResponseJson::success(true, 'Brochure berhasil disimpan atau diperbarui');
 
         } catch (ValidationException $e) {
+            DB::rollBack();
             return FormatResponseJson::error(null, ['errors' => $e->errors()], 422);
         } catch (\Throwable $th) {
             DB::rollBack();

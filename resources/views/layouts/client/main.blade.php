@@ -1,6 +1,6 @@
 {{-- filepath: resources/views/layouts/main.blade.php --}}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="utf-8">
@@ -113,13 +113,13 @@
     </script>
 </head>
 
-<body class="{{ $classLogin ?? '' }}">
+<body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M3XXNCV" height="0" width="0"
-            style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M3XXNCV" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     @include('layouts.client.partials.header')
     @yield('content')
+    @include('layouts.client.partials.footerv2')
     @stack('js')
 </body>
 

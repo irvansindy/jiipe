@@ -35,6 +35,10 @@ class Menu extends Model
     {
         return $this->hasMany(MenuTranslation::class, 'menu_id', 'id');
     }
+    public function permissions()
+    {
+        return $this->hasOne(\Spatie\Permission\Models\Permission::class, 'name', 'permission');
+    }
     public function getTranslatedNameAttribute()
     {
         $locale = app()->getLocale(); // bahasa aktif

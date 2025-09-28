@@ -107,7 +107,6 @@
 
         $(document).on('click', '#submit_brochure', (e) => {
             e.preventDefault()
-            alert('submit_brochure')
             ajaxRequest({
                 formSelector: '#brochure_form',
                 url: '{{ route("store-brochures") }}',

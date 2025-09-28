@@ -8,7 +8,7 @@
     <div class="navigasi-box navigasi-box-shadow">
         <ul>
             <li>
-                <a href="{{ route('home', ['lang' => $currentLang]) }}#videotour">
+                <a href="{{ route('home') }}#videotour">
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-map-marked-alt"></i></div>
                         <div class="text">
@@ -39,7 +39,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('home', ['lang' => $currentLang]) }}#faq">
+                <a href="{{ route('home') }}#faq">
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-comment-alt"></i></div>
                         <div class="text">
@@ -50,7 +50,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('blog', ['type' => 'article', 'lang' => $currentLang]) }}">
+                <a href="#">
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-newspaper"></i></div>
                         <div class="text">
@@ -82,7 +82,7 @@
                         <p class="mt-2">All fields marked with an asterisk (*) are mandatory</p>
                     </div>
                 </div>
-                <form action="{{ route('appointment', ['lang' => $currentLang]) }}" id="contactForm" method="POST">
+                <form action="#" id="contactForm" method="POST">
                     @csrf
                     <div class="row my-3 px-lg-5 px-sm-0">
                         <div class="col-lg-60 col-sm-60 pr-lg-5 pr-sm-0">
@@ -151,15 +151,15 @@
                             <h5 class="title">{{ $settings['section10_home_label_reason'] ?? '' }} *</h5>
                             <div class="row form-group">
                                 <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left"></label>
-                                @foreach($reasons as $key => $reason)
-                                    <div class="col-lg-15 col-sm-60">
-                                        <label class="custom-control custom-radio" for="reason_{{ $key }}">
-                                            <input name="reason" id="reason_{{ $key }}" type="radio" class="custom-control-input" value="{{ $reason->content }}" required>
-                                            <span class="custom-control-indicator"></span>
-                                            <span class="custom-control-description">{{ $reason->content }}</span>
-                                        </label>
-                                    </div>
-                                @endforeach
+                                <div class="col-lg-15 col-sm-60">
+                                    <label class="custom-control custom-radio" for="reason_">
+                                        <input name="reason" id="reason_" type="radio" class="custom-control-input" value="" required>
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description"></span>
+                                    </label>
+                                </div>
+                                {{-- @foreach($reasons as $key => $reason)
+                                @endforeach --}}
                                 @if(($settings['section10_home_label_reason_other'] ?? 1) == 0)
                                     <div class="col-lg-20 col-sm-60">
                                         <label class="custom-control custom-radio" for="reason_other">
@@ -184,12 +184,7 @@
                                 <div class="col-lg-50 col-sm-60 form-group">
                                     <select class="custom-select" name="classification" id="classification" required>
                                         <option value="" disabled selected hidden>{{ $settings['section10_home_placeholder_industry'] ?? '' }}</option>
-                                        @foreach($industries as $industry)
-                                            <option value="{{ $industry->content }}">{{ $industry->content }}</option>
-                                        @endforeach
-                                        @if(($settings['section10_home_label_industry_other'] ?? 1) == 0)
-                                            <option value="Other">Other</option>
-                                        @endif
+                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
                             </div>
@@ -221,9 +216,6 @@
                                         <div class="col-lg-40 col-sm-60 form-group">
                                             <select class="custom-select" name="timeline" required>
                                                 <option value="" disabled selected hidden>{{ $settings['section10_home_placeholder_timeline'] ?? '' }}</option>
-                                                @foreach($timelines as $timeline)
-                                                    <option value="{{ $timeline->content }}">{{ $timeline->content }}</option>
-                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
@@ -330,7 +322,7 @@
     <div class="footer-widget-new">
         <div class="prelative container">
             <div class="row">
-                <div class="col-lg-18 col-sm-60 garis-lurus-right">
+                <div class="col-lg-4 col-md-4 col-sm-12 garis-lurus-right">
                     <div class="widget">
                         <h4 class="widget-title line">{{ $settings['section11_office1_creative_title'] ?? '' }}</h4>
                         <div class="widget-office">
@@ -344,7 +336,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-18 col-sm-60">
+                <div class="col-lg-4 col-md-4 col-sm-12">
                     <div class="widget">
                         <h4 class="widget-title line">{{ $settings['section11_office2_creative_title'] ?? '' }}</h4>
                         <div class="widget-office">
@@ -358,20 +350,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 col-sm-60"></div>
-                <div class="col-lg-18 col-sm-60">
+                <div class="col-lg-4 col-md-4 col-sm-12">
                     <div class="widget quick-link">
                         <h4 class="widget-title line">{{ __('quick link') }}</h4>
                         <ul class="widget-menu">
-                            <li><a href="{{ route('profil', ['lang' => $currentLang]) }}">{{ __('Profil') }}</a></li>
-                            <li><a href="{{ route('home', ['lang' => $currentLang]) }}#tenants">{{ __('Video Profile Perusahaan') }}</a></li>
+                            <li><a href="#">{{ __('Profil') }}</a></li>
+                            <li><a href="{{ route('home') }}#tenants">{{ __('Video Profile Perusahaan') }}</a></li>
                             <li>
                                 <a href="{{ asset('asset/brochure/(Mobile Version) E-Brochure JIIPE-Ineractive.pdf') }}" target="_blank" class="hashmb d-none">{{ __('Download Brosur') }}</a>
                                 <a href="{{ asset('asset/brochure/(Desktop Version) E-Brochure JIIPE-Ineractive.pdf') }}" target="_blank" class="hashds">{{ __('Download Brosur') }}</a>
                             </li>
-                            <li><a href="{{ route('home', ['lang' => $currentLang]) }}#videotour">{{ __('Virtual Tour Video') }}</a></li>
-                            <li><a href="{{ route('blog', ['lang' => $currentLang]) }}">{{ __('Artikel & Berita') }}</a></li>
-                            <li><a href="{{ route('contact', ['lang' => $currentLang]) }}">{{ __('Kontak') }}</a></li>
+                            <li><a href="{{ route('home') }}#videotour">{{ __('Virtual Tour Video') }}</a></li>
+                            <li><a href="#">{{ __('Artikel & Berita') }}</a></li>
+                            <li><a href="">{{ __('Kontak') }}</a></li>
                         </ul>
                         <div class="icon-media">
                             <p>Get Connected to our social media <br>Form more insight</p>
@@ -395,8 +386,8 @@
                         <img src="{{ asset('asset/images/jiipe_logo_white_small.png') }}" alt="kawasan industri gresik jiipe">
                         <p>
                             Copyright &copy; 2023
-                            <a href="{{ route('blog', ['lang' => $currentLang]) }}">PT Berkah Kawasan Manyar Sejahtera</a> |
-                            <a href="{{ route('blog', ['type' => 'glosary', 'lang' => $currentLang]) }}">Java Industrial and Ports Estate</a>.
+                            <a href="#">PT Berkah Kawasan Manyar Sejahtera</a> |
+                            <a href="#">Java Industrial and Ports Estate</a>.
                             All Rights Reserved
                         </p>
                     </div>
@@ -414,4 +405,4 @@
 <script src="{{ asset('asset/js/slick/slick.min.js') }}"></script>
 <script src="{{ asset('asset/js/owlslider/owl.carousel.min.js') }}"></script>
 <script src="{{ asset('asset/js/jquery-validation/jquery.validate.min.js') }}"></script>
-{{-- <script src="{{ asset('asset/js/creative.js?ver=1.0.5') }}"></script> --}}
+<script src="{{ asset('asset/js/creative.js?ver=1.0.5') }}"></script>

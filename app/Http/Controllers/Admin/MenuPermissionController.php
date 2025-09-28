@@ -21,9 +21,9 @@ class MenuPermissionController extends Controller
     }
     public function fetchMenu()
     {
-        $locale = app()->getLocale();
-
-        $menus = Menu::with(['translations.language'])->get();
+        $menus = Menu::with(['permissions.roles'])->where('parent_id', null)
+            ->where('type', 'admin_side')
+            ->where('is_active', 1)->get();
 
         return FormatResponseJson::success($menus, 'muncul menu');
     }
@@ -33,9 +33,13 @@ class MenuPermissionController extends Controller
             $menus = Menu::where('parent_id', null)
             ->where('type', 'admin_side')
             ->where('is_active', 1)->get();
-            // dd($menus);
+            $roles = Role::all();
+            $data = [
+                'menus'=> $menus,
+                'roles'=> $roles
+            ];
             $message = count($menus) > 0 ? 'Menu permissions fetched successfully.' : 'No menu permissions found.';
-            return FormatResponseJson::success($menus, $message);
+            return FormatResponseJson::success($data, $message);
         } catch (\Throwable $th) {
             return FormatResponseJson::error(null, $th->getMessage());
         }
@@ -122,17 +126,11 @@ class MenuPermissionController extends Controller
                 $menu->update([
                     'permission' => 'view_'.$url
                 ]);
-                Permission::firstOrCreate(['name' => 'view_'.$url]);
-                if ($request->menu_type == 'admin_side' && $request->parent_child_menu == 'child_menu') {
-                    // Buat permission otomatis (pakai spatie/laravel-permission)
-                    $baseName = Str::slug($request->menu_name['en'], '_'); // contoh: "user_management"
-                    $actions = ['create', 'edit', 'delete'];
-                    
-                    foreach ($actions as $action) {
-                        Permission::firstOrCreate(['name' => "{$action}_{$baseName}"]);
-                    }
-                }
+                $permission = Permission::firstOrCreate(['name' => 'view_'.$url]);
 
+                if ($menu->permission && $request->user_role) {
+                    $permission->syncRoles($request->user_role);
+                }
                 return $menu;
             });
 
@@ -146,8 +144,8 @@ class MenuPermissionController extends Controller
     public function showData(Request $request)
     {
         try {
-            $menu = Menu::with('translations')->findOrFail($request->id);
-
+            $menu = Menu::with(['translations', 'permissions.roles'])->findOrFail($request->id);
+            $roles = Role::all('id','name');
             // Susun data multilingual agar lebih rapi
             $menuData = [
                 'id'          => $menu->id,
@@ -159,6 +157,8 @@ class MenuPermissionController extends Controller
                 'order'       => $menu->order,
                 'is_active'   => $menu->is_active,
                 'permission'  => $menu->permission,
+                'roles' => $menu->permissions->roles,
+                'role_existing' => $roles,
                 'translations'=> $menu->translations->mapWithKeys(function ($t) {
                     return [$t->locale => $t->name];
                 }),
@@ -168,9 +168,10 @@ class MenuPermissionController extends Controller
             return FormatResponseJson::error(null, $th->getMessage(), 404);
         }
     }
-    public function updateData(Request $request, $id)
+    public function updateData(Request $request)
     {
         try {
+            DB::beginTransaction();
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -211,8 +212,8 @@ class MenuPermissionController extends Controller
                 throw new ValidationException($validator);
             }
 
-            $menu = DB::transaction(function () use ($request, $id) {
-                $menu = Menu::findOrFail($id);
+            $menu = DB::transaction(function () use ($request) {
+                $menu = Menu::findOrFail($request->id);
 
                 $url = Str::of(strtolower($request->menu_name['en']))->slug('-');
 
@@ -234,24 +235,29 @@ class MenuPermissionController extends Controller
                 }
 
                 // 🔹 Update permissions
-                Permission::firstOrCreate(['name' => 'view_'.$url]);
+                $permission = Permission::firstOrCreate(['name' => 'view_'.$url]);
 
-                if ($request->menu_type == 'admin_side' && $request->parent_child_menu == 'child_menu') {
-                    $baseName = Str::slug($request->menu_name['en'], '_');
-                    $actions = ['create', 'edit', 'delete'];
-
-                    foreach ($actions as $action) {
-                        Permission::firstOrCreate(['name' => "{$action}_{$baseName}"]);
-                    }
+                if ($menu->permission && $request->user_role) {
+                    $permission->syncRoles($request->user_role);
                 }
+                // if ($request->menu_type == 'admin_side' && $request->parent_child_menu == 'child_menu') {
+                //     $baseName = Str::slug($request->menu_name['en'], '_');
+                //     $actions = ['create', 'edit', 'delete'];
+
+                //     foreach ($actions as $action) {
+                //         Permission::firstOrCreate(['name' => "{$action}_{$baseName}"]);
+                //     }
+                // }
 
                 return $menu;
             });
-
+            DB::commit();
             return FormatResponseJson::success($menu, 'Menu permission updated successfully.');
         } catch (ValidationException $e) {
+            DB::rollBack();
             return FormatResponseJson::error(null, ['errors' => $e->errors()], 400);
         } catch (\Throwable $th) {
+            DB::rollBack();
             return FormatResponseJson::error(null, $th->getMessage());
         }
     }

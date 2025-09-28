@@ -6,6 +6,7 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 // admin side
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsAndArticleController;
+use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\CareerController;
 use App\Http\Controllers\Admin\MenuPermissionController;
 use App\Http\Controllers\Admin\UserController;
@@ -48,6 +49,10 @@ Route::group([
     Route::get('/news-blog', [NewsAndArticleController::class, 'index'])->name('news-blog');    
 
     Route::group(['middleware' => ['auth']], function () {
+        Route::get('home-page', [HomeController::class,'index'])->name('home-page');
+        Route::post('store-home-header', [HomeController::class,'storeHeader'])->name('store-home-header');
+        Route::post('store-home-slider', [HomeController::class,'storeSlider'])->name('store-home-slider');
+
         Route::get('/menu-permission', [MenuPermissionController::class, 'index'])->name('menu-permission');
         Route::get('/fetch-menu-permission', [MenuPermissionController::class, 'fetchData'])->name('fetch-menu-permission');
         Route::get('/fetch-menu-permission-v2', [MenuPermissionController::class, 'fetchMenu'])->name('fetch-menu-permission-v2');
@@ -58,7 +63,8 @@ Route::group([
         Route::post('/update-menu-permission', [MenuPermissionController::class, 'updateData'])->name('update-menu-permission');
 
         Route::get('users', [UserController::class,'index'])->name('users');
-        Route::get('fetch-users', [UserController::class,'fetch'])->name('fetch-users');
+        Route::get('fetch-users', [UserController::class,'fetchUser'])->name('fetch-users');
+        Route::get('fetch-roles', [UserController::class,'fetchRole'])->name('fetch-roles');
         
         Route::get('/list-appointment', [FormAppointment::class, 'index'])->name('list-appointment');
         Route::get('/form-appointment', [FormAppointment::class, 'formView'])->name('form-appointment');
@@ -104,7 +110,11 @@ Route::group([
         Route::get('fetch-brochures-id', [BrochureController::class,'fetchById'])->name('fetch-brochures-id');
         Route::post('store-brochures', [BrochureController::class,'store'])->name('store-brochures');
 
-        Route::get('career-list', [CareerController::class, 'index'])->name('career');
+        Route::get('career-list', [CareerController::class, 'index'])->name('career-list');
+        Route::get('career-static', [CareerController::class, 'static'])->name('career-static');
+        Route::get('career-enquire', [CareerController::class, 'enquire'])->name('career-enquire');
+        Route::post('store-career-header', [CareerController::class, 'storeHeader'])->name('store-career-header');
+        Route::post('store-career-section1', [CareerController::class, 'storeSection1'])->name('store-career-section1');
 
         Route::get('contact-overview', [ContactController::class,'index'])->name('contact-overview');
     });

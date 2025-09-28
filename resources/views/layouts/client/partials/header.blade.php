@@ -23,6 +23,7 @@
                                         href="{{ Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
                                         {{ $properties['native'] }}
                                     </a>
+                                    @if (! $loop->last) | @endif
                                 </li>
                             @endforeach
                         </ul>
@@ -51,6 +52,7 @@
                                             href="{{ Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
                                             {{ $properties['native'] }}
                                         </a>
+                                        @if (! $loop->last) | @endif
                                     </li>
                                 @endforeach
                             </ul>

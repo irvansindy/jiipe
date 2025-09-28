@@ -11,7 +11,7 @@
         var tableMenuPermission = $('#table_menu_permission').DataTable({
             processing: true,
             ajax: {
-                url: '{{ route('fetch-menu-permission') }}',
+                url: '{{ route('fetch-menu-permission-v2') }}',
                 type: 'GET',
                 dataType: 'json'
             },
@@ -71,6 +71,8 @@
             $('#modalMenuPermissionLabel').text('');
             $('#modalMenuPermissionLabel').text('Create New Menu Permission');
             $('#form_menu_permission')[0].reset();
+            $('#parent_menu').empty();
+            $('#list_role').empty();
             $('#button_action_menu').empty();
             $('#button_action_menu').html(`
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -84,22 +86,12 @@
                 type: 'get',
 
                 success: function(res) {
-                    const parent_menu = res.data
+                    const parent_menu = res.data.menus
+                    const list_role = res.data.roles
                     dynamicDropDownParent(parent_menu);
+                    listRole(list_role)
                 }
             })
-        });
-
-        // Klik detail menu (delegasi event)
-        $(document).on('click', '.detail_menu', function() {
-            var menu_id = $(this).data('menu_id');
-            // pakai modal loader biar ga berat blocking
-            $('#modalMenuPermissionLabel').text('');
-            $('#modalMenuPermissionLabel').text('Detail Menu Permission');
-            $('#button_action_menu').html(`
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="update_menu_permission">Update</button>
-        `);
         });
 
         function dynamicDropDownParent(parent_menu) {
@@ -107,14 +99,14 @@
                 if ($('[name="parent_child_menu"]:checked').val() === 'child_menu') {
                     $('#parent_menu').empty();
                     $('#parent_menu').html(`
-                    <label for="parent_id">Permission</label>
-                    <select class="form-control parent_id" name="parent_id" id="parent_id" style="width: 100%">
-    
-                    </select>
-                `);
-                    $('#parent_id').append(`
-                    <option value="">Select One</option>
-                `)
+                        <label for="parent_id">Permission</label>
+                        <select class="form-control parent_id" name="parent_id" id="parent_id" style="width: 100%">
+        
+                        </select>
+                    `);
+                        $('#parent_id').append(`
+                        <option value="">Select One</option>
+                    `)
                     $('#parent_id').select2({
                         dropdownParent: $('#modalMenuPermission'),
                         data: parent_menu.map(parent => ({
@@ -128,6 +120,28 @@
                     $('#parent_menu').empty();
                 }
             });
+        }
+
+        function listRole(roles) {
+            $('#list_role').empty();
+            $('#list_role').html(`
+                <label for="user_role">Role</label>
+                <select class="form-control user_role" name="user_role[]" id="user_role" multiple style="width: 100%">
+
+                </select>
+            `);
+            $('#user_role').append(`
+                <option value="">Select One</option>
+            `)
+            $('#user_role').select2({
+                dropdownParent: $('#modalMenuPermission'),
+                data: roles.map(role => ({
+                    id: role.name,
+                    text: role.name
+                })),
+                placeholder: 'Select One',
+                // allowClear: true,
+            })
         }
 
         $(document).on('click', '#save_menu_permission', function() {
@@ -167,6 +181,8 @@
         $(document).on('click', '.detail_menu, .edit_child_menu', function() {
             let menuId = $(this).data('menu_id');
             $('#modalChildMenu').hide();
+            $('#parent_menu').empty();
+            $('#list_role').empty();
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -178,7 +194,7 @@
                     showLoader();
                 },
                 success: function(res) {
-                    let menu = res.data;
+                    let menu = res.data
 
                     // Set judul modal
                     $('#modalMenuPermissionLabel').text("Detail Menu: " + menu.name);
@@ -197,7 +213,7 @@
                     $(`input[name="menu_type"][value="${menu.type}"]`).prop('checked', true);
 
                     // cek parent/child
-                    if (menu.parent_id === null) {
+                    if (menu.parent_id == null) {
                         $('#parent_menu_1').prop('checked', true); // Parent
                         $('.parent_child_menu_section').hide()
                     } else {
@@ -213,6 +229,9 @@
                     } else {
                         $('#form_menu_permission input[name="id"]').val(menu.id);
                     }
+
+                    listRole(menu.role_existing)
+                    $('[name="user_role[]"]').val(menu.roles.map(role => role.name)).trigger('change')
 
                     $('#button_action_menu').empty();
                     $('#button_action_menu').append(`
@@ -235,7 +254,7 @@
         // fungsi load parent menu dropdown
         function loadParentMenuDropdown(selectedId = null) {
             $.ajax({
-                url: '{{ route('fetch-menu-permission') }}',
+                url: '{{ route('fetch-menu-permission-v2') }}',
                 type: 'GET',
                 success: function(res) {
                     let html = `<label class="form-label">Pilih Parent Menu</label>
@@ -309,5 +328,17 @@
             });
         });
 
+        $(document).on('click', '#update_menu_permission', function(e) {
+            e.preventDefault()
+            ajaxRequest({
+                formSelector: '#form_menu_permission',
+                url: '{{ route("update-menu-permission") }}',
+                method: 'POST',
+                onSuccess: function (res) {
+                    $('#modalMenuPermission').modal('hide')
+                    Swal.fire('Berhasil!', 'Data berhasil ditambahkan', 'success');
+                }
+            });
+        })
     });
 </script>
