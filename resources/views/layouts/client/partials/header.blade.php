@@ -17,15 +17,8 @@
                     <div class="language d-inline-flex">
                         <label>Choose Language : </label>
                         <ul class="bahasa">
-                            @foreach (Mcamara\LaravelLocalization\Facades\LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                                <li>
-                                    <a rel="alternate" hreflang="{{ $localeCode }}"
-                                        href="{{ Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                                        {{ $properties['native'] }}
-                                    </a>
-                                    @if (! $loop->last) | @endif
-                                </li>
-                            @endforeach
+                            
+                            
                         </ul>
                     </div>
                     <div class="appointment-btn float-md-right">
@@ -96,17 +89,17 @@
                             <ul>
                                 <li class="menu-item has-children"><a href="#" class="dd-trigger">About Us</a> 
                                     <ul class="sub-menu">
-                                        <li><a href="/en/home/profil">Profil</a></li>
-                                        <li><a href="/en/home/blog/type/news">News</a></li>
-                                        <li><a href="/en/home/blog/type/article">Articles</a></li>
-                                        <li><a href="/en/home/contact">Contact</a></li>
+                                        <li><a href="#">Profil</a></li>
+                                        <li><a href="#">News</a></li>
+                                        <li><a href="#">Articles</a></li>
+                                        <li><a href="#">Contact</a></li>
                                     </ul>
                                 </li>
-                                <li class="menu-item"><a href="/en/home/industri_jiipe">Industrial Estate</a></li>
-                                <li class="menu-item"><a href="/en/home/kawasanekonomi">Special Economic Zone</a></li>
-                                <li class="menu-item"><a href="/en/home/blog">News &amp; Articles</a></li>
-                                <li class="menu-item"><a href="/en/home/desk_international">International Desk</a></li>
-                                <li class="menu-item"><a href="/en/home/karir">Career</a></li>
+                                <li class="menu-item"><a href="#">Industrial Estate</a></li>
+                                <li class="menu-item"><a href="#">Special Economic Zone</a></li>
+                                <li class="menu-item"><a href="#">News &amp; Articles</a></li>
+                                <li class="menu-item"><a href="#">International Desk</a></li>
+                                <li class="menu-item"><a href="#">Career</a></li>
                             </ul>
                         </nav>
                     </div>
