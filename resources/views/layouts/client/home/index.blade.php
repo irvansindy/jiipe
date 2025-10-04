@@ -1,10 +1,11 @@
-{{-- @extends('layouts.client.main')
-@section('content')
-    @include('layouts.client.home.header_section')
-@endsection --}}
 @extends('layouts.client.main')
 @section('content')
     @include('layouts.client.home.slider_section')
     @include('layouts.client.home.area_showcase_section')
     @include('layouts.client.home.tenant_section')
+    @include('layouts.client.home.video_tour')
+    @include('layouts.client.home.review_user')
+    @include('layouts.client.home.faq')
+    @include('layouts.client.home.news_blog')
+    @include('components.appointment-form')
 @endsection

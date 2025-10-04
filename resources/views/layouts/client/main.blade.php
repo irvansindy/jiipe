@@ -60,6 +60,129 @@
 
     <link rel="stylesheet" href="{{ asset('asset/css/creative/creative.css') }}?ver=1.0.32">
     <link rel="stylesheet" href="{{ asset('asset/css/creative/creativeresponsive.css') }}?ver=1.0.25">
+    <link rel="stylesheet" href="{{ asset('asset/js/slick/slick.min.js') }}">
+    <link rel="stylesheet" href="{{ asset('asset/css/cdn/swiper.css') }}">
+    <style>
+        @media screen and (max-width: 1024px) {
+
+            /* Semua CSS yang sama, hanya ubah breakpoint-nya */
+            .branding2 {
+                display: none !important;
+            }
+
+            .slogan {
+                display: none !important;
+            }
+
+            .navbar-toggle-btn {
+                display: block !important;
+                cursor: pointer !important;
+                padding: 10px !important;
+            }
+
+            .navbar-toggler {
+                width: 30px !important;
+                height: 25px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+            }
+
+            .navbar-toggler span {
+                display: block !important;
+                width: 100% !important;
+                height: 3px !important;
+                background-color: #e31e24 !important;
+                border-radius: 2px !important;
+            }
+
+            .navbar-toggler.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px) !important;
+            }
+
+            .navbar-toggler.active span:nth-child(2) {
+                opacity: 0 !important;
+            }
+
+            .navbar-toggler.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(8px, -8px) !important;
+            }
+
+            .nav-menu {
+                position: fixed !important;
+                top: 0 !important;
+                right: -100% !important;
+                width: 85% !important;
+                max-width: 350px !important;
+                height: 100vh !important;
+                background-color: #fff !important;
+                z-index: 99999 !important;
+                transition: right 0.4s ease !important;
+                overflow-y: auto !important;
+                box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5) !important;
+                padding-top: 60px !important;
+            }
+
+            .nav-menu.active {
+                right: 0 !important;
+            }
+
+            .navbar-close {
+                display: block !important;
+                position: absolute !important;
+                right: 20px !important;
+                top: 15px !important;
+                font-size: 35px !important;
+                cursor: pointer !important;
+                color: #333 !important;
+            }
+
+            .main-menu ul {
+                display: flex !important;
+                flex-direction: column !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .main-menu ul li {
+                border-bottom: 1px solid #eee !important;
+            }
+
+            .main-menu ul li a {
+                display: block !important;
+                padding: 15px 25px !important;
+                color: #333 !important;
+            }
+
+            .main-menu .sub-menu {
+                display: none !important;
+                background: #f5f5f5 !important;
+            }
+
+            .main-menu .has-children.active .sub-menu {
+                display: block !important;
+            }
+
+            .nav-menu-overlay {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100% !important;
+                height: 100vh !important;
+                background: rgba(0, 0, 0, 0.6) !important;
+                z-index: 99998 !important;
+                display: none !important;
+            }
+
+            .nav-menu-overlay.active {
+                display: block !important;
+            }
+
+            body.menu-open {
+                overflow: hidden !important;
+            }
+        }
+    </style>
 
     {{-- Google Webmaster & Analytics --}}
     {!! $google_tools_webmaster ?? '' !!}
@@ -101,6 +224,8 @@
         gtag('js', new Date());
         gtag('config', 'G-9JZLPMYER5');
     </script>
+    <script src="{{ asset('asset/js/slick/slick.min.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/swiper.js') }}"></script>
     <!-- Baidu Tongji Tracking Code -->
     <script>
         var _hmt = _hmt || [];
@@ -115,12 +240,84 @@
 
 <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M3XXNCV" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    {{-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M3XXNCV" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> --}}
     <!-- End Google Tag Manager (noscript) -->
     @include('layouts.client.partials.header')
     @yield('content')
     @include('layouts.client.partials.footerv2')
     @stack('js')
+
+    {{-- MOBILE MENU SCRIPT --}}
+    <script>
+        (function() {
+            'use strict';
+
+            function initMobileMenu() {
+                const toggleBtn = document.querySelector('.navbar-toggle-btn');
+                const navMenu = document.querySelector('.nav-menu');
+                const closeBtn = document.querySelector('.navbar-close');
+
+                if (!toggleBtn || !navMenu) return;
+
+                function createOverlay() {
+                    let overlay = document.querySelector('.nav-menu-overlay');
+                    if (!overlay) {
+                        overlay = document.createElement('div');
+                        overlay.className = 'nav-menu-overlay';
+                        document.body.appendChild(overlay);
+                    }
+                    return overlay;
+                }
+
+                function openMenu() {
+                    const overlay = createOverlay();
+                    navMenu.classList.add('active');
+                    document.body.classList.add('menu-open');
+                    toggleBtn.querySelector('.navbar-toggler')?.classList.add('active');
+                    setTimeout(() => overlay.classList.add('active'), 10);
+                }
+
+                function closeMenu() {
+                    const overlay = document.querySelector('.nav-menu-overlay');
+                    navMenu.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                    toggleBtn.querySelector('.navbar-toggler')?.classList.remove('active');
+                    if (overlay) {
+                        overlay.classList.remove('active');
+                        setTimeout(() => overlay.remove(), 300);
+                    }
+                }
+
+                toggleBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navMenu.classList.contains('active') ? closeMenu() : openMenu();
+                });
+
+                closeBtn?.addEventListener('click', closeMenu);
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('nav-menu-overlay')) closeMenu();
+                });
+
+                document.querySelectorAll('.main-menu .has-children > a.dd-trigger').forEach(item => {
+                    item.addEventListener('click', function(e) {
+                        if (window.innerWidth <= 1024) {
+                            e.preventDefault();
+                            const parent = this.parentElement;
+                            document.querySelectorAll('.main-menu .has-children').forEach(el => el
+                                .classList.remove('active'));
+                            parent.classList.toggle('active');
+                        }
+                    });
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initMobileMenu);
+            } else {
+                initMobileMenu();
+            }
+        })();
+    </script>
 </body>
 
 </html>

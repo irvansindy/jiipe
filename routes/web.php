@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+// client side
+use App\Http\Controllers\Client\HomeController as HomeClient;
+use App\Http\Controllers\Client\ProfileController;
+use App\Http\Controllers\Client\IndustrialEstateController;
 // admin side
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsAndArticleController;
@@ -28,7 +32,8 @@ Route::group([
     Route::get('/', function () {
         return view('layouts.client.home.index');
     })->name('home');
-
+    Route::get('profile', [ProfileController::class,'index'])->name('profile');
+    Route::get('industrial-jiipe', [IndustrialEstateController::class,'index'])->name('industrial-jiipe');
     // 🔹 Fortify routes dengan prefix section-admin
     Route::group(['prefix' => 'section-admin', 'middleware' => config('fortify.middleware', ['web'])], function () {
         // login
@@ -46,7 +51,7 @@ Route::group([
     //     return view('layouts.admin.dashboard.index');
     // })->name('dashboard');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/news-blog', [NewsAndArticleController::class, 'index'])->name('news-blog');    
+    Route::get('/news-blog', [NewsAndArticleController::class, 'index'])->name('news-blog');
 
     Route::group(['middleware' => ['auth']], function () {
         Route::get('home-page', [HomeController::class,'index'])->name('home-page');
@@ -65,13 +70,13 @@ Route::group([
         Route::get('users', [UserController::class,'index'])->name('users');
         Route::get('fetch-users', [UserController::class,'fetchUser'])->name('fetch-users');
         Route::get('fetch-roles', [UserController::class,'fetchRole'])->name('fetch-roles');
-        
+
         Route::get('/list-appointment', [FormAppointment::class, 'index'])->name('list-appointment');
         Route::get('/form-appointment', [FormAppointment::class, 'formView'])->name('form-appointment');
         Route::post('/store-quick-appointment', [FormAppointment::class, 'store'])->name('store-quick-appointment');
         Route::post('/store-basic-information', [FormAppointment::class, 'storeBasicInformation'])->name('store-basic-information');
         Route::post('/store-reason', [FormAppointment::class, 'storeReason'])->name('store-reason');
-        
+
         Route::get('/about-us', [AboutUsController::class, 'index'])->name('about-us');
         Route::post('/store-about-us-header', [AboutUsController::class, 'storeHeader'])->name('store-about-us-header');
         Route::post('/store-about-us-content', [AboutUsController::class, 'storeContent'])->name('store-about-us-content');
@@ -104,7 +109,7 @@ Route::group([
         Route::get('fetch-gallery-id', [GalleryController::class,'fetchById'])->name('fetch-gallery-id');
         Route::post('store-gallery', [GalleryController::class,'store'])->name('store-gallery');
         Route::post('update-gallery', [GalleryController::class,'update'])->name('update-gallery');
-        
+
         Route::get('brochures', [BrochureController::class,'index'])->name('brochures');
         Route::get('fetch-brochures', [BrochureController::class,'fetch'])->name('fetch-brochures');
         Route::get('fetch-brochures-id', [BrochureController::class,'fetchById'])->name('fetch-brochures-id');

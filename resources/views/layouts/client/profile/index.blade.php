@@ -1,0 +1,10 @@
+@extends('layouts.client.main')
+@section('content')
+    @include('layouts.client.home.profile.sections.breadcrumbs')
+    @include('layouts.client.home.profile.sections.cover')
+    @include('layouts.client.home.profile.sections.contributions')
+    @include('layouts.client.home.profile.sections.vision-mission')
+    @include('layouts.client.home.profile.sections.developers')
+    @include('layouts.client.home.profile.sections.shareholders')
+    @include('components.appointment-form')
+@endsection

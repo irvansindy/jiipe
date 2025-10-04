@@ -1,4 +1,4 @@
-<footer class="footer-area footer-default black-bg footer-map">
+<footer class="footer-area footer-default black-bg footer-map mt-5">
 
     <div class="footer-text">
 
