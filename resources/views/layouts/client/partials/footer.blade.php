@@ -385,7 +385,7 @@
                     <div class="text">
                         <img src="{{ asset('asset/images/jiipe_logo_white_small.png') }}" alt="kawasan industri gresik jiipe">
                         <p>
-                            Copyright &copy; 2023
+                            Copyright &copy; 2025
                             <a href="#">PT Berkah Kawasan Manyar Sejahtera</a> |
                             <a href="#">Java Industrial and Ports Estate</a>.
                             All Rights Reserved

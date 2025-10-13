@@ -1,0 +1,10 @@
+@extends('layouts.client.main')
+@section('content')
+    @include('layouts.client.industrial-estate.detail.sections.breadcrumbs')
+    @include('layouts.client.industrial-estate.detail.sections.cover')
+    @include('layouts.client.industrial-estate.detail.sections.overview')
+    @include('layouts.client.industrial-estate.detail.sections.featured-features')
+    @include('layouts.client.industrial-estate.detail.sections.facilities')
+    @include('layouts.client.industrial-estate.detail.sections.business-efficiency')
+    @include('components.appointment-form')
+@endsection

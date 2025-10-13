@@ -25,8 +25,8 @@ class ProfileController extends Controller
             'videoUrl' => 'https://www.youtube.com/watch?v=bPyOISQp_Mw',
 
             // Vision & Mission
-            'vision' => 'To Support tenant to reduce logistic costs...',
-            'mission' => 'Optimizing our potential...',
+            'vision' => 'To Support tenant to reduce logistic costs, provide reliable utilities and ease of doing business',
+            'mission' => 'Optimizing our potential to build sustainable stakeholder value',
 
             // Developers
             'developers' => [

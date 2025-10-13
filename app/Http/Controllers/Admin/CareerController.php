@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\MasterCompanyLocation;
+use App\Models\MasterEducation;
+use App\Models\MasterJobLevel;
+use App\Models\MasterCompany;
 use Illuminate\Http\Request;
 use App\Models\CareerHeader;
 use App\Models\CareerHeaderTranslation;
@@ -12,11 +16,66 @@ use App\Models\Career;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use App\Helpers\FormatResponseJson;
 class CareerController extends Controller
 {
     public function index()
     {
         return view('layouts.admin.career.index');
+    }
+    public function fetchCareer(Request $request)
+    {
+        try {
+            $query = Career::with(['factory', 'location', 'education', 'jobLevel']);
+
+            // Apply filters jika ada
+            if ($request->filled('location_id')) {
+                $query->where('location_id', $request->location_id);
+            }
+
+            if ($request->filled('education_id')) {
+                $query->where('education_id', $request->education_id);
+            }
+
+            if ($request->filled('job_level_id')) {
+                $query->where('job_level_id', $request->job_level_id);
+            }
+
+            if ($request->filled('company_id')) {
+                $query->where('company_id', $request->company_id);
+                // atau jika company dari relasi factory:
+                // $query->whereHas('factory', function($q) use ($request) {
+                //     $q->where('id', $request->company_id);
+                // });
+            }
+
+            $careers = $query->get();
+            $message = count($careers) > 0 ? count($careers) . ' careers fetched successfully.' : 'No careers found.';
+
+            return FormatResponseJson::success($careers, $message);
+        } catch (\Exception $e) {
+            return FormatResponseJson::error(null, $e->getMessage(), 500);
+        }
+    }
+    public function fetchCareerLocation()
+    {
+        $location = MasterCompanyLocation::all();
+        return FormatResponseJson::success($location,'Location fetched successfully');
+    }
+    public function fetchCareerEducation()
+    {
+        $education = MasterEducation::all();
+        return FormatResponseJson::success($education,'Education fetched successfully');
+    }
+    public function fetchCareerJobLevel()
+    {
+        $jobLevels = MasterJobLevel::all();
+        return FormatResponseJson::success($jobLevels,'Job Levels fetched successfully');
+    }
+    public function fetchCareerCompany()
+    {
+        $companies = MasterCompany::all();
+        return FormatResponseJson::success($companies,'Companies fetched successfully');
     }
     public function static()
     {

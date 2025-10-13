@@ -7,6 +7,9 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\Client\HomeController as HomeClient;
 use App\Http\Controllers\Client\ProfileController;
 use App\Http\Controllers\Client\IndustrialEstateController;
+use App\Http\Controllers\Client\SezController;
+use App\Http\Controllers\Client\NewsBlogController;
+use App\Http\Controllers\Client\InternationalDeskController;
 // admin side
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsAndArticleController;
@@ -33,7 +36,19 @@ Route::group([
         return view('layouts.client.home.index');
     })->name('home');
     Route::get('profile', [ProfileController::class,'index'])->name('profile');
-    Route::get('industrial-jiipe', [IndustrialEstateController::class,'index'])->name('industrial-jiipe');
+    Route::get('industrial-estate', [IndustrialEstateController::class,'index'])->name('industrial-estate');
+    Route::get('/industrial-estate/id/{id}', [IndustrialEstateController::class, 'show'])->name('area.detail');
+
+    Route::get('economic-zone', [SezController::class,'index'])->name('economic-zone');
+    Route::get('economic-zone/{id}', [SezController::class,'detail'])->name('economic-zone-detail');
+
+    Route::get('/news', [NewsBlogController::class, 'index'])->name('blog.index');
+    Route::get('/news/type/{type}', [NewsBlogController::class, 'type'])->name('blog.type');
+    Route::get('/news/{id}', [NewsBlogController::class, 'detail'])->name('blog.detail');
+    // Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
+
+    Route::get('/international-desk', [InternationalDeskController::class, 'index'])->name('international-desk');
+
     // 🔹 Fortify routes dengan prefix section-admin
     Route::group(['prefix' => 'section-admin', 'middleware' => config('fortify.middleware', ['web'])], function () {
         // login
@@ -118,8 +133,14 @@ Route::group([
         Route::get('career-list', [CareerController::class, 'index'])->name('career-list');
         Route::get('career-static', [CareerController::class, 'static'])->name('career-static');
         Route::get('career-enquire', [CareerController::class, 'enquire'])->name('career-enquire');
+        Route::get('fetch-career-list', [CareerController::class, 'fetchCareer'])->name('fetch-career-list');
         Route::post('store-career-header', [CareerController::class, 'storeHeader'])->name('store-career-header');
         Route::post('store-career-section1', [CareerController::class, 'storeSection1'])->name('store-career-section1');
+
+        Route::get('company-location', [CareerController::class,'fetchCareerLocation'])->name('company-location');
+        Route::get('company-education', [CareerController::class,'fetchCareerEducation'])->name('company-education');
+        Route::get('company-job-level', [CareerController::class,'fetchCareerJobLevel'])->name('company-job-level');
+        Route::get('company', [CareerController::class,'fetchCareerCompany'])->name('company');
 
         Route::get('contact-overview', [ContactController::class,'index'])->name('contact-overview');
     });

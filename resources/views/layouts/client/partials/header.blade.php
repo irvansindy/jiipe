@@ -16,9 +16,16 @@
                 <div class="branding2">
                     <div class="language d-inline-flex">
                         <label>Choose Language : </label>
-                        <ul class="bahasa">
-
-
+                            <ul class="bahasa">
+                            @foreach (Mcamara\LaravelLocalization\Facades\LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                <li>
+                                    <a rel="alternate" hreflang="{{ $localeCode }}"
+                                        href="{{ Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                        {{ $properties['native'] }}
+                                    </a>
+                                    @if (! $loop->last) | @endif
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                     <div class="appointment-btn float-md-right">
@@ -26,10 +33,10 @@
                             <div class="button-icon">
                                 <i class="fa fa-calendar-alt"></i>
                             </div>
-                            <a class="text-appointment"
+                            <a class="text-appointment mx-1 my-1"
                                 href="{{ $settings['section2_home_header_link_button'] ?? '#' }}"
                                 title="{{ $settings['section2_home_header_button_text'] ?? '' }}">
-                                {{ $settings['section2_home_header_button_text'] ?? '' }}
+                                {{ $settings['section2_home_header_button_text'] ?? 'Quick Appointment' }}
                             </a>
                         </div>
                     </div>
@@ -95,10 +102,10 @@
                                         <li><a href="#">Contact</a></li>
                                     </ul>
                                 </li>
-                                <li class="menu-item"><a href="{{ route('industrial-jiipe') }}">Industrial Estate</a></li>
-                                <li class="menu-item"><a href="#">Special Economic Zone</a></li>
-                                <li class="menu-item"><a href="#">News &amp; Articles</a></li>
-                                <li class="menu-item"><a href="#">International Desk</a></li>
+                                <li class="menu-item"><a href="{{ route('industrial-estate') }}">Industrial Estate</a></li>
+                                <li class="menu-item"><a href="{{ route('economic-zone') }}">Special Economic Zone</a></li>
+                                <li class="menu-item"><a href="{{ route('blog.index') }}">News &amp; Articles</a></li>
+                                <li class="menu-item"><a href="{{ route('international-desk') }}">International Desk</a></li>
                                 <li class="menu-item"><a href="#">Career</a></li>
                             </ul>
                         </nav>

@@ -183,7 +183,7 @@
             }
         }
     </style>
-
+    @stack('css')
     {{-- Google Webmaster & Analytics --}}
     {!! $google_tools_webmaster ?? '' !!}
     {!! $google_tools_analytic ?? '' !!}

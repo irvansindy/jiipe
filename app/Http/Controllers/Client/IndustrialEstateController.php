@@ -57,4 +57,161 @@ class IndustrialEstateController extends Controller
         ];
         return view('layouts.client.industrial-estate.index', $data);
     }
+    public function areaDetail($id)
+    {
+        // Get area detail by ID
+        $area = $this->getAreaById($id);
+
+        return view('layouts.client.industrial-estate.detail', compact('area'));
+    }
+    public function show($id)
+    {
+        $area = $this->getAreaData($id);
+        $allAreas = $this->getAllAreas();
+
+        return view('layouts.client.industrial-estate.detail', compact('area', 'allAreas'));
+    }
+    private function getAreaData($id)
+    {
+        $areas = [
+            1 => [ // Industrial Area
+                'id' => 1,
+                'name' => 'Industrial Area',
+                'subtitle' => 'Competitive and Sustainable Utilities',
+                'description' => 'Eco-friendly environment of 1761 hectares area...',
+                'size' => '1761',
+                'cover_image' => '/images/product/.tmb/thumb_industrial-area_adaptiveResize_1920_591.jpg',
+
+                'clusterings' => [
+                    ['name' => 'Heavy Industries', 'image' => '/images/kawasan/.tmb/thumb_heavy-industry.jpg'],
+                    ['name' => 'Medium Industries', 'image' => '/images/kawasan/.tmb/thumb_medium-industry.jpg'],
+                    ['name' => 'Light Industries', 'image' => '/images/kawasan/.tmb/thumb_light-industry.jpg'],
+                    ['name' => 'Utilities', 'image' => '/images/kawasan/.tmb/thumb_utility.jpg'],
+                ],
+
+                'features' => [
+                    [
+                        'title' => 'Complete Facilities and Infrastructure',
+                        'image' => '/images/kawasan/.tmb/thumb_n-unggul-2.jpg',
+                        'description' => '<ul><li>International standard road system...</li></ul>'
+                    ],
+                    // ... more features
+                ],
+
+                'facilities' => [
+                    [
+                        'title' => 'Power Plant',
+                        'icon' => '/images/kawasan/.tmb/thumb_power-plant.png',
+                        'description' => '<p>Gas power plant...</p>'
+                    ],
+                    // ... more facilities
+                ],
+
+                'business_efficiency' => [
+                    [
+                        'title' => 'Single Window Processing System',
+                        'icon' => '/images/kawasan/.tmb/thumb_timer.png',
+                        'description' => '<p>3 Hour Service...</p>'
+                    ],
+                    // ... more efficiency
+                ]
+            ],
+
+            2 => [ // Port Area
+                'id' => 3,
+                'name' => 'Industrial Area',
+                'subtitle' => 'Competitive and Sustainable Utilities',
+                'description' => 'Eco-friendly environment of 1761 hectares area...',
+                'size' => '1761',
+                'cover_image' => '/images/product/.tmb/thumb_industrial-area_adaptiveResize_1920_591.jpg',
+
+                'clusterings' => [
+                    ['name' => 'Heavy Industries', 'image' => '/images/kawasan/.tmb/thumb_heavy-industry.jpg'],
+                    ['name' => 'Medium Industries', 'image' => '/images/kawasan/.tmb/thumb_medium-industry.jpg'],
+                    ['name' => 'Light Industries', 'image' => '/images/kawasan/.tmb/thumb_light-industry.jpg'],
+                    ['name' => 'Utilities', 'image' => '/images/kawasan/.tmb/thumb_utility.jpg'],
+                ],
+
+                'features' => [
+                    [
+                        'title' => 'Complete Facilities and Infrastructure',
+                        'image' => '/images/kawasan/.tmb/thumb_n-unggul-2.jpg',
+                        'description' => '<ul><li>International standard road system...</li></ul>'
+                    ],
+                    // ... more features
+                ],
+
+                'facilities' => [
+                    [
+                        'title' => 'Power Plant',
+                        'icon' => '/images/kawasan/.tmb/thumb_power-plant.png',
+                        'description' => '<p>Gas power plant...</p>'
+                    ],
+                    // ... more facilities
+                ],
+
+                'business_efficiency' => [
+                    [
+                        'title' => 'Single Window Processing System',
+                        'icon' => '/images/kawasan/.tmb/thumb_timer.png',
+                        'description' => '<p>3 Hour Service...</p>'
+                    ],
+                    // ... more efficiency
+                ]
+            ],
+
+            3 => [ // Residential Area
+                'id' => 3,
+                'name' => 'Industrial Area',
+                'subtitle' => 'Competitive and Sustainable Utilities',
+                'description' => 'Eco-friendly environment of 1761 hectares area...',
+                'size' => '1761',
+                'cover_image' => '/images/product/.tmb/thumb_industrial-area_adaptiveResize_1920_591.jpg',
+
+                'clusterings' => [
+                    ['name' => 'Heavy Industries', 'image' => '/images/kawasan/.tmb/thumb_heavy-industry.jpg'],
+                    ['name' => 'Medium Industries', 'image' => '/images/kawasan/.tmb/thumb_medium-industry.jpg'],
+                    ['name' => 'Light Industries', 'image' => '/images/kawasan/.tmb/thumb_light-industry.jpg'],
+                    ['name' => 'Utilities', 'image' => '/images/kawasan/.tmb/thumb_utility.jpg'],
+                ],
+
+                'features' => [
+                    [
+                        'title' => 'Complete Facilities and Infrastructure',
+                        'image' => '/images/kawasan/.tmb/thumb_n-unggul-2.jpg',
+                        'description' => '<ul><li>International standard road system...</li></ul>'
+                    ],
+                    // ... more features
+                ],
+
+                'facilities' => [
+                    [
+                        'title' => 'Power Plant',
+                        'icon' => '/images/kawasan/.tmb/thumb_power-plant.png',
+                        'description' => '<p>Gas power plant...</p>'
+                    ],
+                    // ... more facilities
+                ],
+
+                'business_efficiency' => [
+                    [
+                        'title' => 'Single Window Processing System',
+                        'icon' => '/images/kawasan/.tmb/thumb_timer.png',
+                        'description' => '<p>3 Hour Service...</p>'
+                    ],
+                    // ... more efficiency
+                ]
+            ]
+        ];
+
+        return $areas[$id] ?? abort(404);
+    }
+    private function getAllAreas()
+    {
+        return [
+            ['id' => 1, 'name' => 'Industrial Area'],
+            ['id' => 2, 'name' => 'Port Area'],
+            ['id' => 3, 'name' => 'Residential Area'],
+        ];
+    }
 }

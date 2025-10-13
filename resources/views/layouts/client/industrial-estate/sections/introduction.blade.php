@@ -20,7 +20,7 @@
                             </li>
                             @foreach ($areas ?? [] as $area)
                                 <li>
-                                    <a href="#">
+                                    <a href="{{ route('area.detail', $area['id']) }}">
                                         {{ $area['name'] }}
                                     </a>
                                 </li>
