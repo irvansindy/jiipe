@@ -15,6 +15,7 @@ use App\Models\CareerSectionTranslation;
 use App\Models\Career;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\FormatResponseJson;
 class CareerController extends Controller
@@ -191,5 +192,77 @@ class CareerController extends Controller
                 ->with('error', 'Gagal menyimpan Section 1: ' . $e->getMessage());
         }
     }
+    public function storeOrUpdateCareer(Request $request)
+    {
+        try {
+            // dd($request->all());
+            DB::beginTransaction();
+            $rules = [
+                'career_position' => 'required|string|max:255',
+                'career_factory' => 'required',
+                'career_location' => 'required',
+                'career_job_level' => 'required',
+                'career_range_salary' => 'nullable|string|max:255',
+                'career_education'  => 'required',
+                'career_experience' => 'required|string|max:255',
+                'career_description' => 'required|string',
+            ];
 
+            $messages = [
+                'career_position.required'  => 'Position wajib diisi.',
+                'career_factory.required' => 'Factory wajib dipilih.',
+                'career_location.required' => 'Location wajib dipilih.',
+                'career_job_level.required' => 'Job level wajib dipilih.',
+                'career_education.required' => 'Minimum education wajib dipilih.',
+                'career_experience.required' => 'Minimum experience wajib diisi.',
+                'career_description.required' => 'Job description wajib diisi.',
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                DB::rollBack();
+                return FormatResponseJson::error(null, ['errors' => $validator->errors()], 422);
+            }
+            $validated = $validator->validated();
+
+            // Create or update Career
+            $career = Career::updateOrCreate(
+                ['id' => $request->input('career_id')],
+                [
+                    'position'      => $validated['career_position'],
+                    'factory_id'    => $validated['career_factory'],
+                    'location_id'   => $validated['career_location'],
+                    'education_id'  => $validated['career_education'],
+                    'job_level_id'  => $validated['career_job_level'],
+                    'range_salary'  => $validated['career_range_salary'],
+                    'minimum_experience'    => $validated['career_experience'],
+                    'description'   => $validated['career_description'],
+                ]
+            );
+
+            DB::commit();
+            $msg = $request->filled('id') ? 'Career updated successfully.' : 'Career created successfully.';
+            return FormatResponseJson::success($career, $msg);
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return FormatResponseJson::error(null, $th->getMessage(), 500);
+        }
+    }
+    public function detailCareer(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $career = Career::with(['factory', 'location', 'education', 'jobLevel'])
+                ->where('id', $request->career_id)
+                ->first();
+
+            DB::commit();
+            return FormatResponseJson::success($career, 'Career details fetched successfully.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return FormatResponseJson::error(null, $th->getMessage(), 500);
+        }
+    }
 }

@@ -7,10 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Career extends Model
 {
     protected $table = "careers";
-    protected $fillable = [
-        'position',
-        'factory_id',
-    ];
+    protected $guarded = [];
     public function factory()
     {
         return $this->belongsTo(Factory::class, 'factory_id', 'id');

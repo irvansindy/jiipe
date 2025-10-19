@@ -130,12 +130,18 @@
             });
         }
 
-
-
+        // Inisialisasi DataTable dengan filter
         var tableCareerList = $('#table_career_list').DataTable({
             processing: true,
-            // serverSide: true,
-            ajax: "{{ route('fetch-career-list') }}",
+            ajax: {
+                url: "{{ route('fetch-career-list') }}",
+                data: function(d) {
+                    d.location_id = $('#master_career_location').val();
+                    d.education_id = $('#master_career_education').val();
+                    d.job_level_id = $('#master_career_job_level').val();
+                    d.company_id = $('#master_career_company').val();
+                }
+            },
             columns: [{
                     data: 'position',
                     name: 'position',
@@ -152,8 +158,8 @@
                     defaultContent: '<i>Not set</i>'
                 },
                 {
-                    data: 'job_level.name',
-                    name: 'job_level.name',
+                    data: 'jobLevel.name',
+                    name: 'jobLevel.name',
                     defaultContent: '<i>Not set</i>'
                 },
                 {
@@ -162,15 +168,22 @@
                     defaultContent: '<i>Not set</i>'
                 },
                 {
-                    'data': null,
+                    data: null,
                     title: 'Action',
                     wrap: true,
-                    "render": function(item) {
-                        return '<button type="button" data-career_id="'+item.id+'" class="btn btn-outline-info btn-sm mt-2 detail_career" data-toggle="modal" data-target="#">View</button>'
+                    render: function(item) {
+                        return '<button type="button" data-career_id="' + item.id +
+                            '" class="btn btn-outline-info btn-sm mt-2 detail_career" data-toggle="modal" data-target="#">View</button>'
                     }
                 },
             ]
         });
+
+        // Filter otomatis saat dropdown berubah
+        $('#master_career_location, #master_career_education, #master_career_job_level, #master_career_company')
+            .on('change', function() {
+                tableCareerList.ajax.reload();
+            });
 
         $('#refresh_table_career_list').click(function() {
             tableCareerList.ajax.reload();
@@ -179,7 +192,78 @@
         $('#create_career_list').click(function() {
             // Clear form fields
             $('#modalCareer form')[0].reset();
+            $('#modalCareerLabel').text('Create Career');
+            $('#for-id').empty();
             $('#modalCareer').modal('show');
+            $('#career_description').summernote('reset');
+            $('#button_action_news_category').empty();
+            $('#button_action_news_category').append(`
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="save_career_btn">Submit</button>
+            `);
         });
+
+        // Store or update career
+        $(document).on('click', '#save_career_btn, #update_career_btn', function(e) {
+            e.preventDefault();
+            let formData = $('#modalCareer form').serialize();
+            $.ajax({
+                url: "{{ route('store-or-update-career') }}",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    // Handle success
+                    $('#modalCareer').modal('hide');
+                    tableCareerList.ajax.reload();
+                },
+                error: function(xhr) {
+                    // Handle error
+                }
+            });
+        });
+
+        $(document).on('click', '.detail_career', function(e) {
+            e.preventDefault();
+            let career_id = $(this).data('career_id');
+            $('#form_career')[0].reset();
+            // Fetch and populate data based on career_id
+            // Update modal title and buttons accordingly
+            $('#modalCareerLabel').text('Career Details');
+            $('#for-id').empty().append(`
+                <input type="hidden" id="career_id" name="career_id">
+            `);
+            $('#career_id').val(career_id)
+            $('#modalCareer').modal('show');
+            $('#button_action_news_category').empty();
+            $('#button_action_news_category').append(`
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="update_career_btn" data-career_id="${career_id}">Update</button>
+            `);
+            $.ajax({
+                url: "{{ route('get-career-details') }}",
+                type: "GET",
+                data: {
+                    career_id: career_id
+                },
+                success: function(response) {
+                    $('#career_position').val(response.data.position);
+                    $('#career_factory').val(response.data.factory.id).trigger('change');
+                    $('#career_location').val(response.data.location.id).trigger('change');
+                    $('#career_job_level').val(response.data.job_level.id).trigger(
+                    'change');
+                    $('#career_range_salary').val(response.data.range_salary);
+                    $('#career_education').val(response.data.education.id).trigger(
+                    'change');
+                    $('#career_experience').val(response.data.minimum_experience);
+                    $('#career_description').summernote('code', response.data.description);
+                },
+                error: function(xhr) {
+                    // Handle error
+                    console.error(xhr);
+                    alert('Failed to fetch career details.');
+                }
+            })
+        });
+
     });
 </script>

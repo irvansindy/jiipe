@@ -134,8 +134,10 @@ Route::group([
         Route::get('career-static', [CareerController::class, 'static'])->name('career-static');
         Route::get('career-enquire', [CareerController::class, 'enquire'])->name('career-enquire');
         Route::get('fetch-career-list', [CareerController::class, 'fetchCareer'])->name('fetch-career-list');
+        Route::get('get-career-details', [CareerController::class, 'detailCareer'])->name('get-career-details');
         Route::post('store-career-header', [CareerController::class, 'storeHeader'])->name('store-career-header');
         Route::post('store-career-section1', [CareerController::class, 'storeSection1'])->name('store-career-section1');
+        Route::post('store-or-update-career', [CareerController::class, 'storeOrUpdateCareer'])->name('store-or-update-career');
 
         Route::get('company-location', [CareerController::class,'fetchCareerLocation'])->name('company-location');
         Route::get('company-education', [CareerController::class,'fetchCareerEducation'])->name('company-education');

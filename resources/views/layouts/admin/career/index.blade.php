@@ -25,31 +25,30 @@
                             <select class="form-control" name="master_career_location" id="master_career_location"></select>
                         </div>
                         <div class="col-sm-6 col-md-3 col-lg-3 mb-2">
-                            <select class="form-control" name="master_career_education" id="master_career_education"></select>
+                            <select class="form-control" name="master_career_education"
+                                id="master_career_education"></select>
                         </div>
                         <div class="col-sm-6 col-md-3 col-lg-3 mb-2">
-                            <select class="form-control" name="master_career_job_level" id="master_career_job_level"></select>
+                            <select class="form-control" name="master_career_job_level"
+                                id="master_career_job_level"></select>
                         </div>
                         <div class="col-sm-6 col-md-3 col-lg-3 mb-2">
                             <select class="form-control" name="master_career_company" id="master_career_company"></select>
-                        </div>
-                        <div class="col-auto justify-content-end">
-                            <button class="btn btn-danger">
-                                <i class="ti ti-search"></i>
-                            </button>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h5 class="mb-0">Career List</h5>
                         <ul class="nav nav-pills justify-content-end mb-0" id="chart-tab-tab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="btn btn-outline-dark me-1" id="refresh_table_career_list" type="button" title="Refresh Table">
+                                <button class="btn btn-outline-dark me-1" id="refresh_table_career_list" type="button"
+                                    title="Refresh Table">
                                     <i class="ti ti-refresh"></i>
                                 </button>
                             </li>
 
                             <li class="nav-item" role="presentation">
-                                <button class="btn btn-outline-primary me-1" id="create_career_list" type="button" data-bs-toggle="modal" data-bs-target="#modalCareer" title="">
+                                <button class="btn btn-outline-primary me-1" id="create_career_list" type="button"
+                                    data-bs-toggle="modal" data-bs-target="#modalCareer" title="">
                                     <i class="ti ti-pencil"></i>
                                 </button>
                             </li>
@@ -58,7 +57,8 @@
                     <div class="card tbl-card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover table-borderless mb-0" id="table_career_list" width="100%">
+                                <table class="table table-hover table-borderless mb-0" id="table_career_list"
+                                    width="100%">
                                     <thead>
                                         <tr>
                                             <th>POSITION</th>
@@ -88,11 +88,13 @@
             </div>
         </div>
     </div>
+    @include('layouts.admin.career.modal_career')
 @endsection
 @push('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.3/css/dataTables.bootstrap5.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
+        rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
 @endpush
 

@@ -19,14 +19,16 @@
                             <ul class="bahasa">
                             @foreach (Mcamara\LaravelLocalization\Facades\LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                                 <li>
-                                    <a rel="alternate" hreflang="{{ $localeCode }}"
-                                        href="{{ Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                    <a class="{{ $localeCode === Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale() ? 'active' : '' }}"
+                                    rel="alternate"
+                                    hreflang="{{ $localeCode }}"
+                                    href="{{ Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
                                         {{ $properties['native'] }}
                                     </a>
                                     @if (! $loop->last) | @endif
                                 </li>
                             @endforeach
-                        </ul>
+                            </ul>
                     </div>
                     <div class="appointment-btn float-md-right">
                         <div class="appointment d-inline-flex float-md-right">
@@ -41,24 +43,41 @@
                         </div>
                     </div>
                 </div>
-                <div class="branding3 d-none">
+                {{-- <div class="branding3 d-none">
                     <label class="float-md-right">Choose Language : </label>
                     <ul class="language-mobile float-md-right">
                         <li class="has-children">
                             <ul class="sub-menu">
                                 @foreach (Mcamara\LaravelLocalization\Facades\LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                                     <li>
-                                        <a rel="alternate" hreflang="{{ $localeCode }}"
-                                            href="{{ Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                        <a class="{{ $localeCode === Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale() ? 'active' : '' }}"
+                                        rel="alternate"
+                                        hreflang="{{ $localeCode }}"
+                                        href="{{ Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
                                             {{ $properties['native'] }}
                                         </a>
                                         @if (! $loop->last) | @endif
                                     </li>
                                 @endforeach
+
                             </ul>
                         </li>
                     </ul>
-                </div>
+                </div> --}}
+                <div class="branding3 d-none">
+    <div class="language-dropdown-wrapper">
+        <label for="language-select">Choose Language : </label>
+        <select id="language-select" class="language-select-dropdown" onchange="window.location.href = this.value">
+            @foreach (Mcamara\LaravelLocalization\Facades\LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                <option
+                    value="{{ Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
+                    {{ $localeCode === Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale() ? 'selected' : '' }}>
+                    {{ strtoupper($localeCode) }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+</div>
             </div>
         </div>
     </div>
@@ -116,8 +135,68 @@
     </div>
 </header>
 <style>
+/* Language Dropdown Styles */
+.branding3 .language-dropdown-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+}
 
+.branding3 .language-dropdown-wrapper label {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+}
+
+.branding3 .language-select-dropdown {
+    padding: 6px 30px 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 16px;
+    min-width: 100px;
+}
+
+.branding3 .language-select-dropdown:hover {
+    border-color: #999;
+}
+
+.branding3 .language-select-dropdown:focus {
+    border-color: #d32f2f;
+    box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.1);
+}
+
+/* Responsive - Show on mobile/tablet */
+@media screen and (max-width: 1024px) {
+    .branding3 {
+        display: block !important;
+    }
+
+    .branding3 .language-dropdown-wrapper {
+        justify-content: flex-end;
+        padding: 15px 20px;
+    }
+}
+
+@media screen and (min-width: 1025px) {
+    .branding3 {
+        display: none !important;
+    }
+}
 </style>
+
 <script>
     // ============================================
 // MOBILE MENU TOGGLE - VANILLA JAVASCRIPT
