@@ -7,17 +7,12 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    public function __construct() {
+        $this->locale = config('laravellocalization.supportedLocales');
+    }
     public function index()
     {
-        $locales = config('laravellocalization.supportedLocales');
+        $locales = $this->locale;
         return view('layouts.admin.home.index', compact('locales'));
-    }
-    public function storeHeader(Request $request)
-    {
-        
-    }
-    public function storeSlider(Request $request)
-    {
-
     }
 }

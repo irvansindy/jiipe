@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('zone_cluster_translations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('zone_clusters_id');
+            $table->string('locale');
+            $table->string('name');
+            $table->longText('content');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

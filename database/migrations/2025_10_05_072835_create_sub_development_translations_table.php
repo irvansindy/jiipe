@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('sub_development_translations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('sub_developments_id');
+            $table->string('locale');
+            $table->string('name');
+            $table->longText('content');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

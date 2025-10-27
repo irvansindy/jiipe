@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('home_sliders', function (Blueprint $table) {
+        Schema::create('tenant_translations', function (Blueprint $table) {
             $table->id();
-            $table->string('file')->nullable()->comment('filled with images or videos');
             $table->timestamps();
         });
     }
@@ -23,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('home_sliders');
+        Schema::dropIfExists('tenant_translations');
     }
 };

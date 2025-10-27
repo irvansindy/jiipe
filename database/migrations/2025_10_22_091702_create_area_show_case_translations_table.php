@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sub_resource_energy_translations', function (Blueprint $table) {
+        Schema::create('area_show_case_translations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('sub_resource_energy_id');
+            $table->unsignedInteger('area_show_case_id');
             $table->string('locale');
-            $table->string('name');
-            $table->longText('content');
-            $table->boolean('status')->default(true);
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->integer('position')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sub_resource_energy_translations');
+        Schema::dropIfExists('area_show_case_translations');
     }
 };

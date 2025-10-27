@@ -6,5 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class HomeSlider extends Model
 {
-    //
+    protected $fillable = [
+        'file', // migration uses 'file' to store image/video path
+    ];
+    public function translations()
+    {
+        return $this->hasMany(HomeSliderTranslation::class, 'home_sliders', 'id');
+    }
+
+    public function translation($locale)
+    {
+        return $this->hasOne(HomeSliderTranslation::class, 'home_sliders', 'id')
+                    ->where('locale', $locale);
+    }
 }

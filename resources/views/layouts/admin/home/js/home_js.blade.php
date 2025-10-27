@@ -1,0 +1,1 @@
+@include('layouts.admin.home.js.slider_js')

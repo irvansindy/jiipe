@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('home_header_translations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('home_header_id');
             $table->timestamps();
         });
     }

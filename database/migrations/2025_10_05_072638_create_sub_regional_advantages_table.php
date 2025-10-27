@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('sub_regional_advantages', function (Blueprint $table) {
             $table->id();
+            $table->string('thumbnail');
             $table->timestamps();
         });
     }

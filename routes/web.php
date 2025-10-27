@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\ZoneController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\BrochureController;
 use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Admin\SliderController;
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
@@ -70,8 +71,10 @@ Route::group([
 
     Route::group(['middleware' => ['auth']], function () {
         Route::get('home-page', [HomeController::class,'index'])->name('home-page');
-        Route::post('store-home-header', [HomeController::class,'storeHeader'])->name('store-home-header');
-        Route::post('store-home-slider', [HomeController::class,'storeSlider'])->name('store-home-slider');
+        Route::get('fetch-home-slider', [SliderController::class, 'fetch'])->name('fetch-home-slider');
+        Route::get('fetch-home-slider-id', [SliderController::class, 'fetchById'])->name('fetch-home-slider-id');
+        Route::post('store-home-slider', [SliderController::class,'store'])->name('store-home-slider');
+        Route::post('update-home-slider', [SliderController::class,'update'])->name('update-home-slider');
 
         Route::get('/menu-permission', [MenuPermissionController::class, 'index'])->name('menu-permission');
         Route::get('/fetch-menu-permission', [MenuPermissionController::class, 'fetchData'])->name('fetch-menu-permission');
