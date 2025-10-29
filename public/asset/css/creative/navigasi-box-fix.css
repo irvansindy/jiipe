@@ -1,0 +1,126 @@
+/* Style khusus untuk navigasi box di slider section */
+.home-slider .navigasi-box.navigasi-box-shadow.navigasi-box-border-bottom {
+    width: 100% !important;
+    padding: 5px !important;
+    background: #fff !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.home-slider .navigasi-box ul {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: 5px !important;
+    margin: 0 !important;
+    width: 100% !important;
+    flex-wrap: nowrap !important;
+    list-style: none !important;
+    overflow-x: visible !important;
+}
+
+.home-slider .navigasi-box ul li {
+    flex: 1 1 25% !important;
+    min-width: 0 !important;
+    max-width: 25% !important;
+    margin: 0 !important;
+    padding: 5px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    float: none !important;
+    width: auto !important;
+}
+
+.home-slider .navigasi-box ul li a {
+    width: 100% !important;
+    text-decoration: none !important;
+}
+
+.home-slider .navigasi-box ul li .navigasi-body {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 5px !important;
+    height: auto !important;
+    width: 100% !important;
+    text-align: center !important;
+}
+
+.home-slider .navigasi-box ul li .navigasi-body .icon {
+    margin-bottom: 5px !important;
+    font-size: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.home-slider .navigasi-box ul li .navigasi-body .text {
+    text-align: center !important;
+    width: 100% !important;
+}
+
+.home-slider .navigasi-box ul li .navigasi-body .text p {
+    font-size: 10px !important;
+    margin: 0 0 2px 0 !important;
+    line-height: 1.2 !important;
+}
+
+.home-slider .navigasi-box ul li .navigasi-body .text h6 {
+    font-size: 11px !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+    white-space: normal !important;
+}
+
+@media (max-width: 576px) {
+    .home-slider .navigasi-box ul {
+        display: flex !important;
+        flex-direction: row !important;
+    }
+    
+    .home-slider .navigasi-box ul li {
+        width: 25% !important;
+        float: none !important;
+        flex: 0 0 25% !important;
+    }
+
+    .home-slider .navigasi-box ul li .navigasi-body .icon {
+        font-size: 14px !important;
+    }
+
+    .home-slider .navigasi-box ul li .navigasi-body .text {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .home-slider .navigasi-box ul li .navigasi-body .text p {
+        font-size: 8px !important;
+        width: 100% !important;
+        white-space: normal !important;
+    }
+
+    .home-slider .navigasi-box ul li .navigasi-body .text h6 {
+        font-size: 9px !important;
+        width: 100% !important;
+        white-space: normal !important;
+    }
+}
+
+@media (max-width: 375px) {
+    .home-slider .navigasi-box ul li .navigasi-body {
+        padding: 3px !important;
+    }
+
+    .home-slider .navigasi-box ul li .navigasi-body .icon {
+        font-size: 12px !important;
+    }
+
+    .home-slider .navigasi-box ul li .navigasi-body .text p {
+        font-size: 7px !important;
+    }
+
+    .home-slider .navigasi-box ul li .navigasi-body .text h6 {
+        font-size: 8px !important;
+    }
+}

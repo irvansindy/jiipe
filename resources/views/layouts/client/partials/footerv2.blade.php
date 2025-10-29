@@ -108,9 +108,9 @@
 
                         <ul class="widget-menu">
 
-                            <li><a href="/en/home/profil">Profil</a></li>
+                            <li><a href="{{ route('home') }}">Profil</a></li>
 
-                            <li><a href="/en#tenants">Company Profile Video</a></li>
+                            <li><a href="{{ route('profile') }}">Company Profile Video</a></li>
 
                             <li>
 

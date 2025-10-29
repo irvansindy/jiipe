@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}">
 <section class="home-slider creative">
     <div class="homewrapper">
         <div class="home-box owl-carousel owl-theme owl-loaded">
@@ -344,7 +345,7 @@
         </div>
     </div>
 
-    <div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom">
+    <div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom" style="display: block; width: 100%;">
 
         <ul>
 

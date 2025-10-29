@@ -524,7 +524,7 @@
 	display: block !important;
 } */
 /*---==========================
-Start Header css 
+Start Header css
 =========================---*/
 .transparent-header {
   position: absolute;
@@ -1058,7 +1058,7 @@ Start Header css
   }
 }
 /*---==========================
-Home Slider css 
+Home Slider css
 =========================---*/
 .home-wrapper-one .single-slider {
   position: relative;
@@ -1329,7 +1329,7 @@ Home Slider css
   background-color: #00A3E0 !important;
 }
 /*---==========================
-Kawasan Slider css 
+Kawasan Slider css
 =========================---*/
 .kawasan-slider {
   display: flex;
@@ -1387,7 +1387,7 @@ Kawasan Slider css
   border-bottom-color: #53565A !important;
 }
 /*---==========================
-Profile css 
+Profile css
 =========================---*/
 .profile-jiipe {
   font-family: 'Montserrat', sans-serif;
@@ -1439,7 +1439,7 @@ Profile css
   color: #b0342c;
 }
 /*---==========================
-Video css 
+Video css
 =========================---*/
 .video-jiipe {
   font-family: 'Montserrat', sans-serif;
@@ -1467,7 +1467,7 @@ Video css
   border-radius: none !important;
 }
 /*---==========================
-Video Slidercss 
+Video Slidercss
 =========================---*/
 .video-slider {
   font-family: 'Montserrat', sans-serif;
@@ -1492,7 +1492,7 @@ Video Slidercss
         bottom: 100px !important;
         li {
             cursor: pointer;
-            width: 400px; 
+            width: 400px;
             height: 200px;
             flex: 0 1 auto;
             text-indent: 0 !important;
@@ -1590,7 +1590,7 @@ Video Slidercss
   margin: 0px;
 }
 /*---==========================
-testimonial Slidercss 
+testimonial Slidercss
 =========================---*/
 .comment-jiipe {
   font-family: 'Montserrat', sans-serif;
@@ -1623,7 +1623,7 @@ testimonial Slidercss
                 text-align: center;
                 color: #53565a;
             }
-            
+
         }
         .card-footer{
             background-color: transparent !important;
@@ -1676,12 +1676,12 @@ testimonial Slidercss
         transition: opacity 0.3s;
         padding-left: 1rem;
         padding-right: 1rem;
-    
+
         &.slick-cloned {
           opacity: 0.3;
           transition: opacity 0.3s;
         }
-    
+
         &.slick-current.slick-active {
           opacity: 1;
           transition: opacity 0.3s;
@@ -1692,7 +1692,7 @@ testimonial Slidercss
             position: relative;
           }
           .card-body{
-            
+
             background: #53565a;
             box-shadow: 0px 0px 42px rgba(0, 0, 0, 0.26);
             .description{
@@ -1853,7 +1853,7 @@ testimonial Slidercss
   margin-bottom: 0px;
 }
 /*---==========================
-FAQ css 
+FAQ css
 =========================---*/
 /*section faq */
 .faq-jippe {
@@ -1922,7 +1922,7 @@ FAQ css
   line-height: 26px;
 }
 /*---==========================
-Blog Contact css 
+Blog Contact css
 =========================---*/
 .jiipe-blog {
   font-family: 'Montserrat', sans-serif;
@@ -1963,7 +1963,7 @@ Blog Contact css
   font-size: 20px !important;
 }
 /*---==========================
-Start Contact css 
+Start Contact css
 =========================---*/
 .jiipe-contact .form-control {
   line-height: 2em !important;
@@ -2160,7 +2160,7 @@ Start Contact css
   border-right: #707070 solid 2px !important;
 }
 /*---==========================
-Start Footer css 
+Start Footer css
 =========================---*/
 .footer-images {
   background-image: url('../../images/call-telephone-communication-p.png');
@@ -2408,7 +2408,7 @@ label.error {
   border-bottom: 2px solid #fb483a;
 }
 /*---==========================
-Start Footer css 
+Start Footer css
 =========================---*/
 .instagram-feed {
   font-family: 'Montserrat', sans-serif;

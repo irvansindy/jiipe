@@ -38,7 +38,7 @@ class SliderController extends Controller
 
             $rules = [
                 // file inputs (either image or video can be provided)
-                'slider_file' => 'nullable|mimetypes:image/jpeg,image/png,image/webp,video/mp4,video/ogg,video/webm|max:20000',
+                'slider_file' => 'nullable|mimetypes:image/jpeg,image/png,image/webp,video/mp4,video/ogg,video/webm|max:2048',
 
                 // translations arrays + per-locale required
                 'title' => 'required|array',

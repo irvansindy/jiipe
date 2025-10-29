@@ -12,4 +12,8 @@ class AboutUsContent extends Model
         "image",
         "video_url",
     ];
+    public function translations()
+    {
+        return $this->hasMany(AboutUsContentTranslation::class, 'about_us_content_id', 'id');
+    }
 }

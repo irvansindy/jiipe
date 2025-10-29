@@ -10,4 +10,9 @@ class AboutUsContentDetail extends Model
         'icon',
         'category_id',
     ];
+
+    public function translations()
+    {
+        return $this->hasMany(AboutUsContentDetailTranslation::class, 'about_us_content_detail_id','id');
+    }
 }

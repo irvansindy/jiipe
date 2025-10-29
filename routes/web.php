@@ -96,9 +96,11 @@ Route::group([
         Route::post('/store-reason', [FormAppointment::class, 'storeReason'])->name('store-reason');
 
         Route::get('/about-us', [AboutUsController::class, 'index'])->name('about-us');
+        Route::get('/about-us-fetch-content-detail', [AboutUsController::class, 'fetchContentDetail'])->name('about-us-fetch-content-detail');
         Route::post('/store-about-us-header', [AboutUsController::class, 'storeHeader'])->name('store-about-us-header');
         Route::post('/store-about-us-content', [AboutUsController::class, 'storeContent'])->name('store-about-us-content');
         Route::post('/store-about-us-vision-mission', [AboutUsController::class, 'storeVisionMission'])->name('store-about-us-vision-mission');
+        Route::post('/store-about-us-content-detail', [AboutUsController::class, 'storeContentDetail'])->name('store-about-us-content-detail');
 
         Route::get('special-economic-zone', [ZoneController::class, 'index'])->name('special-economic-zone');
         Route::get('fetch-zone', [ZoneController::class, 'fetchZone'])->name('fetch-zone');

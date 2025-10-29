@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12 col-xl-12 col-sm-6">
+                <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h5 class="mb-0">List Zone</h5>
                         <ul class="nav nav-pills justify-content-end mb-0" id="chart-tab-tab" role="tablist">

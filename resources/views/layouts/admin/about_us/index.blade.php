@@ -23,7 +23,7 @@
             @endphp
             <!-- [ Cover ] start -->
             <div class="row">
-                <div class="col-md-12 col-xl-12 col-sm-6">
+                <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="card">
                         <div class="card-header bg-primary">
                             <h4 class="text-white m-0">Cover</h4>
@@ -39,7 +39,7 @@
                                                     {{ $properties['native'] }}
                                                 </button>
                                             </li>
-                                            
+
                                         @endforeach
                                     </ul>
                                     <div class="tab-content">
@@ -72,7 +72,7 @@
             <!-- [ Cover ] end -->
             <!-- [ Content ] start -->
             <div class="row">
-                <div class="col-md-12 col-xl-12 col-sm-6">
+                <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="card">
                         <div class="card-header bg-primary">
                             <h4 class="text-white m-0">Content</h4>
@@ -141,7 +141,7 @@
             <!-- [ Content ] end -->
             <!-- [ Visi Misi ] start -->
             <div class="row">
-                <div class="col-md-12 col-xl-12 col-sm-6">
+                <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="card">
                         <div class="card-header bg-primary">
                             <h4 class="text-white m-0">Visi Misi</h4>
@@ -203,11 +203,11 @@
             <!-- [ Visi Misi ] end -->
             <!-- [ Content detail ] start -->
             <div class="row">
-                <div class="col-md-12 col-xl-12 col-sm-6">
+                <div class="col-md-12 col-lg-12 col-sm-12">
                     <div class="card">
                         <div class="card-header bg-primary d-flex justify-content-between align-items-center">
                             <h4 class="text-white m-0">Content Detail</h4>
-                            <button class="btn btn-light btn-sm float-end">
+                            <button class="btn btn-light btn-sm float-end" id="create_content_detail" data-bs-toggle="modal" data-bs-target="#modalContentDetail">
                                 <i class="ti ti-plus"></i>
                             </button>
                         </div>
@@ -223,6 +223,7 @@
             <!-- [ Content detail ] end -->
         </div>
     </div>
+    @include('layouts.admin.about_us.modal_content_detail')
 @endsection
 @push('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.3/css/dataTables.bootstrap5.min.css">
@@ -234,12 +235,5 @@
     <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.3.3/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.summernote').summernote({
-                height: 200
-            });
-            $('#table_list_content_detail').DataTable();
-        });
-    </script>
+    @include('layouts.admin.about_us.content_detail_js')
 @endpush
