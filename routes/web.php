@@ -10,6 +10,7 @@ use App\Http\Controllers\Client\IndustrialEstateController;
 use App\Http\Controllers\Client\SezController;
 use App\Http\Controllers\Client\NewsBlogController;
 use App\Http\Controllers\Client\InternationalDeskController;
+use App\Http\Controllers\Client\ContactController as ContactClient;
 // admin side
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsAndArticleController;
@@ -49,6 +50,8 @@ Route::group([
     // Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
 
     Route::get('/international-desk', [InternationalDeskController::class, 'index'])->name('international-desk');
+
+    Route::get('/contact', [ContactClient::class,'index'])->name('contact');
 
     // 🔹 Fortify routes dengan prefix section-admin
     Route::group(['prefix' => 'section-admin', 'middleware' => config('fortify.middleware', ['web'])], function () {
@@ -151,6 +154,4 @@ Route::group([
 
         Route::get('contact-overview', [ContactController::class,'index'])->name('contact-overview');
     });
-
-
 });

@@ -124,9 +124,9 @@
 
                             <li><a href="/en#videotour">Virtual Tour Video</a></li>
 
-                            <li><a href="/en/home/blog">News &amp; Articles</a></li>
+                            <li><a href="{{ route('blog.index') }}">News &amp; Articles</a></li>
 
-                            <li><a href="/en/home/contact">Contact</a></li>
+                            <li><a href="{{ route('contact') }}">Contact</a></li>
 
                         </ul>
 
