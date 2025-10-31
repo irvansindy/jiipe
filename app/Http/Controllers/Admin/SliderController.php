@@ -57,7 +57,6 @@ class SliderController extends Controller
 
             // find existing slider if updating
             $slider = $request->id ? HomeSlider::find($request->id) : null;
-            dd($slider);
             // handle uploaded file(s) and map to single 'file' column
             $filePath = null;
             if ($request->hasFile('slider_file')) {
@@ -82,7 +81,7 @@ class SliderController extends Controller
 
             if ($slider) {
                 // update existing using updateOrCreate (match by id)
-                $slider = HomeSlider::updateOrCreate(['id' => $id], $mainData + $slider->toArray());
+                $slider = HomeSlider::updateOrCreate(['id' => $request->id], $mainData + $slider->toArray());
                 $slider->fill($mainData);
                 $slider->save();
             } else {
@@ -118,13 +117,11 @@ class SliderController extends Controller
     // route targets
     public function store(Request $request)
     {
-        // dd($request->all());
         return $this->save($request, null);
     }
 
     public function update(Request $request)
     {
-        // dd($request->all());
         return $this->save($request);
     }
 }

@@ -1,4 +1,9 @@
 <script>
+    if (!$.fn.tooltip) {
+        $.fn.tooltip = function() {
+            return this; // dummy tooltip agar Summernote gak error
+        };
+    }
     $('.summernote').summernote({
         height: 200
     });
@@ -8,12 +13,21 @@
             url: "{{ route('about-us-fetch-content-detail') }}",
             type: 'GET',
         },
-        columns: [
-            { data: 'category.translations[0].name', name: 'category' },
-            { data: 'translations[0].title', name: 'title' },
-                { data: 'created_at', name: 'created_at', render: function(data) {
+        columns: [{
+                data: 'translations[0].title',
+                name: 'title'
+            },
+            {
+                data: 'icon',
+                name: 'icon'
+            },
+            {
+                data: 'created_at',
+                name: 'created_at',
+                render: function(data) {
                     return moment(data).format('LL');
-                }},
+                }
+            },
             {
                 data: null,
                 title: 'Action',

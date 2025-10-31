@@ -22,7 +22,7 @@
                                     </span>
 
                                     <ul class="button">
-                                        <li><a href="https://www.jiipe.com/#contact"
+                                        <li><a href="{{ route('contact') }}"
                                                 class="btn_slider btn-light btn-red">Contact Us</a></li>
                                         <li><a href="https://www.jiipe.com/#videojiipe"
                                                 class="btn_slider btn-light btn-blue">Video Profile</a></li>
@@ -52,7 +52,7 @@
                                     </span>
 
                                     <ul class="button">
-                                        <li><a href="https://www.jiipe.com/#contact"
+                                        <li><a href="{{ route('contact') }}"
                                                 class="btn_slider btn-light btn-red">Contact Us</a></li>
                                         <li><a href="https://www.jiipe.com/#videojiipe"
                                                 class="btn_slider btn-light btn-blue">Video Profile</a></li>
@@ -82,7 +82,7 @@
                                     </span>
 
                                     <ul class="button">
-                                        <li><a href="https://www.jiipe.com/#contact"
+                                        <li><a href="{{ route('contact') }}"
                                                 class="btn_slider btn-light btn-red">Contact Us</a></li>
                                         <li><a href="https://www.jiipe.com/#videojiipe"
                                                 class="btn_slider btn-light btn-blue">Video Profile</a></li>
@@ -112,7 +112,7 @@
                                     </span>
 
                                     <ul class="button">
-                                        <li><a href="https://www.jiipe.com/#contact"
+                                        <li><a href="{{ route('contact') }}"
                                                 class="btn_slider btn-light btn-red">Contact Us</a></li>
                                         <li><a href="https://www.jiipe.com/#videojiipe"
                                                 class="btn_slider btn-light btn-blue">Video Profile</a></li>
@@ -142,7 +142,7 @@
                                     </span>
 
                                     <ul class="button">
-                                        <li><a href="https://www.jiipe.com/#contact"
+                                        <li><a href="{{ route('contact') }}"
                                                 class="btn_slider btn-light btn-red">Contact Us</a></li>
                                         <li><a href="https://www.jiipe.com/#videojiipe"
                                                 class="btn_slider btn-light btn-blue">Video Profile</a></li>
@@ -172,7 +172,7 @@
                                     </span>
 
                                     <ul class="button">
-                                        <li><a href="https://www.jiipe.com/#contact"
+                                        <li><a href="{{ route('contact') }}"
                                                 class="btn_slider btn-light btn-red">Contact Us</a></li>
                                         <li><a href="https://www.jiipe.com/#videojiipe"
                                                 class="btn_slider btn-light btn-blue">Video Profile</a></li>
@@ -202,7 +202,7 @@
                                     </span>
 
                                     <ul class="button">
-                                        <li><a href="https://www.jiipe.com/#contact"
+                                        <li><a href="{{ route('contact') }}"
                                                 class="btn_slider btn-light btn-red">Contact Us</a></li>
                                         <li><a href="https://www.jiipe.com/#videojiipe"
                                                 class="btn_slider btn-light btn-blue">Video Profile</a></li>
@@ -232,7 +232,7 @@
                                     </span>
 
                                     <ul class="button">
-                                        <li><a href="https://www.jiipe.com/#contact"
+                                        <li><a href="{{ route('contact') }}"
                                                 class="btn_slider btn-light btn-red">Contact Us</a></li>
                                         <li><a href="https://www.jiipe.com/#videojiipe"
                                                 class="btn_slider btn-light btn-blue">Video Profile</a></li>
@@ -262,7 +262,7 @@
                                     </span>
 
                                     <ul class="button">
-                                        <li><a href="https://www.jiipe.com/#contact"
+                                        <li><a href="{{ route('contact') }}"
                                                 class="btn_slider btn-light btn-red">Contact Us</a></li>
                                         <li><a href="https://www.jiipe.com/#videojiipe"
                                                 class="btn_slider btn-light btn-blue">Video Profile</a></li>
@@ -293,7 +293,7 @@
                                     </span>
 
                                     <ul class="button">
-                                        <li><a href="https://www.jiipe.com/#contact"
+                                        <li><a href="{{ route('contact') }}"
                                                 class="btn_slider btn-light btn-red">Contact Us</a></li>
                                         <li><a href="https://www.jiipe.com/#videojiipe"
                                                 class="btn_slider btn-light btn-blue">Video Profile</a></li>
@@ -323,7 +323,7 @@
                                     </span>
 
                                     <ul class="button">
-                                        <li><a href="https://www.jiipe.com/#contact"
+                                        <li><a href="{{ route('contact') }}"
                                                 class="btn_slider btn-light btn-red">Contact Us</a></li>
                                         <li><a href="https://www.jiipe.com/#videojiipe"
                                                 class="btn_slider btn-light btn-blue">Video Profile</a></li>

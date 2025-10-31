@@ -214,6 +214,23 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover table-borderless mb-0" id="table_list_content_detail" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Icon</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                    {{-- <tfoot>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Icon</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </tfoot> --}}
                                 </table>
                             </div>
                         </div>
@@ -235,5 +252,6 @@
     <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.3.3/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
     @include('layouts.admin.about_us.content_detail_js')
 @endpush

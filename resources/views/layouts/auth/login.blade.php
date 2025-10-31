@@ -13,7 +13,7 @@
                 {{-- Form Login --}}
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
-                    <div class="mylogin">
+                    <div class="mylogin mb-3">
                         <input type="text" name="email" id="email" placeholder="Enter email"
                             value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" />
 
