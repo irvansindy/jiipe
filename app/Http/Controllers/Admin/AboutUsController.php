@@ -21,32 +21,34 @@ class AboutUsController extends Controller
     public function index()
     {
         $aboutUsHeader = AboutUsHeader::with(['translations'])->first();
-        return view('layouts.admin.about_us.index');
+        $aboutUsContent = AboutUsContent::with(['translations'])->first();
+        $aboutUsVisionMission = AboutUsVisionMision::with(['translations'])->first(); // Tambahkan ini
+        return view('layouts.admin.about_us.index', compact('aboutUsHeader','aboutUsContent', 'aboutUsVisionMission'));
     }
     public function storeHeader(Request $request)
     {
-        $rules = [
-            'cover_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        ];
-        foreach (config('laravellocalization.supportedLocales') as $locale => $properties) {
-            $rules['cover_title_' . $locale] = 'required|string|max:255';
-        }
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        DB::beginTransaction();
         try {
+            DB::beginTransaction();
+            $rules = [
+                'cover_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            ];
+            foreach (config('laravellocalization.supportedLocales') as $locale => $properties) {
+                $rules['cover_title_' . $locale] = 'required|string|max:255';
+            }
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
             $header = AboutUsHeader::first();
             if (!$header) {
+                // dd($header);
                 $header = new AboutUsHeader();
             }
             if ($request->hasFile('cover_image')) {
                 if ($header->cover_image) {
                     Storage::disk('public')->delete($header->cover_image);
                 }
-                $header->cover_image = $request->file('cover_image')->store('about_us/cover', 'public');
+                $header->image = $request->file('cover_image')->store('about_us/cover', 'public');
             }
             $header->save();
 
@@ -55,7 +57,8 @@ class AboutUsController extends Controller
                     'about_us_header_id' => $header->id,
                     'locale' => $locale,
                 ]);
-                $translation->cover_title = $request->input('cover_title_' . $locale);
+                $translation->title = $request->input('cover_title_' . $locale);
+                $translation->description = $request->input('cover_title_' . $locale);
                 $translation->save();
             }
             DB::commit();
@@ -67,83 +70,126 @@ class AboutUsController extends Controller
     }
     public function storeContent(Request $request)
     {
-        $rules = [];
-        foreach (config('laravellocalization.supportedLocales') as $locale => $properties) {
-            $rules['content_title_' . $locale] = 'required|string|max:255';
-            $rules['content_subtitle_' . $locale] = 'required|string|max:255';
-            $rules['content_body_' . $locale] = 'required|string';
-        }
-        $rules['content_image'] = 'required|image|mimes:jpeg,png,jpg|max:2048';
-        $rules['content_video_url'] = 'required|string|max:255';
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        DB::beginTransaction();
         try {
-            $content = AboutUsContent::first();
-            if (!$content) {
+            // dd($request->all());
+            DB::beginTransaction();
+
+            // Build validation rules
+            $rules = [];
+            foreach (config('laravellocalization.supportedLocales') as $locale => $properties) {
+                $rules['content_title_' . $locale] = 'required|string|max:255';
+                $rules['content_subtitle_' . $locale] = 'required|string';
+                $rules['content_body_' . $locale] = 'required|string';
+            }
+
+            // Image is required only on create (when id is not present)
+            if (!$request->id) {
+                $rules['content_image'] = 'required|image|mimes:jpeg,png,jpg|max:2048';
+            } else {
+                $rules['content_image'] = 'nullable|image|mimes:jpeg,png,jpg|max:2048';
+            }
+
+            $rules['content_video_url'] = 'nullable|string|max:255';
+
+            $validator = Validator::make($request->all(), $rules);
+            // dd($validator->errors());
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            // Get or create content
+            if ($request->id) {
+                $content = AboutUsContent::findOrFail($request->id);
+            } else {
                 $content = new AboutUsContent();
             }
-            foreach (config('laravellocalization.supportedLocales') as $locale => $properties) {
-                $translation = AboutUsContentTranslation::firstOrNew([
-                    'about_us_content_id' => $content->id,
-                    'locale' => $locale,
-                ]);
-                $translation->content_title = $request->input('content_title_' . $locale);
-                $translation->content_subtitle = $request->input('content_subtitle_' . $locale);
-                $translation->content_body = $request->input('content_body_' . $locale);
-                if ($request->hasFile('content_image_' . $locale)) {
-                    if ($translation->content_image) {
-                        Storage::disk('public')->delete($translation->content_image);
-                    }
-                    $translation->content_image = $request->file('content_image_' . $locale)->store('about_us/content', 'public');
+
+            // Handle image upload (stored in main table, not translation)
+            if ($request->hasFile('content_image')) {
+                // Delete old image if exists
+                if ($content->image && Storage::disk('public')->exists($content->image)) {
+                    Storage::disk('public')->delete($content->image);
                 }
-                $translation->content_video_url = $request->input('content_video_url_' . $locale);
-                $translation->save();
+                $content->image = $request->file('content_image')->store('about_us/content', 'public');
             }
+
+            // Handle video URL (stored in main table, not translation)
+            $content->video_url = $request->input('content_video_url');
+            // dd($content);
+            // Save content first to get ID
             $content->save();
+
+            // Save translations
+            if ($content) {
+                # code...
+                foreach (config('laravellocalization.supportedLocales') as $locale => $properties) {
+                    $translation = AboutUsContentTranslation::updateOrCreate(
+                        [
+                            'about_us_content_id' => $content->id,
+                            'locale' => $locale,
+                        ],
+                        [
+                            'title' => $request->input('content_title_' . $locale),
+                            'subtitle' => $request->input('content_subtitle_' . $locale),
+                            'content' => $request->input('content_body_' . $locale),
+                        ]
+                    );
+                }
+            }
             DB::commit();
             return redirect()->back()->with('success', 'Content berhasil disimpan.');
+
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Content gagal disimpan: ' . $e->getMessage());
         }
     }
+
     public function storeVisionMission(Request $request)
     {
-        $rules = [];
-        foreach (config('laravellocalization.supportedLocales') as $locale => $properties) {
-            $rules['title.' . $locale] = 'required|string|max:255';
-            $rules['vision.' . $locale] = 'required|string';
-            $rules['mission.' . $locale] = 'required|string';
-        }
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        DB::beginTransaction();
         try {
-            $visionMission = AboutUsVisionMision::first();
-            if (!$visionMission) {
+            DB::beginTransaction();
+
+            $rules = [];
+            foreach (config('laravellocalization.supportedLocales') as $locale => $properties) {
+                $rules['title.' . $locale] = 'required|string|max:255';
+                $rules['vision.' . $locale] = 'required|string';
+                $rules['mission.' . $locale] = 'required|string';
+            }
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            // Get or create vision mission
+            if ($request->id) {
+                $visionMission = AboutUsVisionMision::findOrFail($request->id);
+            } else {
                 $visionMission = new AboutUsVisionMision();
             }
+
             $visionMission->save();
 
+            // Save translations
             foreach (config('laravellocalization.supportedLocales') as $locale => $properties) {
-                $translation = AboutUsVisionMisionTranslation::firstOrNew([
-                    'about_us_vision_mission_id' => $visionMission->id,
-                    'locale' => $locale,
-                ]);
-                $translation->title = $request->input('title')[$locale] ?? null;
-                $translation->vision = $request->input('vision')[$locale] ?? null;
-                $translation->mission = $request->input('mission')[$locale] ?? null;
-                $translation->save();
+                AboutUsVisionMisionTranslation::updateOrCreate(
+                    [
+                        'about_us_vision_mision_id' => $visionMission->id,
+                        'locale' => $locale,
+                    ],
+                    [
+                        'title' => $request->input('title')[$locale] ?? null,
+                        'vision' => $request->input('vision')[$locale] ?? null,
+                        'mission' => $request->input('mission')[$locale] ?? null, // Ubah dari 'mision' ke 'mission'
+                    ]
+                );
             }
+
             DB::commit();
             return redirect()->back()->with('success', 'Visi Misi berhasil disimpan.');
+
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Visi Misi gagal disimpan: ' . $e->getMessage());

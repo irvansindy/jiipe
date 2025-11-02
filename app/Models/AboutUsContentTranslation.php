@@ -6,11 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class AboutUsContentTranslation extends Model
 {
-    protected $fillable = [
-        'about_us_content_id',
-        'locale',
-        'title',
-        'subtitle',
-        'content',
-    ];
+    protected $table = "about_us_content_translations";
+    protected $guarded = [];
 }

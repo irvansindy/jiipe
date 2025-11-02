@@ -30,6 +30,7 @@
                                     <option value="{{ $factory->id }}">{{ $factory->name }}</option>
                                 @endforeach
                             </select>
+                            <div class="text-danger" id="message_career_factory"></div>
                         </div>
                         <div class="col-md-6 col-lg-6 col-sm-12 mb-3">
                             <label for="career_location" class="form-label">Location</label>

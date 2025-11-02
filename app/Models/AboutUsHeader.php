@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AboutUsHeader extends Model
 {
+    protected $table = "about_us_headers";
     protected $fillable = ['image'];
     public function translations()
     {
