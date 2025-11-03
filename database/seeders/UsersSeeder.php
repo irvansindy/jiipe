@@ -53,7 +53,7 @@ class UsersSeeder extends Seeder
             ]
         ];
 
-        for ($i=0; $i < count($users); $i++) { 
+        for ($i=0; $i < count($users); $i++) {
             $create_user = User::create($users[$i]);
             $create_user->assignRole($roles[$i]);
         }

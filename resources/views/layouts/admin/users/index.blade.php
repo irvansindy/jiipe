@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 col-lg-6 col-xl-6 col-sm-6">
+                <div class="col-md-6 col-lg-6 col-xl-6 col-sm-12">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h5 class="mb-0">List User</h5>
                         <ul class="nav nav-pills justify-content-end mb-0" id="chart-tab-tab" role="tablist">
@@ -60,7 +60,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-6 col-xl-6 col-sm-6">
+                <div class="col-md-6 col-lg-6 col-xl-6 col-sm-12">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h5 class="mb-0">List Role</h5>
                         <ul class="nav nav-pills justify-content-end mb-0" id="chart-tab-tab" role="tablist">
@@ -101,6 +101,7 @@
                 </div>
             </div>
             @include('layouts.admin.users.model_user')
+            @include('layouts.admin.users.modal_delete_user')
         </div>
     </div>
 @endsection()

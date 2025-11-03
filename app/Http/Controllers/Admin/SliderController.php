@@ -16,8 +16,6 @@ class SliderController extends Controller
     {
         $locale = app()->getLocale();
         $sliders = HomeSlider::with(['translations' => fn($q) => $q->where('locale', $locale)])->get();
-        // $slider = HomeSlider::first();
-        // $sliders = $slider->translation('id')->first(); // ambil manual
         return FormatResponseJson::success($sliders, 'Fetched Slider Successfully');
     }
     public function fetchById(Request $request)

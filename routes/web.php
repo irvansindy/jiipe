@@ -90,7 +90,10 @@ Route::group([
 
         Route::get('users', [UserController::class,'index'])->name('users');
         Route::get('fetch-users', [UserController::class,'fetchUser'])->name('fetch-users');
+        Route::get('/admin/users/detail/{id}', [UserController::class, 'detailUser'])->name('detail-user');
         Route::get('fetch-roles', [UserController::class,'fetchRole'])->name('fetch-roles');
+        Route::post('/admin/users/store', [UserController::class, 'storeUser'])->name('store-users');
+        Route::delete('/admin/users/delete/{id}', [UserController::class, 'deleteUser'])->name('delete-user');
 
         Route::get('/list-appointment', [FormAppointment::class, 'index'])->name('list-appointment');
         Route::get('/form-appointment', [FormAppointment::class, 'formView'])->name('form-appointment');

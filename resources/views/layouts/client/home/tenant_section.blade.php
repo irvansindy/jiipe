@@ -11,31 +11,7 @@
     <div class="prelative container">
         <div class="patner-slider dtr-slick-slider slick-initialized slick-slider">
             @php
-                $tenants = [
-                    '0df79-Xinyi Glass.png',
-                    '1cac5-Bank Indonesia.png',
-                    '3b87a-ambercycle.png',
-                    '4bf00-Sari_Roti-Rotinya_Indonesia.png',
-                    '4ea03-XYG.png',
-                    '4f05b-clariant.png',
-                    '5a7de-Sari Roti 2.png',
-                    '5d0ed-logo-fullname.PNG',
-                    '6d10c-tirta bahagia.png',
-                    '7abab-hailiang英文LOGO.png',
-                    '9efd6-PT Freeport Indonesia.png',
-                    '29f31-hailiang英文LOGO.png',
-                    '38d69-hailiang英文LOGO-1.png',
-                    '41c8c-Freeport Indonesia.png',
-                    '46c37-Logo PCI.png',
-                    '46e69-19 - Hebang Biotechnology Indonesia.png',
-                    '49eea-hailiang英文LOGO.png',
-                    '80ba7-waskita.png',
-                    '099f5-Bank Indonesia.png',
-                    '333d0-Hailiang.png',
-                    '467c2-XINYI Glass logo.png',
-                    '682ef-hailiang.png',
-                    '0834f-BJTI.png',
-                ];
+                $tenants = app(\App\Http\Controllers\Client\HomeController::class)->getTenants();
             @endphp
             {{-- <div class="slick-list draggable" style="padding: 0px;">
                 <div class="slick-track"
@@ -56,8 +32,7 @@
                     <div class="swiper-wrapper">
                         @forelse($tenants as $tenant)
                             <div class="swiper-slide">
-                                <img class="img-thumbnail" src="{{ asset('storage/tenant-logo/' . $tenant) }}"
-                                    alt="logo">
+                                <img class="img-thumbnail" src="{{ asset('storage/tenant-logo/' . $tenant['logo']) }}" alt="{{ $tenant['name'] }}">
                             </div>
                         @empty
                             <p>No tenant logo found.</p>

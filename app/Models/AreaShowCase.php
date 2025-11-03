@@ -13,4 +13,8 @@ class AreaShowCase extends Model
         'is_active',
         'position',
     ];
+    public function translations()
+    {
+        return $this->hasMany(AreaShowCaseTranslation::class);
+    }
 }
