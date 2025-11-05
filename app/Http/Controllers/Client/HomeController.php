@@ -6,14 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use App\Models\HomeSlider;
-use App\Models\HomeSliderTranslation;
 use App\Models\AreaShowCase;
-use App\Models\AreaShowCaseTranslation;
 use App\Models\Tenant;
-use App\Models\TenantTranslation;
 use App\Models\VideoTour;
-use App\Models\VideoTourTranslation;
-
+use App\Models\Review;
 class HomeController extends Controller
 {
     public function getSliders()
@@ -100,5 +96,27 @@ class HomeController extends Controller
             });
         });
         return $tours;
+    }
+    public function getReviews()
+    {
+        $locale = app()->getLocale();
+        $cacheKey = "reviews_{$locale}";
+        $reviews = Cache::remember($cacheKey, 3600, function () use ($locale) {
+            return Review::with(['translations' => function($q) use ($locale) {
+                $q->where('locale', $locale);
+            }])
+            ->where('is_active', 1)
+            ->get()
+            ->map(function($review) use ($locale) {
+                $trans = $review->translations->first();
+                return [
+                    'name' => $trans ? $trans->name : '',
+                    'description' => $trans ? $trans->description : '',
+                    'photo' => $review->photo,
+                    'position' => $trans ? $trans->position : '',
+                ];
+            });
+        });
+        return $reviews;
     }
 }
