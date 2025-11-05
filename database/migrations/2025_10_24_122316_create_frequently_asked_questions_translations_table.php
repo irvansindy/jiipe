@@ -13,7 +13,13 @@ return new class extends Migration
     {
         Schema::create('frequently_asked_questions_translations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('faq_id');
+            $table->string('locale')->nullable();
+            $table->string('question')->nullable();
+            $table->longText('answer')->nullable();
             $table->timestamps();
+
+            $table->unique(['faq_id', 'locale']);
         });
     }
 

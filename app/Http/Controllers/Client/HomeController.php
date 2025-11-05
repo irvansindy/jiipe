@@ -10,6 +10,7 @@ use App\Models\AreaShowCase;
 use App\Models\Tenant;
 use App\Models\VideoTour;
 use App\Models\Review;
+use App\Models\FrequentlyAskedQuestions;
 class HomeController extends Controller
 {
     public function getSliders()
@@ -118,5 +119,27 @@ class HomeController extends Controller
             });
         });
         return $reviews;
+    }
+
+    public function getFaqs()
+    {
+        $locale = app()->getLocale();
+        $cacheKey = "faqs_{$locale}";
+        $faqs = Cache::remember($cacheKey, 3600, function () use ($locale) {
+            return FrequentlyAskedQuestions::with(['translations' => function($q) use ($locale) {
+                $q->where('locale', $locale);
+            }])
+            ->where('is_active', 1)
+            ->orderBy('position')
+            ->get()
+            ->map(function($faq) use ($locale) {
+                $trans = $faq->translations->first();
+                return [
+                    'question' => $trans ? $trans->question : '',
+                    'answer' => $trans ? $trans->answer : '',
+                ];
+            });
+        });
+        return $faqs;
     }
 }

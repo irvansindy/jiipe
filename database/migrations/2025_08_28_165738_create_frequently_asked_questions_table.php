@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('frequently_asked_questions', function (Blueprint $table) {
             $table->id();
-            $table->string('question');
-            $table->longText('answer');
-            $table->integer('sort');
+            $table->boolean('is_active')->default(true);
+            $table->integer('position')->default(1);
             $table->timestamps();
         });
     }

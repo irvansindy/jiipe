@@ -1,19 +1,18 @@
+@php
+    $faqs = app()->make('App\Http\Controllers\Client\HomeController')->getFaqs();
+    $totalFaqs = count($faqs);
+    $halfCount = ceil($totalFaqs / 2);
+@endphp
+
 <section class="faq-jippe faq-jippe-red" id="faq">
-
     <div class="prelative container">
-
         <div class="row">
-
             <div class="col-60 text-center py-lg-4 py-sm-2">
-
                 <h2 class="jiipe-main-header jiipe-main-putih">Frequently Asked Questions</h2>
-
             </div>
-
         </div>
 
         <div class="row">
-
             <div class="col-lg-30 col-sm-60">
                 <div class="faq-accordian">
                     <div class="accordion" id="accordian_page_0">

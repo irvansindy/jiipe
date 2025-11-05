@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
             AreaShowCaseSeeder::class,
             ZoneSeeder::class,
             VideoTourSeeder::class,
+            ReviewSeeder::class,
+            FrequentlyAskedQuestionsSeeder::class,
         ]);
     }
 }
