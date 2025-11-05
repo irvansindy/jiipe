@@ -19,9 +19,16 @@ class DatabaseSeeder extends Seeder
             ZoneClassSeeder::class,
             UsersSeeder::class,
             MasterCompanyLocationSeeder::class,
-            // MasterCompanySeeder::class,
-            // MasterEducationSeeder::class,
-            // MasterJobLevelSeeder::class,
+            MasterCompanySeeder::class,
+            MasterEducationSeeder::class,
+            MasterJobLevelSeeder::class,
+            TopicSeeder::class,
+            TenantSeeder::class,
+            HomeSliderSeeder::class,
+            CareerSeeder::class,
+            AreaShowCaseSeeder::class,
+            ZoneSeeder::class,
+            VideoTourSeeder::class,
         ]);
     }
 }

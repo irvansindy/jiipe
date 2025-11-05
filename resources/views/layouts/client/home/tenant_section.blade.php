@@ -9,104 +9,152 @@
     </div>
 
     <div class="prelative container">
-        <div class="patner-slider dtr-slick-slider slick-initialized slick-slider">
+        <div class="patner-slider">
             @php
                 $tenants = app(\App\Http\Controllers\Client\HomeController::class)->getTenants();
             @endphp
-            {{-- <div class="slick-list draggable" style="padding: 0px;">
-                <div class="slick-track"
-                    style="opacity: 1; width: 100000px; transform: translate(-3024px, 0px, 0px); transition: transform 500ms;">
+            <!-- Swiper -->
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
                     @forelse($tenants as $tenant)
-                        <div class="patner-items">
-                            <img class="img-thumbnail" src="{{ asset('asset/tenant/' . $tenant) }}" alt="logo">
+                        <div class="swiper-slide">
+                            <img class="img-thumbnail" src="{{ asset('storage/tenant-logo/' . $tenant['logo']) }}" alt="{{ $tenant['name'] }}">
                         </div>
                     @empty
-                        <p>No tenant logo found.</p>
+                        <div class="swiper-slide">
+                            <p class="text-center">No tenant logo found.</p>
+                        </div>
                     @endforelse
-
                 </div>
-            </div> --}}
-            <div class="">
-                <!-- Swiper -->
-                <div class="swiper mySwiper">
-                    <div class="swiper-wrapper">
-                        @forelse($tenants as $tenant)
-                            <div class="swiper-slide">
-                                <img class="img-thumbnail" src="{{ asset('storage/tenant-logo/' . $tenant['logo']) }}" alt="{{ $tenant['name'] }}">
-                            </div>
-                        @empty
-                            <p>No tenant logo found.</p>
-                        @endforelse
-                    </div>
 
-                    <!-- Navigasi -->
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-pagination"></div>
-                </div>
+                <!-- Navigation Buttons -->
+                <!-- <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div> -->
+                <!-- <div class="swiper-pagination"></div> -->
             </div>
-
         </div>
-
     </div>
     <div class="clear"></div>
 </section>
+
 <style>
-    .swiper-slide {
+    /* Tenant Section Fixes */
+    #tenants {
+        padding: 40px 0;
+        background: #f8f9fa;
+    }
+
+    #tenants .patner-slider {
+        width: 100%;
+        padding: 20px 0;
+    }
+
+    #tenants .mySwiper {
+        width: 100%;
+        padding: 20px 0;
+    }
+
+    #tenants .swiper-wrapper {
         display: flex;
-        justify-content: center;
         align-items: center;
     }
 
-    .swiper-slide img {
-        width: auto;
-        /* biar proporsi asli */
-        height: 80px;
-        /* semua logo tingginya seragam */
-        object-fit: contain;
-        /* muat tanpa distorsi */
-        /* filter: grayscale(100%); */
-        /* opsional: abu-abu */
-        transition: all 0.3s ease;
+    #tenants .swiper-slide {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        height: auto;
+        min-height: 120px;
     }
 
-    .swiper-slide img:hover {
-        filter: grayscale(0%);
-        /* jadi full color kalau hover */
+    #tenants .swiper-slide img {
+        width: auto;
+        max-width: 100%;
+        height: 80px;
+        object-fit: contain;
+        transition: all 0.3s ease;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 10px;
+        background: #fff;
+    }
+
+    #tenants .swiper-slide img:hover {
         transform: scale(1.05);
-        /* efek zoom halus */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* Navigation Buttons (if enabled) */
+    #tenants .swiper-button-next,
+    #tenants .swiper-button-prev {
+        color: #e31e24;
+        background: rgba(255,255,255,0.9);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    #tenants .swiper-button-next:after,
+    #tenants .swiper-button-prev:after {
+        font-size: 20px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        #tenants .swiper-slide img {
+            height: 60px;
+        }
     }
 </style>
+
 <script>
-    var swiper = new Swiper(".mySwiper", {
-        slidesPerView: 6,  // tampilkan 6 logo
-        spaceBetween: 20,
-        loop: true,
-        autoplay: {
-            delay: 2500,
-            disableOnInteraction: false,
-        },
-        // pagination: {
-        //     el: ".swiper-pagination",
-        //     clickable: true,
-        // },
-        // navigation: {
-        //     nextEl: ".swiper-button-next",
-        //     prevEl: ".swiper-button-prev",
-        // },
-        breakpoints: {
-            320: {
-                slidesPerView: 2,
-                spaceBetween: 10
-            },
-            640: {
-                slidesPerView: 3,
-                spaceBetween: 15
-            },
-            1024: {
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if Swiper is loaded
+        if (typeof Swiper !== 'undefined') {
+            var swiper = new Swiper("#tenants .mySwiper", {
                 slidesPerView: 6,
-                spaceBetween: 20
-            },
+                spaceBetween: 20,
+                loop: true,
+                centeredSlides: false,
+                autoplay: {
+                    delay: 2500,
+                    disableOnInteraction: false,
+                },
+                // Uncomment if you want navigation
+                // navigation: {
+                //     nextEl: ".swiper-button-next",
+                //     prevEl: ".swiper-button-prev",
+                // },
+                // pagination: {
+                //     el: ".swiper-pagination",
+                //     clickable: true,
+                // },
+                breakpoints: {
+                    320: {
+                        slidesPerView: 2,
+                        spaceBetween: 10
+                    },
+                    640: {
+                        slidesPerView: 3,
+                        spaceBetween: 15
+                    },
+                    1024: {
+                        slidesPerView: 5,
+                        spaceBetween: 20
+                    },
+                    1200: {
+                        slidesPerView: 6,
+                        spaceBetween: 20
+                    }
+                }
+            });
+
+            // Force update after initialization
+            setTimeout(function() {
+                swiper.update();
+            }, 500);
+        } else {
+            console.error('Swiper library not loaded!');
         }
     });
 </script>

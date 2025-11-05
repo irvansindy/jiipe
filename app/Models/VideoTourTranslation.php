@@ -6,5 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class VideoTourTranslation extends Model
 {
-    //
+    protected $table = "video_tour_translations";
+    protected $fillable = ['video_tour_id', 'locale', 'title', 'description'];
 }

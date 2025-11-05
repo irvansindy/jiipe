@@ -9,10 +9,10 @@ use App\Models\HomeSlider;
 use App\Models\HomeSliderTranslation;
 use App\Models\AreaShowCase;
 use App\Models\AreaShowCaseTranslation;
-
-
 use App\Models\Tenant;
 use App\Models\TenantTranslation;
+use App\Models\VideoTour;
+use App\Models\VideoTourTranslation;
 
 class HomeController extends Controller
 {
@@ -77,5 +77,28 @@ class HomeController extends Controller
             });
         });
         return $tenants;
+    }
+    public function getVideoTours()
+    {
+        $locale = app()->getLocale();
+        $cacheKey = "video_tours_{$locale}";
+        $tours = Cache::remember($cacheKey, 3600, function () use ($locale) {
+            return VideoTour::with(['translations' => function($q) use ($locale) {
+                $q->where('locale', $locale);
+            }])
+            ->where('is_active', 1)
+            ->orderBy('position')
+            ->get()
+            ->map(function($tour) use ($locale) {
+                $trans = $tour->translations->first();
+                return [
+                    'embed_code' => $tour->embed_code,
+                    'thumbnail' => $tour->thumbnail,
+                    'title' => $trans ? $trans->title : '',
+                    'description' => $trans ? $trans->description : '',
+                ];
+            });
+        });
+        return $tours;
     }
 }
