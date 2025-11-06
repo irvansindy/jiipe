@@ -116,16 +116,16 @@
                                 <li class="menu-item has-children"><a href="#" class="dd-trigger">About Us</a>
                                     <ul class="sub-menu">
                                         <li><a href="{{ route('profile') }}">Profil</a></li>
-                                        <li><a href="#">News</a></li>
+                                        <li><a href="{{ route('blog.index') }}">News</a></li>
                                         <li><a href="#">Articles</a></li>
-                                        <li><a href="#">Contact</a></li>
+                                        <li><a href="{{ route('contact') }}">Contact</a></li>
                                     </ul>
                                 </li>
                                 <li class="menu-item"><a href="{{ route('industrial-estate') }}">Industrial Estate</a></li>
                                 <li class="menu-item"><a href="{{ route('economic-zone') }}">Special Economic Zone</a></li>
                                 <li class="menu-item"><a href="{{ route('blog.index') }}">News &amp; Articles</a></li>
                                 <li class="menu-item"><a href="{{ route('international-desk') }}">International Desk</a></li>
-                                <li class="menu-item"><a href="#">Career</a></li>
+                                <li class="menu-item"><a href="{{ route('career') }}">Career</a></li>
                             </ul>
                         </nav>
                     </div>

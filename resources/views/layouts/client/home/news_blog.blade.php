@@ -22,15 +22,9 @@
                     <div class="gambar">
 
                         <a href="/en/home/blogDetail/id/419">
-
-
                             <img src="/images/blog/.tmb/thumb_05498-penandatanganan-jiipe_adaptiveResize_900_500.jpg"
                                 alt="Golden Elephant Sincerity (GESC) Officially Joins JIIPE, Marks Global Expansion in Indonesia"
                                 class="img-fluid">
-
-
-
-
                         </a>
 
                     </div>

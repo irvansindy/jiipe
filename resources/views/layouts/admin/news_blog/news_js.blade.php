@@ -63,7 +63,7 @@
         $('#refresh_table_news').on('click', function() {
             table_news.ajax.reload();
         });
-        
+
         $('#refresh_table_news_categories').on('click', function() {
             table_news_categories.ajax.reload();
         });
@@ -160,7 +160,7 @@
                     let errors = xhr.responseJSON.errors;
                     $('.text-danger').text('');
                     console.log(xhr);
-                    
+
                     $.each(errors, function(key, value) {
                         $('#message_' + key.replace(/\./g, '_')).text(value[0]);
                     });
@@ -170,7 +170,7 @@
                     hideLoader();
                 }
             })
-            
+
         })
 
         $(document).on('click', '.detail_news', function() {
@@ -199,7 +199,7 @@
                             .text(category.translations[0].name);
                         loop_categories.append(option);
                     });
-                    loop_categories.val(news.category.id).trigger('change');
+                    news.category != null ? loop_categories.val(news.category.id).trigger('change') : loop_categories.val('').trigger('change');
 
                     // Set status published
                     $('#news_published').val(news.is_published).trigger('change');

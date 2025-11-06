@@ -77,7 +77,7 @@ class NewsAndArticleController extends Controller
                 'news_title.ja' => 'Title (JA)',
                 'news_title.ko' => 'Title (KO)',
                 'news_title.tw' => 'Title (TW)',
-                
+
                 'news_content.id' => 'Content (ID)',
                 'news_content.en' => 'Content (EN)',
                 'news_content.zh' => 'Content (ZH)',
@@ -199,12 +199,12 @@ class NewsAndArticleController extends Controller
     public function updateNews(Request $request)
     {
         try {
-            dd($request->all());
+            // dd($request->all());
             $id = $request->input('id');
             $news = News::findOrFail($id);
 
             // update data utama
-            $news->news_category_id = $request->news_category;
+            $news->category_id = $request->news_category;
             $news->is_published = $request->news_published;
 
             if ($request->hasFile('news_thumbnail')) {
@@ -298,4 +298,4 @@ class NewsAndArticleController extends Controller
             return FormatResponseJson::error(null, $th->getMessage(), 500);
         }
     }
-}   
+}

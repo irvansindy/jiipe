@@ -45,7 +45,7 @@
 
                     <div class="row artikel-atas">
                         <div class="col-md-30">
-                            <a href="{{ route('news.detail', $data['latestPost']['id']) }}">
+                            <a href="{{ route('blog.detail', $data['latestPost']['id']) }}">
                                 <img src="{{ $data['latestPost']['thumbnail'] }}"
                                      alt="{{ $data['latestPost']['title'] }}"
                                      class="img-fluid">
@@ -57,7 +57,7 @@
                                     <p>{{ $data['latestPost']['date'] }}</p>
                                 </div>
                                 <div class="judul-blog">
-                                    <a href="{{ route('news.detail', $data['latestPost']['id']) }}">
+                                    <a href="{{ route('blog.detail', $data['latestPost']['id']) }}">
                                         <h2>{{ $data['latestPost']['title'] }}</h2>
                                     </a>
                                 </div>
@@ -65,7 +65,7 @@
                                     <p>{{ $data['latestPost']['excerpt'] }}</p>
                                 </div>
                                 <div class="lebih">
-                                    <a href="{{ route('news.detail', $data['latestPost']['id']) }}">
+                                    <a href="{{ route('blog.detail', $data['latestPost']['id']) }}">
                                         <p>{{ __('Read More') }}
                                             <span>
                                                 <img src="{{ asset('asset/images/arrow.png') }}"
@@ -82,11 +82,11 @@
                 {{-- News List --}}
                 <div class="row artikel lists_news_blog">
                     @forelse($data['posts'] as $index => $post)
-                        @php
+                        {{-- @php
                             $formattedPost = is_array($post) ? $post : $this->formatNewsPost($post, app()->getLocale());
-                        @endphp
+                        @endphp --}}
 
-                        @if($formattedPost)
+                        {{-- @if($formattedPost)
                             @if($index % 3 === 0)
                                 <div class="col-md-60"><hr class="artikel-brosur"></div>
                             @endif
@@ -97,14 +97,14 @@
                                         <p>{{ $formattedPost['date'] }}</p>
                                     </div>
                                     <div class="gambar">
-                                        <a href="{{ route('news.detail', $formattedPost['id']) }}">
+                                        <a href="{{ route('blog.detail', $formattedPost['id']) }}">
                                             <img src="{{ $formattedPost['thumbnail'] }}"
                                                  alt="{{ $formattedPost['title'] }}"
                                                  class="img-fluid">
                                         </a>
                                     </div>
                                     <div class="judul">
-                                        <a href="{{ route('news.detail', $formattedPost['id']) }}">
+                                        <a href="{{ route('blog.detail', $formattedPost['id']) }}">
                                             <h2>{{ $formattedPost['title'] }}</h2>
                                         </a>
                                     </div>
@@ -112,7 +112,7 @@
                                         <p>{{ $formattedPost['excerpt'] }}</p>
                                     </div>
                                     <div class="lebih">
-                                        <a href="{{ route('news.detail', $formattedPost['id']) }}">
+                                        <a href="{{ route('blog.detail', $formattedPost['id']) }}">
                                             <p>{{ __('Read More') }}
                                                 <span>
                                                     <img src="{{ asset('asset/images/arrow.png') }}"
@@ -123,7 +123,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        @endif --}}
                     @empty
                         <div class="col-md-60">
                             <div class="alert alert-info">
@@ -163,14 +163,14 @@
                                         <p>{{ $article['date'] }}</p>
                                     </div>
                                     <div class="gambar">
-                                        <a href="{{ route('news.detail', $article['id']) }}">
+                                        <a href="{{ route('blog.detail', $article['id']) }}">
                                             <img src="{{ $article['thumbnail'] }}"
                                                  alt="{{ $article['title'] }}"
                                                  class="img-fluid">
                                         </a>
                                     </div>
                                     <div class="judul">
-                                        <a href="{{ route('news.detail', $article['id']) }}">
+                                        <a href="{{ route('blog.detail', $article['id']) }}">
                                             <h2>{{ $article['title'] }}</h2>
                                         </a>
                                     </div>
@@ -178,7 +178,7 @@
                                         <p>{{ $article['excerpt'] }}</p>
                                     </div>
                                     <div class="lebih">
-                                        <a href="{{ route('news.detail', $article['id']) }}">
+                                        <a href="{{ route('blog.detail', $article['id']) }}">
                                             <p>{{ __('Read More') }}
                                                 <span>
                                                     <img src="{{ asset('asset/images/arrow.png') }}"
