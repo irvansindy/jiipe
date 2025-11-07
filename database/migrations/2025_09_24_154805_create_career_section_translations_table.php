@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('career_section_id');
             $table->string('locale', 10)->index();
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->text('content')->nullable();
             $table->timestamps();
         });

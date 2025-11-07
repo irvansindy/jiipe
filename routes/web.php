@@ -54,6 +54,8 @@ Route::group([
 
     Route::get('/contact', [ContactClient::class,'index'])->name('contact');
     Route::get('/career', [CareerClient::class,'index'])->name('career');
+    Route::get('/career/{id}', [CareerClient::class, 'detail'])->name('client.career.detail');
+    Route::post('/career/{id}', [CareerClient::class, 'apply'])->name('client.career.apply');
 
     // 🔹 Fortify routes dengan prefix section-admin
     Route::group(['prefix' => 'section-admin', 'middleware' => config('fortify.middleware', ['web'])], function () {

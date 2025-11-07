@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             VideoTourSeeder::class,
             ReviewSeeder::class,
             FrequentlyAskedQuestionsSeeder::class,
+            CareerSeeder::class,
         ]);
     }
 }

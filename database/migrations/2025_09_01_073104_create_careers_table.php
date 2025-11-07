@@ -14,11 +14,14 @@ return new class extends Migration
         Schema::create('careers', function (Blueprint $table) {
             $table->id();
             $table->string('position');
-            $table->unsignedInteger('factory_id');
-            $table->string('range_salary');
-            $table->string('minimum_education');
-            $table->string('minimum_experience');
-            $table->longText('description');
+            $table->unsignedInteger('factory_id')->nullable();
+            $table->unsignedInteger('location_id')->nullable();
+            $table->unsignedInteger('education_id')->nullable();
+            $table->unsignedInteger('job_level_id')->nullable();
+            $table->string('min_experience')->nullable();
+            $table->text('description')->nullable();
+            $table->text('requirements')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
