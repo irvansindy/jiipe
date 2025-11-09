@@ -8,6 +8,8 @@ use App\Models\News;
 use App\Models\NewsTranslation;
 use App\Models\NewsCategories;
 use App\Models\NewsCategoriesTranslation;
+use App\Models\Gallery;
+use App\Models\GalleryTranslations;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -223,7 +225,6 @@ class NewsBlogController extends Controller
         ->where('id', $id)
         ->where('is_published', 1)
         ->firstOrFail();
-        // dd($news-);
 
         $translation = $news->translations->firstWhere('locale', $locale);
 
@@ -234,6 +235,7 @@ class NewsBlogController extends Controller
         $categoryTranslation = $news->category && $news->category->translations
             ? $news->category->translations->firstWhere('locale', $locale)
             : null;
+
         // Get all categories for navigation
         $categories = NewsCategories::with(['translations' => function($query) use ($locale) {
             $query->where('locale', $locale);

@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             ReviewSeeder::class,
             FrequentlyAskedQuestionsSeeder::class,
             CareerSeeder::class,
+            GallerySeeder::class,
         ]);
     }
 }

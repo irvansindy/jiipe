@@ -25,7 +25,7 @@
                                 </li>
                             @endforeach
                             <li class="{{ $data['activeFilter'] === 'gallery' ? 'active' : '' }}">
-                                <a href="#">{{ __('Gallery') }}</a>
+                                <a href="{{ route('gallery.index') }}">{{ __('Gallery') }}</a>
                             </li>
                         </ul>
                         <div class="py-3"></div>

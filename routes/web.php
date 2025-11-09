@@ -12,6 +12,7 @@ use App\Http\Controllers\Client\NewsBlogController;
 use App\Http\Controllers\Client\InternationalDeskController;
 use App\Http\Controllers\Client\ContactController as ContactClient;
 use App\Http\Controllers\Client\CareerController as CareerClient;
+use App\Http\Controllers\Client\GalleryController as GalleryClient;
 // admin side
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsAndArticleController;
@@ -50,10 +51,13 @@ Route::group([
     // Route::get('/news/{id}', [NewsBlogController::class, 'detail'])->name('blog.detail');
     // Blog by category
     Route::get('/blog/category/{categorySlug}', [NewsBlogController::class, 'category'])->name('blog.category');
-
     // Blog detail
     Route::get('/blog/{id}', [NewsBlogController::class, 'detail'])->name('blog.detail');
-    // Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
+    // Gallery routes
+    Route::get('/galleries', [GalleryClient::class, 'index'])->name('gallery.index');
+    Route::get('/gallery/video', [GalleryClient::class, 'video'])->name('gallery.video');
+    Route::get('/gallery/photo', [GalleryClient::class, 'photo'])->name('gallery.photo');
+
 
     Route::get('/international-desk', [InternationalDeskController::class, 'index'])->name('international-desk');
 
