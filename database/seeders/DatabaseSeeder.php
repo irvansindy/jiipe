@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             TopicSeeder::class,
             ZoneClassSeeder::class,
             UsersSeeder::class,
+            MenuSeeder::class,
             MasterCompanyLocationSeeder::class,
             MasterCompanySeeder::class,
             MasterEducationSeeder::class,

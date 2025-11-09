@@ -47,7 +47,12 @@ Route::group([
 
     Route::get('/news', [NewsBlogController::class, 'index'])->name('blog.index');
     Route::get('/news/type/{type}', [NewsBlogController::class, 'type'])->name('blog.type');
-    Route::get('/news/{id}', [NewsBlogController::class, 'detail'])->name('blog.detail');
+    // Route::get('/news/{id}', [NewsBlogController::class, 'detail'])->name('blog.detail');
+    // Blog by category
+    Route::get('/blog/category/{categorySlug}', [NewsBlogController::class, 'category'])->name('blog.category');
+
+    // Blog detail
+    Route::get('/blog/{id}', [NewsBlogController::class, 'detail'])->name('blog.detail');
     // Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
 
     Route::get('/international-desk', [InternationalDeskController::class, 'index'])->name('international-desk');

@@ -17,15 +17,14 @@
                             <li class="{{ $data['activeFilter'] === 'all' ? 'active' : '' }}">
                                 <a href="{{ route('blog.index') }}">{{ __('All') }}</a>
                             </li>
-                            @foreach($data['categories'] as $category)
-                                <li class="{{ $data['activeFilter'] === Str::slug($category['name']) ? 'active' : '' }}">
-                                    <a href="#">
+                            @foreach ($data['categories'] as $category)
+                                <li class="{{ $data['activeFilter'] === $category['slug'] ? 'active' : '' }}">
+                                    <a href="{{ route('blog.category', $category['slug']) }}">
                                         {{ $category['name'] }}
                                     </a>
                                 </li>
                             @endforeach
                             <li class="{{ $data['activeFilter'] === 'gallery' ? 'active' : '' }}">
-                                {{-- <a href="{{ route('gallery.index') }}">{{ __('Gallery') }}</a> --}}
                                 <a href="#">{{ __('Gallery') }}</a>
                             </li>
                         </ul>
@@ -37,7 +36,7 @@
             {{-- Main Content --}}
             <div class="col-md-45">
                 {{-- Latest News Section --}}
-                @if($data['latestPost'])
+                @if ($data['latestPost'])
                     <div class="berita-terbaru">
                         <p>{{ __('Latest news') }}</p>
                     </div>
@@ -47,8 +46,7 @@
                         <div class="col-md-30">
                             <a href="{{ route('blog.detail', $data['latestPost']['id']) }}">
                                 <img src="{{ $data['latestPost']['thumbnail'] }}"
-                                     alt="{{ $data['latestPost']['title'] }}"
-                                     class="img-fluid">
+                                    alt="{{ $data['latestPost']['title'] }}" class="img-fluid">
                             </a>
                         </div>
                         <div class="col-md-30">
@@ -69,7 +67,7 @@
                                         <p>{{ __('Read More') }}
                                             <span>
                                                 <img src="{{ asset('asset/images/arrow.png') }}"
-                                                     alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+                                                    alt="{{ __('JIIPE Industrial Estate Gresik') }}">
                                             </span>
                                         </p>
                                     </a>
@@ -82,48 +80,43 @@
                 {{-- News List --}}
                 <div class="row artikel lists_news_blog">
                     @forelse($data['posts'] as $index => $post)
-                        {{-- @php
-                            $formattedPost = is_array($post) ? $post : $this->formatNewsPost($post, app()->getLocale());
-                        @endphp --}}
+                        @if ($index % 3 === 0)
+                            <div class="col-md-60">
+                                <hr class="artikel-brosur">
+                            </div>
+                        @endif
 
-                        {{-- @if($formattedPost)
-                            @if($index % 3 === 0)
-                                <div class="col-md-60"><hr class="artikel-brosur"></div>
-                            @endif
-
-                            <div class="col-md-20">
-                                <div class="items">
-                                    <div class="tanggal">
-                                        <p>{{ $formattedPost['date'] }}</p>
-                                    </div>
-                                    <div class="gambar">
-                                        <a href="{{ route('blog.detail', $formattedPost['id']) }}">
-                                            <img src="{{ $formattedPost['thumbnail'] }}"
-                                                 alt="{{ $formattedPost['title'] }}"
-                                                 class="img-fluid">
-                                        </a>
-                                    </div>
-                                    <div class="judul">
-                                        <a href="{{ route('blog.detail', $formattedPost['id']) }}">
-                                            <h2>{{ $formattedPost['title'] }}</h2>
-                                        </a>
-                                    </div>
-                                    <div class="content">
-                                        <p>{{ $formattedPost['excerpt'] }}</p>
-                                    </div>
-                                    <div class="lebih">
-                                        <a href="{{ route('blog.detail', $formattedPost['id']) }}">
-                                            <p>{{ __('Read More') }}
-                                                <span>
-                                                    <img src="{{ asset('asset/images/arrow.png') }}"
-                                                         alt="{{ __('JIIPE Industrial Estate Gresik') }}">
-                                                </span>
-                                            </p>
-                                        </a>
-                                    </div>
+                        <div class="col-md-20">
+                            <div class="items">
+                                <div class="tanggal">
+                                    <p>{{ $post['date'] }}</p>
+                                </div>
+                                <div class="gambar">
+                                    <a href="{{ route('blog.detail', $post['id']) }}">
+                                        <img src="{{ $post['thumbnail'] }}" alt="{{ $post['title'] }}"
+                                            class="img-fluid">
+                                    </a>
+                                </div>
+                                <div class="judul">
+                                    <a href="{{ route('blog.detail', $post['id']) }}">
+                                        <h2>{{ $post['title'] }}</h2>
+                                    </a>
+                                </div>
+                                <div class="content">
+                                    <p>{{ $post['excerpt'] }}</p>
+                                </div>
+                                <div class="lebih">
+                                    <a href="{{ route('blog.detail', $post['id']) }}">
+                                        <p>{{ __('Read More') }}
+                                            <span>
+                                                <img src="{{ asset('asset/images/arrow.png') }}"
+                                                    alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+                                            </span>
+                                        </p>
+                                    </a>
                                 </div>
                             </div>
-                        @endif --}}
+                        </div>
                     @empty
                         <div class="col-md-60">
                             <div class="alert alert-info">
@@ -132,18 +125,20 @@
                         </div>
                     @endforelse
 
-                    <div class="col-md-60"><hr class="artikel-brosur"></div>
+                    <div class="col-md-60">
+                        <hr class="artikel-brosur">
+                    </div>
                 </div>
 
                 {{-- Pagination --}}
-                @if(method_exists($data['posts'], 'hasPages') && $data['posts']->hasPages())
+                @if (method_exists($data['posts'], 'hasPages') && $data['posts']->hasPages())
                     <nav aria-label="Page navigation">
                         {{ $data['posts']->links('vendor.pagination.custom') }}
                     </nav>
                 @endif
 
                 {{-- Latest Articles Section --}}
-                @if(!empty($data['latestArticles']) && count($data['latestArticles']) > 0)
+                @if (!empty($data['latestArticles']) && count($data['latestArticles']) > 0)
                     <div class="py-5"></div>
                     <div class="berita-terbaru">
                         <h1 style="font-weight: 700; font-size: inherit;">
@@ -152,9 +147,11 @@
                     </div>
 
                     <div class="row artikel lists_news_blog">
-                        @foreach($data['latestArticles'] as $index => $article)
-                            @if($index % 3 === 0)
-                                <div class="col-md-60"><hr class="artikel-brosur"></div>
+                        @foreach ($data['latestArticles'] as $index => $article)
+                            @if ($index % 3 === 0)
+                                <div class="col-md-60">
+                                    <hr class="artikel-brosur">
+                                </div>
                             @endif
 
                             <div class="col-md-20">
@@ -164,9 +161,8 @@
                                     </div>
                                     <div class="gambar">
                                         <a href="{{ route('blog.detail', $article['id']) }}">
-                                            <img src="{{ $article['thumbnail'] }}"
-                                                 alt="{{ $article['title'] }}"
-                                                 class="img-fluid">
+                                            <img src="{{ $article['thumbnail'] }}" alt="{{ $article['title'] }}"
+                                                class="img-fluid">
                                         </a>
                                     </div>
                                     <div class="judul">
@@ -182,7 +178,7 @@
                                             <p>{{ __('Read More') }}
                                                 <span>
                                                     <img src="{{ asset('asset/images/arrow.png') }}"
-                                                         alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+                                                        alt="{{ __('JIIPE Industrial Estate Gresik') }}">
                                                 </span>
                                             </p>
                                         </a>
@@ -191,11 +187,13 @@
                             </div>
                         @endforeach
 
-                        <div class="col-md-60"><hr class="artikel-brosur"></div>
+                        <div class="col-md-60">
+                            <hr class="artikel-brosur">
+                        </div>
                     </div>
 
                     {{-- Articles Pagination --}}
-                    @if(!empty($data['articlesPagination']))
+                    @if (!empty($data['articlesPagination']))
                         <nav aria-label="Articles pagination">
                             {{ $data['articlesPagination']->links('vendor.pagination.custom') }}
                         </nav>
@@ -207,42 +205,42 @@
 </section>
 
 @push('js')
-<script type="text/javascript">
-    $(document).ready(function(){
-        // Add Bootstrap pagination classes
-        $('.pagination li').addClass('page-item');
-        $('.pagination li a').addClass('page-link');
-        $('.pagination li.selected, .pagination li.active').addClass('active');
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Add Bootstrap pagination classes
+            $('.pagination li').addClass('page-item');
+            $('.pagination li a').addClass('page-link');
+            $('.pagination li.selected, .pagination li.active').addClass('active');
 
-        // Mobile select menu
-        if ($(window).width() < 767) {
-            var myform = document.getElementById('mytoSelect'),
-                items = document.getElementById('lists_leftmenuKawasan').getElementsByTagName('li'),
-                select = document.createElement('select'),
-                len = items.length;
+            // Mobile select menu
+            if ($(window).width() < 767) {
+                var myform = document.getElementById('mytoSelect'),
+                    items = document.getElementById('lists_leftmenuKawasan').getElementsByTagName('li'),
+                    select = document.createElement('select'),
+                    len = items.length;
 
-            for(var i = 0; i < len; i++) {
-                var option = document.createElement('option');
-                var label = items[i].textContent.replace(/\s\s+/g, " ").trim(),
-                    link = items[i].getElementsByTagName('a')[0].href,
-                    isActive = items[i].classList.contains('active');
+                for (var i = 0; i < len; i++) {
+                    var option = document.createElement('option');
+                    var label = items[i].textContent.replace(/\s\s+/g, " ").trim(),
+                        link = items[i].getElementsByTagName('a')[0].href,
+                        isActive = items[i].classList.contains('active');
 
-                option.textContent = label;
-                option.value = link;
-                if(isActive) option.selected = true;
+                    option.textContent = label;
+                    option.value = link;
+                    if (isActive) option.selected = true;
 
-                select.appendChild(option);
+                    select.appendChild(option);
+                }
+
+                myform.appendChild(select);
+
+                $(select).addClass('form-control');
+                $(select).change(function(e) {
+                    var selectedLink = $(this).val();
+                    window.location.href = selectedLink;
+                    e.preventDefault();
+                });
             }
-
-            myform.appendChild(select);
-
-            $(select).addClass('form-control');
-            $(select).change(function(e){
-                var selectedLink = $(this).val();
-                window.location.href = selectedLink;
-                e.preventDefault();
-            });
-        }
-    });
-</script>
+        });
+    </script>
 @endpush

@@ -10,12 +10,13 @@ use App\Models\NewsCategories;
 use App\Models\NewsCategoriesTranslation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+
 class NewsBlogController extends Controller
 {
     public function index(Request $request)
     {
         $locale = app()->getLocale();
-        $perPage = 9; // 3x3 grid
+        $perPage = 9;
 
         // Get all categories for navigation
         $categories = NewsCategories::with(['translations' => function($query) use ($locale) {
@@ -45,11 +46,17 @@ class NewsBlogController extends Controller
 
         $newsPaginated = $newsQuery->paginate($perPage);
 
-        // Get latest post for featured section
-        $latestPost = $newsPaginated->first();
+        // Format posts
+        $formattedPosts = $newsPaginated->getCollection()->map(function($news) use ($locale) {
+            return $this->formatNewsPost($news, $locale);
+        })->filter();
 
-        // Get latest articles (filtered by category if needed)
-        // Assuming 'article' is a category - adjust based on your categories
+        $newsPaginated->setCollection($formattedPosts);
+
+        // Get latest post for featured section
+        $latestPost = $formattedPosts->first();
+
+        // Get latest articles
         $articleCategory = NewsCategories::with(['translations' => function($query) use ($locale) {
             $query->where('locale', $locale);
         }])
@@ -84,12 +91,12 @@ class NewsBlogController extends Controller
             'pageTitle' => __('News'),
             'activeFilter' => 'all',
             'categories' => $categories,
-            'latestPost' => $latestPost ? $this->formatNewsPost($latestPost, $locale) : null,
+            'latestPost' => $latestPost,
             'posts' => $newsPaginated,
             'latestArticles' => $latestArticles,
             'articlesPagination' => null,
         ];
-        // dd($data);
+
         return view('layouts.client.blog.index', compact('data'));
     }
 
@@ -112,13 +119,13 @@ class NewsBlogController extends Controller
             return !empty($cat['name']);
         });
 
-        // Find category by slug or name translation
+        // Find category by slug
         $category = NewsCategories::with(['translations' => function($query) use ($locale) {
             $query->where('locale', $locale);
         }])
         ->whereHas('translations', function($query) use ($locale, $categorySlug) {
             $query->where('locale', $locale)
-                  ->where('name', 'like', '%' . str_replace('-', ' ', $categorySlug) . '%');
+                  ->where(DB::raw('LOWER(name)'), 'like', '%' . strtolower(str_replace('-', ' ', $categorySlug)) . '%');
         })
         ->firstOrFail();
 
@@ -139,12 +146,20 @@ class NewsBlogController extends Controller
 
         $newsPaginated = $newsQuery->paginate($perPage);
 
+        // Format posts
+        $formattedPosts = $newsPaginated->getCollection()->map(function($news) use ($locale) {
+            return $this->formatNewsPost($news, $locale);
+        })->filter();
+
+        $newsPaginated->setCollection($formattedPosts);
+
         // Get latest post
-        $latestPost = $newsPaginated->first();
+        $latestPost = $formattedPosts->first();
 
         // Get latest articles if viewing news category
         $latestArticles = collect([]);
-        $isNewsCategory = Str::contains(strtolower($categoryTranslation->name ?? ''), 'news');
+        $isNewsCategory = Str::contains(strtolower($categoryTranslation->name ?? ''), 'news') ||
+                         Str::contains(strtolower($categoryTranslation->name ?? ''), 'berita');
 
         if ($isNewsCategory) {
             $articleCategory = NewsCategories::with(['translations' => function($query) use ($locale) {
@@ -152,7 +167,10 @@ class NewsBlogController extends Controller
             }])
             ->whereHas('translations', function($query) use ($locale) {
                 $query->where('locale', $locale)
-                      ->where('name', 'like', '%article%');
+                      ->where(function($q) {
+                          $q->where('name', 'like', '%article%')
+                            ->orWhere('name', 'like', '%artikel%');
+                      });
             })
             ->first();
 
@@ -181,7 +199,7 @@ class NewsBlogController extends Controller
             'pageTitle' => $categoryTranslation->name ?? 'News',
             'activeFilter' => strtolower($categorySlug),
             'categories' => $categories,
-            'latestPost' => $latestPost ? $this->formatNewsPost($latestPost, $locale) : null,
+            'latestPost' => $latestPost,
             'posts' => $newsPaginated,
             'latestArticles' => $latestArticles,
             'articlesPagination' => null,
@@ -205,6 +223,7 @@ class NewsBlogController extends Controller
         ->where('id', $id)
         ->where('is_published', 1)
         ->firstOrFail();
+        // dd($news-);
 
         $translation = $news->translations->firstWhere('locale', $locale);
 
@@ -212,13 +231,34 @@ class NewsBlogController extends Controller
             abort(404);
         }
 
+        $categoryTranslation = $news->category && $news->category->translations
+            ? $news->category->translations->firstWhere('locale', $locale)
+            : null;
+        // Get all categories for navigation
+        $categories = NewsCategories::with(['translations' => function($query) use ($locale) {
+            $query->where('locale', $locale);
+        }])->get()->map(function($category) use ($locale) {
+            $translation = $category->translations->firstWhere('locale', $locale);
+            return [
+                'id' => $category->id,
+                'name' => $translation ? $translation->name : '',
+                'slug' => $translation ? Str::slug($translation->name) : '',
+            ];
+        })->filter(function($cat) {
+            return !empty($cat['name']);
+        });
+
         $data = [
-            'title' => $translation->title ?? 'News Detail',
+            'title' => ($translation->title ?? 'News Detail') . ' - JIIPE',
             'metaKey' => $translation->title ?? '',
             'metaDesc' => Str::limit(strip_tags($translation->content ?? ''), 160),
+            'pageTitle' => $translation->title ?? 'News Detail',
+            'activeFilter' => 'detail', // Added for consistency
+            'categories' => $categories,
             'news' => $news,
             'translation' => $translation,
             'category' => $news->category,
+            'categoryName' => $categoryTranslation ? $categoryTranslation->name : '',
         ];
 
         return view('layouts.client.blog.detail', compact('data'));
@@ -241,10 +281,13 @@ class NewsBlogController extends Controller
             'title' => $translation->title,
             'excerpt' => Str::limit(strip_tags($translation->content), 150),
             'thumbnail' => $news->thumbnail
-                ? asset('storage/' . $news->thumbnail)
+                ? (filter_var($news->thumbnail, FILTER_VALIDATE_URL)
+                    ? $news->thumbnail
+                    : asset('storage/' . $news->thumbnail))
                 : asset('asset/images/default-blog.jpg'),
             'date' => $news->created_at ? $news->created_at->format('M d, Y') : '',
             'category' => $categoryTranslation ? $categoryTranslation->name : '',
+            'categorySlug' => $categoryTranslation ? Str::slug($categoryTranslation->name) : '',
             'quote' => $translation->quote ?? '',
         ];
     }
