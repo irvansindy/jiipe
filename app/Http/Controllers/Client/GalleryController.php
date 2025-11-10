@@ -17,59 +17,45 @@ class GalleryController extends Controller
     public function index(Request $request)
     {
         $locale = app()->getLocale();
-        $perPage = 9;
-        $type = $request->get('type', 'all'); // all, video, photo
+        $type = $request->get('type', 'video');
+        // ✅ Deteksi request AJAX dari jQuery (baik by header atau by query string)
+        $isAjax = $request->ajax() || $request->get('ajax') == 1 || $request->get('ajax') === '1';
 
-        // Get all categories for navigation (shared with News)
-        $categories = NewsCategories::with(['translations' => function($query) use ($locale) {
+
+        $categories = NewsCategories::with(['translations' => function ($query) use ($locale) {
             $query->where('locale', $locale);
-        }])->get()->map(function($category) use ($locale) {
+        }])->get()->map(function ($category) use ($locale) {
             $translation = $category->translations->firstWhere('locale', $locale);
             return [
                 'id' => $category->id,
-                'name' => $translation ? $translation->name : '',
+                'name' => $translation?->name ?? '',
                 'slug' => $translation ? Str::slug($translation->name) : '',
             ];
-        })->filter(function($cat) {
-            return !empty($cat['name']);
-        });
+        })->filter(fn($cat) => !empty($cat['name']));
 
-        // Build query for galleries
-        $galleriesQuery = Gallery::with(['translations' => function($query) use ($locale) {
+        $query = Gallery::with(['translations' => function ($query) use ($locale) {
             $query->where('locale', $locale);
         }])
-        ->where('is_active', 1)
-        ->orderBy('date_input', 'desc');
+            ->where('is_active', 1)
+            ->whereNotNull('url_video')
+            ->orderBy('date_input', 'desc');
 
-        // Filter by type
-        if ($type === 'video') {
-            $galleriesQuery->whereNotNull('url_video');
-        } elseif ($type === 'photo') {
-            $galleriesQuery->whereNull('url_video');
+        // dd($isAjax);
+        // ✅ Default load hanya 3 item
+        if ($isAjax) {
+            // Saat AJAX (klik View All) → tampilkan semua
+            $galleries = $query->get();
+        } else {
+            // Saat pertama kali load → hanya 3
+            $galleries = $query->take(3)->get();
         }
 
-        $galleries = $galleriesQuery->paginate($perPage);
+        $videos = $galleries->map(fn($gallery) => $this->formatGallery($gallery, $locale))->filter();
 
-        // Format galleries
-        $formattedGalleries = $galleries->getCollection()->map(function($gallery) use ($locale) {
-            return $this->formatGallery($gallery, $locale);
-        })->filter();
-
-        $galleries->setCollection($formattedGalleries);
-
-        // Get latest 3 videos for featured section
-        $latestVideos = Gallery::with(['translations' => function($query) use ($locale) {
-            $query->where('locale', $locale);
-        }])
-        ->where('is_active', 1)
-        ->whereNotNull('url_video')
-        ->orderBy('date_input', 'desc')
-        ->take(3)
-        ->get()
-        ->map(function($gallery) use ($locale) {
-            return $this->formatGallery($gallery, $locale);
-        })
-        ->filter();
+        // Jika AJAX → return partial HTML
+        if ($isAjax) {
+            return view('layouts.client.gallery._video_items', ['videos' => $videos])->render();
+        }
 
         $data = [
             'title' => __('Gallery - JIIPE'),
@@ -78,8 +64,7 @@ class GalleryController extends Controller
             'pageTitle' => __('Gallery'),
             'activeFilter' => 'gallery',
             'categories' => $categories,
-            'galleries' => $galleries,
-            'latestVideos' => $latestVideos,
+            'videos' => $videos,
             'currentType' => $type,
         ];
 
@@ -220,8 +205,8 @@ class GalleryController extends Controller
                 : asset('asset/images/default-gallery.jpg'),
             'url_video' => $gallery->url_video,
             'date' => $gallery->date_input
-                ? Carbon::parse($gallery->date_input)->format('F d - Y')
-                : '',
+    ? Carbon::parse($gallery->date_input)->format('F d - Y')
+    : '',
             'is_video' => !empty($gallery->url_video),
         ];
     }

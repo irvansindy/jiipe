@@ -8,11 +8,8 @@
                     <li class="breadcrumb-item">
                         <a href="{{ route('home') }}">{{ __('Home') }}</a>
                     </li>
-                    <li class="breadcrumb-item">
-                        <a href="{{ route('gallery.index') }}">{{ __('Gallery') }}</a>
-                    </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                        {{ __('Videos') }}
+                        {{ __('Gallery') }}
                     </li>
                 </ol>
             </nav>
@@ -57,13 +54,13 @@
                 {{-- Main Content --}}
                 <div class="col-md-45">
                     <div class="berita-terbaru">
-                        <p>{{ __('All Videos') }}</p>
+                        <p>{{ __('Latest videos') }}</p>
                     </div>
                     <hr class="artikel-berita">
 
                     <div class="blocks_listgallery">
-                        <div class="row">
-                            @forelse($data['latestVideos'] as $video)
+                        <div class="row" id="videoContainer">
+                            @forelse($data['videos'] as $video)
                                 <div class="col-md-20">
                                     <div class="items">
                                         <div class="tanggal">
@@ -102,25 +99,20 @@
                         </div>
                     </div>
 
-                    {{-- Pagination --}}
-                    @if (method_exists($data['latestVideos'], 'hasPages') && $data['latestVideos']->hasPages())
-                        <div class="text-center bgs_paginations">
-                            {{ $data['latestVideos']->links('vendor.pagination.custom') }}
-                        </div>
-                    @endif
-                    <div class="lihat-semua-foto">
-                        <a href="/en/home/gallery/act/video">
-                            <p>See All Videos</p>
-                        </a>
+
+                    <div class="lihat-semua-foto mt-3">
+                        <button id="viewAllBtn" class="btn btn-danger px-4 py-2">
+                            {{ __('View All Videos') }}
+                        </button>
                     </div>
+
+
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- <div class="my-4">
-        @include('components.appointment-form')
-    </div> --}}
+    @include('components.appointment-form')
 @endsection
 
 @push('css')
@@ -136,6 +128,11 @@
         section.gallery-sec-1 .artikel-berita {
             border-top: 2px solid #d22c12;
             margin-bottom: 20px;
+        }
+
+        section.gallery-sec-1 .gallery-sec-1 {
+            border-top: 1px solid #ddd;
+            margin: 20px 0;
         }
 
         section.gallery-sec-1 .items {
@@ -179,6 +176,44 @@
             text-decoration: underline;
         }
 
+        section.gallery-sec-1 .lihat-semua-foto {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        section.gallery-sec-1 .lihat-semua-foto button {
+            border: none;
+            background-color: #d22c12;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        section.gallery-sec-1 .lihat-semua-foto button:hover {
+            background-color: #a02310;
+        }
+
+        section.gallery-sec-1 .lihat-semua-foto button:disabled {
+            background-color: #999;
+            cursor: not-allowed;
+        }
+
+        section.gallery-sec-1 .lihat-semua-foto a {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #d22c12;
+            color: #fff;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        section.gallery-sec-1 .lihat-semua-foto a:hover {
+            background-color: #a02310;
+            text-decoration: none;
+        }
+
         section.gallery-sec-1 .leftsn_menu ul li.active a {
             color: #d22c12;
             font-weight: 700;
@@ -186,49 +221,60 @@
     </style>
 @endpush
 
+@push('css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+@endpush
+
 @push('js')
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.pack.js">
-    </script>
-    <script type="text/javascript">
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+    <script>
         $(document).ready(function() {
-            // Fancybox for YouTube videos
-            $('.views_youtube').fancybox({
-                type: 'iframe',
-                iframe: {
-                    css: {
-                        width: '80%',
-                        height: '80%'
-                    }
+            // Inisialisasi Fancybox versi 3
+            $('[data-fancybox="gallery"]').fancybox({
+                buttons: [
+                    "zoom",
+                    "slideShow",
+                    "thumbs",
+                    "close"
+                ],
+                youtube: {
+                    controls: 1,
+                    showinfo: 0
+                },
+                vimeo: {
+                    color: 'f00'
                 }
             });
 
-            // Mobile select menu
-            if ($(window).width() < 767) {
-                var myform = document.getElementById('mytoSelect'),
-                    items = document.getElementById('lists_leftmenuKawasan').getElementsByTagName('li'),
-                    select = document.createElement('select'),
-                    len = items.length;
+            // Jika AJAX load video baru:
+            $('#viewAllBtn').on('click', function() {
+                var $btn = $(this);
+                $btn.prop('disabled', true).text('{{ __('Loading...') }}');
 
-                for (var i = 0; i < len; i++) {
-                    var option = document.createElement('option');
-                    var label = items[i].textContent.replace(/\s\s+/g, " ").trim(),
-                        link = items[i].getElementsByTagName('a')[0].href,
-                        isActive = items[i].classList.contains('active');
-
-                    option.textContent = label;
-                    option.value = link;
-                    if (isActive) option.selected = true;
-
-                    select.appendChild(option);
-                }
-
-                myform.appendChild(select);
-                $(select).addClass('form-control');
-                $(select).change(function(e) {
-                    window.location.href = $(this).val();
-                    e.preventDefault();
+                $.ajax({
+                    url: '{{ route('gallery.index') }}',
+                    type: 'GET',
+                    data: {
+                        ajax: 1,
+                        type: 'video'
+                    },
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }, // 👈 tambahkan ini
+                    success: function(response) {
+                        $('#videoContainer').html(response);
+                        $('[data-fancybox="gallery"]').fancybox();
+                        $('#viewAllBtn').hide();
+                    },
+                    error: function() {
+                        alert('{{ __('Failed to load videos.') }}');
+                        $('#viewAllBtn').prop('disabled', false).text(
+                            '{{ __('View All Videos') }}');
+                    }
                 });
-            }
+
+            });
+
         });
     </script>
 @endpush
