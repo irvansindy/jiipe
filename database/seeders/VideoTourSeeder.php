@@ -15,7 +15,7 @@ class VideoTourSeeder extends Seeder
 
         $videoTours = [
             [
-                'embed_code' => '<div id="5Ss66DNIH"><script type="text/javascript" async data-short="5Ss66DNIH" data-path="tours" data-is-self-hosted="undefined" width="100%" height="500px" src="https://tours.jiipe.com/public/shareScript.js"></script></div>',
+                'embed_code' => '<div id="5Ss66DNIH"><script type="text/javascript" async data-short="5Ss66DNIH" data-path="tours" data-is-self-hosted="undefined" width="100%" height="700px" src="https://tours.jiipe.com/public/shareScript.js"></script></div>',
                 'thumbnail' => 'thumbnail/video1.jpg',
                 'position' => 1,
                 'is_active' => 1,

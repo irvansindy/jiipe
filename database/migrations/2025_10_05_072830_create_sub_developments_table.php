@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('sub_developments', function (Blueprint $table) {
             $table->id();
-            $table->string('thumbnail');
+            $table->unsignedInteger('zone_id');
+            $table->string('image', 255)->nullable();
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

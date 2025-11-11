@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('sub_resource_energies', function (Blueprint $table) {
             $table->id();
-            $table->string('thumbnail');
+            $table->unsignedInteger('zone_id');
+            $table->string('image', 255)->nullable();
+            $table->string('icon', 255)->nullable();
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

@@ -6,5 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubRegionalAdvantages extends Model
 {
-    //
+    protected $fillable = ['zone_id'];
+    // Relasi
+    public function zone() {
+        return $this->belongsTo(Zone::class, 'zone_id');
+    }
+    public function translations() {
+        return $this->hasMany(SubRegionalAdvantagesTranslation::class, 'sub_regional_advantages_id');
+    }
 }

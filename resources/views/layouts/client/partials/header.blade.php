@@ -197,43 +197,142 @@
 }
 </style>
 
-<script>
-    // ============================================
-// MOBILE MENU TOGGLE - VANILLA JAVASCRIPT
-// Paste this code before </body> tag
-// ============================================
+<!-- Mobile nav overrides to match expected design -->
+<style>
+@media screen and (max-width: 1024px) {
+    /* Ensure toggle is on top and clickable */
+    .navbar-toggle-btn {
+        z-index: 100001;
+        cursor: pointer;
+    }
 
+    /* Base nav-menu for mobile */
+    .nav-menu {
+        position: fixed !important;
+        top: 0 !important;
+        right: -100% !important;
+        width: 85% !important;
+        max-width: 360px !important;
+        height: 100vh !important;
+        background-color: #c7332a !important; /* JIIPE red */
+        color: #ffffff !important;
+        z-index: 100000 !important;
+        transition: right 0.36s ease !important;
+        overflow-y: auto !important;
+        box-shadow: -6px 0 24px rgba(0,0,0,0.25) !important;
+        padding: 60px 20px 30px 20px !important;
+    }
+
+    .nav-menu.active {
+        right: 0 !important;
+    }
+
+    .nav-menu .main-menu ul {
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .nav-menu .main-menu ul li {
+        border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+    }
+
+    .nav-menu .main-menu ul li a {
+        display: block !important;
+        padding: 16px 10px !important;
+        color: #fff !important;
+        font-weight: 500 !important;
+    }
+
+    .nav-menu .main-menu .sub-menu {
+        display: none !important;
+        /* Force mobile submenu to behave as stacked items (not absolute) */
+        position: static !important;
+        width: 100% !important;
+        left: auto !important;
+        top: auto !important;
+        padding-left: 12px !important;
+        background: rgba(255,255,255,0.03) !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+    }
+
+    .nav-menu .main-menu .has-children.active .sub-menu {
+        display: block !important;
+    }
+
+    /* Make submenu items full-width and readable on mobile */
+    .nav-menu .main-menu .sub-menu li a {
+        display: block !important;
+        width: 100% !important;
+        padding: 12px 10px !important;
+        color: #fff !important;
+        background: transparent !important;
+    }
+
+    /* Slight separator for nested levels */
+    .nav-menu .main-menu .sub-menu li + li a {
+        border-top: 1px solid rgba(255,255,255,0.06) !important;
+    }
+
+    /* Close button: small translucent square with white X */
+    .nav-menu .navbar-close {
+        position: absolute !important;
+        top: 14px !important;
+        right: 14px !important;
+        width: 34px !important;
+        height: 34px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: rgba(255,255,255,0.12) !important;
+        color: #fff !important;
+        border-radius: 4px !important;
+        font-size: 16px !important;
+        cursor: pointer !important;
+    }
+
+    .nav-menu-overlay {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        background: rgba(0,0,0,0.45) !important;
+        z-index: 99999 !important;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.28s ease, visibility 0.28s ease;
+    }
+
+    .nav-menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Prevent body scroll when menu open */
+    body.menu-open {
+        overflow: hidden !important;
+    }
+}
+
+</style>
+
+<script>
 (function() {
     'use strict';
 
-    // Wait for DOM ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initMobileMenu);
-    } else {
-        initMobileMenu();
-    }
-
+    // Initialize mobile menu when DOM is ready
     function initMobileMenu() {
-        console.log('Mobile Menu Script Loaded');
-
-        // Get elements
         const toggleBtn = document.querySelector('.navbar-toggle-btn');
         const navMenu = document.querySelector('.nav-menu');
         const closeBtn = document.querySelector('.navbar-close');
-        const menuItems = document.querySelectorAll('.main-menu .has-children > a.dd-trigger');
-        const body = document.body;
+        const dropdownTriggers = document.querySelectorAll('.main-menu .has-children > a.dd-trigger');
 
-        // Debug - check if elements exist
-        console.log('Toggle Button:', toggleBtn);
-        console.log('Nav Menu:', navMenu);
-        console.log('Close Button:', closeBtn);
+        if (!toggleBtn || !navMenu) return;
 
-        if (!toggleBtn || !navMenu) {
-            console.error('Required elements not found!');
-            return;
-        }
-
-        // Create overlay if not exists
+        // Create overlay element
         function createOverlay() {
             let overlay = document.querySelector('.nav-menu-overlay');
             if (!overlay) {
@@ -246,54 +345,50 @@
 
         // Open menu
         function openMenu() {
-            console.log('Opening menu...');
             const overlay = createOverlay();
-
             navMenu.classList.add('active');
-            body.classList.add('menu-open');
-
-            // Add toggler animation
+            document.body.classList.add('menu-open');
+            
             const toggler = toggleBtn.querySelector('.navbar-toggler');
             if (toggler) {
                 toggler.classList.add('active');
             }
-
-            // Show overlay
-            setTimeout(function() {
+            
+            setTimeout(() => {
                 overlay.classList.add('active');
             }, 10);
         }
 
         // Close menu
         function closeMenu() {
-            console.log('Closing menu...');
             const overlay = document.querySelector('.nav-menu-overlay');
-
             navMenu.classList.remove('active');
-            body.classList.remove('menu-open');
-
-            // Remove toggler animation
+            document.body.classList.remove('menu-open');
+            
             const toggler = toggleBtn.querySelector('.navbar-toggler');
             if (toggler) {
                 toggler.classList.remove('active');
             }
-
-            // Hide overlay
+            
             if (overlay) {
                 overlay.classList.remove('active');
-                setTimeout(function() {
+                setTimeout(() => {
                     if (overlay.parentNode) {
                         overlay.parentNode.removeChild(overlay);
                     }
                 }, 300);
             }
+
+            // Close all open dropdowns when menu closes
+            document.querySelectorAll('.main-menu .has-children').forEach(el => {
+                el.classList.remove('active');
+            });
         }
 
         // Toggle menu
         function toggleMenu(e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log('Menu toggled');
 
             if (navMenu.classList.contains('active')) {
                 closeMenu();
@@ -307,71 +402,90 @@
 
         // Event: Close button click
         if (closeBtn) {
-            closeBtn.addEventListener('click', function(e) {
+            closeBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 closeMenu();
             });
         }
 
-        // Event: Overlay click
-        document.addEventListener('click', function(e) {
+        // Event: Overlay click to close menu
+        document.addEventListener('click', (e) => {
             if (e.target.classList.contains('nav-menu-overlay')) {
                 closeMenu();
             }
         });
 
-        // Event: Dropdown toggle (mobile only)
-        menuItems.forEach(function(item) {
-            item.addEventListener('click', function(e) {
-                // Only for mobile
-                if (window.innerWidth <= 768) {
+        // Event: Dropdown toggle for submenu items
+        dropdownTriggers.forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                // Only for mobile/tablet
+                if (window.innerWidth <= 1024) {
                     e.preventDefault();
+                    e.stopPropagation();
 
-                    const parent = this.parentElement;
-                    const isActive = parent.classList.contains('active');
+                    const parentLi = trigger.parentElement;
+                    const isActive = parentLi.classList.contains('active');
 
                     // Close all other dropdowns
-                    document.querySelectorAll('.main-menu .has-children').forEach(function(el) {
-                        el.classList.remove('active');
+                    document.querySelectorAll('.main-menu .has-children').forEach(el => {
+                        if (el !== parentLi) {
+                            el.classList.remove('active');
+                        }
                     });
 
                     // Toggle current dropdown
-                    if (!isActive) {
-                        parent.classList.add('active');
-                    }
+                    parentLi.classList.toggle('active');
                 }
             });
         });
 
-        // Event: Close menu on window resize to desktop
-        let resizeTimer;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function() {
-                if (window.innerWidth > 768) {
+        // Event: Close menu when clicking on a regular link (non-dropdown)
+        document.querySelectorAll('.main-menu .menu-item:not(.has-children) > a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
                     closeMenu();
-                    // Remove all active dropdown classes
-                    document.querySelectorAll('.main-menu .has-children').forEach(function(el) {
+                }
+            });
+        });
+
+        // Event: Handle submenu item clicks
+        document.querySelectorAll('.main-menu .sub-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 1024) {
+                    // Optionally close menu when clicking submenu items
+                    // Uncomment below if you want to close on submenu click:
+                    // closeMenu();
+                }
+            });
+        });
+
+        // Event: Close menu when window resizes to desktop
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (window.innerWidth > 1024) {
+                    closeMenu();
+                    document.querySelectorAll('.main-menu .has-children').forEach(el => {
                         el.classList.remove('active');
                     });
                 }
             }, 250);
         });
 
-        // Event: Prevent menu close when clicking inside
-        navMenu.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-
         // Event: Close menu with ESC key
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && navMenu.classList.contains('active')) {
                 closeMenu();
             }
         });
-
-        console.log('Mobile Menu Initialized Successfully');
     }
 
+    // Run when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMobileMenu);
+    } else {
+        initMobileMenu();
+    }
 })();
 </script>

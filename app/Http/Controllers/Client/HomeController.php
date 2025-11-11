@@ -11,6 +11,7 @@ use App\Models\Tenant;
 use App\Models\VideoTour;
 use App\Models\Review;
 use App\Models\FrequentlyAskedQuestions;
+use App\Models\News;
 class HomeController extends Controller
 {
     public function getSliders()
@@ -142,4 +143,34 @@ class HomeController extends Controller
         });
         return $faqs;
     }
+
+    public function getNews()
+{
+    $locale = app()->getLocale();
+    $cacheKey = "home_news_{$locale}";
+
+    $news = Cache::remember($cacheKey, 3600, function () use ($locale) {
+        return News::with(['translations' => function($q) use ($locale) {
+                $q->where('locale', $locale);
+            }])
+            ->where('is_published', 1)
+            ->orderBy('created_at', 'desc') // ✅ gunakan kolom pengurutan yang benar
+            ->take(3)
+            ->get()
+            ->map(function($newsItem) use ($locale) {
+                $trans = $newsItem->translations->first();
+
+                return [
+                    'id'         => $newsItem->id,
+                    'title'       => $trans?->title ?? '',
+                    'content'     => $trans?->content ?? '',
+                    'thumbnail'   => $newsItem->thumbnail,
+                    'created_at'  => optional($newsItem->created_at)->format('F d, Y'), // opsional format
+                ];
+            });
+    });
+
+    return $news;
+}
+
 }

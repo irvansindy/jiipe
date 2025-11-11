@@ -14,13 +14,14 @@ return new class extends Migration
         Schema::create('zone_translations', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('zone_id');
-            $table->string('locale', 10)->index();
-            $table->string('name');
+            $table->string('locale', 10);
+            $table->string('name')->nullable();
             $table->string('subtitle')->nullable();
-            $table->longText('description')->nullable();
+            $table->text('description')->nullable();
+            $table->string('area_size', 50)->nullable();
             $table->string('meta_title')->nullable();
-            $table->longText('meta_description')->nullable();
-            $table->string('meta_keywords')->nullable();
+            $table->text('meta_description')->nullable();
+            $table->text('meta_keywords')->nullable();
             $table->text('note')->nullable();
             $table->timestamps();
         });

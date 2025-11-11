@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('zones', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
             $table->unsignedInteger('zone_class_id');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

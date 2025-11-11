@@ -101,7 +101,6 @@
         </ul>
         <div class="clear"></div>
     </div>
-    <div class="clear"></div>
 </section>
 <script>
     $(document).ready(function() {

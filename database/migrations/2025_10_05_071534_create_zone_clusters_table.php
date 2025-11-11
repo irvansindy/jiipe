@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('zone_clusters', function (Blueprint $table) {
             $table->id();
-            $table->string('thumbnail');
+            $table->unsignedInteger('zone_id');
+            $table->string('image')->nullable();
+            $table->string('area_size', 50)->nullable();
             $table->timestamps();
         });
     }

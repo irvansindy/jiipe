@@ -10,4 +10,7 @@ class ZoneClass extends Model
     {
         return $this->hasMany(ZoneClassTranslation::class, 'zone_class_id');
     }
+    public function zones() {
+        return $this->hasMany(Zone::class, 'zone_class_id');
+    }
 }

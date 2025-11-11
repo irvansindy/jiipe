@@ -1,20 +1,22 @@
+<link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}">
+
 <section class="kawasan-slider">
     <div id="kawasan_wrapper_one" class="kawasan-slider-one carousel slide" data-ride="carousel" data-interval="6000">
         <div class="carousel-inner">
             @php
                 $showcases = app(\App\Http\Controllers\Client\HomeController::class)->getAreaShowcases();
             @endphp
-            @foreach($showcases as $i => $showcase)
+            @foreach ($showcases as $i => $showcase)
                 <div class="carousel-item {{ $i == 0 ? 'active' : '' }}">
-                    <img src="/{{ $showcase['image'] }}"
-                        class="d-block w-100" alt="{{ $showcase['title'] }}">
+                    <img src="/{{ $showcase['image'] }}" class="d-block w-100" alt="{{ $showcase['title'] }}">
                 </div>
             @endforeach
         </div>
     </div>
     <ol class="carousel-indicators">
-        @foreach($showcases as $i => $showcase)
-            <li data-target="#kawasan_wrapper_one" data-slide-to="{{ $i }}" data-attr="{{ $i }}" class="data_{{ $i }} {{ $i == 0 ? 'active' : '' }}">
+        @foreach ($showcases as $i => $showcase)
+            <li data-target="#kawasan_wrapper_one" data-slide-to="{{ $i }}" data-attr="{{ $i }}"
+                class="data_{{ $i }} {{ $i == 0 ? 'active' : '' }}">
                 <div class="wrapper-box">
                     <h4 class="title">{{ $showcase['title'] }}</h4>
                     <span class="area">{{ $showcase['description'] }}</span>
@@ -120,142 +122,65 @@
 
     </div>
 
-    <div class="navigasi-box navigasi-box-shadow">
-
+    <div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom" style="display: block; width: 100%;">
         <ul>
-
-            <li>
-
+            <li class="hover">
                 <a href="#contact">
-
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
-
-                        <div class="icon">
-
-                            <i class="fa fa-calendar-alt"></i>
-
-                        </div>
-
+                        <div class="icon"><i class="fa fa-calendar-alt"></i></div>
                         <div class="text">
-
                             <p>Quick Appointment</p>
-
                             <h6 class="title">PROPOSAL REQUEST</h6>
-
                         </div>
-
                     </div>
-
                 </a>
-
             </li>
-
             <li>
-
                 <a href="#videotour">
-
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
-
-                        <div class="icon">
-
-                            <i class="fa fa-map-marked-alt"></i>
-
-                        </div>
-
+                        <div class="icon"><i class="fa fa-map-marked-alt"></i></div>
                         <div class="text">
-
                             <p>Watch</p>
-
                             <h6 class="title">VIDEO TOUR</h6>
-
                         </div>
-
                     </div>
-
                 </a>
-
             </li>
-
             <li>
-
                 <a href="/asset/brochure/61a6ed0108(Comp) eBrochure - JIIPE Brochure English.pdf" target="_blank"
                     class="hashmb d-none">
-
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
-
-                        <div class="icon">
-
-                            <i class="fa fa-book-open"></i>
-
-                        </div>
-
+                        <div class="icon"><i class="fa fa-book-open"></i></div>
                         <div class="text">
-
                             <p>Download</p>
-
                             <h6>JIIPE E-BROCHURE</h6>
-
                         </div>
-
                     </div>
-
                 </a>
-
                 <a href="/asset/brochure/323829b435(Comp) eBrochure - JIIPE Brochure English.pdf" target="_blank"
                     class="hashds">
-
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
-
-                        <div class="icon">
-
-                            <i class="fa fa-book-open"></i>
-
-                        </div>
-
+                        <div class="icon"><i class="fa fa-book-open"></i></div>
                         <div class="text">
-
                             <p>Download</p>
-
                             <h6>JIIPE E-BROCHURE</h6>
-
                         </div>
-
                     </div>
-
                 </a>
-
             </li>
-
             <li>
-
                 <a href="#faq">
-
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
-
-                        <div class="icon">
-
-                            <i class="fa fa-comment-alt"></i>
-
-                        </div>
-
+                        <div class="icon"><i class="fa fa-comment-alt"></i></div>
                         <div class="text">
-
                             <p>Frequently</p>
-
                             <h6>ASKED QUESTIONS</h6>
-
                         </div>
-
                     </div>
-
                 </a>
-
             </li>
-
         </ul>
-
         <div class="clear"></div>
-
     </div>
 
     <div class="clear"></div>
@@ -264,7 +189,65 @@
 <section class="video-jiipe" id="videojiipe">
     <div class="embed-responsive embed-responsive-21by9">
         <video class="embed-responsive-item" controls="">
-            <source src="/Video_jiipe/62e1d25a28720.mp4" type="video/mp4">
+            <source src="{{ asset('asset/video/62e1d25a28720.mp4') }}" type="video/mp4">
         </video>
     </div>
 </section>
+<div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom" style="display: block; width: 100%;">
+    <ul>
+        <li class="hover">
+            <a href="#contact">
+                <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
+                    <div class="icon"><i class="fa fa-calendar-alt"></i></div>
+                    <div class="text">
+                        <p>Quick Appointment</p>
+                        <h6 class="title">PROPOSAL REQUEST</h6>
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="#videotour">
+                <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
+                    <div class="icon"><i class="fa fa-map-marked-alt"></i></div>
+                    <div class="text">
+                        <p>Watch</p>
+                        <h6 class="title">VIDEO TOUR</h6>
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="/asset/brochure/61a6ed0108(Comp) eBrochure - JIIPE Brochure English.pdf" target="_blank" class="hashmb d-none">
+                <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
+                    <div class="icon"><i class="fa fa-book-open"></i></div>
+                    <div class="text">
+                        <p>Download</p>
+                        <h6>JIIPE E-BROCHURE</h6>
+                    </div>
+                </div>
+            </a>
+            <a href="/asset/brochure/323829b435(Comp) eBrochure - JIIPE Brochure English.pdf" target="_blank" class="hashds">
+                <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
+                    <div class="icon"><i class="fa fa-book-open"></i></div>
+                    <div class="text">
+                        <p>Download</p>
+                        <h6>JIIPE E-BROCHURE</h6>
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="#faq">
+                <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
+                    <div class="icon"><i class="fa fa-comment-alt"></i></div>
+                    <div class="text">
+                        <p>Frequently</p>
+                        <h6>ASKED QUESTIONS</h6>
+                    </div>
+                </div>
+            </a>
+        </li>
+    </ul>
+    <div class="clear"></div>
+</div>

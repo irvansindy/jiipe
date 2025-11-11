@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('zone_class_id');
             $table->string('locale', 10)->index();
-            $table->string('name');
+            $table->string('name')->index()->nullable();
             $table->timestamps();
         });
     }

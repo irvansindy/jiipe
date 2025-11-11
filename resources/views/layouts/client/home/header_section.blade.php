@@ -98,7 +98,7 @@
         <div class="row">
             <div class="col-lg-30 col-sm-60">
                 <div class="jiipe-images">
-                    
+
                 </div>
             </div>
             <div class="col-lg-30 col-sm-60">

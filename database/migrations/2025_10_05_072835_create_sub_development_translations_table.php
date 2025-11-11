@@ -14,10 +14,14 @@ return new class extends Migration
         Schema::create('sub_development_translations', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('sub_developments_id');
-            $table->string('locale');
-            $table->string('name');
-            $table->longText('content');
-            $table->boolean('status')->default(true);
+            $table->string('locale', 10);
+            $table->string('name')->nullable();
+            $table->string('subtitle')->nullable();
+            $table->text('description')->nullable();
+            $table->text('content')->nullable();
+            $table->string('meta_title')->nullable();
+            $table->text('meta_description')->nullable();
+            $table->text('meta_keywords')->nullable();
             $table->timestamps();
         });
     }
