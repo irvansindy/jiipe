@@ -30,6 +30,7 @@ class IndustrialEstateSeeder extends Seeder
                 'image' => 'thumb_3b01a-port-estate_resize_1312_662.jpg',
                 'image_detail' => 'thumb_3c4e5-port-area-thumb_adaptiveResize_419_284.jpg',
                 'image_cover'=> 'thumb_3c4e5-port-area_adaptiveResize_1920_591.jpg',
+                'created_at' => $now,
                 'updated_at' => $now,
             ],
             [
