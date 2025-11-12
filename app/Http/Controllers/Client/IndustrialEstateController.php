@@ -14,19 +14,41 @@ class IndustrialEstateController extends Controller
 {
     public function index()
     {
-        $zones = Zone::with(['translations', 'zoneClass.translations'])->get();
-        // dd($zones);
+        $zones = Zone::with(['translations' => function($query) {
+            $query->where('locale', app()->getLocale());
+        }, 'zoneClass.translations' => function($query) {
+            $query->where('locale', app()->getLocale());
+        }])->where('zone_class_id', 1)->get();
         return view('layouts.client.industrial-estate.index', compact('zones'));
     }
 
     public function zoneDetail($id)
     {
-        $zone = Zone::with(['translations', 'zoneClass.translations'])->findOrFail($id);
-        $clusters = ZoneCluster::where('zone_id', $id)->get();
+        $zones = Zone::with(['translations' => function($query) {
+            $query->where('locale', app()->getLocale());
+        }, 'zoneClass.translations' => function($query) {
+            $query->where('locale', app()->getLocale());
+        }])->where('zone_class_id', 1)->get();
+
+        $zone = Zone::with(['translations' => function($query) {
+            $query->where('locale', app()->getLocale());
+        }, 'zoneClass.translations' => function($query) {
+            $query->where('locale', app()->getLocale());
+        }])->findOrFail($id);
+
+        $clusters = ZoneCluster::with(['translations' => function($query) {
+            $query->where('locale', app()->getLocale());
+        }, 'zone' => function($query) {
+            $query->with(['translations' => function($query){
+                $query->where('locale', app()->getLocale());
+            }]);
+        }])
+        ->where('zone_id', $id)
+        ->get();
         $developments = SubDevelopment::where('zone_id', $id)->get();
         $advantages = SubRegionalAdvantages::where('zone_id', $id)->get();
         $energies = SubResourceEnergy::where('zone_id', $id)->get();
-        return view('layouts.client.industrial-estate.zone-detail', compact('zone', 'clusters', 'developments', 'advantages', 'energies'));
+        return view('layouts.client.industrial-estate.zone-detail', compact('zones','zone', 'clusters', 'developments', 'advantages', 'energies'));
     }
 
     public function clusterDetail($id)

@@ -11,7 +11,7 @@
                     </a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    {{ $area['name'] ?? '' }}
+                    {{ $zone->translations[0]['name'] ?? '' }}
                 </li>
             </ol>
         </nav>

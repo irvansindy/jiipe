@@ -1,11 +1,12 @@
 <div class="block-sliders-coverKawasan prelatife prelative mb-4">
     <div id="carouselKawasan" class="carousel slide carousel-fade" data-ride="carousel" data-interval="6000">
         <div class="carousel-inner">
-            @foreach ($areas ?? [] as $index => $area)
-                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}" ns_image="{{ $area['image'] ?? '' }}">
-                    {{-- @dd($area['image_thumb']) --}}
-                    <img src="{{ asset($area['image_thumb'] ?? '') }}" class="d-block w-100"
-                        alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+            {{-- @php
+                dd($zones)
+            @endphp --}}
+            @foreach ($zones ?? [] as $index => $zone)
+                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}" ns_image="{{ $zone['image'] ?? '' }}">
+                    <img src="{{ asset('storage/zone/'.$zone['image'] ?? '') }}" class="d-block w-100" alt="{{ __('JIIPE Industrial Estate Gresik') }}" decoding="async" loading="lazy">
                 </div>
             @endforeach
         </div>
@@ -14,13 +15,15 @@
     {{-- Bottom Info Blocks --}}
     <div class="blocks_inner_bottominfo">
         <div class="row">
-            @foreach ($areas ?? [] as $index => $area)
+            {{-- @php
+                dd($zones)
+            @endphp --}}
+            @foreach ($zones ?? [] as $index => $zone)
                 <div class="col-md-20">
-                    <div class="in_block bind_data_{{ $index }} {{ $index === 0 ? 'active' : '' }}"
-                        data-attr="{{ $index }}">
-                        <span class="lefts_nm">{{ $area['name'] ?? '' }}</span>
-                        @if (!empty($area['size']))
-                            <span class="luas">{{ $area['size'] }}<small>ha</small></span>
+                    <div class="in_block bind_data_{{ $index }} {{ $index === 0 ? 'active' : '' }}" data-attr="{{ $index }}">
+                        <span class="lefts_nm">{{ $zone->translations[0]['name'] ?? '' }}</span>
+                        @if (!empty($zone->translations[0]['area_size']))
+                            <span class="luas" style="font-size: 26px !important;">{{ $zone->translations[0]['area_size'] ?? '' }}</span>
                         @endif
                         <div class="clearfix"></div>
                     </div>

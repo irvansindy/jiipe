@@ -35,6 +35,7 @@
 
 {{-- Empty Section (if needed for spacing) --}}
 <section class="industri_jippe1-sec-4">
+    <img src="{{ asset('storage/zone/cover/industry_jiipe.jpg' ?? '') }}" decoding="async" loading="lazy" alt="Cover Industri" class="cover-image" />
     <div class="prelative container">
         <div class="row"></div>
     </div>

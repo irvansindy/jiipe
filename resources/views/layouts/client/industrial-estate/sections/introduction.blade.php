@@ -18,10 +18,10 @@
                             <li class="d-none">
                                 <a href="#">{{ __('-- Select Region --') }}</a>
                             </li>
-                            @foreach ($areas ?? [] as $area)
-                                <li>
-                                    <a href="{{ route('area.detail', $area['id']) }}">
-                                        {{ $area['name'] }}
+                            @foreach ($zones ?? [] as $zone)
+                                <li class="">
+                                    <a href="{{ route('area.detail', $zone['id']) }}">
+                                        {{ $zone->translations[0]['name'] }}
                                     </a>
                                 </li>
                             @endforeach
@@ -53,31 +53,31 @@
     </div>
 </section>
 @push('js')
-<script>
-$(function(){
-    if ($(window).width() < 767) {
-        var myform = document.getElementById('mytoSelect'),
-            items = document.getElementById('lists_leftmenuKawasan').getElementsByTagName('li'),
-            select = document.createElement('select'),
-            len = items.length;
+    <script>
+        $(function() {
+            if ($(window).width() < 767) {
+                var myform = document.getElementById('mytoSelect'),
+                    items = document.getElementById('lists_leftmenuKawasan').getElementsByTagName('li'),
+                    select = document.createElement('select'),
+                    len = items.length;
 
-        for(var i = 0; i < len; i++) {
-            var option = document.createElement('option');
-            var label = items[i].textContent.replace(/\s\s+/g," ").trim(),
-                link = items[i].getElementsByTagName('a')[0].href;
+                for (var i = 0; i < len; i++) {
+                    var option = document.createElement('option');
+                    var label = items[i].textContent.replace(/\s\s+/g, " ").trim(),
+                        link = items[i].getElementsByTagName('a')[0].href;
 
-            option.textContent = label;
-            option.value = link;
-            select.appendChild(option);
-        }
+                    option.textContent = label;
+                    option.value = link;
+                    select.appendChild(option);
+                }
 
-        myform.appendChild(select);
-        select.addEventListener('change', function(evt){
-            location.href = this.options[this.selectedIndex].value;
+                myform.appendChild(select);
+                select.addEventListener('change', function(evt) {
+                    location.href = this.options[this.selectedIndex].value;
+                });
+
+                $('#mytoSelect select').addClass('form-control');
+            }
         });
-
-        $('#mytoSelect select').addClass('form-control');
-    }
-});
-</script>
+    </script>
 @endpush

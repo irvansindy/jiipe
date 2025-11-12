@@ -1,14 +1,13 @@
 <div class="row artikel">
-    @foreach ($areas ?? [] as $area)
+    @foreach ($zones ?? [] as $index => $zone)
         <div class="col-md-20">
-            <img src="{{ asset($area['thumbnail'] ?? '') }}" alt="{{ $area['name'] ?? '' }}" class="img-fluid">
+            <img src="{{ asset('storage/zone/detail/'.$zone['image_detail'] ?? '') }}" alt="{{ $zone->translations[0]['name'] ?? '' }}" class="img-fluid" decoding="async" loading="lazy">
 
-            <p class="judul">{{ $area['name'] ?? '' }}</p>
-            <p class="sub-judul">{{ $area['subtitle'] ?? '' }}</p>
-            <p class="content">{{ Str::limit($area['description'] ?? '', 200) }}</p>
-
+            <p class="judul">{{ $zone->translations[0]['name'] ?? '' }}</p>
+            <p class="sub-judul">{{ $zone->translations[0]['subtitle'] ?? '' }}</p>
+            <p class="content">{{ Str::limit($zone->translations[0]['description'] ?? '', 200) }}</p>
             <div class="lebih">
-                <a href="#">
+                <a href="{{ route('area.detail', $zone['id']) }}">
                     <p>
                         {{ __('Read More') }}
                         <span>

@@ -16,10 +16,11 @@
                             <li class="d-none">
                                 <a href="#">{{ __('-- Select Region --') }}</a>
                             </li>
-                            @foreach ($allAreas ?? [] as $areaItem)
-                                <li class="{{ $areaItem['id'] == $area['id'] ? 'active' : '' }}">
-                                    <a href="{{ route('area.detail', $areaItem['id']) }}">
-                                        {{ $areaItem['name'] }}
+                            @foreach ($zones ?? [] as $zone)
+                                <li
+                                    class="{{ request()->routeIs('area.detail') && request()->route('id') == $zone->id ? 'active' : '' }}">
+                                    <a href="{{ route('area.detail', $zone['id']) }}">
+                                        {{ $zone->translations[0]['name'] ?? '' }}
                                     </a>
                                 </li>
                             @endforeach
@@ -32,31 +33,30 @@
             <div class="col-md-45">
                 <div class="judul">
                     <p>
-                        {{ $area['name'] ?? '' }}
+                        {{ $zone->translations[0]['name'] ?? '' }}
                         <span>|</span>
-                        <span>{{ $area['size'] ?? '' }} ha {{ __('land area') }}</span>
+                        <span>{{ $zone->translations[0]['area_size'] ?? '' }} {{ __('land area') }}</span>
                     </p>
                 </div>
-
                 <div class="sub-judul">
-                    <p>{{ $area['subtitle'] ?? '' }}</p>
+                    <p>{{ $zone->translations[0]['subtitle'] ?? '' }}</p>
                 </div>
 
                 <div class="content">
-                    <p>{!! $area['description'] ?? '' !!}</p>
+                    <p>{!! $zone->translations[0]['description'] ?? '' !!}</p>
                 </div>
 
                 <div class="industry">
-                    <p>{{ $area['name'] ?? '' }} {{ __('Clustering') }}:</p>
+                    <p>{{ $zone->translations[0]['name'] ?? '' }} {{ __('Clustering') }}:</p>
                 </div>
 
                 {{-- Clustering Selector --}}
                 <div class="choose-industry selector_slides">
                     <p>
-                        @foreach ($area['clusterings'] ?? [] as $index => $clustering)
+                        @foreach ($clusters ?? [] as $index => $clustering)
                             <a data-id="{{ $index }}"
                                 class="itms_c{{ $index }} {{ $index === 0 ? 'active' : '' }}" href="#">
-                                {{ $clustering['name'] }}
+                                {{ $clustering->translations[0]['name'] ?? '' }}
                             </a>
                             @if (!$loop->last)
                                 <span>|</span>
@@ -69,10 +69,11 @@
                 <div class="block-sliders-coverKawasan prelatife prelative mb-5">
                     <div id="carouselKawasan" class="carousel carousel-fade" data-ride="carousel" data-interval="3500">
                         <div class="carousel-inner">
-                            @foreach ($area['clusterings'] ?? [] as $index => $clustering)
+                            @foreach ($clusters ?? [] as $index => $clustering)
+                            {{-- @dd($clustering['image']) --}}
                                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                    <img src="{{ $clustering['image'] ?? '' }}" class="d-block w-100"
-                                        alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+                                    <img src="{{ asset('storage/zone/cluster/' . $clustering['image']) ?? asset('asset/images/static/d8f0dfd17c0001.jpg') }}" class="d-block w-100"
+                                        alt="{{ $clustering->translations[0]['name'] ?? '' }}">
                                 </div>
                             @endforeach
                         </div>

@@ -42,7 +42,7 @@ Route::group([
     })->name('home');
     Route::get('profile', [ProfileController::class,'index'])->name('profile');
     Route::get('industrial-estate', [IndustrialEstateController::class,'index'])->name('industrial-estate');
-    Route::get('/industrial-estate/id/{id}', [IndustrialEstateController::class, 'show'])->name('area.detail');
+    Route::get('/industrial-estate/id/{id}', [IndustrialEstateController::class, 'zoneDetail'])->name('area.detail');
 
     Route::get('economic-zone', [SezController::class,'index'])->name('economic-zone');
     Route::get('economic-zone/{id}', [SezController::class,'detail'])->name('economic-zone-detail');
