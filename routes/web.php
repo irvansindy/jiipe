@@ -13,6 +13,7 @@ use App\Http\Controllers\Client\InternationalDeskController;
 use App\Http\Controllers\Client\ContactController as ContactClient;
 use App\Http\Controllers\Client\CareerController as CareerClient;
 use App\Http\Controllers\Client\GalleryController as GalleryClient;
+use App\Http\Controllers\Client\AppointmentController as AppointmentClient;
 // admin side
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsAndArticleController;
@@ -62,6 +63,7 @@ Route::group([
     Route::get('/international-desk', [InternationalDeskController::class, 'index'])->name('international-desk');
 
     Route::get('/contact', [ContactClient::class,'index'])->name('contact');
+    Route::post('/appointment/store', [AppointmentClient::class, 'storeQuickAppointment'])->name('store-quick-appointment');
     Route::get('/career', [CareerClient::class,'index'])->name('career');
     Route::get('/career/{id}', [CareerClient::class, 'detail'])->name('client.career.detail');
     Route::post('/career/{id}', [CareerClient::class, 'apply'])->name('client.career.apply');
