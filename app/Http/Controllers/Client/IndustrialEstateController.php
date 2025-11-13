@@ -45,9 +45,17 @@ class IndustrialEstateController extends Controller
         }])
         ->where('zone_id', $id)
         ->get();
+
+        $advantages = SubRegionalAdvantages::with(['translations' => function($query) {
+            $query->where('locale', app()->getLocale());
+        }])
+        ->where('zone_id', $id)->get();
+
+        $energies = SubResourceEnergy::with(['translations' => function($query) {
+            $query->where('locale', app()->getLocale());
+        }])
+        ->where('zone_id', $id)->get();
         $developments = SubDevelopment::where('zone_id', $id)->get();
-        $advantages = SubRegionalAdvantages::where('zone_id', $id)->get();
-        $energies = SubResourceEnergy::where('zone_id', $id)->get();
         return view('layouts.client.industrial-estate.zone-detail', compact('zones','zone', 'clusters', 'developments', 'advantages', 'energies'));
     }
 

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubRegionalAdvantages extends Model
 {
-    protected $fillable = ['zone_id'];
+    protected $fillable = ['zone_id', 'image', 'icon', 'order'];
     // Relasi
     public function zone() {
         return $this->belongsTo(Zone::class, 'zone_id');

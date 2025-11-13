@@ -11,16 +11,15 @@
 
             <div class="col-md-45">
                 <div class="row nlists_block_kunggulan">
-                    @foreach ($area['features'] ?? [] as $feature)
+                    @foreach ($advantages ?? [] as $index => $feature)
                         <div class="col-md-20">
                             <div class="items">
                                 <div class="pictures">
-                                    <img src="{{ $feature['image'] ?? '' }}" alt="{{ $feature['title'] ?? '' }}"
-                                        class="img-fluid">
-                                    <span class="names_ap">{{ $feature['title'] ?? '' }}</span>
+                                    <img src="{{ asset('storage/zone/feature/' . $feature['image'] ?? '') }}" alt="{{ $feature->translations[0]['name'] ?? '' }}" class="img-fluid" decoding="async" loading="lazy">
+                                    <span class="names_ap">{{ $feature->translations[0]['name'] ?? '' }}</span>
                                 </div>
                                 <div class="content">
-                                    {!! $feature['description'] ?? '' !!}
+                                    {!! $feature->translations[0]['description'] ?? '' !!}
                                 </div>
                                 <div class="clear clearfix"></div>
                             </div>

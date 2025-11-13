@@ -11,20 +11,21 @@
 
             <div class="col-md-45">
                 <div class="row">
-                    @foreach ($area['facilities'] ?? [] as $facility)
+                    @foreach ($energies ?? [] as $index => $facility)
                         <div class="col-md-20">
                             <div class="logo">
-                                <img src="{{ $facility['icon'] ?? '' }}" alt="{{ $facility['title'] ?? '' }}"
-                                    class="img-fluid">
+                                <img src="{{ asset('storage/zone/facilities/' . $facility['icon'] ?? '') }}" alt="{{ $facility->translations[0]['title'] ?? '' }}" class="img-fluid" decoding="async" loading="lazy">
                             </div>
                             <div class="title">
-                                <p>{{ $facility['title'] ?? '' }}</p>
+                                <p>{{ $facility->translations[0]['subtitle'] ?? '' }}</p>
                             </div>
-                            <div class="content">
-                                {!! $facility['description'] ?? '' !!}
+                            <div class="content text-white">
+                                {!! $facility->translations[0]['description'] ?? '' !!}
+                                {!! $facility->translations[0]['specifications'] ?? '' !!}
                                 <div class="clear"></div>
                             </div>
-                            <div class="category"></div>
+                            <div class="category">
+                            </div>
                         </div>
                     @endforeach
                 </div>
@@ -35,7 +36,8 @@
 
 {{-- Empty Section (if needed for spacing) --}}
 <section class="industri_jippe1-sec-4">
-    <img src="{{ asset('storage/zone/cover/industry_jiipe.jpg' ?? '') }}" decoding="async" loading="lazy" alt="Cover Industri" class="cover-image" />
+    <img src="{{ asset('storage/zone/cover/industry_jiipe.jpg' ?? '') }}" decoding="async" loading="lazy"
+        alt="Cover Industri" class="cover-image" />
     <div class="prelative container">
         <div class="row"></div>
     </div>
