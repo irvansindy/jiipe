@@ -15,7 +15,7 @@ class ProfileController extends Controller
             'metaDesc' => 'Discover JIIPE Industrial Park...',
 
             // Cover Section
-            'coverImage' => "{{asset('asset/images/static/jembatan.jpg') }}",
+            'coverImage' => "{{ asset('asset/images/static/jembatan.jpg') }}",
 
             // Contributions Section
             'contributionsTitle' => 'JIIPE Contributions',
