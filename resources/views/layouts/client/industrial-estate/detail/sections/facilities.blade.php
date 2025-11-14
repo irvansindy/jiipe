@@ -14,7 +14,9 @@
                     @foreach ($energies ?? [] as $index => $facility)
                         <div class="col-md-20">
                             <div class="logo">
-                                <img src="{{ asset('storage/zone/facilities/' . $facility['icon'] ?? '') }}" alt="{{ $facility->translations[0]['title'] ?? '' }}" class="img-fluid" decoding="async" loading="lazy">
+                                <img src="{{ asset('storage/zone/facilities/' . $facility['icon'] ?? '') }}"
+                                    alt="{{ $facility->translations[0]['title'] ?? '' }}" class="img-fluid"
+                                    decoding="async" loading="lazy">
                             </div>
                             <div class="title">
                                 <p>{{ $facility->translations[0]['subtitle'] ?? '' }}</p>
@@ -36,8 +38,7 @@
 
 {{-- Empty Section (if needed for spacing) --}}
 <section class="industri_jippe1-sec-4">
-    <img src="{{ asset('storage/zone/cover/industry_jiipe.jpg' ?? '') }}" decoding="async" loading="lazy"
-        alt="Cover Industri" class="cover-image" />
+    <img src="{{ asset('storage/zone/cover/industry_jiipe.jpg' ?? '') }}" decoding="async" loading="lazy" alt="Cover Industri" class="cover-image" />
     <div class="prelative container">
         <div class="row"></div>
     </div>
