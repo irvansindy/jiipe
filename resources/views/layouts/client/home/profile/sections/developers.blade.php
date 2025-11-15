@@ -1,3 +1,9 @@
+<section class="industri_jippe1-sec-4">
+    <img src="{{ asset('storage/about_us/cover/profil-sec3.jpg' ?? '') }}" decoding="async" loading="lazy" alt="Cover Industri" class="cover-image" />
+    <div class="prelative container">
+        <div class="row"></div>
+    </div>
+</section>
 <section class="profil-sec-4">
     <div class="prelative container">
         <div class="row">

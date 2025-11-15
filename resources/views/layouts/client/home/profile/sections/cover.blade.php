@@ -1,7 +1,8 @@
-<section class="cover-profil" style="background-image: url('{{ $coverImage ?? '/images/static/default-cover.jpg' }}');">
+<section class="cover-profil">
+    <img src="{{ asset('storage/about_us/cover/header_cover.jpg' ?? '') }}" decoding="async" loading="lazy"
+        alt="Cover Industri" class="cover-image" />
+
     <div class="prelative container">
-        <div class="row">
-            {{-- Cover image as background, no content needed --}}
-        </div>
+        <div class="row"></div>
     </div>
 </section>
