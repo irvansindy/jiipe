@@ -14,383 +14,279 @@ class NewsSeeder extends Seeder
     {
         News::truncate();
         NewsTranslation::truncate();
-        // $news =News::create([
-        //     'thumbnail' => 'path/to/thumbnail.jpg',
-        //     'is_published' => true,
-        // ]);
-
-        // // Data dummy untuk tiap bahasa
-        // $translations = [
-        //     'id' => [
-        //         'title'   => 'Judul Berita dalam Bahasa Indonesia',
-        //         'content' => 'Konten berita dalam Bahasa Indonesia.',
-        //     ],
-        //     'en' => [
-        //         'title'   => 'News Title in English',
-        //         'content' => 'News content in English.',
-        //     ],
-        //     'zh' => [
-        //         'title'   => '新闻标题（中文）',
-        //         'content' => '新闻内容（中文）。',
-        //     ],
-        //     'ja' => [
-        //         'title'   => 'ニュースのタイトル（日本語）',
-        //         'content' => 'ニュースの内容（日本語）。',
-        //     ],
-        //     'ko' => [
-        //         'title'   => '뉴스 제목 (한국어)',
-        //         'content' => '뉴스 내용 (한국어).',
-        //     ],
-        //     'tw' => [
-        //         'title'   => '新聞標題（繁體中文）',
-        //         'content' => '新聞內容（繁體中文）。',
-        //     ],
-        // ];
-        // foreach ($translations as $locale => $data) {
-        //     NewsTranslation::create([
-        //         'news_id' => $news->id,
-        //         'locale'  => $locale,
-        //         'title'   => $data['title'],
-        //         'content' => $data['content'],
-        //         'quote'   => null, // Atau isi dengan data yang sesuai
-        //     ]);
-        // }
-        // Get category IDs
-        $newsCategory = NewsCategories::whereHas('translations', function($q) {
-            $q->where('locale', 'en')->where('name', 'News');
-        })->first();
-
-        $articleCategory = NewsCategories::whereHas('translations', function($q) {
-            $q->where('locale', 'en')->where('name', 'Articles');
-        })->first();
 
         $newsData = [
             [
-                'category_id' => $newsCategory->id,
-                'thumbnail' => 'images/blog/.tmb/thumb_4107d-beacukai_adaptiveResize_634_385.JPG',
+                'thumbnail' => 'thumb_fe8ff-dsc03506_adaptiveResize_634_385.jpg',
                 'is_published' => true,
-                'created_at' => Carbon::create(2025, 10, 17),
+                'category_id' => 1,
                 'translations' => [
-                    [
-                        'locale' => 'en',
+                    'id' => [
+                        'title' => 'Terobosan Besar: Layanan Imigrasi Kini Tersedia di Dalam KEK JIIPE Gresik untuk Meningkatkan Daya Saing Investasi',
+                        'content' => 'GRESIK, 12 November 2025 — Kawasan Ekonomi Khusus (KEK) Gresik, yang terletak di kawasan industri terintegrasi kelas dunia JIIPE (Java Integrated Industrial and Ports Estate), terus...',
+                        'quote' => null,
+                    ],
+                    'en' => [
+                        'title' => 'A Major Breakthrough: Immigration Services Now Available Inside JIIPE Gresik SEZ to Boost Investment Competitiveness',
+                        'content' => 'GRESIK, 12 November 2025 — The Gresik Special Economic Zone (SEZ), located within the world-class integrated industrial area JIIPE (Java Integrated Industrial and Ports Estate), cont...',
+                        'quote' => null,
+                    ],
+                    'zh' => [
+                        'title' => '重大突破：JIIPE格雷西克经济特区内现提供移民服务，提升投资竞争力',
+                        'content' => '格雷西克，2025年11月12日——位于世界级综合工业区JIIPE（爪哇综合工业港口区）内的格雷西克经济特区（SEZ），继续...',
+                        'quote' => null,
+                    ],
+                    'ja' => [
+                        'title' => '大きな突破口：JIIPE グレシック経済特区内で入国管理サービスが利用可能に、投資競争力を向上',
+                        'content' => 'グレシック、2025年11月12日 — 世界クラスの統合産業エリアJIIPE（ジャワ統合工業港湾エステート）内に位置するグレシック経済特区（SEZ）は、継続的に...',
+                        'quote' => null,
+                    ],
+                    'ko' => [
+                        'title' => '중요한 돌파구: JIIPE 그레식 경제특구 내 이민 서비스 제공으로 투자 경쟁력 강화',
+                        'content' => '그레식, 2025년 11월 12일 — 세계적 수준의 통합 산업 지역 JIIPE(Java Integrated Industrial and Ports Estate) 내에 위치한 그레식 경제특구(SEZ)는 계속해서...',
+                        'quote' => null,
+                    ],
+                    'tw' => [
+                        'title' => '重大突破：JIIPE格雷西克經濟特區內現提供移民服務，提升投資競爭力',
+                        'content' => '格雷西克，2025年11月12日——位於世界級綜合工業區JIIPE（爪哇綜合工業港口區）內的格雷西克經濟特區（SEZ），持續...',
+                        'quote' => null,
+                    ],
+                ]
+            ],
+            [
+                'thumbnail' => 'thumb_4107d-beacukai_adaptiveResize_634_385.JPG',
+                'is_published' => true,
+                'category_id' => 1,
+                'translations' => [
+                    'id' => [
+                        'title' => 'KEK Gresik Luncurkan Pilot Sistem Bea Cukai Auto Gate untuk Percepat Arus Logistik',
+                        'content' => 'Gresik, 17 Oktober 2025 – Kawasan Ekonomi Khusus (KEK) Gresik telah memulai implementasi sistem logistik berbasis digital...',
+                        'quote' => null,
+                    ],
+                    'en' => [
                         'title' => 'Gresik SEZ Launches Auto Gate Customs System Pilot to Accelerate Logistics Flow',
-                        'content' => '<p>Gresik, October 17, 2025 – The Gresik Special Economic Zone (SEZ) has begun implementing a digital-based logistics system through the pilot launch of the Customs Auto Gate System with the Directorate General of Customs and Excise (DGCE).</p><p>This innovative system is designed to streamline the flow of goods in and out of the SEZ by reducing manual inspection time and increasing operational efficiency.</p><p>The Auto Gate System uses advanced technology including RFID sensors, automated gates, and integrated customs clearance systems to enable seamless truck movement through customs checkpoints.</p>',
-                        'quote' => null
+                        'content' => 'Gresik, October 17, 2025 – The Gresik Special Economic Zone (SEZ) has begun implementing a digital-based logistics s...',
+                        'quote' => null,
                     ],
-                    [
-                        'locale' => 'id',
-                        'title' => 'KEK Gresik Meluncurkan Pilot Sistem Auto Gate Bea Cukai untuk Mempercepat Arus Logistik',
-                        'content' => '<p>Gresik, 17 Oktober 2025 – Kawasan Ekonomi Khusus (KEK) Gresik telah memulai penerapan sistem logistik berbasis digital melalui peluncuran pilot Sistem Auto Gate Bea Cukai bersama Direktorat Jenderal Bea dan Cukai (DJBC).</p><p>Sistem inovatif ini dirancang untuk mempercepat arus keluar masuk barang di KEK dengan mengurangi waktu pemeriksaan manual dan meningkatkan efisiensi operasional.</p><p>Sistem Auto Gate menggunakan teknologi canggih termasuk sensor RFID, gerbang otomatis, dan sistem clearance bea cukai terintegrasi untuk memungkinkan pergerakan truk yang mulus melalui pos pemeriksaan bea cukai.</p>',
-                        'quote' => null
-                    ]
+                    'zh' => [
+                        'title' => '格雷西克经济特区推出自动门海关系统试点，加速物流流动',
+                        'content' => '格雷西克，2025年10月17日 – 格雷西克经济特区（SEZ）已开始实施基于数字的物流系统...',
+                        'quote' => null,
+                    ],
+                    'ja' => [
+                        'title' => 'グレシック経済特区、物流フローを加速するオートゲート税関システムのパイロットを開始',
+                        'content' => 'グレシック、2025年10月17日 – グレシック経済特区（SEZ）は、デジタルベースの物流システムの実装を開始しました...',
+                        'quote' => null,
+                    ],
+                    'ko' => [
+                        'title' => '그레식 경제특구, 물류 흐름 가속화를 위한 자동 게이트 세관 시스템 파일럿 출시',
+                        'content' => '그레식, 2025년 10월 17일 – 그레식 경제특구(SEZ)는 디지털 기반 물류 시스템 구현을 시작했습니다...',
+                        'quote' => null,
+                    ],
+                    'tw' => [
+                        'title' => '格雷西克經濟特區推出自動門海關系統試點，加速物流流動',
+                        'content' => '格雷西克，2025年10月17日 – 格雷西克經濟特區（SEZ）已開始實施基於數位的物流系統...',
+                        'quote' => null,
+                    ],
                 ]
             ],
-            // News 2
             [
-                'category_id' => $newsCategory->id,
-                'thumbnail' => 'images/blog/.tmb/thumb_f6dfc-thor6475-1_adaptiveResize_634_385.jpg',
+                'thumbnail' => 'thumb_f6dfc-thor6475-1_adaptiveResize_634_385.jpg',
                 'is_published' => true,
-                'created_at' => Carbon::create(2025, 9, 25),
+                'category_id' => 1,
                 'translations' => [
-                    [
-                        'locale' => 'en',
+                    'id' => [
+                        'title' => 'Kapolda Jatim Kunjungi Kawasan Ekonomi Khusus JIIPE untuk Tinjau Markas Kepolisian Baru',
+                        'content' => 'Gresik, 25 September 2025 – Kepala Kepolisian Daerah Jawa Timur (Kapolda Jatim), Inspektur Jenderal Polisi Drs. Nanang Avianto...',
+                        'quote' => null,
+                    ],
+                    'en' => [
                         'title' => 'East Java Police Chief Visits JIIPE Special Economic Zone to Review New Police Headquarters',
-                        'content' => '<p>Gresik, September 25, 2025 – East Java Regional Police Chief (Kapolda Jatim), Inspector General Drs. Nanang Avianto, conducted an official visit to the Java Integrated Industrial and Ports Estate (JIIPE) Special Economic Zone.</p><p>The visit aimed to review the construction progress of the new police headquarters within the industrial area.</p><p>The new headquarters will enhance security capabilities and provide better law enforcement services to the rapidly growing industrial zone.</p>',
-                        'quote' => null
+                        'content' => 'Gresik, September 25, 2025 – East Java Regional Police Chief (Kapolda Jatim), Inspector General Drs. Nanang Avianto, c...',
+                        'quote' => null,
                     ],
-                    [
-                        'locale' => 'id',
-                        'title' => 'Kapolda Jawa Timur Mengunjungi KEK JIIPE untuk Meninjau Markas Polisi Baru',
-                        'content' => '<p>Gresik, 25 September 2025 – Kepala Kepolisian Daerah Jawa Timur (Kapolda Jatim), Inspektur Jenderal Drs. Nanang Avianto, melakukan kunjungan resmi ke Kawasan Ekonomi Khusus Java Integrated Industrial and Ports Estate (JIIPE).</p><p>Kunjungan ini bertujuan untuk meninjau kemajuan pembangunan markas polisi baru di dalam kawasan industri.</p><p>Markas baru akan meningkatkan kemampuan keamanan dan memberikan layanan penegakan hukum yang lebih baik untuk kawasan industri yang berkembang pesat.</p>',
-                        'quote' => null
-                    ]
+                    'zh' => [
+                        'title' => '东爪哇警察局长访问JIIPE经济特区，检查新警察总部',
+                        'content' => '格雷西克，2025年9月25日 – 东爪哇地区警察局长（Kapolda Jatim），警监总监Drs. Nanang Avianto...',
+                        'quote' => null,
+                    ],
+                    'ja' => [
+                        'title' => '東ジャワ警察署長、新警察本部を視察するためJIIPE経済特区を訪問',
+                        'content' => 'グレシック、2025年9月25日 – 東ジャワ地域警察署長（Kapolda Jatim）、警視総監Drs. Nanang Avianto...',
+                        'quote' => null,
+                    ],
+                    'ko' => [
+                        'title' => '동자바 경찰청장, 새 경찰 본부 검토를 위해 JIIPE 경제특구 방문',
+                        'content' => '그레식, 2025년 9월 25일 – 동자바 지역 경찰청장(Kapolda Jatim), 경감총감 Drs. Nanang Avianto...',
+                        'quote' => null,
+                    ],
+                    'tw' => [
+                        'title' => '東爪哇警察局長訪問JIIPE經濟特區，檢查新警察總部',
+                        'content' => '格雷西克，2025年9月25日 – 東爪哇地區警察局長（Kapolda Jatim），警監總監Drs. Nanang Avianto...',
+                        'quote' => null,
+                    ],
                 ]
             ],
-            // News 3
             [
-                'category_id' => $newsCategory->id,
-                'thumbnail' => 'images/blog/.tmb/thumb_7a1a6-dsc02292_adaptiveResize_634_385.JPG',
+                'thumbnail' => 'thumb_7a1a6-dsc02292_adaptiveResize_634_385.JPG',
                 'is_published' => true,
-                'created_at' => Carbon::create(2025, 9, 20),
+                'category_id' => 1,
                 'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'PLN Commissions 40 MVA High-Voltage Power Supply for BKMS in Gresik SEZ',
-                        'content' => '<p>Gresik, September 20, 2025 – PT PLN (Persero) officially inaugurated the high-voltage (HV) power supply for PT Berkah Kawasan Manyar Sejahtera (BKMS) in the Gresik Special Economic Zone.</p><p>The 40 MVA power capacity will support the growing industrial activities and meet the increasing electricity demand from companies operating within JIIPE.</p><p>This infrastructure development demonstrates PLN\'s commitment to supporting Indonesia\'s industrial growth and energy security.</p>',
-                        'quote' => null
-                    ],
-                    [
-                        'locale' => 'id',
+                    'id' => [
                         'title' => 'PLN Resmikan Pasokan Listrik Tegangan Tinggi 40 MVA untuk BKMS di KEK Gresik',
-                        'content' => '<p>Gresik, 20 September 2025 – PT PLN (Persero) secara resmi meresmikan pasokan listrik tegangan tinggi (TT) untuk PT Berkah Kawasan Manyar Sejahtera (BKMS) di Kawasan Ekonomi Khusus Gresik.</p><p>Kapasitas daya 40 MVA akan mendukung kegiatan industri yang berkembang dan memenuhi permintaan listrik yang meningkat dari perusahaan yang beroperasi di JIIPE.</p><p>Pengembangan infrastruktur ini menunjukkan komitmen PLN untuk mendukung pertumbuhan industri dan ketahanan energi Indonesia.</p>',
-                        'quote' => null
-                    ]
+                        'content' => 'Gresik, 20 September 2025 – PT PLN (Persero) resmi meresmikan pasokan listrik tegangan tinggi (TT) untuk PT Berkah...',
+                        'quote' => null,
+                    ],
+                    'en' => [
+                        'title' => 'PLN Commissions 40 MVA High-Voltage Power Supply for BKMS in Gresik SEZ',
+                        'content' => 'Gresik, September 20, 2025 – PT PLN (Persero) officially inaugurated the high-voltage (HV) power supply for PT Berkah ...',
+                        'quote' => null,
+                    ],
+                    'zh' => [
+                        'title' => 'PLN在格雷西克经济特区为BKMS启用40 MVA高压电源',
+                        'content' => '格雷西克，2025年9月20日 – PT PLN（Persero）正式启用为PT Berkah的高压（HV）电源供应...',
+                        'quote' => null,
+                    ],
+                    'ja' => [
+                        'title' => 'PLN、グレシック経済特区のBKMS向け40 MVA高圧電源を稼働開始',
+                        'content' => 'グレシック、2025年9月20日 – PT PLN（Persero）は、PT Berkah向けの高圧（HV）電源供給を正式に開始しました...',
+                        'quote' => null,
+                    ],
+                    'ko' => [
+                        'title' => 'PLN, 그레식 경제특구 BKMS를 위한 40 MVA 고압 전력 공급 시작',
+                        'content' => '그레식, 2025년 9월 20일 – PT PLN（Persero）은 PT Berkah를 위한 고압（HV）전력 공급을 공식적으로 시작했습니다...',
+                        'quote' => null,
+                    ],
+                    'tw' => [
+                        'title' => 'PLN在格雷西克經濟特區為BKMS啟用40 MVA高壓電源',
+                        'content' => '格雷西克，2025年9月20日 – PT PLN（Persero）正式啟用為PT Berkah的高壓（HV）電源供應...',
+                        'quote' => null,
+                    ],
                 ]
             ],
-            // News 4
             [
-                'category_id' => $newsCategory->id,
-                'thumbnail' => 'images/blog/.tmb/thumb_6cd00-whatsapp-image-2025-10-02-at-12-33-18_adaptiveResize_634_385.jpg',
+                'thumbnail' => 'thumb_6cd00-whatsapp-image-2025-10-02-at-12-33-18_adaptiveResize_634_385.jpg',
                 'is_published' => true,
-                'created_at' => Carbon::create(2025, 10, 2),
+                'category_id' => 1,
                 'translations' => [
-                    [
-                        'locale' => 'en',
+                    'id' => [
+                        'title' => 'Jawa Timur Catat Investasi Rp 74,69 Triliun di Semester I 2025, KEK JIIPE Raih Penghargaan Investasi 2025 Kategori Investasi Dalam Negeri',
+                        'content' => 'Surabaya, 2 Oktober 2025 – Jawa Timur terus memperkuat posisinya sebagai pendorong utama ekonomi nasional Indonesia...',
+                        'quote' => null,
+                    ],
+                    'en' => [
                         'title' => 'East Java Records Rp 74.69 Trillion Investment in H1 2025, JIIPE SEZ Wins Investment Award 2025 for Domestic Investment Category',
-                        'content' => '<p>Surabaya, October 2, 2025 – East Java continues to strengthen its position as a key driver of Indonesia\'s national economic growth, recording Rp 74.69 trillion in investment during the first half of 2025.</p><p>In recognition of outstanding performance, the JIIPE Special Economic Zone received the Investment Award 2025 in the Domestic Investment Category.</p><p>This achievement highlights JIIPE\'s success in attracting domestic investors and contributing significantly to regional economic development.</p>',
-                        'quote' => null
+                        'content' => 'Surabaya, October 2, 2025 – East Java continues to strengthen its position as a key driver of Indonesia\'s national ec...',
+                        'quote' => null,
                     ],
-                    [
-                        'locale' => 'id',
-                        'title' => 'Jawa Timur Catat Investasi Rp 74,69 Triliun di Semester I 2025, KEK JIIPE Raih Investment Award 2025 Kategori Investasi Dalam Negeri',
-                        'content' => '<p>Surabaya, 2 Oktober 2025 – Jawa Timur terus memperkuat posisinya sebagai penggerak utama pertumbuhan ekonomi nasional Indonesia, mencatat investasi sebesar Rp 74,69 triliun selama semester pertama 2025.</p><p>Sebagai pengakuan atas kinerja yang luar biasa, Kawasan Ekonomi Khusus JIIPE menerima Investment Award 2025 dalam Kategori Investasi Dalam Negeri.</p><p>Pencapaian ini menyoroti keberhasilan JIIPE dalam menarik investor domestik dan berkontribusi signifikan terhadap pembangunan ekonomi daerah.</p>',
-                        'quote' => null
-                    ]
+                    'zh' => [
+                        'title' => '东爪哇2025年上半年投资达74.69万亿印尼盾，JIIPE经济特区荣获2025年国内投资类别投资奖',
+                        'content' => '泗水，2025年10月2日 – 东爪哇继续巩固其作为印度尼西亚国民经济关键驱动力的地位...',
+                        'quote' => null,
+                    ],
+                    'ja' => [
+                        'title' => '東ジャワ、2025年上半期に74.69兆ルピアの投資を記録、JIIPE経済特区が国内投資部門で2025年投資賞を受賞',
+                        'content' => 'スラバヤ、2025年10月2日 – 東ジャワは、インドネシアの国民経済の主要な推進力としての地位を強化し続けています...',
+                        'quote' => null,
+                    ],
+                    'ko' => [
+                        'title' => '동자바, 2025년 상반기 74.69조 루피아 투자 기록, JIIPE 경제특구 국내 투자 부문 2025년 투자상 수상',
+                        'content' => '수라바야, 2025년 10월 2일 – 동자바는 인도네시아 국가 경제의 핵심 동력으로서의 입지를 계속 강화하고 있습니다...',
+                        'quote' => null,
+                    ],
+                    'tw' => [
+                        'title' => '東爪哇2025年上半年投資達74.69兆印尼盾，JIIPE經濟特區榮獲2025年國內投資類別投資獎',
+                        'content' => '泗水，2025年10月2日 – 東爪哇持續鞏固其作為印度尼西亞國民經濟關鍵驅動力的地位...',
+                        'quote' => null,
+                    ],
                 ]
             ],
-            // News 5
             [
-                'category_id' => $newsCategory->id,
-                'thumbnail' => 'images/blog/.tmb/thumb_05498-penandatanganan-jiipe_adaptiveResize_634_385.jpg',
+                'thumbnail' => 'thumb_05498-penandatanganan-jiipe_adaptiveResize_634_385.jpg',
                 'is_published' => true,
-                'created_at' => Carbon::create(2025, 4, 25),
+                'category_id' => 1,
                 'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'Golden Elephant Sincerity (GESC) Officially Joins JIIPE, Marks Global Expansion in Indonesia',
-                        'content' => '<p>Gresik, April 25, 2025 — Java Integrated Industrial and Ports Estate (JIIPE), a leading integrated industrial estate, marks another milestone with the entry of Golden Elephant Sincerity (GESC), a global leader in advanced materials and chemical solutions.</p><p>The signing ceremony represents GESC\'s strategic expansion into the Indonesian market and demonstrates growing international confidence in JIIPE\'s world-class facilities.</p><p>GESC will establish a state-of-the-art manufacturing facility within JIIPE, leveraging the zone\'s strategic location and comprehensive infrastructure.</p>',
-                        'quote' => null
-                    ],
-                    [
-                        'locale' => 'id',
+                    'id' => [
                         'title' => 'Golden Elephant Sincerity (GESC) Resmi Bergabung dengan JIIPE, Menandai Ekspansi Global di Indonesia',
-                        'content' => '<p>Gresik, 25 April 2025 — Java Integrated Industrial and Ports Estate (JIIPE), kawasan industri terintegrasi terkemuka, mencatat pencapaian lain dengan masuknya Golden Elephant Sincerity (GESC), pemimpin global dalam solusi material dan kimia canggih.</p><p>Upacara penandatanganan mewakili ekspansi strategis GESC ke pasar Indonesia dan menunjukkan meningkatnya kepercayaan internasional terhadap fasilitas kelas dunia JIIPE.</p><p>GESC akan mendirikan fasilitas manufaktur canggih di dalam JIIPE, memanfaatkan lokasi strategis dan infrastruktur komprehensif zona tersebut.</p>',
-                        'quote' => null
-                    ]
+                        'content' => 'Gresik, 25 April 2025 — Java Integrated Industrial and Ports Estate (JIIPE), kawasan industri terintegrasi terkemuka...',
+                        'quote' => null,
+                    ],
+                    'en' => [
+                        'title' => 'Golden Elephant Sincerity (GESC) Officially Joins JIIPE, Marks Global Expansion in Indonesia',
+                        'content' => 'Gresik, April 25, 2025 — Java Integrated Industrial and Ports Estate (JIIPE), a leading integrated industrial estate, m...',
+                        'quote' => null,
+                    ],
+                    'zh' => [
+                        'title' => '金象诚信（GESC）正式加入JIIPE，标志着在印尼的全球扩张',
+                        'content' => '格雷西克，2025年4月25日 — 爪哇综合工业港口区（JIIPE），一个领先的综合工业区...',
+                        'quote' => null,
+                    ],
+                    'ja' => [
+                        'title' => 'Golden Elephant Sincerity（GESC）がJIIPEに正式参加、インドネシアでのグローバル展開を開始',
+                        'content' => 'グレシック、2025年4月25日 — ジャワ統合工業港湾エステート（JIIPE）、主要な統合工業団地...',
+                        'quote' => null,
+                    ],
+                    'ko' => [
+                        'title' => 'Golden Elephant Sincerity (GESC) JIIPE 공식 합류, 인도네시아에서 글로벌 확장 표시',
+                        'content' => '그레식, 2025년 4월 25일 — Java Integrated Industrial and Ports Estate (JIIPE), 선도적인 통합 산업 단지...',
+                        'quote' => null,
+                    ],
+                    'tw' => [
+                        'title' => '金象誠信（GESC）正式加入JIIPE，標誌著在印尼的全球擴張',
+                        'content' => '格雷西克，2025年4月25日 — 爪哇綜合工業港口區（JIIPE），一個領先的綜合工業區...',
+                        'quote' => null,
+                    ],
                 ]
             ],
-            // News 6
             [
-                'category_id' => $newsCategory->id,
-                'thumbnail' => 'images/blog/.tmb/thumb_1d3c1-presidenri-go-id-18032025093249-67d8db51d1a0d1-51054546_adaptiveResize_634_385.jpg',
+                'thumbnail' => 'thumb_1d3c1-presidenri-go-id-18032025093249-67d8db51d1a0d1-51054546_adaptiveResize_634_385.jpg',
                 'is_published' => true,
-                'created_at' => Carbon::create(2025, 3, 17),
+                'category_id' => 1,
                 'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'JIIPE: Indonesia\'s Precious Metal Downstreaming Hub',
-                        'content' => '<p>Gresik SEZ, March 17, 2025 – Indonesian President Prabowo Subianto inaugurated PT Freeport Indonesia\'s (PTFI) Precious Metals Refinery (PMR) at the JIIPE Special Economic Zone.</p><p>This world-class facility marks a significant milestone in Indonesia\'s downstreaming strategy, enabling the country to process precious metals domestically and add greater value to its natural resources.</p><p>The PMR facility will process gold, silver, and other precious metals extracted from PTFI mining operations, creating thousands of jobs and contributing significantly to the national economy.</p>',
-                        'quote' => null
-                    ],
-                    [
-                        'locale' => 'id',
+                    'id' => [
                         'title' => 'JIIPE: Pusat Hilirisasi Logam Mulia Indonesia',
-                        'content' => '<p>KEK Gresik, 17 Maret 2025 – Presiden Indonesia Prabowo Subianto meresmikan Kilang Logam Mulia (Precious Metals Refinery/PMR) PT Freeport Indonesia (PTFI) di Kawasan Ekonomi Khusus JIIPE.</p><p>Fasilitas kelas dunia ini menandai tonggak penting dalam strategi hilirisasi Indonesia, memungkinkan negara untuk memproses logam mulia secara domestik dan menambah nilai lebih besar pada sumber daya alamnya.</p><p>Fasilitas PMR akan memproses emas, perak, dan logam mulia lainnya yang diekstraksi dari operasi pertambangan PTFI, menciptakan ribuan lapangan kerja dan berkontribusi signifikan terhadap ekonomi nasional.</p>',
-                        'quote' => null
-                    ]
-                ]
-            ],
-            // News 7
-            [
-                'category_id' => $newsCategory->id,
-                'thumbnail' => 'images/blog/.tmb/thumb_22ba9-001-23_adaptiveResize_634_385.jpg',
-                'is_published' => true,
-                'created_at' => Carbon::create(2025, 1, 15),
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'ANTAM OFFICIALLY JOINS JIIPE, READY TO BECOME A STRATEGIC LOCATION FOR THE METAL & MINERAL INDUSTRY',
-                        'content' => '<p>ANTAM\'s entry into JIIPE marks a strategic step in advancing the downstream processing of metals and strengthening Indonesia\'s position in the global supply chain.</p><p>As one of Indonesia\'s largest mining companies, PT Aneka Tambang (ANTAM) will establish processing facilities within JIIPE to add value to the nation\'s mineral resources.</p><p>This investment aligns with the government\'s vision of transforming Indonesia from a raw material exporter to a processed product producer, creating higher economic value and more employment opportunities.</p>',
-                        'quote' => null
+                        'content' => 'KEK Gresik, 17 Maret 2025 – Presiden Indonesia Prabowo Subianto meresmikan Pabrik Logam Mulia PT Freeport Indonesia (PTFI)...',
+                        'quote' => null,
                     ],
-                    [
-                        'locale' => 'id',
-                        'title' => 'ANTAM RESMI BERGABUNG DENGAN JIIPE, SIAP MENJADI LOKASI STRATEGIS UNTUK INDUSTRI LOGAM & MINERAL',
-                        'content' => '<p>Masuknya ANTAM ke JIIPE menandai langkah strategis dalam memajukan pemrosesan hilir logam dan memperkuat posisi Indonesia dalam rantai pasokan global.</p><p>Sebagai salah satu perusahaan pertambangan terbesar Indonesia, PT Aneka Tambang (ANTAM) akan mendirikan fasilitas pemrosesan di dalam JIIPE untuk menambah nilai sumber daya mineral bangsa.</p><p>Investasi ini sejalan dengan visi pemerintah untuk mengubah Indonesia dari pengekspor bahan mentah menjadi produsen produk olahan, menciptakan nilai ekonomi yang lebih tinggi dan lebih banyak peluang kerja.</p>',
-                        'quote' => null
-                    ]
-                ]
-            ],
-            // Article 1
-            [
-                'category_id' => $articleCategory->id,
-                'thumbnail' => 'images/blog/article1.jpg',
-                'is_published' => true,
-                'created_at' => Carbon::create(2025, 10, 10),
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'Understanding the Benefits of Special Economic Zones for Industrial Development',
-                        'content' => '<p>Special Economic Zones (SEZ) have become a crucial instrument in attracting foreign investment and boosting economic growth in Indonesia.</p><p>SEZs offer various incentives including tax holidays, customs facilities, and streamlined business processes that make them attractive to investors looking to establish operations in Southeast Asia.</p><p>JIIPE in Gresik is one example of a successful SEZ that has attracted major investments in various industrial sectors including metals processing, chemicals, and logistics.</p><p>The integrated nature of JIIPE, combining industrial estate with port facilities, provides unique competitive advantages that are difficult to find elsewhere in the region.</p>',
-                        'quote' => null
+                    'en' => [
+                        'title' => 'JIIPE: Indonesia\'s Precious Metal Downstreaming Hub',
+                        'content' => 'Gresik SEZ, March 17, 2025 – Indonesian President Prabowo Subianto inaugurated PT Freeport Indonesia\'s (PTFI) Preciou...',
+                        'quote' => null,
                     ],
-                    [
-                        'locale' => 'id',
-                        'title' => 'Memahami Manfaat Kawasan Ekonomi Khusus untuk Pengembangan Industri',
-                        'content' => '<p>Kawasan Ekonomi Khusus (KEK) telah menjadi instrumen penting dalam menarik investasi asing dan mendorong pertumbuhan ekonomi di Indonesia.</p><p>KEK menawarkan berbagai insentif termasuk tax holiday, fasilitas kepabeanan, dan proses bisnis yang disederhanakan yang membuatnya menarik bagi investor yang ingin mendirikan operasi di Asia Tenggara.</p><p>JIIPE di Gresik adalah salah satu contoh KEK sukses yang telah menarik investasi besar di berbagai sektor industri termasuk pemrosesan logam, kimia, dan logistik.</p><p>Sifat terintegrasi JIIPE, menggabungkan kawasan industri dengan fasilitas pelabuhan, memberikan keunggulan kompetitif unik yang sulit ditemukan di tempat lain di kawasan.</p>',
-                        'quote' => null
-                    ]
-                ]
-            ],
-            // Article 2
-            [
-                'category_id' => $articleCategory->id,
-                'thumbnail' => 'images/blog/article2.jpg',
-                'is_published' => true,
-                'created_at' => Carbon::create(2025, 9, 28),
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'The Role of Port Infrastructure in Industrial Estate Competitiveness',
-                        'content' => '<p>Modern industrial estates require integrated infrastructure, and port facilities play a critical role in ensuring supply chain efficiency.</p><p>JIIPE\'s strategic location with direct port access provides significant competitive advantages for companies operating within the zone, particularly those engaged in import-export activities.</p><p>This article explores how port integration reduces logistics costs and improves time-to-market for industrial products.</p><p>With dedicated berths capable of handling various vessel types and cargo categories, JIIPE\'s port infrastructure eliminates the need for companies to transport goods over long distances to reach seaports.</p><p>The seamless connection between manufacturing facilities and port operations creates a highly efficient value chain that benefits all stakeholders.</p>',
-                        'quote' => null
+                    'zh' => [
+                        'title' => 'JIIPE：印尼贵金属下游枢纽',
+                        'content' => '格雷西克经济特区，2025年3月17日 – 印度尼西亚总统普拉博沃·苏比安托为PT Freeport Indonesia（PTFI）的贵金属工厂揭幕...',
+                        'quote' => null,
                     ],
-                    [
-                        'locale' => 'id',
-                        'title' => 'Peran Infrastruktur Pelabuhan dalam Daya Saing Kawasan Industri',
-                        'content' => '<p>Kawasan industri modern membutuhkan infrastruktur terintegrasi, dan fasilitas pelabuhan memainkan peran kritis dalam memastikan efisiensi rantai pasokan.</p><p>Lokasi strategis JIIPE dengan akses pelabuhan langsung memberikan keunggulan kompetitif yang signifikan bagi perusahaan yang beroperasi di dalam zona, terutama yang terlibat dalam kegiatan impor-ekspor.</p><p>Artikel ini mengeksplorasi bagaimana integrasi pelabuhan mengurangi biaya logistik dan meningkatkan time-to-market untuk produk industri.</p><p>Dengan dermaga khusus yang mampu menangani berbagai jenis kapal dan kategori kargo, infrastruktur pelabuhan JIIPE menghilangkan kebutuhan perusahaan untuk mengangkut barang jarak jauh untuk mencapai pelabuhan laut.</p><p>Koneksi mulus antara fasilitas manufaktur dan operasi pelabuhan menciptakan rantai nilai yang sangat efisien yang menguntungkan semua pemangku kepentingan.</p>',
-                        'quote' => null
-                    ]
-                ]
-            ],
-            // Article 3
-            [
-                'category_id' => $articleCategory->id,
-                'thumbnail' => 'images/blog/article3.jpg',
-                'is_published' => true,
-                'created_at' => Carbon::create(2025, 9, 15),
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'Sustainability and Green Industry Practices in Modern Industrial Estates',
-                        'content' => '<p>As global awareness of environmental issues grows, industrial estates are increasingly adopting sustainable practices and green technologies.</p><p>JIIPE has implemented various environmental management systems including wastewater treatment facilities, green spaces, and energy-efficient infrastructure.</p><p>This commitment to sustainability not only benefits the environment but also attracts environmentally-conscious investors and helps companies meet international ESG (Environmental, Social, and Governance) standards.</p><p>The article examines best practices in sustainable industrial development and how JIIPE serves as a model for future industrial estates in Indonesia.</p>',
-                        'quote' => null
+                    'ja' => [
+                        'title' => 'JIIPE：インドネシアの貴金属下流化拠点',
+                        'content' => 'グレシック経済特区、2025年3月17日 – インドネシア大統領プラボウォ・スビアントは、PT Freeport Indonesia（PTFI）の貴金属工場を開設しました...',
+                        'quote' => null,
                     ],
-                    [
-                        'locale' => 'id',
-                        'title' => 'Keberlanjutan dan Praktik Industri Hijau di Kawasan Industri Modern',
-                        'content' => '<p>Seiring meningkatnya kesadaran global tentang isu lingkungan, kawasan industri semakin mengadopsi praktik berkelanjutan dan teknologi hijau.</p><p>JIIPE telah menerapkan berbagai sistem manajemen lingkungan termasuk fasilitas pengolahan air limbah, ruang hijau, dan infrastruktur hemat energi.</p><p>Komitmen terhadap keberlanjutan ini tidak hanya bermanfaat bagi lingkungan tetapi juga menarik investor yang sadar lingkungan dan membantu perusahaan memenuhi standar ESG (Environmental, Social, and Governance) internasional.</p><p>Artikel ini mengkaji praktik terbaik dalam pengembangan industri berkelanjutan dan bagaimana JIIPE menjadi model untuk kawasan industri masa depan di Indonesia.</p>',
-                        'quote' => null
-                    ]
-                ]
-            ],
-            // Article 4
-            [
-                'category_id' => $articleCategory->id,
-                'thumbnail' => 'images/blog/article4.jpg',
-                'is_published' => true,
-                'created_at' => Carbon::create(2025, 8, 20),
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'Digital Transformation in Industrial Operations: The Smart Factory Revolution',
-                        'content' => '<p>Industry 4.0 technologies are reshaping manufacturing operations worldwide, and Indonesian industrial estates are embracing this digital revolution.</p><p>Smart factories leverage IoT sensors, artificial intelligence, and data analytics to optimize production processes, reduce waste, and improve product quality.</p><p>JIIPE supports companies in their digital transformation journey by providing advanced telecommunications infrastructure and collaborating with technology partners.</p><p>This article explores how digitalization is creating new competitive advantages for manufacturers and positioning Indonesia as a hub for advanced manufacturing in Southeast Asia.</p><p>From predictive maintenance to automated quality control, the possibilities of smart manufacturing are transforming traditional industrial operations.</p>',
-                        'quote' => null
+                    'ko' => [
+                        'title' => 'JIIPE: 인도네시아의 귀금속 다운스트림 허브',
+                        'content' => '그레식 경제특구, 2025년 3월 17일 – 인도네시아 대통령 프라보워 수비안토는 PT Freeport Indonesia (PTFI)의 귀금속 공장을 개설했습니다...',
+                        'quote' => null,
                     ],
-                    [
-                        'locale' => 'id',
-                        'title' => 'Transformasi Digital dalam Operasi Industri: Revolusi Pabrik Pintar',
-                        'content' => '<p>Teknologi Industri 4.0 membentuk kembali operasi manufaktur di seluruh dunia, dan kawasan industri Indonesia merangkul revolusi digital ini.</p><p>Pabrik pintar memanfaatkan sensor IoT, kecerdasan buatan, dan analitik data untuk mengoptimalkan proses produksi, mengurangi limbah, dan meningkatkan kualitas produk.</p><p>JIIPE mendukung perusahaan dalam perjalanan transformasi digital mereka dengan menyediakan infrastruktur telekomunikasi canggih dan berkolaborasi dengan mitra teknologi.</p><p>Artikel ini mengeksplorasi bagaimana digitalisasi menciptakan keunggulan kompetitif baru bagi produsen dan memposisikan Indonesia sebagai pusat manufaktur canggih di Asia Tenggara.</p><p>Dari pemeliharaan prediktif hingga kontrol kualitas otomatis, kemungkinan manufaktur pintar mengubah operasi industri tradisional.</p>',
-                        'quote' => null
-                    ]
-                ]
-            ],
-            // Article 5
-            [
-                'category_id' => $articleCategory->id,
-                'thumbnail' => 'images/blog/article5.jpg',
-                'is_published' => true,
-                'created_at' => Carbon::create(2025, 7, 30),
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'Supply Chain Resilience: Lessons from Global Disruptions',
-                        'content' => '<p>Recent global events have highlighted the importance of supply chain resilience and the need for diversified manufacturing bases.</p><p>Indonesia\'s strategic location in Southeast Asia makes it an ideal hub for companies seeking to strengthen their supply chain resilience.</p><p>JIIPE offers manufacturers a secure and efficient base for operations with access to both domestic and international markets.</p><p>This article analyzes supply chain trends and explains why integrated industrial estates like JIIPE are becoming increasingly important in global manufacturing strategies.</p><p>With reliable infrastructure, skilled workforce, and government support, JIIPE provides the stability that companies need to navigate uncertain global conditions.</p>',
-                        'quote' => null
+                    'tw' => [
+                        'title' => 'JIIPE：印尼貴金屬下游樞紐',
+                        'content' => '格雷西克經濟特區，2025年3月17日 – 印度尼西亞總統普拉博沃·蘇比安托為PT Freeport Indonesia（PTFI）的貴金屬工廠揭幕...',
+                        'quote' => null,
                     ],
-                    [
-                        'locale' => 'id',
-                        'title' => 'Ketahanan Rantai Pasokan: Pelajaran dari Gangguan Global',
-                        'content' => '<p>Peristiwa global baru-baru ini telah menyoroti pentingnya ketahanan rantai pasokan dan kebutuhan untuk basis manufaktur yang terdiversifikasi.</p><p>Lokasi strategis Indonesia di Asia Tenggara menjadikannya pusat ideal bagi perusahaan yang ingin memperkuat ketahanan rantai pasokan mereka.</p><p>JIIPE menawarkan produsen basis operasi yang aman dan efisien dengan akses ke pasar domestik dan internasional.</p><p>Artikel ini menganalisis tren rantai pasokan dan menjelaskan mengapa kawasan industri terintegrasi seperti JIIPE menjadi semakin penting dalam strategi manufaktur global.</p><p>Dengan infrastruktur yang andal, tenaga kerja terampil, dan dukungan pemerintah, JIIPE memberikan stabilitas yang dibutuhkan perusahaan untuk menavigasi kondisi global yang tidak pasti.</p>',
-                        'quote' => null
-                    ]
-                ]
-            ],
-            // Article 6
-            [
-                'category_id' => $articleCategory->id,
-                'thumbnail' => 'images/blog/article6.jpg',
-                'is_published' => true,
-                'created_at' => Carbon::create(2025, 7, 5),
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'Indonesia\'s Downstreaming Strategy: Adding Value to Natural Resources',
-                        'content' => '<p>Indonesia is rich in natural resources including minerals, metals, and agricultural products. The government\'s downstreaming policy aims to process these resources domestically rather than exporting raw materials.</p><p>This strategy creates more value, generates employment, and strengthens the industrial base.</p><p>JIIPE plays a crucial role in this transformation by hosting world-class processing facilities for copper, precious metals, and other commodities.</p><p>The article examines the economic benefits of downstreaming and how industrial estates contribute to Indonesia\'s ambition of becoming a developed nation.</p><p>From smelters to refineries, JIIPE is at the forefront of Indonesia\'s industrial transformation.</p>',
-                        'quote' => null
-                    ],
-                    [
-                        'locale' => 'id',
-                        'title' => 'Strategi Hilirisasi Indonesia: Menambah Nilai pada Sumber Daya Alam',
-                        'content' => '<p>Indonesia kaya akan sumber daya alam termasuk mineral, logam, dan produk pertanian. Kebijakan hilirisasi pemerintah bertujuan untuk memproses sumber daya ini secara domestik daripada mengekspor bahan mentah.</p><p>Strategi ini menciptakan lebih banyak nilai, menghasilkan lapangan kerja, dan memperkuat basis industri.</p><p>JIIPE memainkan peran penting dalam transformasi ini dengan menjadi tuan rumah fasilitas pemrosesan kelas dunia untuk tembaga, logam mulia, dan komoditas lainnya.</p><p>Artikel ini mengkaji manfaat ekonomi hilirisasi dan bagaimana kawasan industri berkontribusi pada ambisi Indonesia menjadi negara maju.</p><p>Dari smelter hingga kilang, JIIPE berada di garis depan transformasi industri Indonesia.</p>',
-                        'quote' => null
-                    ]
-                ]
-            ],
-            // Article 7
-            [
-                'category_id' => $articleCategory->id,
-                'thumbnail' => 'images/blog/article7.jpg',
-                'is_published' => true,
-                'created_at' => Carbon::create(2025, 6, 15),
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'Workforce Development and Industrial Skills Training',
-                        'content' => '<p>A skilled workforce is essential for industrial competitiveness. Indonesia has a large young population that represents both an opportunity and a challenge.</p><p>Industrial estates like JIIPE collaborate with educational institutions and training centers to develop skilled workers who meet industry requirements.</p><p>Training programs cover various fields including welding, machine operation, quality control, and safety management.</p><p>This article discusses the importance of workforce development and how JIIPE contributes to building Indonesia\'s human capital for industrial growth.</p><p>By investing in people, JIIPE ensures that companies have access to the skilled labor they need to succeed.</p>',
-                        'quote' => null
-                    ],
-                    [
-                        'locale' => 'id',
-                        'title' => 'Pengembangan Tenaga Kerja dan Pelatihan Keterampilan Industri',
-                        'content' => '<p>Tenaga kerja terampil sangat penting untuk daya saing industri. Indonesia memiliki populasi muda yang besar yang mewakili peluang dan tantangan.</p><p>Kawasan industri seperti JIIPE berkolaborasi dengan lembaga pendidikan dan pusat pelatihan untuk mengembangkan pekerja terampil yang memenuhi persyaratan industri.</p><p>Program pelatihan mencakup berbagai bidang termasuk pengelasan, operasi mesin, kontrol kualitas, dan manajemen keselamatan.</p><p>Artikel ini membahas pentingnya pengembangan tenaga kerja dan bagaimana JIIPE berkontribusi membangun modal manusia Indonesia untuk pertumbuhan industri.</p><p>Dengan berinvestasi pada orang, JIIPE memastikan bahwa perusahaan memiliki akses ke tenaga kerja terampil yang mereka butuhkan untuk sukses.</p>',
-                        'quote' => null
-                    ]
-                ]
-            ],
-            // Article 8
-            [
-                'category_id' => $articleCategory->id,
-                'thumbnail' => 'images/blog/article8.jpg',
-                'is_published' => true,
-                'created_at' => Carbon::create(2025, 5, 25),
-                'translations' => [
-                    [
-                        'locale' => 'en',
-                        'title' => 'Energy Infrastructure for Heavy Industry: Meeting Power Demands',
-                        'content' => '<p>Heavy industries such as smelters, refineries, and chemical plants require substantial and reliable power supplies.</p><p>JIIPE has developed robust energy infrastructure including high-voltage transmission lines and substations to meet these demanding requirements.</p><p>Partnership with PLN ensures that companies have access to stable electricity at competitive rates.</p><p>The article explores energy considerations for industrial development and how JIIPE\'s power infrastructure supports heavy industrial operations.</p><p>Reliable energy supply is not just about quantity but also quality - consistent voltage and frequency are critical for sensitive industrial processes.</p>',
-                        'quote' => null
-                    ],
-                    [
-                        'locale' => 'id',
-                        'title' => 'Infrastruktur Energi untuk Industri Berat: Memenuhi Kebutuhan Daya',
-                        'content' => '<p>Industri berat seperti smelter, kilang, dan pabrik kimia memerlukan pasokan listrik yang besar dan andal.</p><p>JIIPE telah mengembangkan infrastruktur energi yang kuat termasuk jalur transmisi tegangan tinggi dan gardu induk untuk memenuhi persyaratan yang menuntut ini.</p><p>Kemitraan dengan PLN memastikan bahwa perusahaan memiliki akses ke listrik stabil dengan tarif kompetitif.</p><p>Artikel ini mengeksplorasi pertimbangan energi untuk pengembangan industri dan bagaimana infrastruktur listrik JIIPE mendukung operasi industri berat.</p><p>Pasokan energi yang andal bukan hanya tentang kuantitas tetapi juga kualitas - tegangan dan frekuensi yang konsisten sangat penting untuk proses industri yang sensitif.</p>',
-                        'quote' => null
-                    ]
                 ]
             ],
         ];
+
         foreach ($newsData as $data) {
-            $news = News::create([
-                'category_id' => $data['category_id'],
-                'thumbnail' => $data['thumbnail'],
-                'is_published' => $data['is_published'],
-                'created_at' => $data['created_at'],
-            ]);
-            foreach ($data['translations'] as $translation) {
+            $translations = $data['translations'];
+            unset($data['translations']);
+
+            $news = News::create($data);
+
+            foreach ($translations as $locale => $translation) {
                 NewsTranslation::create([
                     'news_id' => $news->id,
-                    'locale' => $translation['locale'],
+                    'locale' => $locale,
                     'title' => $translation['title'],
                     'content' => $translation['content'],
                     'quote' => $translation['quote'],
@@ -398,5 +294,283 @@ class NewsSeeder extends Seeder
             }
         }
 
+        $newsData = [
+            [
+                'thumbnail' => 'thumb_6adfc-picture2_adaptiveResize_634_385.png',
+                'is_published' => true,
+                'category_id' => 4,
+                'translations' => [
+                    'id' => [
+                        'title' => 'JIIPE Perkuat Konektivitas Industri dan Pelabuhan Melalui Pengembangan Jalan Akses Utama ROW 80',
+                        'content' => 'Java Integrated Industrial and Ports Estate (JIIPE) memperkuat posisinya sebagai kawasan industri dan pelabuhan terintegrasi melalui pembangunan jalan akses utama selebar 80 meter...',
+                        'quote' => null,
+                    ],
+                    'en' => [
+                        'title' => 'JIIPE Strengthens Industrial and Port Connectivity Through the Development of the Main Access Road ROW 80',
+                        'content' => 'Java Integrated Industrial and Ports Estate (JIIPE) reinforces its position as an integrated industrial and port estate through the construction of a main access road 80 meters wide, kn...',
+                        'quote' => null,
+                    ],
+                    'zh' => [
+                        'title' => 'JIIPE通过开发ROW 80主要通道道路加强工业和港口连通性',
+                        'content' => '爪哇综合工业港口区（JIIPE）通过建设80米宽的主要通道道路，加强其作为综合工业和港口区的地位...',
+                        'quote' => null,
+                    ],
+                    'ja' => [
+                        'title' => 'JIIPE、主要アクセス道路ROW 80の開発を通じて工業と港湾の接続性を強化',
+                        'content' => 'ジャワ統合工業港湾エステート（JIIPE）は、幅80メートルの主要アクセス道路の建設を通じて、統合工業港湾エステートとしての地位を強化しています...',
+                        'quote' => null,
+                    ],
+                    'ko' => [
+                        'title' => 'JIIPE, ROW 80 주요 진입로 개발을 통해 산업 및 항만 연결성 강화',
+                        'content' => 'Java Integrated Industrial and Ports Estate (JIIPE)는 80미터 너비의 주요 진입로 건설을 통해 통합 산업 및 항만 단지로서의 입지를 강화하고 있습니다...',
+                        'quote' => null,
+                    ],
+                    'tw' => [
+                        'title' => 'JIIPE通過開發ROW 80主要通道道路加強工業和港口連通性',
+                        'content' => '爪哇綜合工業港口區（JIIPE）通過建設80米寬的主要通道道路，加強其作為綜合工業和港口區的地位...',
+                        'quote' => null,
+                    ],
+                ]
+            ],
+            [
+                'thumbnail' => 'thumb_fa08b-close-up-mineral-background_adaptiveResize_634_385.jpg',
+                'is_published' => true,
+                'category_id' => 4,
+                'translations' => [
+                    'id' => [
+                        'title' => '2025: Tahun Defisit Tembaga - Mengapa Dunia Beralih ke Indonesia',
+                        'content' => 'Tembaga, "logam elektrifikasi," berada di pusat transisi global menuju masa depan yang lebih hijau dan lebih terhubung...',
+                        'quote' => null,
+                    ],
+                    'en' => [
+                        'title' => '2025: The Year of the Copper Deficit - Why the World is Turning to Indonesia',
+                        'content' => 'Copper, the "metal of electrification," stands at the epicenter of the global transition towards a greener, more connecte...',
+                        'quote' => null,
+                    ],
+                    'zh' => [
+                        'title' => '2025年：铜短缺之年 - 为什么世界转向印度尼西亚',
+                        'content' => '铜，"电气化金属"，处于全球向更绿色、更互联的未来转型的中心...',
+                        'quote' => null,
+                    ],
+                    'ja' => [
+                        'title' => '2025年：銅不足の年 - なぜ世界はインドネシアに注目するのか',
+                        'content' => '銅、「電化の金属」は、よりグリーンで、より接続された未来へのグローバルな移行の震源地に立っています...',
+                        'quote' => null,
+                    ],
+                    'ko' => [
+                        'title' => '2025년: 구리 부족의 해 - 세계가 인도네시아로 눈을 돌리는 이유',
+                        'content' => '"전기화의 금속"인 구리는 더 친환경적이고 더 연결된 미래를 향한 글로벌 전환의 진원지에 서 있습니다...',
+                        'quote' => null,
+                    ],
+                    'tw' => [
+                        'title' => '2025年：銅短缺之年 - 為什麼世界轉向印度尼西亞',
+                        'content' => '銅，"電氣化金屬"，處於全球向更綠色、更互聯的未來轉型的中心...',
+                        'quote' => null,
+                    ],
+                ]
+            ],
+            [
+                'thumbnail' => 'thumb_55ec4-copper_adaptiveResize_634_385.png',
+                'is_published' => true,
+                'category_id' => 4,
+                'translations' => [
+                    'id' => [
+                        'title' => 'Peran Strategis Indonesia dalam Masa Depan Pasokan Tembaga Global',
+                        'content' => 'Di balik setiap kabel listrik, baterai kendaraan listrik (EV), dan turbin angin terdapat satu elemen kritis: tembaga...',
+                        'quote' => null,
+                    ],
+                    'en' => [
+                        'title' => 'Indonesia\'s Strategic Role in the Future of Global Copper Supply',
+                        'content' => 'Behind every power cable, electric vehicle (EV) battery, and wind turbine lies one critical element: copper. This vers...',
+                        'quote' => null,
+                    ],
+                    'zh' => [
+                        'title' => '印度尼西亚在全球铜供应未来中的战略作用',
+                        'content' => '在每一根电缆、电动汽车（EV）电池和风力涡轮机背后都有一个关键元素：铜...',
+                        'quote' => null,
+                    ],
+                    'ja' => [
+                        'title' => 'グローバル銅供給の未来におけるインドネシアの戦略的役割',
+                        'content' => 'すべての電力ケーブル、電気自動車（EV）バッテリー、風力タービンの背後には、1つの重要な要素があります：銅...',
+                        'quote' => null,
+                    ],
+                    'ko' => [
+                        'title' => '글로벌 구리 공급의 미래에서 인도네시아의 전략적 역할',
+                        'content' => '모든 전력 케이블, 전기 자동차(EV) 배터리 및 풍력 터빈 뒤에는 하나의 중요한 요소가 있습니다: 구리...',
+                        'quote' => null,
+                    ],
+                    'tw' => [
+                        'title' => '印度尼西亞在全球銅供應未來中的戰略作用',
+                        'content' => '在每一根電纜、電動汽車（EV）電池和風力渦輪機背後都有一個關鍵元素：銅...',
+                        'quote' => null,
+                    ],
+                ]
+            ],
+            [
+                'thumbnail' => 'thumb_66f2f-chrm_adaptiveResize_634_385.png',
+                'is_published' => true,
+                'category_id' => 4,
+                'translations' => [
+                    'id' => [
+                        'title' => 'Industri Kimia Indonesia Meningkat: Peluang Pasar US$1,5 Miliar+ di 2025',
+                        'content' => 'Sebagai pilar dasar manufaktur modern, industri kimia berfungsi sebagai barometer langsung dari ekonomi suatu negara...',
+                        'quote' => null,
+                    ],
+                    'en' => [
+                        'title' => 'Indonesia\'s Chemical Industry on the Rise: A US$1.5B+ Market Opportunity in 2025',
+                        'content' => 'As a foundational pillar of modern manufacturing, the chemical industry serves as a direct barometer of a nation\'s e...',
+                        'quote' => null,
+                    ],
+                    'zh' => [
+                        'title' => '印度尼西亚化学工业崛起：2025年15亿美元以上的市场机会',
+                        'content' => '作为现代制造业的基础支柱，化学工业是一个国家经济的直接晴雨表...',
+                        'quote' => null,
+                    ],
+                    'ja' => [
+                        'title' => 'インドネシアの化学産業が上昇：2025年に15億ドル以上の市場機会',
+                        'content' => '現代製造業の基礎的な柱として、化学産業は国の経済の直接的なバロメーターとして機能します...',
+                        'quote' => null,
+                    ],
+                    'ko' => [
+                        'title' => '인도네시아 화학 산업 부상: 2025년 15억 달러 이상의 시장 기회',
+                        'content' => '현대 제조업의 기초 기둥으로서 화학 산업은 국가 경제의 직접적인 바로미터 역할을 합니다...',
+                        'quote' => null,
+                    ],
+                    'tw' => [
+                        'title' => '印度尼西亞化學工業崛起：2025年15億美元以上的市場機會',
+                        'content' => '作為現代製造業的基礎支柱，化學工業是一個國家經濟的直接晴雨表...',
+                        'quote' => null,
+                    ],
+                ]
+            ],
+            [
+                'thumbnail' => 'thumb_f1c8b-cover-ch_adaptiveResize_634_385.jpg',
+                'is_published' => true,
+                'category_id' => 4,
+                'translations' => [
+                    'id' => [
+                        'title' => 'Bangkitnya Indonesia sebagai Pusat Kimia Hijau Baru Global Selatan',
+                        'content' => 'Industri kimia terkait erat dengan kehidupan modern. Dari plastik yang membungkus makanan kita, pupuk yang menumbuhkan...',
+                        'quote' => null,
+                    ],
+                    'en' => [
+                        'title' => 'Indonesia\'s Rise as the New Green Chemistry Hub of the Global South',
+                        'content' => 'The chemical industry is deeply woven into modern life. From the plastics that wrap our food, the fertilizers that gro...',
+                        'quote' => null,
+                    ],
+                    'zh' => [
+                        'title' => '印度尼西亚崛起成为全球南方的新绿色化学中心',
+                        'content' => '化学工业深深融入现代生活。从包裹我们食物的塑料，到种植的肥料...',
+                        'quote' => null,
+                    ],
+                    'ja' => [
+                        'title' => 'インドネシア、グローバルサウスの新しいグリーンケミストリーハブとして台頭',
+                        'content' => '化学産業は現代生活に深く織り込まれています。私たちの食品を包むプラスチック、成長させる肥料から...',
+                        'quote' => null,
+                    ],
+                    'ko' => [
+                        'title' => '인도네시아, 글로벌 사우스의 새로운 그린 화학 허브로 부상',
+                        'content' => '화학 산업은 현대 생활에 깊이 뿌리박혀 있습니다. 우리의 음식을 포장하는 플라스틱, 재배하는 비료에서...',
+                        'quote' => null,
+                    ],
+                    'tw' => [
+                        'title' => '印度尼西亞崛起成為全球南方的新綠色化學中心',
+                        'content' => '化學工業深深融入現代生活。從包裹我們食物的塑料，到種植的肥料...',
+                        'quote' => null,
+                    ],
+                ]
+            ],
+            [
+                'thumbnail' => 'thumb_14133-cover-cp_adaptiveResize_634_385.png',
+                'is_published' => true,
+                'category_id' => 4,
+                'translations' => [
+                    'id' => [
+                        'title' => 'Peran Indonesia dalam Mendorong Transisi Energi Terbarukan Global',
+                        'content' => 'Seiring meningkatnya dorongan global untuk energi terbarukan, Indonesia muncul sebagai pemain penting dalam transisi menuju masa depan yang berkelanjutan...',
+                        'quote' => null,
+                    ],
+                    'en' => [
+                        'title' => 'Indonesia\'s Role in Powering the Global Renewable Energy Transition',
+                        'content' => 'As the global push for renewable energy intensifies, Indonesia is emerging as a pivotal player in the transition to a s...',
+                        'quote' => null,
+                    ],
+                    'zh' => [
+                        'title' => '印度尼西亚在推动全球可再生能源转型中的作用',
+                        'content' => '随着全球对可再生能源的推动加强，印度尼西亚正成为向可持续未来过渡的关键参与者...',
+                        'quote' => null,
+                    ],
+                    'ja' => [
+                        'title' => 'インドネシアのグローバル再生可能エネルギー転換を推進する役割',
+                        'content' => 'グローバルな再生可能エネルギーへの推進が強まる中、インドネシアは持続可能な未来への移行において重要なプレーヤーとして浮上しています...',
+                        'quote' => null,
+                    ],
+                    'ko' => [
+                        'title' => '글로벌 재생 에너지 전환을 주도하는 인도네시아의 역할',
+                        'content' => '재생 에너지에 대한 글로벌 추진이 강화됨에 따라 인도네시아는 지속 가능한 미래로의 전환에서 중요한 역할을 하는 국가로 부상하고 있습니다...',
+                        'quote' => null,
+                    ],
+                    'tw' => [
+                        'title' => '印度尼西亞在推動全球可再生能源轉型中的作用',
+                        'content' => '隨著全球對可再生能源的推動加強，印度尼西亞正成為向可持續未來過渡的關鍵參與者...',
+                        'quote' => null,
+                    ],
+                ]
+            ],
+            [
+                'thumbnail' => 'thumb_2b84d-cover-rn_adaptiveResize_634_385.png',
+                'is_published' => true,
+                'category_id' => 4,
+                'translations' => [
+                    'id' => [
+                        'title' => 'Samudra Tidak Pernah Tidur — Dan Mungkin Menggerakkan Masa Depan Kita',
+                        'content' => 'Dalam pencarian energi bersih, kita telah beralih ke langit dan matahari — tetapi salah satu yang paling kuat, konsisten...',
+                        'quote' => null,
+                    ],
+                    'en' => [
+                        'title' => 'The Ocean Doesn\'t Sleep — And It Might Power Our Future',
+                        'content' => 'In the quest for clean energy, we\'ve turned to the skies and the sun — but one of the most powerful, consistent ...',
+                        'quote' => null,
+                    ],
+                    'zh' => [
+                        'title' => '海洋永不眠 — 它可能为我们的未来提供动力',
+                        'content' => '在寻求清洁能源的过程中，我们已经转向天空和太阳 — 但最强大、最一致的...',
+                        'quote' => null,
+                    ],
+                    'ja' => [
+                        'title' => '海は眠らない — そしてそれは私たちの未来を動かすかもしれない',
+                        'content' => 'クリーンエネルギーの探求において、私たちは空と太陽に目を向けてきました — しかし最も強力で一貫した...',
+                        'quote' => null,
+                    ],
+                    'ko' => [
+                        'title' => '바다는 잠들지 않는다 — 그리고 우리의 미래를 움직일 수 있다',
+                        'content' => '청정 에너지를 찾는 과정에서 우리는 하늘과 태양으로 눈을 돌렸습니다 — 하지만 가장 강력하고 일관된...',
+                        'quote' => null,
+                    ],
+                    'tw' => [
+                        'title' => '海洋永不眠 — 它可能為我們的未來提供動力',
+                        'content' => '在尋求清潔能源的過程中，我們已經轉向天空和太陽 — 但最強大、最一致的...',
+                        'quote' => null,
+                    ],
+                ]
+            ],
+        ];
+
+        foreach ($newsData as $data) {
+            $translations = $data['translations'];
+            unset($data['translations']);
+
+            $news = News::create($data);
+
+            foreach ($translations as $locale => $translation) {
+                NewsTranslation::create([
+                    'news_id' => $news->id,
+                    'locale' => $locale,
+                    'title' => $translation['title'],
+                    'content' => $translation['content'],
+                    'quote' => $translation['quote'],
+                ]);
+            }
+        }
     }
 }

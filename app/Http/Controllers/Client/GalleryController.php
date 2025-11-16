@@ -24,7 +24,8 @@ class GalleryController extends Controller
 
         $categories = NewsCategories::with(['translations' => function ($query) use ($locale) {
             $query->where('locale', $locale);
-        }])->get()->map(function ($category) use ($locale) {
+        }])->whereIn('id', [1, 4])
+        ->get()->map(function ($category) use ($locale) {
             $translation = $category->translations->firstWhere('locale', $locale);
             return [
                 'id' => $category->id,
@@ -201,7 +202,7 @@ class GalleryController extends Controller
             'image' => $gallery->image
                 ? (filter_var($gallery->image, FILTER_VALIDATE_URL)
                     ? $gallery->image
-                    : asset('storage/' . $gallery->image))
+                    : asset('storage/gallery/' . $gallery->image))
                 : asset('asset/images/default-gallery.jpg'),
             'url_video' => $gallery->url_video,
             'date' => $gallery->date_input

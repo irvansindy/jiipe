@@ -23,7 +23,9 @@ class NewsBlogController extends Controller
         // Get all categories for navigation
         $categories = NewsCategories::with(['translations' => function($query) use ($locale) {
             $query->where('locale', $locale);
-        }])->get()->map(function($category) use ($locale) {
+        }])
+        ->whereIn('id', [1,4])
+        ->get()->map(function($category) use ($locale) {
             $translation = $category->translations->firstWhere('locale', $locale);
             return [
                 'id' => $category->id,
@@ -98,7 +100,6 @@ class NewsBlogController extends Controller
             'latestArticles' => $latestArticles,
             'articlesPagination' => null,
         ];
-
         return view('layouts.client.blog.index', compact('data'));
     }
 
@@ -110,7 +111,9 @@ class NewsBlogController extends Controller
         // Get all categories for navigation
         $categories = NewsCategories::with(['translations' => function($query) use ($locale) {
             $query->where('locale', $locale);
-        }])->get()->map(function($category) use ($locale) {
+        }])
+        ->whereIn('id', [1,4])
+        ->get()->map(function($category) use ($locale) {
             $translation = $category->translations->firstWhere('locale', $locale);
             return [
                 'id' => $category->id,
@@ -239,7 +242,9 @@ class NewsBlogController extends Controller
         // Get all categories for navigation
         $categories = NewsCategories::with(['translations' => function($query) use ($locale) {
             $query->where('locale', $locale);
-        }])->get()->map(function($category) use ($locale) {
+        }])
+        ->whereIn('id', [1,4])
+        ->get()->map(function($category) use ($locale) {
             $translation = $category->translations->firstWhere('locale', $locale);
             return [
                 'id' => $category->id,
@@ -285,7 +290,7 @@ class NewsBlogController extends Controller
             'thumbnail' => $news->thumbnail
                 ? (filter_var($news->thumbnail, FILTER_VALIDATE_URL)
                     ? $news->thumbnail
-                    : asset('storage/' . $news->thumbnail))
+                    : asset('storage/news/' . $news->thumbnail))
                 : asset('asset/images/default-blog.jpg'),
             'date' => $news->created_at ? $news->created_at->format('M d, Y') : '',
             'category' => $categoryTranslation ? $categoryTranslation->name : '',

@@ -45,7 +45,7 @@
                     <div class="row artikel-atas">
                         <div class="col-md-30">
                             <a href="{{ route('blog.detail', $data['latestPost']['id']) }}">
-                                <img src="{{ $data['latestPost']['thumbnail'] }}"
+                                <img src="{{ $data['latestPost']['thumbnail'] }}" decoding="async" loading="lazy"
                                     alt="{{ $data['latestPost']['title'] }}" class="img-fluid">
                             </a>
                         </div>
