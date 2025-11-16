@@ -52,7 +52,7 @@ class SezController extends Controller
         // Get all zones for SEZ
         $zones = Zone::with(['translations' => function($query) use ($locale) {
             $query->whereIn('locale', [$locale]);
-        }])->get();
+        }])->where('zone_class_id', 2)->get();
 
         $sezPages = $zones->map(function($zone) use ($locale) {
             $translation = $zone->translations->firstWhere('locale', $locale);
@@ -78,7 +78,7 @@ class SezController extends Controller
             'metaDesc' => __('Explore JIIPE Special Economic Zone benefits and facilities'),
             'sezPages' => $sezPages,
         ];
-
+        // dd($data);
         return view("layouts.client.sez.index", compact('data'));
     }
     public function detail($id)

@@ -15,7 +15,7 @@
                                 <li class="tab-link {{ $index === 0 ? 'active' : '' }}"
                                     data-tab="tab-{{ $index }}"
                                     data-title="{{ $sezPage['title'] }}"
-                                    data-thumbnail="{{ asset($sezPage['thumbnail'] ?? 'asset/images/default-cover.jpg') }}">
+                                    data-thumbnail="{{ asset('storage/zone/'. ($sezPage['thumbnail'] ?? 'asset/images/default-cover.jpg')) }}">
                                     <a href="javascript:void(0)">
                                         {{ $sezPage['menu_title'] ?? $sezPage['title'] }}
                                     </a>
@@ -28,7 +28,7 @@
                             @foreach ($data['sezPages'] as $index => $sezPage)
                                 <option value="tab-{{ $index }}"
                                         data-title="{{ $sezPage['title'] }}"
-                                        data-thumbnail="{{ asset($sezPage['thumbnail'] ?? 'asset/images/default-cover.jpg') }}"
+                                        data-thumbnail="{{ asset('storage/zone/'. ($sezPage['thumbnail'] ?? 'asset/images/default-cover.jpg')) }}"
                                         {{ $index === 0 ? 'selected' : '' }}>
                                     {{ $sezPage['menu_title'] ?? $sezPage['title'] }}
                                 </option>
