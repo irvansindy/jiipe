@@ -178,7 +178,7 @@ class AboutUsSeeder extends Seeder
 
         // Content Detail 1.1: PT Berkah Kawasan Manyar Sejahtera
         $content1_1 = AboutUsContentDetail::create([
-            'icon' => 'images/static/a45286c7f8logo-profil.png',
+            'icon' => 'a45286c7f8logo-profil.png',
             'category_id' => $category1->id
         ]);
 
@@ -226,7 +226,7 @@ class AboutUsSeeder extends Seeder
 
         // Content Detail 1.2: PT Berlian Manyar Sejahtera
         $content1_2 = AboutUsContentDetail::create([
-            'icon' => 'images/static/0f44050b48bms.png',
+            'icon' => '0f44050b48bms.png',
             'category_id' => $category1->id
         ]);
 
@@ -274,7 +274,7 @@ class AboutUsSeeder extends Seeder
 
         // Content Detail 1.3: AKR GEM City
         $content1_3 = AboutUsContentDetail::create([
-            'icon' => 'images/static/0551ae292fakr land.png',
+            'icon' => '0551ae292fakr land.png',
             'category_id' => $category1->id
         ]);
 
@@ -342,7 +342,7 @@ class AboutUsSeeder extends Seeder
 
         // Content Detail 2.1: PT AKR Corporindo
         $content2_1 = AboutUsContentDetail::create([
-            'icon' => 'images/static/f7af8cb6eclogo AKR Corp.png',
+            'icon' => 'f7af8cb6eclogo AKR Corp.png',
             'category_id' => $category2->id
         ]);
 
@@ -390,7 +390,7 @@ class AboutUsSeeder extends Seeder
 
         // Content Detail 2.2: PT Pelabuhan Indonesia
         $content2_2 = AboutUsContentDetail::create([
-            'icon' => 'images/static/cef383115blogo Pelindo.png',
+            'icon' => 'cef383115blogo Pelindo.png',
             'category_id' => $category2->id
         ]);
 

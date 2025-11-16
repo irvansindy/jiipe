@@ -4,24 +4,22 @@
             <div class="col-md-15">
                 <img src="{{ asset('asset/images/beijing-red.png') }}" alt="">
                 <p class="info">
-                    {{ __('About JIIPE Integrated Zone Shareholders') }}
+                    {{ $shareholders[0]['category']['translations'][0]['name'] ?? '' }}
                 </p>
             </div>
 
             <div class="col-md-45">
                 <div class="row sec-4 industry lists_profil_industry">
-                    @foreach ($shareholders ?? [] as $shareholder)
+                    @foreach ($shareholders ?? [] as $index => $shareholder)
                         <div class="col-md-30">
                             <div class="items">
-                                <img style="height:77px;" src="{{ $shareholder['logo'] ?? '' }}"
-                                    alt="{{ $shareholder['name'] ?? '' }}">
-
+                                <img style="height:77px;" src="{{ asset('storage/about_us/content_detail/' .$shareholder['icon'] ?? '') }}" alt="{{ $shareholder['translations'][0]['title'] ?? '' }}" decoding="async" loading="lazy">
                                 <div class="judul">
-                                    <p>{{ $shareholder['name'] ?? '' }}</p>
+                                    <p>{{ $shareholder['translations'][0]['title'] ?? '' }}</p>
                                 </div>
 
                                 <div class="content">
-                                    <p>{!! $shareholder['description'] ?? '' !!}</p>
+                                    <p>{!! $shareholder['translations'][0]['description'] ?? '' !!}</p>
                                 </div>
                             </div>
                         </div>

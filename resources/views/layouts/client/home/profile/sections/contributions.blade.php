@@ -23,8 +23,9 @@
                     </div>
                     <div class="col-md-30">
                         <div class="content">
+                            {!! $aboutUsHeader->translations[0]->description ?? '' !!}
                             {{-- {!! $contributionsContent ?? '' !!} --}}
-                            <div class="content">
+                            {{-- <div class="content">
                                 <p>
                                     JIIPE is the first integrated area in Indonesia, with a total area of 3,000
                                     hectares, consisting of industrial estates, multifunctional public ports, and
@@ -45,7 +46,7 @@
                                     loads of more than 100,000 DWT. International and domestic access is accommodated
                                     with sea, toll and train connectivity.
                                 </p>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

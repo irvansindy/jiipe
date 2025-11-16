@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             FrequentlyAskedQuestionsSeeder::class,
             CareerSeeder::class,
             GallerySeeder::class,
+            AboutUsSeeder::class,
         ]);
     }
 }

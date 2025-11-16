@@ -10,24 +10,23 @@
             <div class="col-md-15">
                 <img src="{{ asset('asset/images/beijing-red.png') }}" alt="">
                 <p class="info">
-                    {{ __('JIIPE Industrial Estate Developer in Gresik') }}
+                    {{ $developers[0]['category']['translations'][0]['name'] ?? '' }}
                 </p>
             </div>
 
             <div class="col-md-45">
                 <div class="row sec-4 industry lists_profil_industry">
-                    @foreach ($developers ?? [] as $developer)
+                    @foreach ($developers ?? [] as $index => $developer)
                         <div class="col-md-30">
                             <div class="items">
-                                <img style="height:77px;" src="{{ $developer['logo'] ?? '' }}"
-                                    alt="{{ $developer['name'] ?? '' }}">
+                                <img style="height:77px;" src="{{ asset('storage/about_us/content_detail/'.$developer['icon'] ?? '') }}" alt="{{ $developer['translations'][0]['title'] ?? '' }}" decoding="async" loading="lazy">
 
                                 <div class="judul">
-                                    <p>{{ $developer['name'] ?? '' }}</p>
+                                    <p>{{ $developer['translations'][0]['title'] ?? '' }}</p>
                                 </div>
 
                                 <div class="content">
-                                    <p>{!! $developer['description'] ?? '' !!}</p>
+                                    <p>{!! $developer['translations'][0]['description'] ?? '' !!}</p>
                                 </div>
                             </div>
                         </div>

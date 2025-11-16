@@ -15,4 +15,8 @@ class AboutUsContentDetail extends Model
     {
         return $this->hasMany(AboutUsContentDetailTranslation::class, 'about_us_content_detail_id','id');
     }
+    public function category()
+    {
+        return $this->belongsTo(AboutUsContentDetailCategories::class, 'category_id', 'id');
+    }
 }

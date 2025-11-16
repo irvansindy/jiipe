@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}">
 <section class="jiipe-contact" id="contact2">
     <div class="navigasi-box navigasi-box-shadow">
         <ul>
