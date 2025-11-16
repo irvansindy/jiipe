@@ -13,7 +13,7 @@ class ZoneSeeder extends Seeder
         // Define zones with translations
         $zones = [
             [
-                'image' => '/images/static/benefit03.jpg',
+                'image' => 'b0f2d1e6ed7 Benefit03.jpg',
                 'zone_class_id' => 2,
                 'translations' => [
                     'en' => [
@@ -67,7 +67,7 @@ class ZoneSeeder extends Seeder
                 ],
             ],
             [
-                'image' => '/images/static/fiscal-benefits.jpg',
+                'image' => 'b0b935a191cover-kek.jpg',
                 'zone_class_id' => 2,
                 'translations' => [
                     'en' => [
@@ -121,7 +121,7 @@ class ZoneSeeder extends Seeder
                 ],
             ],
             [
-                'image' => '/images/static/cluster-map.jpg',
+                'image' => 'c55650d239cover-kek.jpg',
                 'zone_class_id' => 2,
                 'translations' => [
                     'en' => [
@@ -175,7 +175,7 @@ class ZoneSeeder extends Seeder
                 ],
             ],
             [
-                'image' => '/images/static/khazanah.jpg',
+                'image' => '59848233c2cover-kek.jpg',
                 'zone_class_id' => 2,
                 'translations' => [
                     'en' => [
