@@ -39,6 +39,7 @@ $(function() {
         $('#slider_id').val('');
         $('[id^="message_"]').text('');
         $('#current_image, #current_video').html('');
+        $('.slider_description').summernote('code', '');
         $('#ModalSlider').modal('show');
     });
 
@@ -56,16 +57,28 @@ $(function() {
             success: function(res) {
                 var fileUrl = res.data.file;
                 if (fileUrl) {
-                    if (fileUrl.match(/\.(mp4|webm|ogg)$/i)) {
-                        $('#current_video').html('<video src="'+fileUrl+'" controls style="max-width:300px;max-height:180px;"></video>');
+                    // Tambahkan base URL jika fileUrl masih berupa path relatif
+                    // Sesuaikan dengan base URL aplikasi Anda
+                    var fullUrl = fileUrl;
+                    if (!fileUrl.startsWith('http')) {
+                        fullUrl = window.location.origin + '/' + fileUrl;
+                        // Atau gunakan base URL spesifik:
+                        // fullUrl = 'https://yourdomain.com/' + fileUrl;
+                    }
+
+                    if (fullUrl.match(/\.(mp4|webm|ogg)$/i)) {
+                        $('#current_video').html('<video src="'+fullUrl+'" controls style="max-width:300px;max-height:180px;"></video>');
                         $('#current_image').html('');
-                    } else {
-                        $('#current_image').html('<img src="'+fileUrl+'" style="max-width:200px;max-height:120px;">');
+                    } else if (fullUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+                        $('#current_image').html('<img src="'+fullUrl+'" style="max-width:200px;max-height:120px;">');
                         $('#current_video').html('');
                     }
                 } else {
                     $('#current_image, #current_video').html('');
                 }
+                console.log('File URL:', fileUrl);
+                console.log('Full URL:', fullUrl);
+                
                 var translations = res.data.translations
                 if (translations) {
                     Object.keys(translations).forEach(function(locale){

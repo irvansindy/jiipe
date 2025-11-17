@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\BrochureController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\TenantController;
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
@@ -132,6 +133,10 @@ Route::group([
         Route::get('zone/{id}/detail', [ZoneController::class, 'getZoneDetail'])->name('zone-detail');
         Route::post('store-zone', [ZoneController::class, 'storeZone'])->name('store-zone');
         Route::post('zone/{id}/update', [ZoneController::class, 'updateZone'])->name('zone-update');
+
+        // tenant
+        Route::get('fetch-tenant', [TenantController::class, 'fetchTenant'])->name('fetch-tenant');
+        Route::get('fetch-tenant-by-id/{id}', [TenantController::class, 'fetchTenant'])->name('fetch-tenant-by-id');
 
         Route::get('article-and-news', [NewsAndArticleController::class, 'index'])->name('article-and-news');
         Route::get('fetch-article-and-news', [NewsAndArticleController::class, 'fetch'])->name('fetch-article-and-news');

@@ -23,7 +23,9 @@ class ZoneController extends Controller
             $locale = app()->getLocale();
             $zones = Zone::with(['translations' => function($query) use ($locale) {
                 $query->where('locale', $locale);
-            }])->get();
+            }])
+            ->where('zone_class_id', 1)
+            ->get();
             $message = $zones->isNotEmpty() ? 'Success fetch data zone' : 'No data found';
             return FormatResponseJson::success($zones, $message);
         } catch (\Throwable $th) {
@@ -36,7 +38,9 @@ class ZoneController extends Controller
             $locale = app()->getLocale();
             $zones = Zone::with(['translations' => function($query) use ($locale) {
                 $query->where('locale', $locale);
-            }])->get();
+            }])
+            ->where('zone_class_id', 2)
+            ->get();
             $message = $zones->isNotEmpty() ? 'Success fetch data zone' : 'No data found';
             return FormatResponseJson::success($zones, $message);
         } catch (\Throwable $th) {
@@ -65,7 +69,7 @@ class ZoneController extends Controller
                 'zone_class' => 'required|exists:zone_classes,id',
                 'zone_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048' // Maksimal ukuran file 2MB
             ];
-        
+
             foreach ($locales as $locale => $properties) {
                 $rules["zone_name.$locale"] = 'nullable|string|max:255';
                 $rules["zone_subtitle.$locale"] = 'nullable|string|max:255';
@@ -87,7 +91,7 @@ class ZoneController extends Controller
                 'zone_note.*.string' => 'Zone note must be a string',
                 'zone_note.*.max' => 'Zone note must not exceed 255 characters',
             ]);
-        
+
             if ($validator->fails()) {
                 throw new ValidationException($validator);
             }

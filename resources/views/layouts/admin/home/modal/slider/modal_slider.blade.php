@@ -48,7 +48,8 @@
                                 id="slider-{{ $locale }}" role="tabpanel">
                                 <div class="mb-3">
                                     <label for="slider_title_{{ $locale }}" class="form-label">Title
-                                        ({{ $properties['native'] }})</label>
+                                        ({{ $properties['native'] }})
+                                    </label>
                                     <input type="text" class="form-control" id="slider_title_{{ $locale }}"
                                         name="title[{{ $locale }}]" value="">
                                     <span class="text-danger" id="message_title_{{ $locale }}"></span>
@@ -57,19 +58,19 @@
                                 <div class="mb-3">
                                     <label for="slider_description_{{ $locale }}" class="form-label">Description
                                         ({{ $properties['native'] }})</label>
-                                    <textarea class="form-control slider_description" id="slider_description_{{ $locale }}" name="description[{{ $locale }}]"
-                                        rows="3">{{ old('description.' . $locale, '') }}</textarea>
+                                    <textarea class="form-control slider_description" id="slider_description_{{ $locale }}"
+                                        name="description[{{ $locale }}]" rows="3">{{ old('description.' . $locale, '') }}</textarea>
                                     <span class="text-danger" id="message_description_{{ $locale }}"></span>
                                 </div>
 
                             </div>
-                            @endforeach
-                            <div class="mb-3 form-check form-switch">
-                                <input type="hidden" name="is_active" value="0">
-                                <input class="form-check-input" type="checkbox" id="is_active"
-                                    name="is_active" value="1" checked>
-                                <label class="form-check-label" for="is_active">Published</label>
-                            </div>
+                        @endforeach
+                        <div class="mb-3 form-check form-switch">
+                            <input type="hidden" name="is_active" value="0">
+                            <input class="form-check-input" type="checkbox" id="is_active" name="is_active"
+                                value="1" checked>
+                            <label class="form-check-label" for="is_active">Published</label>
+                        </div>
                     </div>
 
                 </div>

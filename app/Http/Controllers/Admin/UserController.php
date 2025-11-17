@@ -15,6 +15,7 @@ class UserController extends Controller
 {
     public function index()
     {
+        dd(auth()->user()->roles[0]->name);
         return view('layouts.admin.users.index');
     }
     public function fetchUser()
