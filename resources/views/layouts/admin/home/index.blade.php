@@ -190,9 +190,9 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="video_thumbnail" class="form-label">Video Thumbnail</label>
-                                    @if ($video && $video->image)
+                                    @if ($video && $video->thumbnail)
                                         <div class="mb-2">
-                                            <img src="{{ asset('storage/' . $video->thumbnail) }}" alt="Current thumbnail"
+                                            <img src="{{ asset($video->thumbnail) }}" alt="Current thumbnail"
                                                 class="img-thumbnail" style="max-height: 150px;">
                                             <p class="small text-muted mt-1">Current image (upload new to replace)</p>
                                         </div>

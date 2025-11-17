@@ -19,7 +19,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="profile-card__img">
-                            <img src="/{{ $review['photo'] }}" alt="{{ $review['name'] }}">
+                            <img src="{{ asset($review['photo']) }}" alt="{{ $review['name'] }}">
                         </div>
                         <div class="profile-card__info">
                             <h6>{{ $review['name'] }}</h6>
