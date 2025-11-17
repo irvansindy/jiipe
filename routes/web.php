@@ -29,6 +29,7 @@ use App\Http\Controllers\Admin\BrochureController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\TenantController;
+use App\Http\Controllers\Admin\Video360Controller;
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
@@ -139,6 +140,9 @@ Route::group([
         Route::get('fetch-tenant-by-id/{id}', [TenantController::class, 'fetchTenantById'])->name('fetch-tenant-by-id');
         Route::post('store-tenant', [TenantController::class, 'storeTenant'])->name('store-tenant');
         Route::post('update-tenant', [TenantController::class,'updateTenant'])->name('update-tenant');
+
+        // video 360
+        Route::post('submit-video360', [Video360Controller::class,'store'])->name('submit-video360');
 
         Route::get('article-and-news', [NewsAndArticleController::class, 'index'])->name('article-and-news');
         Route::get('fetch-article-and-news', [NewsAndArticleController::class, 'fetch'])->name('fetch-article-and-news');

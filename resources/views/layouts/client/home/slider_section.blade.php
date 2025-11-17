@@ -41,7 +41,8 @@
         </div>
     </div>
 
-    <div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom justify-center" style="display: block; width: 100%;">
+    <div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom justify-center"
+        style="display: block; width: 100%;">
         <ul>
             <li class="hover">
                 <a href="#contact">

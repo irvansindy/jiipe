@@ -139,7 +139,75 @@
                         <div class="card-header bg-primary">
                             <h4 class="text-white m-0"> Tour</h4>
                         </div>
-                        <div class="card-body"></div>
+                        <div class="card-body">
+                            <form action="{{ route('submit-video360') }}" method="post" id="cover_form"
+                                enctype="multipart/form-data">
+                                @csrf
+
+                                {{-- Hidden ID Field --}}
+                                @if ($video = app(\App\Http\Controllers\Admin\Video360Controller::class)->fetchVideo360())
+                                    <input type="hidden" name="id" value="{{ $video->id }}">
+                                @endif
+
+                                <div class="mb-3">
+                                    <ul class="nav nav-tabs mb-3" id="videoTab" role="tablist">
+                                        @foreach ($locales as $locale => $properties)
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link {{ $loop->first ? 'active' : '' }}"
+                                                    id="video-{{ $locale }}-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#video-{{ $locale }}" type="button"
+                                                    role="tab" aria-controls="video-{{ $locale }}"
+                                                    aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                                                    {{ $properties['native'] }}
+                                                </button>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                    <div class="tab-content">
+                                        @foreach ($locales as $locale => $properties)
+                                            <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
+                                                id="video-{{ $locale }}" role="tabpanel"
+                                                aria-labelledby="video-{{ $locale }}-tab">
+                                                <div class="mb-3">
+                                                    <label for="video_title_{{ $locale }}" class="form-label">video
+                                                        Title ({{ $properties['native'] }})</label>
+                                                    <input type="text" class="form-control"
+                                                        id="video_title_{{ $locale }}"
+                                                        name="video_title[{{ $locale }}]"
+                                                        value="{{ old('video_title_' . $locale, $video ? optional($video->translations->where('locale', $locale)->first())->title : '') }}">
+                                                    @error('video_title_' . $locale)
+                                                        <div class="text-danger small">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="embed_code">Embed Code for Video 360</label>
+                                    <textarea class="form-control" id="embed_code" name="embed_code">{{ old('embed_code', $video ? $video->embed_code : '') }}</textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="video_thumbnail" class="form-label">Video Thumbnail</label>
+                                    @if ($video && $video->image)
+                                        <div class="mb-2">
+                                            <img src="{{ asset('storage/' . $video->thumbnail) }}" alt="Current thumbnail"
+                                                class="img-thumbnail" style="max-height: 150px;">
+                                            <p class="small text-muted mt-1">Current image (upload new to replace)</p>
+                                        </div>
+                                    @endif
+                                    <input type="file" class="form-control" id="video_thumbnail" name="video_thumbnail">
+                                    @error('video_thumbnail')
+                                        <div class="text-danger small">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    {{ $video ? 'Update Changes' : 'Save Changes' }}
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

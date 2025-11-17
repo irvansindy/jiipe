@@ -138,7 +138,8 @@
                                                 <div class="mb-3">
                                                     <label for="content_title_{{ $locale }}"
                                                         class="form-label">Content Title
-                                                        ({{ $properties['native'] }})</label>
+                                                        ({{ $properties['native'] }})
+                                                    </label>
                                                     <input type="text" class="form-control"
                                                         id="content_title_{{ $locale }}"
                                                         name="content_title_{{ $locale }}"
@@ -220,11 +221,12 @@
                             <h4 class="text-white m-0">Visi Misi</h4>
                         </div>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('store-about-us-vision-mission') }}" id="vision_mission_form" enctype="multipart/form-data">
+                            <form method="POST" action="{{ route('store-about-us-vision-mission') }}"
+                                id="vision_mission_form" enctype="multipart/form-data">
                                 @csrf
 
                                 {{-- Hidden ID Field --}}
-                                @if($aboutUsVisionMission)
+                                @if ($aboutUsVisionMission)
                                     <input type="hidden" name="id" value="{{ $aboutUsVisionMission->id }}">
                                 @endif
 
@@ -249,26 +251,27 @@
                                                 id="tab-content-{{ $locale }}" role="tabpanel"
                                                 aria-labelledby="tab-vision-{{ $locale }}">
                                                 <div class="mb-3">
-                                                    <label for="title_{{ $locale }}" class="form-label">Title ({{ $properties['native'] }})</label>
-                                                    <input type="text" class="form-control" id="title_{{ $locale }}"
-                                                        name="title[{{ $locale }}]"
+                                                    <label for="title_{{ $locale }}" class="form-label">Title
+                                                        ({{ $properties['native'] }})</label>
+                                                    <input type="text" class="form-control"
+                                                        id="title_{{ $locale }}" name="title[{{ $locale }}]"
                                                         value="{{ old('title.' . $locale, $aboutUsVisionMission ? optional($aboutUsVisionMission->translations->where('locale', $locale)->first())->title : '') }}">
                                                     @error('title.' . $locale)
                                                         <div class="text-danger small">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="vision_{{ $locale }}" class="form-label">Vision ({{ $properties['native'] }})</label>
-                                                    <textarea class="form-control summernote" id="vision_{{ $locale }}"
-                                                        name="vision[{{ $locale }}]">{{ old('vision.' . $locale, $aboutUsVisionMission ? optional($aboutUsVisionMission->translations->where('locale', $locale)->first())->vision : '') }}</textarea>
+                                                    <label for="vision_{{ $locale }}" class="form-label">Vision
+                                                        ({{ $properties['native'] }})</label>
+                                                    <textarea class="form-control summernote" id="vision_{{ $locale }}" name="vision[{{ $locale }}]">{{ old('vision.' . $locale, $aboutUsVisionMission ? optional($aboutUsVisionMission->translations->where('locale', $locale)->first())->vision : '') }}</textarea>
                                                     @error('vision.' . $locale)
                                                         <div class="text-danger small">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="mission_{{ $locale }}" class="form-label">Mission ({{ $properties['native'] }})</label>
-                                                    <textarea class="form-control summernote" id="mission_{{ $locale }}"
-                                                        name="mission[{{ $locale }}]">{{ old('mission.' . $locale, $aboutUsVisionMission ? optional($aboutUsVisionMission->translations->where('locale', $locale)->first())->mission : '') }}</textarea>
+                                                    <label for="mission_{{ $locale }}" class="form-label">Mission
+                                                        ({{ $properties['native'] }})</label>
+                                                    <textarea class="form-control summernote" id="mission_{{ $locale }}" name="mission[{{ $locale }}]">{{ old('mission.' . $locale, $aboutUsVisionMission ? optional($aboutUsVisionMission->translations->where('locale', $locale)->first())->mission : '') }}</textarea>
                                                     @error('mission.' . $locale)
                                                         <div class="text-danger small">{{ $message }}</div>
                                                     @enderror
