@@ -7,4 +7,5 @@ return [
     'search' => 'Search',
     'export' => 'Export',
     'import' => 'Import',
+    'contact us' => 'Contact Us',
 ];

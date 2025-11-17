@@ -34,11 +34,8 @@ class TenantController extends Controller
     public function fetchTenantById($id)
     {
         try {
-            dd($id);
             $locale = app()->getLocale();
-            $tenant = Tenant::with(['translations' => function($query) use ($locale) {
-                $query->where('locale', $locale);
-            }])->findOrFail($id);
+            $tenant = Tenant::with(['translations'])->findOrFail($id);
 
             return FormatResponseJson::success($tenant, 'Success fetch tenant data');
         } catch (\Throwable $th) {
@@ -49,11 +46,11 @@ class TenantController extends Controller
     public function storeTenant(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'locale' => 'required|string|max:10',
-            'description' => 'nullable|string',
+            'name.*' => 'required|string|max:255',
+            // 'locale' => 'required|string|max:10',
+            'description.*' => 'nullable|string',
             'is_active' => 'nullable|boolean',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,web|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -67,7 +64,7 @@ class TenantController extends Controller
             // Handle logo upload
             $logoPath = null;
             if ($request->hasFile('logo')) {
-                $logoPath = $request->file('logo')->store('tenants/logos', 'public');
+                $logoPath = $request->file('logo')->store('tenants-logo', 'public');
             }
 
             $tenant = Tenant::create([
@@ -75,12 +72,13 @@ class TenantController extends Controller
                 'logo' => $logoPath,
             ]);
 
-            $tenant->translations()->create([
-                'locale' => $data['locale'],
-                'name' => $data['name'],
-                'description' => $data['description'] ?? null,
-            ]);
-
+            foreach ($request->name as $locale => $name) {
+                $tenant->translations()->create([
+                    'locale' => $locale,
+                    'name' => $name,
+                    // 'description' => $data['description'][$locale] ?? null,
+                ]);
+            }
             DB::commit();
 
             // Load translations for response
@@ -97,22 +95,22 @@ class TenantController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'tenant_id' => 'required|exists:tenants,id',
-            'name' => 'required|string|max:255',
-            'locale' => 'required|string|max:10',
-            'description' => 'nullable|string',
+            'name.*' => 'required|string|max:255',
+            // 'locale' => 'required|string|max:10',
+            // 'description' => 'nullable|string',
             'is_active' => 'nullable|boolean',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
-            return FormatResponseJson::error(null, $validator->errors()->first(), 422);
+            return FormatResponseJson::error(null, $validator->errors(), 422);
         }
 
         DB::beginTransaction();
         try {
             $data = $validator->validated();
 
-            $tenant = Tenant::findOrFail($data['tenant_id']);
+            $tenant = Tenant::findOrFail($request->tenant_id);
 
             // Handle logo upload
             if ($request->hasFile('logo')) {
@@ -120,25 +118,21 @@ class TenantController extends Controller
                 if ($tenant->logo && \Storage::disk('public')->exists($tenant->logo)) {
                     \Storage::disk('public')->delete($tenant->logo);
                 }
-                $logoPath = $request->file('logo')->store('tenants/logos', 'public');
+                $logoPath = $request->file('logo')->store('tenants-logo', 'public');
                 $tenant->logo = $logoPath;
             }
 
             $tenant->is_active = $data['is_active'] ?? $tenant->is_active;
             $tenant->save();
 
-            $translation = $tenant->translations()->where('locale', $data['locale'])->first();
-            if ($translation) {
-                $translation->update([
-                    'name' => $data['name'],
-                    'description' => $data['description'] ?? null,
-                ]);
-            } else {
-                $tenant->translations()->create([
-                    'locale' => $data['locale'],
-                    'name' => $data['name'],
-                    'description' => $data['description'] ?? null,
-                ]);
+            foreach ($request->name as $locale => $name) {
+                $tenant->translations()->updateOrCreate(
+                    ['locale' => $locale],
+                    [
+                        'name' => $name,
+                        // 'description' => $data['description'][$locale] ?? null,
+                    ]
+                );
             }
 
             DB::commit();

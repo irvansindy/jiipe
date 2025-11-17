@@ -13,11 +13,7 @@
             $firstVideo = $videoTours->first();
         @endphp
         @if($firstVideo)
-        {!! $firstVideo['embed_code'] !!}
-        {{-- <div class="video-jiipe">
-            <div class="embed-responsive embed-responsive-21by9">
-            </div>
-        </div> --}}
+            {!! $firstVideo['embed_code'] !!}
         @else
             <p class="text-center">No video tours available.</p>
         @endif

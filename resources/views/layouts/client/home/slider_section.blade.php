@@ -21,7 +21,7 @@
                                         </span>
                                         <ul class="button">
                                             <li><a href="{{ route('contact') }}"
-                                                    class="btn_slider btn-light btn-red">Contact Us</a></li>
+                                                    class="btn_slider btn-light btn-red">@lang('system.contact us')</a></li>
                                             <li><a href="https://www.jiipe.com/#videojiipe"
                                                     class="btn_slider btn-light btn-blue">Video Profile</a></li>
                                         </ul>
@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom" style="display: block; width: 100%;">
+    <div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom justify-center" style="display: block; width: 100%;">
         <ul>
             <li class="hover">
                 <a href="#contact">

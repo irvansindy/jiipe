@@ -7,4 +7,5 @@ return [
     'search' => '검색',
     'export' => '내보내기',
     'import' => '가져오기',
+    'contact us'=> '',
 ];

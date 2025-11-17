@@ -1,7 +1,7 @@
 /* Style universal untuk semua navigasi box */
 .navigasi-box.navigasi-box-shadow.navigasi-box-border-bottom {
     width: 100% !important;
-    padding: 5px !important;
+    /* padding: 5px !important; */
     background: #fff !important;
     position: relative !important;
     z-index: 10 !important;
@@ -10,7 +10,8 @@
 .navigasi-box ul {
     display: flex !important;
     justify-content: space-between !important;
-    padding: 5px !important;
+    /* padding: 5px !important; */
+    padding: 0px 40px 0px 40px !important;
     margin: 0 !important;
     width: 100% !important;
     flex-wrap: nowrap !important;

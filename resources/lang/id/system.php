@@ -7,4 +7,5 @@ return [
     'search' => 'Cari',
     'export' => 'Ekspor',
     'import' => 'Impor',
+    'contact us' => 'Hubungi Kami',
 ];

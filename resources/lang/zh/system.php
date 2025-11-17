@@ -7,4 +7,5 @@ return [
     'search' => '搜索',
     'export' => '导出',
     'import' => '导入',
+    'contact us'=> '',
 ];

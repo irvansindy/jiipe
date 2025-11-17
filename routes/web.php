@@ -136,7 +136,9 @@ Route::group([
 
         // tenant
         Route::get('fetch-tenant', [TenantController::class, 'fetchTenant'])->name('fetch-tenant');
-        Route::get('fetch-tenant-by-id/{id}', [TenantController::class, 'fetchTenant'])->name('fetch-tenant-by-id');
+        Route::get('fetch-tenant-by-id/{id}', [TenantController::class, 'fetchTenantById'])->name('fetch-tenant-by-id');
+        Route::post('store-tenant', [TenantController::class, 'storeTenant'])->name('store-tenant');
+        Route::post('update-tenant', [TenantController::class,'updateTenant'])->name('update-tenant');
 
         Route::get('article-and-news', [NewsAndArticleController::class, 'index'])->name('article-and-news');
         Route::get('fetch-article-and-news', [NewsAndArticleController::class, 'fetch'])->name('fetch-article-and-news');
