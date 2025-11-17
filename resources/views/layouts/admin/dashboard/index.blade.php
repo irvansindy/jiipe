@@ -110,7 +110,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-12 col-xl-8">
+                {{-- <div class="col-md-12 col-xl-8">
                     <h5 class="mb-3">Recent Orders</h5>
                     <div class="card tbl-card">
                         <div class="card-body">
@@ -309,7 +309,7 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

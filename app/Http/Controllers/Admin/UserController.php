@@ -10,6 +10,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 class UserController extends Controller
 {
     public function index()
@@ -45,7 +46,53 @@ class UserController extends Controller
             return FormatResponseJson::error(null, $th->getMessage(), 500);
         }
     }
+    // NEW: Get role detail with permissions
+    public function detailRole($id)
+    {
+        try {
+            $role = Role::with(['permissions'])->findOrFail($id);
+            $allPermissions = Permission::all();
 
+            $data = [
+                'role' => $role,
+                'all_permissions' => $allPermissions,
+                'role_permissions' => $role->permissions->pluck('id')->toArray()
+            ];
+
+            return FormatResponseJson::success($data, 'Role detail fetched successfully');
+        } catch (\Throwable $th) {
+            return FormatResponseJson::error(null, $th->getMessage(), 500);
+        }
+    }
+    public function updateRolePermissions(Request $request, $id)
+    {
+        try {
+            // dd($request->all());
+            DB::beginTransaction();
+
+            $validator = Validator::make($request->all(), [
+                'permissions' => 'nullable|array',
+                'permissions.*' => 'exists:permissions,name'
+            ]);
+
+            if ($validator->fails()) {
+                return FormatResponseJson::error(null, $validator->errors(), 422);
+            }
+
+            $role = Role::findOrFail($id);
+
+            // Sync permissions (akan menghapus yang lama dan menambahkan yang baru)
+            $permissions = $request->permissions ?? [];
+            $role->syncPermissions($permissions);
+
+            DB::commit();
+            return FormatResponseJson::success($role, 'Role permissions updated successfully');
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return FormatResponseJson::error(null, $th->getMessage(), 500);
+        }
+    }
     public function storeUser(Request $request)
     {
         try {

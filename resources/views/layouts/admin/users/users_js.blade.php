@@ -28,6 +28,7 @@
                     data: null,
                     title: 'Action',
                     orderable: false,
+                    className: 'text-end',
                     render: function(item) {
                         return `
                             <button type="button" data-user_id="${item.id}" class="btn btn-info btn-sm detail_user" title="Edit User">
@@ -60,10 +61,11 @@
                     data: null,
                     title: 'Action',
                     orderable: false,
+                    className: 'text-end',
                     render: function(item) {
                         return `
-                            <button type="button" data-role_id="${item.id}" class="btn btn-info btn-sm detail_role" title="View Role">
-                                <i class="ti ti-eye"></i>
+                            <button type="button" data-role_id="${item.id}" class="btn btn-info btn-sm detail_role" title="Manage Permissions">
+                                <i class="ti ti-shield-lock"></i>
                             </button>
                         `;
                     }
@@ -117,6 +119,10 @@
             });
         }
 
+        // ============================================
+        // USER MANAGEMENT
+        // ============================================
+
         // Create User Button Click
         $(document).on('click', '#create_users', function(e) {
             e.preventDefault();
@@ -125,7 +131,6 @@
             $('#ModalUsersLabel').html('Create New User');
             clearErrors();
 
-            // Show password fields and make them required
             $('#password_field').show();
             $('#password_confirmation_field').show();
             $('#password_required').show();
@@ -145,11 +150,9 @@
             $('#ModalUsersLabel').html('Edit User');
             clearErrors();
 
-            // Password optional on edit
             $('#password_required').hide();
             $('#password_confirmation_required').hide();
 
-            // Load user data
             $.ajax({
                 url: `/admin/users/detail/${user_id}`,
                 type: 'GET',
@@ -158,7 +161,6 @@
                     $('#user_name').val(response.data.name);
                     $('#user_email').val(response.data.email);
 
-                    // Load roles and select current role
                     $.ajax({
                         url: '{{ route('fetch-roles') }}',
                         type: 'GET',
@@ -187,7 +189,7 @@
             });
         });
 
-        // Submit Form
+        // Submit User Form
         $(document).on('submit', '#form_users', function(e) {
             e.preventDefault();
 
@@ -208,8 +210,6 @@
                         $('#ModalUsers').modal('hide');
                         $('#form_users')[0].reset();
                         table_users.ajax.reload(null, false);
-
-                        // Show success message
                         alert(response.message);
                     }
                 },
@@ -254,6 +254,178 @@
                     alert(xhr.responseJSON?.message || 'Failed to delete user');
                 }
             });
+        });
+
+        // ============================================
+        // ROLE PERMISSIONS MANAGEMENT
+        // ============================================
+
+        // Detail Role Button Click - Show Permissions Modal
+        $(document).on('click', '.detail_role', function(e) {
+            e.preventDefault();
+            let role_id = $(this).data('role_id');
+
+            console.log('Opening permissions modal for role:', role_id);
+
+            // Set role ID
+            $('#role_id').val(role_id);
+
+            // Show loading state
+            $('#permissions_table_body').html('<tr><td colspan="3" class="text-center"><i class="ti ti-loader"></i> Loading permissions...</td></tr>');
+
+            // Open modal
+            $('#ModalRolePermissions').modal('show');
+
+            // Load role permissions
+            $.ajax({
+                url: `roles/detail/${role_id}`,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log('Role detail response:', response);
+
+                    let data = response.data;
+
+                    // Set role name in modal header
+                    $('#role_name_display').text(data.role.name);
+
+                    // Build permissions table
+                    let html = '';
+                    if (data.all_permissions && data.all_permissions.length > 0) {
+                        data.all_permissions.forEach(permission => {
+                            let isChecked = data.role_permissions.includes(permission.id) ? 'checked' : '';
+                            html += `
+                                <tr>
+                                    <td class="text-center">
+                                        <input type="checkbox"
+                                            class="form-check-input permission-checkbox"
+                                            name="permissions[]"
+                                            value="${permission.name}"
+                                            ${isChecked}>
+                                    </td>
+                                    <td>${permission.name}</td>
+                                    <td><span class="badge bg-secondary">${permission.guard_name}</span></td>
+                                </tr>
+                            `;
+                        });
+                    } else {
+                        html = '<tr><td colspan="3" class="text-center text-muted">No permissions available</td></tr>';
+                    }
+
+                    $('#permissions_table_body').html(html);
+                    // $('#permissions_table').dataTable();
+                    // Update check all checkbox state
+                    updateCheckAllState();
+                },
+                error: function(xhr) {
+                    console.error('Error loading role permissions:', xhr);
+                    $('#permissions_table_body').html('<tr><td colspan="3" class="text-center text-danger">Failed to load permissions</td></tr>');
+                    alert('Failed to load role permissions. Please try again.');
+                }
+            });
+        });
+
+        // Check All Permissions checkbox
+        $(document).on('change', '#check_all_permissions', function() {
+            let isChecked = $(this).is(':checked');
+            $('.permission-checkbox').prop('checked', isChecked);
+            console.log('Check all permissions:', isChecked);
+        });
+
+        // Update check all state when individual checkbox changes
+        $(document).on('change', '.permission-checkbox', function() {
+            updateCheckAllState();
+        });
+
+        // Select All Button
+        $(document).on('click', '#select_all_permissions', function(e) {
+            e.preventDefault();
+            $('.permission-checkbox').prop('checked', true);
+            $('#check_all_permissions').prop('checked', true);
+            console.log('All permissions selected');
+        });
+
+        // Deselect All Button
+        $(document).on('click', '#deselect_all_permissions', function(e) {
+            e.preventDefault();
+            $('.permission-checkbox').prop('checked', false);
+            $('#check_all_permissions').prop('checked', false);
+            console.log('All permissions deselected');
+        });
+
+        // Function to update check all checkbox state
+        function updateCheckAllState() {
+            let total = $('.permission-checkbox').length;
+            let checked = $('.permission-checkbox:checked').length;
+            $('#check_all_permissions').prop('checked', total > 0 && total === checked);
+        }
+
+        // Submit Role Permissions Form
+        $(document).on('submit', '#form_role_permissions', function(e) {
+            e.preventDefault();
+
+            let role_id = $('#role_id').val();
+            let formData = new FormData(this);
+
+            console.log('Submitting permissions for role:', role_id);
+
+            // Get all checked permissions
+            let selectedPermissions = [];
+            $('.permission-checkbox:checked').each(function() {
+                selectedPermissions.push($(this).val());
+            });
+            console.log('Selected permissions:', selectedPermissions);
+
+            // Show loading state
+            $('#submit_role_permissions').prop('disabled', true).html('<i class="ti ti-loader"></i> Saving...');
+
+            $.ajax({
+                url: `/roles/${role_id}/permissions`,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    console.log('Update permissions response:', response);
+
+                    $('#ModalRolePermissions').modal('hide');
+                    table_roles.ajax.reload(null, false);
+                    $('#ModalRolePermissions').modal('hide');
+                    alert(response.meta.message);
+                },
+                error: function(xhr) {
+                    console.error('Error updating permissions:', xhr);
+                    let errorMessage = 'Failed to update permissions';
+
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+
+                    alert(errorMessage);
+                },
+                complete: function() {
+                    // Reset button state
+                    $('#submit_role_permissions').prop('disabled', false).html('<i class="ti ti-device-floppy"></i> Save Permissions');
+                }
+            });
+        });
+
+        // Reset modal when closed
+        $('#ModalRolePermissions').on('hidden.bs.modal', function() {
+            console.log('Modal closed, resetting form');
+            $('#form_role_permissions')[0].reset();
+            $('#permissions_table_body').html('');
+            $('#check_all_permissions').prop('checked', false);
+            $('#role_id').val('');
+            $('#role_name_display').text('');
+        });
+
+        // Log when modal is shown
+        $('#ModalRolePermissions').on('shown.bs.modal', function() {
+            console.log('Permissions modal opened');
         });
     });
 </script>

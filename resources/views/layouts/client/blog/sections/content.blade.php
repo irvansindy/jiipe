@@ -109,7 +109,7 @@
                                     <a href="{{ route('blog.detail', $post['id']) }}">
                                         <p>{{ __('Read More') }}
                                             <span>
-                                                <img src="{{ asset('asset/images/arrow.png') }}"
+                                                <img src="{{ asset('asset/images/arrow.png') }}" decoding="async" loading="lazy"
                                                     alt="{{ __('JIIPE Industrial Estate Gresik') }}">
                                             </span>
                                         </p>

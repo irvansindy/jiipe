@@ -107,7 +107,9 @@ Route::group([
         Route::get('fetch-users', [UserController::class,'fetchUser'])->name('fetch-users');
         Route::get('/admin/users/detail/{id}', [UserController::class, 'detailUser'])->name('detail-user');
         Route::get('fetch-roles', [UserController::class,'fetchRole'])->name('fetch-roles');
+        Route::get('/roles/detail/{id}', [UserController::class, 'detailRole'])->name('detail-role');
         Route::post('/admin/users/store', [UserController::class, 'storeUser'])->name('store-users');
+        Route::post('/roles/{id}/permissions', [UserController::class, 'updateRolePermissions'])->name('update-role-permissions');
         Route::delete('/admin/users/delete/{id}', [UserController::class, 'deleteUser'])->name('delete-user');
 
         Route::get('/list-appointment', [FormAppointment::class, 'index'])->name('list-appointment');
