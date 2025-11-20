@@ -6,7 +6,8 @@
             @endphp --}}
             @foreach ($zones ?? [] as $index => $zone)
                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}" ns_image="{{ $zone['image'] ?? '' }}">
-                    <img src="{{ asset('storage/zone/'.$zone['image'] ?? '') }}" class="d-block w-100" alt="{{ __('JIIPE Industrial Estate Gresik') }}" decoding="async" loading="lazy">
+                    <img src="{{ asset('storage/zone/' . $zone['image'] ?? '') }}" class="d-block w-100"
+                        alt="{{ __('JIIPE Industrial Estate Gresik') }}" decoding="async" loading="lazy">
                 </div>
             @endforeach
         </div>
@@ -20,10 +21,12 @@
             @endphp --}}
             @foreach ($zones ?? [] as $index => $zone)
                 <div class="col-md-20">
-                    <div class="in_block bind_data_{{ $index }} {{ $index === 0 ? 'active' : '' }}" data-attr="{{ $index }}">
+                    <div class="in_block bind_data_{{ $index }} {{ $index === 0 ? 'active' : '' }}"
+                        data-attr="{{ $index }}">
                         <span class="lefts_nm">{{ $zone->translations[0]['name'] ?? '' }}</span>
                         @if (!empty($zone->translations[0]['area_size']))
-                            <span class="luas" style="font-size: 26px !important;">{{ $zone->translations[0]['area_size'] ?? '' }}</span>
+                            <span class="luas"
+                                style="font-size: 26px !important;">{{ $zone->translations[0]['area_size'] ?? '' }}</span>
                         @endif
                         <div class="clearfix"></div>
                     </div>

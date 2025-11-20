@@ -3,9 +3,9 @@
         <div class="row">
             {{-- Sidebar --}}
             <div class="col-md-15">
-                <img src="{{ asset('asset/images/beijing-red.png') }}" alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+                <img src="{{ asset('asset/images/beijing-red.png') }}" alt="@lang('system.Jiipe industrial estate gresik')">
                 <p class="info">
-                    {{ __('JIIPE Industrial Estate') }}
+                    @lang('system.Jiipe industrial estate')
                 </p>
 
                 {{-- Mobile Select Menu --}}
@@ -16,7 +16,7 @@
                     <div class="leftsn_menu">
                         <ul id="lists_leftmenuKawasan" class="list-unstyled d-none d-sm-block">
                             <li class="d-none">
-                                <a href="#">{{ __('-- Select Region --') }}</a>
+                                <a href="#">@lang('system.select region')</a>
                             </li>
                             @foreach ($zones ?? [] as $zone)
                                 <li class="">
@@ -33,7 +33,7 @@
             {{-- Main Content --}}
             <div class="col-md-45">
                 <div class="title">
-                    <p>{{ $pageTitle ?? __('Independent Integrated Industrial Estate in Gresik, Indonesia - Strategic and Profitable') }}
+                    @lang('system.independent integrated industrial estate in gresik, indonesia - strategic and profitable')
                     </p>
                 </div>
 

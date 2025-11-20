@@ -4,7 +4,7 @@
             <div class="col-md-15">
                 <img src="{{ asset('asset/images/menufooterlogo.png') }}" alt="">
                 <p class="info">
-                    {{ __('Vision & Mission') }}
+                    @lang('system.vision & mission')
                 </p>
             </div>
 
@@ -12,7 +12,7 @@
                 <div class="row visi-misi">
                     <div class="col-md-30">
                         <div class="title mb-4" style="line-height: 1.2;">
-                            <p>{{ __('Vision') }}</p>
+                            <p>@lang('system.vision')</p>
                         </div>
                         <div class="content">
                             <p style="line-height: 32px !important;">{!! $vision ?? '' !!}</p>
@@ -21,7 +21,7 @@
 
                     <div class="col-md-30">
                         <div class="title mb-4" style="line-height: 1.2;">
-                            <p>{{ __('Mission') }}</p>
+                            <p>@lang('system.mission')</p>
                         </div>
                         <div class="content">
                             <p style="line-height: 32px !important;">{!! $mission ?? '' !!}</p>

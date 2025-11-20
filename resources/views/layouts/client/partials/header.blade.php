@@ -15,7 +15,7 @@
                 </div>
                 <div class="branding2">
                     <div class="language d-inline-flex">
-                        <label>Choose Language : </label>
+                        <label>@lang('system.choose language') : </label>
                         <ul class="bahasa">
                             @foreach (Mcamara\LaravelLocalization\Facades\LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                                 <li>
@@ -33,13 +33,13 @@
                     </div>
                     <div class="appointment-btn float-md-right">
                         <div class="appointment d-inline-flex float-md-right">
-                            <div class="button-icon">
+                            <div class="button-icon my-1">
                                 <i class="fa fa-calendar-alt"></i>
                             </div>
                             <a class="text-appointment mx-1 my-1"
                                 href="{{ $settings['section2_home_header_link_button'] ?? '#' }}"
                                 title="{{ $settings['section2_home_header_button_text'] ?? '' }}">
-                                {{ $settings['section2_home_header_button_text'] ?? 'Quick Appointment' }}
+                                @lang('system.quick appointment')
                             </a>
                         </div>
                     </div>
@@ -116,22 +116,21 @@
                         <!-- Main Menu -->
                         <nav class="main-menu main-menu-red">
                             <ul>
-                                <li class="menu-item has-children"><a href="#" class="dd-trigger">About Us</a>
+                                <li class="menu-item has-children"><a href="#" class="dd-trigger">@lang('system.about us')</a>
                                     <ul class="sub-menu">
-                                        <li><a href="{{ route('profile') }}">Profil</a></li>
-                                        <li><a href="{{ route('blog.category', ['categorySlug' => 'news']) }}">News</a></li>
-                                        <li><a href="{{ route('blog.category', ['categorySlug' => 'articles']) }}">Articles</a></li>
-                                        <li><a href="{{ route('contact') }}">Contact</a></li>
+                                        <li><a href="{{ route('profile') }}">@lang('system.profile')</a></li>
+                                        <li><a href="{{ route('blog.category', ['categorySlug' => 'news']) }}">@lang('system.news')</a></li>
+                                        <li><a href="{{ route('blog.category', ['categorySlug' => 'articles']) }}">@lang('system.articles')</a></li>
+                                        <li><a href="{{ route('contact') }}">@lang('system.contacts')</a></li>
                                     </ul>
                                 </li>
-                                <li class="menu-item"><a href="{{ route('industrial-estate') }}">Industrial Estate</a>
+                                <li class="menu-item"><a href="{{ route('industrial-estate') }}">@lang('system.industrial estate')</a>
                                 </li>
-                                <li class="menu-item"><a href="{{ route('economic-zone') }}">Special Economic Zone</a>
+                                <li class="menu-item"><a href="{{ route('economic-zone') }}">@lang('system.special economic zone')</a>
                                 </li>
-                                <li class="menu-item"><a href="{{ route('blog.index') }}">News &amp; Articles</a></li>
-                                <li class="menu-item"><a href="{{ route('international-desk') }}">International
-                                        Desk</a></li>
-                                <li class="menu-item"><a href="{{ route('career') }}">Career</a></li>
+                                <li class="menu-item"><a href="{{ route('blog.index') }}">@lang('system.news') &amp; @lang('system.articles')</a></li>
+                                <li class="menu-item"><a href="{{ route('international-desk') }}">@lang('system.international desk')</a></li>
+                                <li class="menu-item"><a href="{{ route('career') }}">@lang('system.career')</a></li>
                             </ul>
                         </nav>
                     </div>

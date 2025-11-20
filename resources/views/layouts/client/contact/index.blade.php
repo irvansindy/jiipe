@@ -120,8 +120,8 @@
                                 <i class="fa fa-map-marked-alt"></i>
                             </div>
                             <div class="text">
-                                <p>Watch</p>
-                                <h6 class="title">VIDEO TOUR</h6>
+                                <p>@lang('system.watch')</p>
+                            <h6 class="title">@lang('system.video tour')</h6>
                             </div>
                         </div>
                     </a>
@@ -134,8 +134,8 @@
                                 <i class="fa fa-book-open"></i>
                             </div>
                             <div class="text">
-                                <p>Download</p>
-                                <h6>JIIPE E-BROCHURE</h6>
+                                <p>@lang('system.download')</p>
+                                <h6>@lang('system.jiipe e-brochure')</h6>
                             </div>
                         </div>
                     </a>
@@ -146,8 +146,8 @@
                                 <i class="fa fa-book-open"></i>
                             </div>
                             <div class="text">
-                                <p>Download</p>
-                                <h6>JIIPE E-BROCHURE</h6>
+                                <p>@lang('system.download')</p>
+                                <h6>@lang('system.jiipe e-brochure')</h6>
                             </div>
                         </div>
                     </a>
@@ -159,8 +159,8 @@
                                 <i class="fa fa-comment-alt"></i>
                             </div>
                             <div class="text">
-                                <p>Frequently</p>
-                                <h6>ASKED QUESTIONS</h6>
+                                <p>@lang('system.frequently')</p>
+                                <h6>@lang('system.ask questions')</h6>
                             </div>
                         </div>
                     </a>

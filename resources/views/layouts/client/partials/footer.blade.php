@@ -12,8 +12,8 @@
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-map-marked-alt"></i></div>
                         <div class="text">
-                            <p>{{ __('Watch') }}</p>
-                            <h6 class="title">{{ __('VIDEO TOUR') }}</h6>
+                            <p>@lang('system.watch')</p>
+                            <h6 class="title">@lang('system.video tour')</h6>
                         </div>
                     </div>
                 </a>
@@ -23,8 +23,8 @@
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-book-open"></i></div>
                         <div class="text">
-                            <p>{{ __('Download') }}</p>
-                            <h6>{{ __('JIIPE E-BROCHURE') }}</h6>
+                            <p>@lang('system.download')</p>
+                            <h6>@lang('system.jiipe e-brochure')</h6>
                         </div>
                     </div>
                 </a>
@@ -32,8 +32,8 @@
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-book-open"></i></div>
                         <div class="text">
-                            <p>{{ __('Download') }}</p>
-                            <h6>{{ __('JIIPE E-BROCHURE') }}</h6>
+                            <p>@lang('system.download')</p>
+                            <h6>@lang('system.jiipe e-brochure')</h6>
                         </div>
                     </div>
                 </a>
@@ -43,8 +43,8 @@
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-comment-alt"></i></div>
                         <div class="text">
-                            <p>{{ __('Frequently') }}</p>
-                            <h6>{{ __('ASKED QUESTIONS') }}</h6>
+                            <<p>@lang('system.frequently')</p>
+                            <h6>@lang('system.ask questions')</h6>
                         </div>
                     </div>
                 </a>
@@ -79,7 +79,7 @@
                 <div class="row">
                     <div class="col-lg-60 col-md-60 col-sm-60">
                         {!! $settings['section10_home_creative_subtitles'] ?? '' !!}
-                        <p class="mt-2">All fields marked with an asterisk (*) are mandatory</p>
+                        <p class="mt-2">@lang('system.all fields marked with an asterisk (*) are mandatory')</p>
                     </div>
                 </div>
                 <form action="#" id="contactForm" method="POST">
@@ -354,15 +354,15 @@
                     <div class="widget quick-link">
                         <h4 class="widget-title line">{{ __('quick link') }}</h4>
                         <ul class="widget-menu">
-                            <li><a href="#">{{ __('Profil') }}</a></li>
+                            <li><a href="{{ route('profile') }}">@lang('system.profile')</a></li>
                             <li><a href="{{ route('home') }}#tenants">{{ __('Video Profile Perusahaan') }}</a></li>
                             <li>
                                 <a href="{{ asset('asset/brochure/(Mobile Version) E-Brochure JIIPE-Ineractive.pdf') }}" target="_blank" class="hashmb d-none">{{ __('Download Brosur') }}</a>
                                 <a href="{{ asset('asset/brochure/(Desktop Version) E-Brochure JIIPE-Ineractive.pdf') }}" target="_blank" class="hashds">{{ __('Download Brosur') }}</a>
                             </li>
                             <li><a href="{{ route('home') }}#videotour">{{ __('Virtual Tour Video') }}</a></li>
-                            <li><a href="#">{{ __('Artikel & Berita') }}</a></li>
-                            <li><a href="">{{ __('Kontak') }}</a></li>
+                            <li><a href="{{ route('blog.category', ['categorySlug' => 'news']) }}">@lang('system.news & articles')</a></li>
+                            <li><a href="{{ route('contact') }}">@lang('system.contacts')</a></li>
                         </ul>
                         <div class="icon-media">
                             <p>Get Connected to our social media <br>Form more insight</p>

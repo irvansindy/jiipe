@@ -3,10 +3,10 @@
         <nav class="t-breadcrumb wow fadeInUp" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="{{ route('home') }}">{{ __('Home') }}</a>
+                    <a href="{{ route('home') }}">@lang('system.home')</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    {{ $data['pageTitle'] ?? __('News') }}
+                    {{ $data['pageTitle'] ?? @lang('system.news') }}
                 </li>
             </ol>
         </nav>

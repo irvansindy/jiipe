@@ -14,8 +14,8 @@
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-calendar-alt"></i></div>
                         <div class="text">
-                            <p>{{ __('creative.Quick Appointment') }}</p>
-                            <h6 class="title">{{ __('creative.PROPOSAL REQUEST') }}</h6>
+                            <p>@lang('system.quick appointment')</p>
+                            <h6 class="title">@lang('system.proposal request')</h6>
                         </div>
                     </div>
                 </a>
@@ -25,8 +25,8 @@
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-map-marked-alt"></i></div>
                         <div class="text">
-                            <p>{{ __('creative.Watch') }}</p>
-                            <h6 class="title">{{ __('creative.VIDEO TOUR') }}</h6>
+                            <p>@lang('system.watch')</p>
+                        <h6 class="title">@lang('system.video tour')</h6>
                         </div>
                     </div>
                 </a>
@@ -36,8 +36,8 @@
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-book-open"></i></div>
                         <div class="text">
-                            <p>{{ __('creative.Download') }}</p>
-                            <h6>{{ __('creative.JIIPE E-BROCHURE') }}</h6>
+                            <p>@lang('system.download')</p>
+                            <h6>@lang('system.jiipe e-brochure')</h6>
                         </div>
                     </div>
                 </a>
@@ -45,8 +45,8 @@
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-book-open"></i></div>
                         <div class="text">
-                            <p>{{ __('creative.Download') }}</p>
-                            <h6>{{ __('creative.JIIPE E-BROCHURE') }}</h6>
+                            <p>@lang('system.download')</p>
+                            <h6>@lang('system.jiipe e-brochure')</h6>
                         </div>
                     </div>
                 </a>
@@ -56,8 +56,8 @@
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-comment-alt"></i></div>
                         <div class="text">
-                            <p>{{ __('creative.Frequently') }}</p>
-                            <h6 class="title">{{ __('creative.ASKED QUESTIONS') }}</h6>
+                            <p>@lang('system.frequently')</p>
+                        <h6>@lang('system.ask questions')</h6>
                         </div>
                     </div>
                 </a>

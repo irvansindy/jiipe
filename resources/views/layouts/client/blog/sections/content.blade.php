@@ -142,7 +142,7 @@
                     <div class="py-5"></div>
                     <div class="berita-terbaru">
                         <h1 style="font-weight: 700; font-size: inherit;">
-                            {{ __('Latest article') }}
+                            @lang('system.latest article')
                         </h1>
                     </div>
 
@@ -178,7 +178,7 @@
                                             <p>{{ __('Read More') }}
                                                 <span>
                                                     <img src="{{ asset('asset/images/arrow.png') }}"
-                                                        alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+                                                        alt="@lang('system.Jiipe industrial estate gresik')">
                                                 </span>
                                             </p>
                                         </a>

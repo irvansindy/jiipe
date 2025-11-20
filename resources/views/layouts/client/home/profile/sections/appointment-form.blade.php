@@ -9,8 +9,8 @@
                             <i class="fa fa-map-marked-alt"></i>
                         </div>
                         <div class="text">
-                            <p>{{ __('Watch') }}</p>
-                            <h6 class="title">{{ __('VIDEO TOUR') }}</h6>
+                            <p>@lang('system.download')</p>
+                            <h6>@lang('system.jiipe e-brochure')</h6>
                         </div>
                     </div>
                 </a>
@@ -22,8 +22,8 @@
                             <i class="fa fa-book-open"></i>
                         </div>
                         <div class="text">
-                            <p>{{ __('Download') }}</p>
-                            <h6>{{ __('JIIPE E-BROCHURE') }}</h6>
+                            <p>@lang('system.download')</p>
+                            <h6>@lang('system.jiipe e-brochure')</h6>
                         </div>
                     </div>
                 </a>
@@ -35,8 +35,8 @@
                             <i class="fa fa-comment-alt"></i>
                         </div>
                         <div class="text">
-                            <p>{{ __('Frequently') }}</p>
-                            <h6>{{ __('ASKED QUESTIONS') }}</h6>
+                            <p>@lang('system.frequently')</p>
+                            <h6>@lang('system.ask questions')</h6>
                         </div>
                     </div>
                 </a>

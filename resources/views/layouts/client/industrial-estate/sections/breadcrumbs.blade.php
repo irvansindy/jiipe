@@ -3,10 +3,10 @@
         <nav class="t-breadcrumb wow fadeInUp" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="{{ route('home') }}">{{ __('Home') }}</a>
+                    <a href="{{ route('home') }}">@lang('system.home')</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    {{ __('JIIPE Industrial Estate') }}
+                    @lang('system.Jiipe industrial estate')
                 </li>
             </ol>
         </nav>

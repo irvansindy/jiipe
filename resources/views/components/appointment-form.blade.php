@@ -9,8 +9,8 @@
                             <i class="fa fa-map-marked-alt"></i>
                         </div>
                         <div class="text">
-                            <p>Watch</p>
-                            <h6 class="title">VIDEO TOUR</h6>
+                            <p>@lang('system.watch')</p>
+                            <h6 class="title">@lang('system.video tour')</h6>
                         </div>
                     </div>
                 </a>
@@ -23,8 +23,8 @@
                             <i class="fa fa-book-open"></i>
                         </div>
                         <div class="text">
-                            <p>Download</p>
-                            <h6>JIIPE E-BROCHURE</h6>
+                            <p>@lang('system.download')</p>
+                            <h6>@lang('system.jiipe e-brochure')</h6>
                         </div>
                     </div>
                 </a>
@@ -35,8 +35,8 @@
                             <i class="fa fa-book-open"></i>
                         </div>
                         <div class="text">
-                            <p>Download</p>
-                            <h6>JIIPE E-BROCHURE</h6>
+                            <p>@lang('system.download')</p>
+                            <h6>@lang('system.jiipe e-brochure')</h6>
                         </div>
                     </div>
                 </a>
@@ -48,8 +48,8 @@
                             <i class="fa fa-comment-alt"></i>
                         </div>
                         <div class="text">
-                            <p>Frequently</p>
-                            <h6>ASKED QUESTIONS</h6>
+                            <p>@lang('system.frequently')</p>
+                            <h6>@lang('system.ask questions')</h6>
                         </div>
                     </div>
                 </a>
@@ -86,11 +86,10 @@
             <div class="prelative container">
                 <div class="row">
                     <div class="col-lg-60 col-md-60 col-sm-60">
-                        <h5>This form is <strong>only</strong> for businesses genuinely interested in acquiring
-                            industrial land within JIIPE SEZ.<br>
-                            Please provide accurate details to help us assess your needs and offer the best solutions.
+                        <h5>
+                            @lang('system.appointment header')
                         </h5>
-                        <p class="mt-2">All fields marked with an asterisk (*) are mandatory</p>
+                        <p class="mt-2">@lang('system.all fields marked with an asterisk (*) are mandatory')</p>
                     </div>
                 </div>
 
@@ -99,11 +98,11 @@
 
                     <div class="row my-3 px-lg-5 px-sm-0">
                         <div class="col-lg-60 col-sm-60 pr-lg-5 pr-sm-0">
-                            <h5 class="title">Basic Information</h5>
+                            <h5 class="title">@lang('system.basic information')</h5>
 
                             <div class="row">
                                 <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left"
-                                    for="first_name">Full Name *</label>
+                                    for="first_name">@lang('system.full name') *</label>
                                 <div class="col-lg-50 col-sm-60">
                                     <div class="row">
                                         <div class="col-lg-30 col-sm-60 form-group form-line">
@@ -121,7 +120,7 @@
                             <div class="row">
                                 <label for="phone_number"
                                     class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
-                                    Phone Number *
+                                    @lang('system.phone number') *
                                 </label>
                                 <div class="col-lg-50 col-sm-60 form-group">
                                     <input id="phone_number" name="QuickAppointment[phone_number]"
@@ -143,7 +142,7 @@
                             <div class="row">
                                 <label for="company_name"
                                     class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
-                                    Company Name *
+                                    @lang('system.company name') *
                                 </label>
                                 <div class="col-lg-50 col-sm-60 form-group">
                                     <input id="company_name" name="QuickAppointment[company_name]"
@@ -154,7 +153,7 @@
                             <div class="row">
                                 <label for="country_origin"
                                     class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
-                                    Company Origin Country *
+                                    @lang('system.company origin country') *
                                 </label>
                                 <div class="col-lg-50 col-sm-60">
                                     <div class="row mb-0">
@@ -187,7 +186,7 @@
                                 </div>
                             </div>
 
-                            <h5 class="title">The reason for considering JIIPE ? *</h5>
+                            <h5 class="title">@lang('system.reason for considering jiipe') ? *</h5>
 
                             <div class="row form-group">
                                 <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left"></label>
@@ -196,7 +195,7 @@
                                         <input name="QuickAppointment[reason]" id="reason_0" type="radio"
                                             class="custom-control-input" value="To Approach Market" required>
                                         <span class="custom-control-indicator"></span>
-                                        <span class="custom-control-description">To Approach Market</span>
+                                        <span class="custom-control-description">@lang('system.to approach market')</span>
                                     </label>
                                 </div>
                                 <div class="col-lg-15 col-sm-60">
@@ -204,7 +203,7 @@
                                         <input name="QuickAppointment[reason]" id="reason_1" type="radio"
                                             class="custom-control-input" value="Require a seaport" required>
                                         <span class="custom-control-indicator"></span>
-                                        <span class="custom-control-description">Require a seaport</span>
+                                        <span class="custom-control-description">@lang('system.require a seaport')</span>
                                     </label>
                                 </div>
                                 <div class="col-lg-20 col-sm-60">
@@ -212,7 +211,7 @@
                                         <input name="QuickAppointment[reason]" id="reason_2" type="radio"
                                             class="custom-control-input" value="Other" required>
                                         <span class="custom-control-indicator"></span>
-                                        <span class="custom-control-description">Other</span>
+                                        <span class="custom-control-description">@lang('system.other')</span>
                                     </label>
                                 </div>
                             </div>
@@ -229,18 +228,18 @@
                             <div class="row">
                                 <label for="classification"
                                     class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
-                                    Industry *
+                                    @lang('system.industry') *
                                 </label>
                                 <div class="col-lg-50 col-sm-60 form-group">
                                     <select class="custom-select" name="QuickAppointment[classification]"
                                         id="classification" required>
-                                        <option value="" disabled selected hidden>Select your Industry</option>
-                                        <option value="Chemical">Chemical</option>
-                                        <option value="Energy">Energy</option>
-                                        <option value="Electronic">Electronic</option>
-                                        <option value="Metal">Metal</option>
-                                        <option value="Supporting & Logistic">Supporting & Logistic</option>
-                                        <option value="Other">Other</option>
+                                        <option value="" disabled selected hidden>@lang('system.select your industry')</option>
+                                        <option value="Chemical">@lang('system.chemical')</option>
+                                        <option value="Energy">@lang('system.energy')</option>
+                                        <option value="Electronic">@lang('system.electronic')</option>
+                                        <option value="Metal">@lang('system.metal')</option>
+                                        <option value="Supporting & Logistic">@lang('system.support & logistics')</option>
+                                        <option value="Other">@lang('system.other')</option>
                                     </select>
                                 </div>
                             </div>
@@ -258,7 +257,7 @@
                                     <div class="row">
                                         <label for="land_plot"
                                             class="col-lg-20 col-sm-60 col-form-label text-lg-right text-sm-left">
-                                            Required Industrial Land Plot *
+                                            @lang('system.required industrial land plot') *
                                         </label>
                                         <div class="col-lg-40 col-sm-60 form-group">
                                             <div class="input-group">
@@ -276,14 +275,13 @@
                                     <div class="row">
                                         <label for="timeline"
                                             class="col-lg-20 col-sm-60 col-form-label text-lg-right text-sm-left">
-                                            Timeline Construction *
+                                            @lang('system.timeline construction') *
                                         </label>
                                         <div class="col-lg-40 col-sm-60 form-group">
                                             <select class="custom-select" name="QuickAppointment[timeline]" required>
-                                                <option value="" disabled selected hidden>Select your Timeline
-                                                    Construction</option>
-                                                <option value="1 - 2 Years">1 - 2 Years</option>
-                                                <option value="More than 2 Years">More than 2 Years</option>
+                                                <option value="" disabled selected hidden>@lang('system.select your timeline construction')</option>
+                                                <option value="1 - 2 Years">@lang('system.1 - 2 years')</option>
+                                                <option value="More than 2 Years">@lang('system.more than 2 years')</option>
                                             </select>
                                         </div>
                                     </div>
@@ -297,7 +295,7 @@
                                 </div>
                             </div>
 
-                            <h5 class="title">Energy & Utility Needs</h5>
+                            <h5 class="title">@lang('system.energy & utility needs')</h5>
 
                             <div class="row">
                                 <div class="col-lg-30 col-sm-60">
@@ -322,7 +320,7 @@
                                     <div class="row">
                                         <label for="industrial_water"
                                             class="col-lg-20 col-sm-60 col-form-label text-lg-right text-sm-left">
-                                            Total Industrial Water *
+                                            @lang('system.total industrial water') *
                                         </label>
                                         <div class="col-lg-40 col-sm-60 form-group">
                                             <div class="input-group">
@@ -343,7 +341,7 @@
                                     <div class="row">
                                         <label for="natural_gas"
                                             class="col-lg-20 col-sm-60 col-form-label text-lg-right text-sm-left">
-                                            Total Required Natural Gas *
+                                            @lang('system.total required natural gas') *
                                         </label>
                                         <div class="col-lg-40 col-sm-60 form-group">
                                             <div class="input-group">
@@ -361,7 +359,7 @@
                                     <div class="row">
                                         <label for="throughput_via_seaport"
                                             class="col-lg-20 col-sm-60 col-form-label text-lg-right text-sm-left">
-                                            Est. Vol. Throughput Via Seaport *
+                                            @lang('system.est. vol. throughput via seaport') *
                                         </label>
                                         <div class="col-lg-40 col-sm-60 form-group">
                                             <div class="input-group">
@@ -393,7 +391,7 @@
                             <div class="row px-5">
                                 <div class="col-lg-60 col-md-60 col-sm-60">
                                     <input type="hidden" name="reff" value="index">
-                                    <button type="submit" class="btn btn-block btn-danger">SUBMIT</button>
+                                    <button type="submit" class="btn btn-block btn-danger">@lang('system.submit')</button>
                                 </div>
                             </div>
                         </div>

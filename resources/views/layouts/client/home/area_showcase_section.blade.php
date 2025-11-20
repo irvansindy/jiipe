@@ -42,7 +42,7 @@
             <div class="col-lg-30 col-sm-60">
                 <div class="jiipe-content px-lg-5 px-sm-0">
                     <div class="jiipe-top">
-                        <h1 class="jiipe-top-red">Why JIIPE is the Prime Choice for Industrial Investors?</h1>
+                        <h1 class="jiipe-top-red">@lang('system.why jiipe')?</h1>
                         <p>
                             Discover the industrial hub redefining investment in Southeast Asia! Located in Gresik, East
                             Java, JIIPE is not just another Special Economic Zone (SEZ); it’s Indonesia's "Best
@@ -83,8 +83,8 @@
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-calendar-alt"></i></div>
                         <div class="text">
-                            <p>Quick Appointment</p>
-                            <h6 class="title">PROPOSAL REQUEST</h6>
+                            <p>@lang('system.quick appointment')</p>
+                            <h6 class="title">@lang('system.proposal request')</h6>
                         </div>
                     </div>
                 </a>
@@ -94,8 +94,8 @@
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-map-marked-alt"></i></div>
                         <div class="text">
-                            <p>Watch</p>
-                            <h6 class="title">VIDEO TOUR</h6>
+                            <p>@lang('system.watch')</p>
+                            <h6 class="title">@lang('system.video tour')</h6>
                         </div>
                     </div>
                 </a>
@@ -106,8 +106,8 @@
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-book-open"></i></div>
                         <div class="text">
-                            <p>Download</p>
-                            <h6>JIIPE E-BROCHURE</h6>
+                            <p>@lang('system.download')</p>
+                            <h6>@lang('system.jiipe e-brochure')</h6>
                         </div>
                     </div>
                 </a>
@@ -116,8 +116,8 @@
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-book-open"></i></div>
                         <div class="text">
-                            <p>Download</p>
-                            <h6>JIIPE E-BROCHURE</h6>
+                            <p>@lang('system.download')</p>
+                            <h6>@lang('system.jiipe e-brochure')</h6>
                         </div>
                     </div>
                 </a>
@@ -127,8 +127,8 @@
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-comment-alt"></i></div>
                         <div class="text">
-                            <p>Frequently</p>
-                            <h6>ASKED QUESTIONS</h6>
+                            <p>@lang('system.frequently')</p>
+                            <h6>@lang('system.ask questions')</h6>
                         </div>
                     </div>
                 </a>
@@ -158,8 +158,8 @@
                 <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                     <div class="icon"><i class="fa fa-calendar-alt"></i></div>
                     <div class="text">
-                        <p>Quick Appointment</p>
-                        <h6 class="title">PROPOSAL REQUEST</h6>
+                        <p>@lang('system.quick appointment')</p>
+                        <h6 class="title">@lang('system.proposal request')</h6>
                     </div>
                 </div>
             </a>
@@ -169,8 +169,8 @@
                 <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                     <div class="icon"><i class="fa fa-map-marked-alt"></i></div>
                     <div class="text">
-                        <p>Watch</p>
-                        <h6 class="title">VIDEO TOUR</h6>
+                        <p>@lang('system.watch')</p>
+                        <h6 class="title">@lang('system.video tour')</h6>
                     </div>
                 </div>
             </a>
@@ -181,8 +181,8 @@
                 <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                     <div class="icon"><i class="fa fa-book-open"></i></div>
                     <div class="text">
-                        <p>Download</p>
-                        <h6>JIIPE E-BROCHURE</h6>
+                        <p>@lang('system.download')</p>
+                        <h6>@lang('system.jiipe e-brochure')</h6>
                     </div>
                 </div>
             </a>
@@ -191,8 +191,8 @@
                 <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                     <div class="icon"><i class="fa fa-book-open"></i></div>
                     <div class="text">
-                        <p>Download</p>
-                        <h6>JIIPE E-BROCHURE</h6>
+                        <p>@lang('system.download')</p>
+                        <h6>@lang('system.jiipe e-brochure')</h6>
                     </div>
                 </div>
             </a>
@@ -202,8 +202,8 @@
                 <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                     <div class="icon"><i class="fa fa-comment-alt"></i></div>
                     <div class="text">
-                        <p>Frequently</p>
-                        <h6>ASKED QUESTIONS</h6>
+                        <p>@lang('system.frequently')</p>
+                        <h6>@lang('system.ask questions')</h6>
                     </div>
                 </div>
             </a>

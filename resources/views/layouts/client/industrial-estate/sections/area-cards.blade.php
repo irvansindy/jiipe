@@ -9,10 +9,10 @@
             <div class="lebih">
                 <a href="{{ route('area.detail', $zone['id']) }}">
                     <p>
-                        {{ __('Read More') }}
+                        @lang('system.read more')
                         <span>
                             <img src="{{ asset('asset/images/arrow-red.png') }}"
-                                alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+                                alt="@lang('system.Jiipe industrial estate gresik')">
                         </span>
                     </p>
                 </a>

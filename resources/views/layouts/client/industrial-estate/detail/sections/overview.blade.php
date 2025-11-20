@@ -3,9 +3,9 @@
         <div class="row">
             {{-- Sidebar Navigation --}}
             <div class="col-md-15">
-                <img src="{{ asset('asset/images/beijing-red.png') }}" alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+                <img src="{{ asset('asset/images/beijing-red.png') }}" alt="@lang('system.Jiipe industrial estate gresik')">
                 <p class="info">
-                    {{ __('JIIPE Industrial Estate') }}
+                    @lang('system.Jiipe industrial estate')
                 </p>
 
                 <div class="side">

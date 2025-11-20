@@ -1,17 +1,10 @@
 <section class="jiipe-blog">
-
     <div class="prelative container">
-
         <div class="row">
-
             <div class="col-60 text-center py-lg-4 py-sm-2">
-
-                <h2 class="jiipe-main-header jiipe-main-red">News Update</h2>
-
+                <h2 class="jiipe-main-header jiipe-main-red">@lang('system.news update')</h2>
             </div>
-
         </div>
-
         <div class="row">
             @php
                 $news = app(\App\Http\Controllers\Client\HomeController::class)->getNews();
@@ -34,7 +27,7 @@
                         <div class="lebih">
                             <a href="{{ route('blog.detail', $item['id']) }}">
                                 <p>
-                                    Read More
+                                    @lang('system.read more')
                                     <span><i class="fa-solid fa-arrow-right"></i></span>
                                 </p>
                             </a>

@@ -3,12 +3,10 @@
         <div class="row">
             {{-- Sidebar Navigation --}}
             <div class="col-md-15">
-                <img src="{{ asset('asset/images/beijing-red.png') }}" alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+                <img src="{{ asset('asset/images/beijing-red.png') }}" alt="@lang('system.Jiipe industrial estate gresik')">
                 <p class="info">
-                    {{ __('Articles & News About the Industrial Zone JIIPE in Gresik') }}
-                    {{-- @php
-                        dd($data['news']->category->translations[0]['name'])
-                    @endphp --}}
+                    @lang('system.articles & news about the industrial zone jiipe in gresik')
+
                 </p>
                 <div class="side pt-3">
                     <div class="leftsn_menu">
@@ -57,7 +55,7 @@
                             <p>
                                 <span>
                                     <img class="back-img" src="{{ asset('asset/images/arrow-back.png') }}"
-                                         alt="{{ __('JIIPE Industrial Estate Gresik') }}">&nbsp;
+                                         alt="@lang('system.Jiipe industrial estate gresik')">&nbsp;
                                 </span>&nbsp;
                                 <a href="{{ route('blog.index') }}">{{ __('Return to Index') }}</a>
                             </p>
@@ -73,8 +71,7 @@
                 {{-- Featured Image --}}
                 <div style="max-width: 865px; margin-bottom: 1.2rem;">
                     <img class="artikel img img-fluid"
-                         src="{{ $data['news']->thumbnail ? (filter_var($data['news']->thumbnail, FILTER_VALIDATE_URL) ? $data['news']->thumbnail : asset('storage/' . $data['news']->thumbnail)) : asset('asset/images/default-blog.jpg') }}"
-                         alt="{{ $data['translation']->title ?? '' }}">
+                        src="{{ $data['news']->thumbnail ? (filter_var($data['news']->thumbnail, FILTER_VALIDATE_URL) ? $data['news']->thumbnail : asset('storage/' . $data['news']->thumbnail)) : asset('asset/images/default-blog.jpg') }}" alt="{{ $data['translation']->title ?? '' }}">
                 </div>
 
                 {{-- Content --}}
@@ -85,7 +82,9 @@
                 {{-- Link to Other Articles --}}
                 <div class="lihat-artikel">
                     <a href="{{ route('blog.index') }}">
-                        <p>{{ __('Other Articles & News About JIIPE Industrial Estate in Gresik') }}</p>
+                        <p>
+                            @lang('system.other articles & news about jiipe industrial estate in gresik')
+                        </p>
                     </a>
                 </div>
 
@@ -137,9 +136,7 @@
                                     </div>
                                     <div class="gambar">
                                         <a href="{{ route('blog.detail', $related['id']) }}">
-                                            <img src="{{ $related['thumbnail'] }}"
-                                                 alt="{{ $related['title'] }}"
-                                                 class="img-fluid">
+                                            <img src="{{ $related['thumbnail'] }}" alt="{{ $related['title'] }}" class="img-fluid">
                                         </a>
                                     </div>
                                     <div class="judul">
@@ -153,7 +150,7 @@
                                             <p>{{ __('Read More') }}
                                                 <span>
                                                     <img src="{{ asset('asset/images/arrow.png') }}"
-                                                         alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+                                                         alt="@lang('system.Jiipe industrial estate gresik')">
                                                 </span>
                                             </p>
                                         </a>

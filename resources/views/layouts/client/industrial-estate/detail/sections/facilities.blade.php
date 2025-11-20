@@ -3,9 +3,9 @@
         <div class="row">
             <div class="col-md-15">
                 <img src="{{ asset('asset/images/menufooterlogo.png') }}"
-                    alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+                    alt="@lang('system.Jiipe industrial estate gresik')">
                 <p class="info">
-                    {{ __('Energy Sources and Advanced Processing Facilities in JIIPE Industrial Estates') }}
+                    @lang('system.energy sources and advanced processing facilities in jiipe industrial estates')
                 </p>
             </div>
 
