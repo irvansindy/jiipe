@@ -21,18 +21,24 @@ class GalleryController extends Controller
         // ✅ Deteksi request AJAX dari jQuery (baik by header atau by query string)
         $isAjax = $request->ajax() || $request->get('ajax') == 1 || $request->get('ajax') === '1';
 
-
-        $categories = NewsCategories::with(['translations' => function ($query) use ($locale) {
+        $categories = NewsCategories::with(['translations' => function($query) use ($locale) {
             $query->where('locale', $locale);
-        }])->whereIn('id', [1, 4])
-        ->get()->map(function ($category) use ($locale) {
+        }])
+        ->whereIn('id', [1,4])
+        ->get()->map(function($category) use ($locale) {
             $translation = $category->translations->firstWhere('locale', $locale);
+
+            // Map ID to type (HARDCODE)
+            $typeSlug = $category->id == 1 ? 'news' : 'article';
+
             return [
                 'id' => $category->id,
-                'name' => $translation?->name ?? '',
-                'slug' => $translation ? Str::slug($translation->name) : '',
+                'name' => $translation ? $translation->name : '',
+                'type' => $typeSlug,
             ];
-        })->filter(fn($cat) => !empty($cat['name']));
+        })->filter(function($cat) {
+            return !empty($cat['name']);
+        });
 
         $query = Gallery::with(['translations' => function ($query) use ($locale) {
             $query->where('locale', $locale);

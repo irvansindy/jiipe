@@ -95,7 +95,7 @@
                                 </div>
                                 <div class="gambar">
                                     <a href="{{ route('blog.detail', $post['id']) }}">
-                                        <img src="{{ $post['thumbnail'] }}" alt="{{ $post['title'] }}"
+                                        <img src="{{ $post['thumbnail'] }}" alt="{{ $post['title'] }}" decoding="async" loading="lazy"
                                             class="img-fluid">
                                     </a>
                                 </div>
@@ -163,8 +163,7 @@
                                     </div>
                                     <div class="gambar">
                                         <a href="{{ route('blog.detail', $article['id']) }}">
-                                            <img src="{{ $article['thumbnail'] }}" alt="{{ $article['title'] }}"
-                                                class="img-fluid">
+                                            <img src="{{ $article['thumbnail'] }}" alt="{{ $article['title'] }}" decoding="async" loading="lazy" class="img-fluid">
                                         </a>
                                     </div>
                                     <div class="judul">
@@ -179,7 +178,7 @@
                                         <a href="{{ route('blog.detail', $article['id']) }}">
                                             <p>{{ __('Read More') }}
                                                 <span>
-                                                    <img src="{{ asset('asset/images/arrow.png') }}"
+                                                    <img src="{{ asset('asset/images/arrow.png') }}" decoding="async" loading="lazy"
                                                         alt="@lang('system.Jiipe industrial estate gresik')">
                                                 </span>
                                             </p>

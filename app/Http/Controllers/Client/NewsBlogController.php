@@ -91,7 +91,7 @@ class NewsBlogController extends Controller
             })
             ->filter();
         }
-
+        
         $data = [
             'title' => __('News & Articles - JIIPE'),
             'metaKey' => 'jiipe news, jiipe articles, industrial estate news',
@@ -448,7 +448,7 @@ class NewsBlogController extends Controller
             'thumbnail' => $news->thumbnail
                 ? (filter_var($news->thumbnail, FILTER_VALIDATE_URL)
                     ? $news->thumbnail
-                    : asset('storage/blog/' . $news->thumbnail))
+                    : asset('uploads/blog/' . $news->thumbnail))
                 : asset('asset/images/default-blog.jpg'),
             'date' => $news->created_at ? $news->created_at->format('M d, Y') : '',
             'category' => $categoryTranslation ? $categoryTranslation->name : '',

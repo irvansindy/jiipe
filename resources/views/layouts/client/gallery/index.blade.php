@@ -36,7 +36,7 @@
                                 @if (!empty($data['categories']))
                                     @foreach ($data['categories'] as $category)
                                         <li>
-                                            <a href="{{ route('blog.category', $category['slug']) }}">
+                                            <a href="{{ route('blog.detail', $category['id']) }}">
                                                 {{ $category['name'] }}
                                             </a>
                                         </li>

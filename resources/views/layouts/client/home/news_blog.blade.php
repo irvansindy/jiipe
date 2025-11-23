@@ -14,7 +14,7 @@
                     <div class="items {{ $key == 0 ? 'active' : '' }} pb-lg-4 pb-sm-1">
                         <div class="gambar">
                             <a href="{{ route('blog.detail', $item['id']) }}">
-                                <img src="{{ asset('uploads/'.$item['thumbnail']) }}"
+                                <img src="{{ asset('uploads/blog/'.$item['thumbnail']) }}"
                                     alt="{{ $item['title'] }}"
                                     class="img-fluid">
                             </a>
