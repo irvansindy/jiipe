@@ -8,9 +8,13 @@
                 <li class="breadcrumb-item">
                     <a href="{{ route('blog.index') }}">@lang('system.news & articles')</a>
                 </li>
-                @if(!empty($data['categoryName']))
+                @if(!empty($data['categoryName']) && isset($data['news']->category_id))
                 <li class="breadcrumb-item">
-                    <a href="{{ route('blog.category', Str::slug($data['categoryName'])) }}">
+                    {{-- ✅ GANTI JADI TYPE --}}
+                    @php
+                        $categoryType = $data['news']->category_id == 1 ? 'news' : 'article';
+                    @endphp
+                    <a href="{{ route('blog.type', ['type' => $categoryType]) }}">
                         {{ $data['categoryName'] }}
                     </a>
                 </li>

@@ -92,7 +92,7 @@ class NewsBlogController extends Controller
             'title' => __('News & Articles - JIIPE'),
             'metaKey' => 'jiipe news, jiipe articles, industrial estate news',
             'metaDesc' => __('Latest news and articles about JIIPE Industrial Estate'),
-            'pageTitle' => __('News'),
+            'pageTitle' => __('system.news'),
             'activeFilter' => 'all',
             'categories' => $categories,
             'latestPost' => $latestPost,
@@ -100,9 +100,50 @@ class NewsBlogController extends Controller
             'latestArticles' => $latestArticles,
             'articlesPagination' => null,
         ];
+
         return view('layouts.client.blog.index', compact('data'));
     }
 
+    /**
+     * ✅ METHOD BARU - Handle category by ID, redirect ke slug
+     */
+    public function categoryById($categoryId, Request $request)
+    {
+        $locale = app()->getLocale();
+
+        // Get category by ID
+        $category = NewsCategories::with(['translations' => function($query) use ($locale) {
+            $query->where('locale', $locale);
+        }])->find($categoryId);
+
+        // Jika category tidak ditemukan, redirect ke blog index
+        if (!$category) {
+            return redirect()->route('blog.index');
+        }
+
+        // Get translation untuk locale saat ini
+        $categoryTranslation = $category->translations->firstWhere('locale', $locale);
+
+        // Jika tidak ada translation untuk locale ini, ambil translation pertama yang ada
+        if (!$categoryTranslation) {
+            $categoryTranslation = $category->translations->first();
+        }
+
+        // Jika masih tidak ada translation sama sekali, redirect
+        if (!$categoryTranslation) {
+            return redirect()->route('blog.index');
+        }
+
+        // Generate slug dari translation
+        $categorySlug = Str::slug($categoryTranslation->name);
+
+        // Redirect ke route dengan slug (untuk SEO-friendly URL)
+        return redirect()->route('blog.category', ['categorySlug' => $categorySlug]);
+    }
+
+    /**
+     * ✅ METHOD YANG SUDAH DIUPDATE - Handle category by slug
+     */
     public function category($categorySlug, Request $request)
     {
         $locale = app()->getLocale();
@@ -124,17 +165,31 @@ class NewsBlogController extends Controller
             return !empty($cat['name']);
         });
 
-        // Find category by slug
-        $category = NewsCategories::with(['translations' => function($query) use ($locale) {
-            $query->where('locale', $locale);
-        }])
-        ->whereHas('translations', function($query) use ($locale, $categorySlug) {
-            $query->where('locale', $locale)
-                  ->where(DB::raw('LOWER(name)'), 'like', '%' . strtolower(str_replace('-', ' ', $categorySlug)) . '%');
-        })
-        ->firstOrFail();
+        // Find category by slug - lebih flexible untuk handle multi-language
+        $category = NewsCategories::with(['translations'])
+            ->whereHas('translations', function($query) use ($categorySlug) {
+                $query->whereRaw('LOWER(REPLACE(name, " ", "-")) LIKE ?',
+                    ['%' . strtolower($categorySlug) . '%']);
+            })
+            ->first();
 
+        // Jika tidak ketemu, redirect ke blog index
+        if (!$category) {
+            return redirect()->route('blog.index');
+        }
+
+        // Get translation untuk locale saat ini
         $categoryTranslation = $category->translations->firstWhere('locale', $locale);
+
+        // Jika tidak ada translation untuk locale saat ini, ambil translation pertama yang ada
+        if (!$categoryTranslation) {
+            $categoryTranslation = $category->translations->first();
+        }
+
+        // Jika masih null, redirect
+        if (!$categoryTranslation) {
+            return redirect()->route('blog.index');
+        }
 
         // Get news by category
         $newsQuery = News::with([
@@ -163,38 +218,23 @@ class NewsBlogController extends Controller
 
         // Get latest articles if viewing news category
         $latestArticles = collect([]);
-        $isNewsCategory = Str::contains(strtolower($categoryTranslation->name ?? ''), 'news') ||
-                         Str::contains(strtolower($categoryTranslation->name ?? ''), 'berita');
+        $isNewsCategory = $category->id == 1; // ID 1 untuk News category
 
         if ($isNewsCategory) {
-            $articleCategory = NewsCategories::with(['translations' => function($query) use ($locale) {
-                $query->where('locale', $locale);
-            }])
-            ->whereHas('translations', function($query) use ($locale) {
-                $query->where('locale', $locale)
-                      ->where(function($q) {
-                          $q->where('name', 'like', '%article%')
-                            ->orWhere('name', 'like', '%artikel%');
-                      });
+            $latestArticles = News::with([
+                'translations' => function($query) use ($locale) {
+                    $query->where('locale', $locale);
+                }
+            ])
+            ->where('category_id', 4) // ID 4 untuk Articles category
+            ->where('is_published', 1)
+            ->orderBy('created_at', 'desc')
+            ->take(9)
+            ->get()
+            ->map(function($news) use ($locale) {
+                return $this->formatNewsPost($news, $locale);
             })
-            ->first();
-
-            if ($articleCategory) {
-                $latestArticles = News::with([
-                    'translations' => function($query) use ($locale) {
-                        $query->where('locale', $locale);
-                    }
-                ])
-                ->where('category_id', $articleCategory->id)
-                ->where('is_published', 1)
-                ->orderBy('created_at', 'desc')
-                ->take(9)
-                ->get()
-                ->map(function($news) use ($locale) {
-                    return $this->formatNewsPost($news, $locale);
-                })
-                ->filter();
-            }
+            ->filter();
         }
 
         $data = [
@@ -203,6 +243,117 @@ class NewsBlogController extends Controller
             'metaDesc' => __("Latest {$categoryTranslation->name} about JIIPE Industrial Estate"),
             'pageTitle' => $categoryTranslation->name ?? 'News',
             'activeFilter' => strtolower($categorySlug),
+            'categories' => $categories,
+            'latestPost' => $latestPost,
+            'posts' => $newsPaginated,
+            'latestArticles' => $latestArticles,
+            'articlesPagination' => null,
+        ];
+
+        return view('layouts.client.blog.index', compact('data'));
+    }
+
+    public function type($type, Request $request)
+    {
+        $locale = app()->getLocale();
+        $perPage = 9;
+
+        // Map type ke category ID (HARDCODE)
+        $typeMap = [
+            'news' => 1,
+            'article' => 4,
+            'articles' => 4,
+        ];
+
+        $categoryId = $typeMap[strtolower($type)] ?? null;
+
+        if (!$categoryId) {
+            return redirect()->route('blog.index');
+        }
+
+        $category = NewsCategories::with(['translations' => function($query) use ($locale) {
+            $query->where('locale', $locale);
+        }])->find($categoryId);
+
+        if (!$category) {
+            return redirect()->route('blog.index');
+        }
+
+        $categoryTranslation = $category->translations->firstWhere('locale', $locale);
+
+        if (!$categoryTranslation) {
+            $categoryTranslation = $category->translations->first();
+        }
+
+        // Get all categories for navigation
+        $categories = NewsCategories::with(['translations' => function($query) use ($locale) {
+            $query->where('locale', $locale);
+        }])
+        ->whereIn('id', [1,4])
+        ->get()->map(function($category) use ($locale) {
+            $translation = $category->translations->firstWhere('locale', $locale);
+
+            // Map ID to type (HARDCODE)
+            $typeSlug = $category->id == 1 ? 'news' : 'article';
+
+            return [
+                'id' => $category->id,
+                'name' => $translation ? $translation->name : '',
+                'type' => $typeSlug,
+            ];
+        })->filter(function($cat) {
+            return !empty($cat['name']);
+        });
+
+        // Get news by category
+        $newsQuery = News::with([
+            'translations' => function($query) use ($locale) {
+                $query->where('locale', $locale);
+            },
+            'category.translations' => function($query) use ($locale) {
+                $query->where('locale', $locale);
+            }
+        ])
+        ->where('category_id', $category->id)
+        ->where('is_published', 1)
+        ->orderBy('created_at', 'desc');
+
+        $newsPaginated = $newsQuery->paginate($perPage);
+
+        $formattedPosts = $newsPaginated->getCollection()->map(function($news) use ($locale) {
+            return $this->formatNewsPost($news, $locale);
+        })->filter();
+
+        $newsPaginated->setCollection($formattedPosts);
+
+        $latestPost = $formattedPosts->first();
+
+        $latestArticles = collect([]);
+        $isNewsCategory = $category->id == 1;
+
+        if ($isNewsCategory) {
+            $latestArticles = News::with([
+                'translations' => function($query) use ($locale) {
+                    $query->where('locale', $locale);
+                }
+            ])
+            ->where('category_id', 4)
+            ->where('is_published', 1)
+            ->orderBy('created_at', 'desc')
+            ->take(9)
+            ->get()
+            ->map(function($news) use ($locale) {
+                return $this->formatNewsPost($news, $locale);
+            })
+            ->filter();
+        }
+
+        $data = [
+            'title' => ($categoryTranslation->name ?? 'News') . ' - JIIPE',
+            'metaKey' => "jiipe {$categoryTranslation->name}, industrial estate news",
+            'metaDesc' => __("Latest {$categoryTranslation->name} about JIIPE Industrial Estate"),
+            'pageTitle' => $categoryTranslation->name ?? 'News',
+            'activeFilter' => strtolower($type),
             'categories' => $categories,
             'latestPost' => $latestPost,
             'posts' => $newsPaginated,
@@ -260,7 +411,7 @@ class NewsBlogController extends Controller
             'metaKey' => $translation->title ?? '',
             'metaDesc' => Str::limit(strip_tags($translation->content ?? ''), 160),
             'pageTitle' => $translation->title ?? 'News Detail',
-            'activeFilter' => 'detail', // Added for consistency
+            'activeFilter' => 'detail',
             'categories' => $categories,
             'news' => $news,
             'translation' => $translation,

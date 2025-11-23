@@ -51,11 +51,16 @@ Route::group([
 
     Route::get('/news', [NewsBlogController::class, 'index'])->name('blog.index');
     Route::get('/news/type/{type}', [NewsBlogController::class, 'type'])->name('blog.type');
-    // Route::get('/news/{id}', [NewsBlogController::class, 'detail'])->name('blog.detail');
+
     // Blog by category
-    Route::get('/blog/category/{categorySlug}', [NewsBlogController::class, 'category'])->name('blog.category');
+    // Di dalam group localization, tambahkan ini:
+    // Route::get('/blog/category/id/{categoryId}', [NewsBlogController::class, 'categoryById'])->name('blog.category.id');
+    // Route::get('/blog/category/{categorySlug}', [NewsBlogController::class, 'category'])->name('blog.category');
+
     // Blog detail
+    // Route::get('/blog/{id}', [NewsBlogController::class, 'detail'])->name('blog.detail');
     Route::get('/blog/{id}', [NewsBlogController::class, 'detail'])->name('blog.detail');
+
     // Gallery routes
     Route::get('/galleries', [GalleryClient::class, 'index'])->name('gallery.index');
     Route::get('/gallery/video', [GalleryClient::class, 'video'])->name('gallery.video');

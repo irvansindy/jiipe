@@ -6,7 +6,6 @@
                 <img src="{{ asset('asset/images/beijing-red.png') }}" alt="@lang('system.Jiipe industrial estate gresik')">
                 <p class="info">
                     @lang('system.articles & news about the industrial zone jiipe in gresik')
-
                 </p>
                 <div class="side pt-3">
                     <div class="leftsn_menu">
@@ -20,11 +19,13 @@
                             </li>
                             @if(!empty($data['categories']))
                                 @foreach($data['categories'] as $category)
-                                {{-- @php
-                                dd($category);
-                                @endphp --}}
-                                    <li class="{{ ($category['name'] ?? '') == $data['news']->category->translations[0]['name'] ? 'active' : '' }}">
-                                        <a href="{{ route('blog.category', $category['slug']) }}">
+                                    @php
+                                        // Cek active berdasarkan category ID
+                                        $isActive = ($category['id'] ?? '') == ($data['news']->category_id ?? '');
+                                    @endphp
+                                    <li class="{{ $isActive ? 'active' : '' }}">
+                                        {{-- ✅ GANTI JADI TYPE --}}
+                                        <a href="{{ route('blog.type', ['type' => $category['type']]) }}">
                                             {{ $category['name'] }}
                                         </a>
                                     </li>
@@ -223,7 +224,7 @@
 @push('js')
 <script type="text/javascript">
     $(document).ready(function(){
-        // Mobile select menu
+        // Mobile select menu - AKAN OTOMATIS AMBIL HREF YANG SUDAH BENAR
         if ($(window).width() < 767) {
             var myform = document.getElementById('mytoSelect'),
                 items = document.getElementById('lists_leftmenuKawasan').getElementsByTagName('li'),

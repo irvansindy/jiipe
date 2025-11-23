@@ -44,27 +44,6 @@
                         </div>
                     </div>
                 </div>
-                {{-- <div class="branding3 d-none">
-                    <label class="float-md-right">Choose Language : </label>
-                    <ul class="language-mobile float-md-right">
-                        <li class="has-children">
-                            <ul class="sub-menu">
-                                @foreach (Mcamara\LaravelLocalization\Facades\LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                                    <li>
-                                        <a class="{{ $localeCode === Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale() ? 'active' : '' }}"
-                                        rel="alternate"
-                                        hreflang="{{ $localeCode }}"
-                                        href="{{ Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                                            {{ $properties['native'] }}
-                                        </a>
-                                        @if (!$loop->last) | @endif
-                                    </li>
-                                @endforeach
-
-                            </ul>
-                        </li>
-                    </ul>
-                </div> --}}
                 <div class="branding3 d-none">
                     <div class="language-dropdown-wrapper">
                         <label for="language-select">Choose Language : </label>
@@ -116,11 +95,18 @@
                         <!-- Main Menu -->
                         <nav class="main-menu main-menu-red">
                             <ul>
-                                <li class="menu-item has-children"><a href="#" class="dd-trigger">@lang('system.about us')</a>
+                                <li class="menu-item has-children"><a href="#"
+                                        class="dd-trigger">@lang('system.about us')</a>
                                     <ul class="sub-menu">
-                                        <li><a href="{{ route('profile') }}">@lang('system.profile')</a></li>
-                                        <li><a href="{{ route('blog.category', ['categorySlug' => 'news']) }}">@lang('system.news')</a></li>
-                                        <li><a href="{{ route('blog.category', ['categorySlug' => 'articles']) }}">@lang('system.articles')</a></li>
+                                        <li>
+                                            <a href="{{ route('profile') }}">@lang('system.profile')</a>
+                                        </li>
+                                        <li><a
+                                                href="{{ route('blog.type', ['type' => 'news']) }}">{{ __('system.news') }}</a>
+                                        </li>
+                                        <li><a
+                                                href="{{ route('blog.type', ['type' => 'article']) }}">{{ __('system.articles') }}</a>
+                                        </li>
                                         <li><a href="{{ route('contact') }}">@lang('system.contacts')</a></li>
                                     </ul>
                                 </li>
@@ -128,8 +114,10 @@
                                 </li>
                                 <li class="menu-item"><a href="{{ route('economic-zone') }}">@lang('system.special economic zone')</a>
                                 </li>
-                                <li class="menu-item"><a href="{{ route('blog.index') }}">@lang('system.news') &amp; @lang('system.articles')</a></li>
-                                <li class="menu-item"><a href="{{ route('international-desk') }}">@lang('system.international desk')</a></li>
+                                <li class="menu-item"><a href="{{ route('blog.index') }}">@lang('system.news') &amp;
+                                        @lang('system.articles')</a></li>
+                                <li class="menu-item"><a href="{{ route('international-desk') }}">@lang('system.international desk')</a>
+                                </li>
                                 <li class="menu-item"><a href="{{ route('career') }}">@lang('system.career')</a></li>
                             </ul>
                         </nav>

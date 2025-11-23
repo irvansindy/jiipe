@@ -14,17 +14,20 @@
 
                         {{-- Desktop Navigation --}}
                         <ul id="lists_leftmenuKawasan" class="list-unstyled d-none d-sm-block">
-                            <li class="{{ $data['activeFilter'] === 'all' ? 'active' : '' }}">
+                            <li class="{{ ($data['activeFilter'] ?? '') === 'all' ? 'active' : '' }}">
                                 <a href="{{ route('blog.index') }}">{{ __('All') }}</a>
                             </li>
-                            @foreach ($data['categories'] as $category)
-                                <li class="{{ $data['activeFilter'] === $category['slug'] ? 'active' : '' }}">
-                                    <a href="{{ route('blog.category', $category['slug']) }}">
-                                        {{ $category['name'] }}
-                                    </a>
-                                </li>
-                            @endforeach
-                            <li class="{{ $data['activeFilter'] === 'gallery' ? 'active' : '' }}">
+                            @if(!empty($data['categories']))
+                                @foreach ($data['categories'] as $category)
+                                    <li class="{{ ($data['activeFilter'] ?? '') === ($category['type'] ?? '') ? 'active' : '' }}">
+                                        {{-- ✅ GANTI JADI TYPE --}}
+                                        <a href="{{ route('blog.type', ['type' => $category['type']]) }}">
+                                            {{ $category['name'] }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            @endif
+                            <li class="{{ ($data['activeFilter'] ?? '') === 'gallery' ? 'active' : '' }}">
                                 <a href="{{ route('gallery.index') }}">{{ __('Gallery') }}</a>
                             </li>
                         </ul>
@@ -36,7 +39,7 @@
             {{-- Main Content --}}
             <div class="col-md-45">
                 {{-- Latest News Section --}}
-                @if ($data['latestPost'])
+                @if (!empty($data['latestPost']))
                     <div class="berita-terbaru">
                         <p>{{ __('Latest news') }}</p>
                     </div>
@@ -109,8 +112,8 @@
                                     <a href="{{ route('blog.detail', $post['id']) }}">
                                         <p>{{ __('Read More') }}
                                             <span>
-                                                <img src="{{ asset('asset/images/arrow.png') }}" decoding="async" loading="lazy"
-                                                    alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+                                                <img src="{{ asset('asset/images/arrow.png') }}" decoding="async"
+                                                    loading="lazy" alt="{{ __('JIIPE Industrial Estate Gresik') }}">
                                             </span>
                                         </p>
                                     </a>
@@ -205,42 +208,42 @@
 </section>
 
 @push('js')
-    <script type="text/javascript">
-        $(document).ready(function() {
-            // Add Bootstrap pagination classes
-            $('.pagination li').addClass('page-item');
-            $('.pagination li a').addClass('page-link');
-            $('.pagination li.selected, .pagination li.active').addClass('active');
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Add Bootstrap pagination classes
+        $('.pagination li').addClass('page-item');
+        $('.pagination li a').addClass('page-link');
+        $('.pagination li.selected, .pagination li.active').addClass('active');
 
-            // Mobile select menu
-            if ($(window).width() < 767) {
-                var myform = document.getElementById('mytoSelect'),
-                    items = document.getElementById('lists_leftmenuKawasan').getElementsByTagName('li'),
-                    select = document.createElement('select'),
-                    len = items.length;
+        // Mobile select menu - AKAN OTOMATIS AMBIL HREF YANG SUDAH BENAR
+        if ($(window).width() < 767) {
+            var myform = document.getElementById('mytoSelect'),
+                items = document.getElementById('lists_leftmenuKawasan').getElementsByTagName('li'),
+                select = document.createElement('select'),
+                len = items.length;
 
-                for (var i = 0; i < len; i++) {
-                    var option = document.createElement('option');
-                    var label = items[i].textContent.replace(/\s\s+/g, " ").trim(),
-                        link = items[i].getElementsByTagName('a')[0].href,
-                        isActive = items[i].classList.contains('active');
+            for (var i = 0; i < len; i++) {
+                var option = document.createElement('option');
+                var label = items[i].textContent.replace(/\s\s+/g, " ").trim(),
+                    link = items[i].getElementsByTagName('a')[0].href,
+                    isActive = items[i].classList.contains('active');
 
-                    option.textContent = label;
-                    option.value = link;
-                    if (isActive) option.selected = true;
+                option.textContent = label;
+                option.value = link;
+                if (isActive) option.selected = true;
 
-                    select.appendChild(option);
-                }
-
-                myform.appendChild(select);
-
-                $(select).addClass('form-control');
-                $(select).change(function(e) {
-                    var selectedLink = $(this).val();
-                    window.location.href = selectedLink;
-                    e.preventDefault();
-                });
+                select.appendChild(option);
             }
-        });
-    </script>
+
+            myform.appendChild(select);
+
+            $(select).addClass('form-control');
+            $(select).change(function(e) {
+                var selectedLink = $(this).val();
+                window.location.href = selectedLink;
+                e.preventDefault();
+            });
+        }
+    });
+</script>
 @endpush

@@ -6,7 +6,7 @@
                     <a href="{{ route('home') }}">@lang('system.home')</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    {{ $data['pageTitle'] ?? @lang('system.news') }}
+                    {{ $data['pageTitle'] ?? __('system.news') }}
                 </li>
             </ol>
         </nav>
