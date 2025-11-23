@@ -46,9 +46,9 @@ class AboutUsController extends Controller
             }
             if ($request->hasFile('cover_image')) {
                 if ($header->cover_image) {
-                    Storage::disk('public')->delete($header->cover_image);
+                    Storage::disk('uploads')->delete($header->cover_image);
                 }
-                $header->image = $request->file('cover_image')->store('about_us/cover', 'public');
+                $header->image = $request->file('cover_image')->store('about_us/cover', 'uploads');
             }
             $header->save();
 
@@ -107,10 +107,10 @@ class AboutUsController extends Controller
             // Handle image upload (stored in main table, not translation)
             if ($request->hasFile('content_image')) {
                 // Delete old image if exists
-                if ($content->image && Storage::disk('public')->exists($content->image)) {
-                    Storage::disk('public')->delete($content->image);
+                if ($content->image && Storage::disk('uploads')->exists($content->image)) {
+                    Storage::disk('uploads')->delete($content->image);
                 }
-                $content->image = $request->file('content_image')->store('about_us/content', 'public');
+                $content->image = $request->file('content_image')->store('about_us/content', 'uploads');
             }
 
             // Handle video URL (stored in main table, not translation)
@@ -265,10 +265,10 @@ class AboutUsController extends Controller
             if ($request->hasFile('content_detail_image')) {
                 // Delete old image if exists
                 if ($contentDetail->icon) {
-                    Storage::disk('public')->delete($contentDetail->content_detail_image);
+                    Storage::disk('uploads')->delete($contentDetail->content_detail_image);
                 }
                 $contentDetail->icon = $request->file('content_detail_image')
-                    ->store('about_us/content_detail', 'public');
+                    ->store('about_us/content_detail', 'uploads');
             }
 
             $contentDetail->category_id = '0';

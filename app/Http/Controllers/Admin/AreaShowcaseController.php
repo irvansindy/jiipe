@@ -22,7 +22,7 @@ class AreaShowcaseController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('area_showcases', 'public');
+            $data['image'] = $request->file('image')->store('area_showcases', 'uploads');
         }
 
         AreaShowcase::create($data);

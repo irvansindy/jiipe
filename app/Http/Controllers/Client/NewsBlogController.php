@@ -18,7 +18,7 @@ class NewsBlogController extends Controller
     public function index(Request $request)
     {
         $locale = app()->getLocale();
-        $perPage = 9;
+        $perPage = 6;
 
         // Get all categories for navigation
         $categories = NewsCategories::with(['translations' => function($query) use ($locale) {
@@ -27,10 +27,14 @@ class NewsBlogController extends Controller
         ->whereIn('id', [1,4])
         ->get()->map(function($category) use ($locale) {
             $translation = $category->translations->firstWhere('locale', $locale);
+
+            // Map ID to type (HARDCODE)
+            $typeSlug = $category->id == 1 ? 'news' : 'article';
+
             return [
                 'id' => $category->id,
                 'name' => $translation ? $translation->name : '',
-                'slug' => $translation ? Str::slug($translation->name) : '',
+                'type' => $typeSlug,
             ];
         })->filter(function($cat) {
             return !empty($cat['name']);
@@ -147,7 +151,7 @@ class NewsBlogController extends Controller
     public function category($categorySlug, Request $request)
     {
         $locale = app()->getLocale();
-        $perPage = 9;
+        $perPage = 6;
 
         // Get all categories for navigation
         $categories = NewsCategories::with(['translations' => function($query) use ($locale) {
@@ -256,7 +260,7 @@ class NewsBlogController extends Controller
     public function type($type, Request $request)
     {
         $locale = app()->getLocale();
-        $perPage = 9;
+        $perPage = 6;
 
         // Map type ke category ID (HARDCODE)
         $typeMap = [
@@ -363,7 +367,6 @@ class NewsBlogController extends Controller
 
         return view('layouts.client.blog.index', compact('data'));
     }
-
     public function detail($id)
     {
         $locale = app()->getLocale();
@@ -397,10 +400,14 @@ class NewsBlogController extends Controller
         ->whereIn('id', [1,4])
         ->get()->map(function($category) use ($locale) {
             $translation = $category->translations->firstWhere('locale', $locale);
+
+            // Map ID to type (HARDCODE)
+            $typeSlug = $category->id == 1 ? 'news' : 'article';
+
             return [
                 'id' => $category->id,
                 'name' => $translation ? $translation->name : '',
-                'slug' => $translation ? Str::slug($translation->name) : '',
+                'type' => $typeSlug,
             ];
         })->filter(function($cat) {
             return !empty($cat['name']);

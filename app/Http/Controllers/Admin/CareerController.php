@@ -118,9 +118,9 @@ class CareerController extends Controller
             // Simpan file gambar
             if ($request->hasFile('cover_image')) {
                 if ($header->image) {
-                    Storage::disk('public')->delete($header->image);
+                    Storage::disk('uploads')->delete($header->image);
                 }
-                $header->image = $request->file('cover_image')->store('career/cover', 'public');
+                $header->image = $request->file('cover_image')->store('career/cover', 'uploads');
             }
             $header->save();
 

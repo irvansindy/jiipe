@@ -20,7 +20,6 @@
                             @if(!empty($data['categories']))
                                 @foreach ($data['categories'] as $category)
                                     <li class="{{ ($data['activeFilter'] ?? '') === ($category['type'] ?? '') ? 'active' : '' }}">
-                                        {{-- ✅ GANTI JADI TYPE --}}
                                         <a href="{{ route('blog.type', ['type' => $category['type']]) }}">
                                             {{ $category['name'] }}
                                         </a>
@@ -140,8 +139,8 @@
                     </nav>
                 @endif
 
-                {{-- Latest Articles Section --}}
-                @if (!empty($data['latestArticles']) && count($data['latestArticles']) > 0)
+                {{-- Latest Articles Section - HIDE when activeFilter is 'news' --}}
+                @if (($data['activeFilter'] ?? '') !== 'news' && !empty($data['latestArticles']) && count($data['latestArticles']) > 0)
                     <div class="py-5"></div>
                     <div class="berita-terbaru">
                         <h1 style="font-weight: 700; font-size: inherit;">
@@ -215,7 +214,7 @@
         $('.pagination li a').addClass('page-link');
         $('.pagination li.selected, .pagination li.active').addClass('active');
 
-        // Mobile select menu - AKAN OTOMATIS AMBIL HREF YANG SUDAH BENAR
+        // Mobile select menu
         if ($(window).width() < 767) {
             var myform = document.getElementById('mytoSelect'),
                 items = document.getElementById('lists_leftmenuKawasan').getElementsByTagName('li'),

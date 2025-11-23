@@ -80,7 +80,8 @@ class GalleryController extends Controller
             ]);
 
             if ($gallery) {
-                Storage::disk('public')->put($path, (string) $image);
+                // Storage::disk('uploads')->put($path, (string) $image);
+                Storage::disk('uploads')->put($path, (string) $image);
             }
 
             foreach ($request->news_title as $locale => $title) {
@@ -97,7 +98,7 @@ class GalleryController extends Controller
 
             if ($request->hasFile('gallery_image_detail')) {
                 foreach ($request->file('gallery_image_detail') as $img) {
-                    $detailPath = $img->store('gallery/detail', 'public');
+                    $detailPath = $img->store('gallery/detail', 'uploads');
                     $gallery->images()->create(['image' => $detailPath]);
                 }
             }
@@ -142,8 +143,8 @@ class GalleryController extends Controller
             // Jika ada main image baru → resize & replace
             if ($request->hasFile('gallery_main_image')) {
                 // hapus file lama dari storage
-                if ($gallery->image && Storage::disk('public')->exists($gallery->image)) {
-                    Storage::disk('public')->delete($gallery->image);
+                if ($gallery->image && Storage::disk('uploads')->exists($gallery->image)) {
+                    Storage::disk('uploads')->delete($gallery->image);
                 }
 
                 $file     = $request->file('gallery_main_image');
@@ -156,7 +157,7 @@ class GalleryController extends Controller
 
                 $image = $manager->read($file)->cover(1024, 618)->encode();
 
-                Storage::disk('public')->put($path, (string) $image);
+                Storage::disk('uploads')->put($path, (string) $image);
                 $gallery->image = $path;
             }
 
@@ -178,7 +179,7 @@ class GalleryController extends Controller
             // === Tambah gambar detail baru jika diupload ===
             if ($request->hasFile('gallery_image_detail')) {
                 foreach ($request->file('gallery_image_detail') as $img) {
-                    $detailPath = $img->store('gallery/detail', 'public');
+                    $detailPath = $img->store('gallery/detail', 'uploads');
                     $gallery->images()->create(['image' => $detailPath]);
                 }
             }

@@ -64,7 +64,7 @@ class TenantController extends Controller
             // Handle logo upload
             $logoPath = null;
             if ($request->hasFile('logo')) {
-                $logoPath = $request->file('logo')->store('tenants-logo', 'public');
+                $logoPath = $request->file('logo')->store('tenants-logo', 'uploads');
             }
 
             $tenant = Tenant::create([
@@ -115,10 +115,10 @@ class TenantController extends Controller
             // Handle logo upload
             if ($request->hasFile('logo')) {
                 // Delete old logo if exists
-                if ($tenant->logo && \Storage::disk('public')->exists($tenant->logo)) {
-                    \Storage::disk('public')->delete($tenant->logo);
+                if ($tenant->logo && \Storage::disk('uploads')->exists($tenant->logo)) {
+                    \Storage::disk('uploads')->delete($tenant->logo);
                 }
-                $logoPath = $request->file('logo')->store('tenants-logo', 'public');
+                $logoPath = $request->file('logo')->store('tenants-logo', 'uploads');
                 $tenant->logo = $logoPath;
             }
 
@@ -164,8 +164,8 @@ class TenantController extends Controller
             $tenant = Tenant::findOrFail($data['tenant_id']);
 
             // Delete logo if exists
-            if ($tenant->logo && \Storage::disk('public')->exists($tenant->logo)) {
-                \Storage::disk('public')->delete($tenant->logo);
+            if ($tenant->logo && \Storage::disk('uploads')->exists($tenant->logo)) {
+                \Storage::disk('uploads')->delete($tenant->logo);
             }
 
             $tenant->translations()->delete();

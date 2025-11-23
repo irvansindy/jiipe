@@ -95,7 +95,7 @@ class NewsAndArticleController extends Controller
             // Upload thumbnail
             $thumbnailPath = null;
             if ($request->hasFile('news_thumbnail')) {
-                $thumbnailPath = $request->file('news_thumbnail')->store('news/thumbnails', 'public');
+                $thumbnailPath = $request->file('news_thumbnail')->store('news/thumbnails', 'uploads');
             }
 
             $news = News::create([

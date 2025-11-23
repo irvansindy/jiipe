@@ -126,11 +126,11 @@ class CareerController extends Controller
         $supportPath = null;
 
         if ($request->hasFile('cv_file')) {
-            $cvPath = $request->file('cv_file')->store('career/cv', 'public');
+            $cvPath = $request->file('cv_file')->store('career/cv', 'uploads');
         }
 
         if ($request->hasFile('support_file')) {
-            $supportPath = $request->file('support_file')->store('career/support', 'public');
+            $supportPath = $request->file('support_file')->store('career/support', 'uploads');
         }
 
         // Save to database (create CareerApplication model and migration)

@@ -98,12 +98,12 @@ class BrochureController extends Controller
                     ])->first();
 
                     // 🔹 Hapus file lama jika masih tersimpan
-                    if ($oldTrans && $oldTrans->file && Storage::disk('public')->exists($oldTrans->file)) {
-                        Storage::disk('public')->delete($oldTrans->file);
+                    if ($oldTrans && $oldTrans->file && Storage::disk('uploads')->exists($oldTrans->file)) {
+                        Storage::disk('uploads')->delete($oldTrans->file);
                     }
 
                     // 🔹 Simpan file baru
-                    $path = $request->file("brochure_file.$locale")->store('brochures', 'public');
+                    $path = $request->file("brochure_file.$locale")->store('brochures', 'uploads');
                     $dataTrans['file'] = $path;
                 }
 

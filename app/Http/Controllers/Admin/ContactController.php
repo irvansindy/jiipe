@@ -84,10 +84,10 @@ class ContactController extends Controller
             // Handle image upload
             if ($request->hasFile('image')) {
                 // Delete old image if exists
-                if ($contactOverview->image && Storage::disk('public')->exists($contactOverview->image)) {
-                    Storage::disk('public')->delete($contactOverview->image);
+                if ($contactOverview->image && Storage::disk('uploads')->exists($contactOverview->image)) {
+                    Storage::disk('uploads')->delete($contactOverview->image);
                 }
-                $contactOverview->image = $request->file('image')->store('contact/overview', 'public');
+                $contactOverview->image = $request->file('image')->store('contact/overview', 'uploads');
             }
 
             // Save contact overview first to get ID

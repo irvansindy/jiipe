@@ -100,7 +100,7 @@ class ZoneController extends Controller
 
             $imagePath = null;
             if ($request->hasFile('zone_image')) {
-                $imagePath = $request->file('zone_image')->store('zones', 'public');
+                $imagePath = $request->file('zone_image')->store('zones', 'uploads');
             }
 
             $zone = Zone::create([
@@ -181,7 +181,7 @@ class ZoneController extends Controller
 
             // Handle image update
             if ($request->hasFile('zone_image')) {
-                $imagePath = $request->file('zone_image')->store('zones', 'public');
+                $imagePath = $request->file('zone_image')->store('zones', 'uploads');
                 $zone->image = $imagePath;
             }
             $zone->zone_class_id = $request->zone_class;

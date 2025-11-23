@@ -19,6 +19,7 @@
                             </li>
                             @if(!empty($data['categories']))
                                 @foreach($data['categories'] as $category)
+                                {{-- @dd($category) --}}
                                     @php
                                         // Cek active berdasarkan category ID
                                         $isActive = ($category['id'] ?? '') == ($data['news']->category_id ?? '');
