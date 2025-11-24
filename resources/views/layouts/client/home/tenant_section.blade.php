@@ -18,7 +18,7 @@
                 <div class="swiper-wrapper">
                     @forelse($tenants as $tenant)
                         <div class="swiper-slide">
-                            <img class="img-thumbnail" src="{{ asset('storage/tenant-logo/' . $tenant['logo']) }}" alt="{{ $tenant['name'] }}">
+                            <img class="img-thumbnail" src="{{ asset('uploads/tenant-logo/' . $tenant['logo']) }}" alt="{{ $tenant['name'] }}">
                         </div>
                     @empty
                         <div class="swiper-slide">
