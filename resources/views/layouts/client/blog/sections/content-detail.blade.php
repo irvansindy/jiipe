@@ -73,7 +73,7 @@
                 {{-- Featured Image --}}
                 <div style="max-width: 865px; margin-bottom: 1.2rem;">
                     <img class="artikel img img-fluid"
-                        src="{{ $data['news']->thumbnail ? (filter_var($data['news']->thumbnail, FILTER_VALIDATE_URL) ? $data['news']->thumbnail : asset('storage/' . $data['news']->thumbnail)) : asset('asset/images/default-blog.jpg') }}" alt="{{ $data['translation']->title ?? '' }}">
+                        src="{{ $data['news']->thumbnail ? (filter_var($data['news']->thumbnail, FILTER_VALIDATE_URL) ? $data['news']->thumbnail : asset('uploads/blog/' . $data['news']->thumbnail)) : asset('asset/images/default-blog.jpg') }}" alt="{{ $data['translation']->title ?? '' }}">
                 </div>
 
                 {{-- Content --}}
@@ -118,7 +118,7 @@
                             'thumbnail' => $news->thumbnail
                                 ? (filter_var($news->thumbnail, FILTER_VALIDATE_URL)
                                     ? $news->thumbnail
-                                    : asset('storage/' . $news->thumbnail))
+                                    : asset('uploads/blog/' . $news->thumbnail))
                                 : asset('asset/images/default-blog.jpg'),
                             'date' => $news->created_at ? $news->created_at->format('M d, Y') : '',
                         ];
@@ -138,7 +138,7 @@
                                     </div>
                                     <div class="gambar">
                                         <a href="{{ route('blog.detail', $related['id']) }}">
-                                            <img src="{{ $related['thumbnail'] }}" alt="{{ $related['title'] }}" class="img-fluid">
+                                            <img src="{{ $related['thumbnail'] }}" alt="{{ $related['title'] }}" class="img-fluid" decoding="async" loading="lazy">
                                         </a>
                                     </div>
                                     <div class="judul">

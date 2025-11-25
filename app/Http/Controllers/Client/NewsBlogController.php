@@ -91,7 +91,7 @@ class NewsBlogController extends Controller
             })
             ->filter();
         }
-        
+
         $data = [
             'title' => __('News & Articles - JIIPE'),
             'metaKey' => 'jiipe news, jiipe articles, industrial estate news',
@@ -412,7 +412,6 @@ class NewsBlogController extends Controller
         })->filter(function($cat) {
             return !empty($cat['name']);
         });
-
         $data = [
             'title' => ($translation->title ?? 'News Detail') . ' - JIIPE',
             'metaKey' => $translation->title ?? '',
