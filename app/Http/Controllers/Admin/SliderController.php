@@ -64,10 +64,10 @@ class SliderController extends Controller
                 }
                 $slider_file = $request->file('slider_file');
                 $slider_fileName = Str::random(12) . '_' . time() . '.' . $slider_file->getClientOriginalExtension();
-                $dest = public_path('asset/carousel-slider-video');
+                $dest = public_path('uploads/home-slider');
                 if (!is_dir($dest)) mkdir($dest, 0755, true);
                 $slider_file->move($dest, $slider_fileName);
-                $filePath = '/asset/carousel-slider-video/' . $slider_fileName;
+                $filePath = '/uploads/home-slider/' . $slider_fileName;
             } else {
                 // no uploaded file; when creating, file column will be null; when updating, keep existing
                 $filePath = $slider ? $slider->file : null;
