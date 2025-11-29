@@ -1,77 +1,157 @@
-<div class="modal fade" id="modalZone" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalZoneLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<!-- Modal: Create / Edit Zone -->
+<div class="modal fade" id="modalZone" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalZoneLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="modalZoneLabel"></h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="modalZoneLabel">Zone</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
-            <form action="" class="form_zone" id="form_zone">
-                @csrf
+
+            <form method="post" id="zone_form" enctype="multipart/form-data" data-mode="create">
                 <div class="modal-body">
+                    @csrf
 
                     @php
                         $locales = config('laravellocalization.supportedLocales');
                     @endphp
 
-                    {{-- Menu Name (multilingual) --}}
-                    <div class="mb-3">
-                        <label for="zone_class">Zone Class</label>
-                        <select name="zone_class" id="zone_class" class="form-control zone_class">
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="zone_image">Zone Image</label>
-                        <input type="file" class="form-control" name="zone_image" id="zone_image" placeholder="Zone Image">
-                        <span class="text-danger" id="message_zone_image"></span>
-                    </div>
-                    <div class="mb-3">
-                        <ul class="nav nav-tabs" id="formZoneTab" role="tablist">
-                            @foreach($locales as $locale => $properties)
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link @if($loop->first) active @endif"
-                                            id="tab-form-zone-{{ $locale }}"
-                                            data-bs-toggle="tab"
-                                            data-bs-target="#form-zone-{{ $locale }}"
-                                            type="button" role="tab"
-                                            aria-controls="form-zone-{{ $locale }}"
-                                            aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                        {{ strtoupper($properties['native'].' - '.$locale) }}
-                                    </button>
-                                </li>
-                            @endforeach
-                        </ul>
-                        <div class="tab-content border border-top-0 p-3">
+                    <input type="hidden" name="id" id="zone_id" value="">
 
-                            @foreach($locales as $locale => $properties)
-                                <div class="tab-pane fade @if($loop->first) show active @endif" id="form-zone-{{ $locale }}" role="tabpanel" aria-labelledby="tab-form-zone-{{ $locale }}">
-                                    <div class="mb-3">
-                                        <label for="zone_name[{{ $locale }}]">Zone Name ({{ strtoupper($locale) }})</label>
-                                        <input type="text" class="form-control" name="zone_name[{{ $locale }}]" id="zone_name[{{ $locale }}]" placeholder="Zone Name ({{ strtoupper($locale) }})">
-                                        <span class="text-danger" id="message_zone_name_{{ $locale }}"></span>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="zone_subtitle[{{ $locale }}]">Zone Subtitle ({{ strtoupper($locale) }})</label>
-                                        <input type="text" class="form-control" name="zone_subtitle[{{ $locale }}]" id="zone_subtitle[{{ $locale }}]" placeholder="Zone Subtitle ({{ strtoupper($locale) }})">
-                                        <span class="text-danger" id="message_zone_subtitle_{{ $locale }}"></span>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="zone_description[{{ $locale }}]">Zone Description ({{ strtoupper($locale) }})</label>
-                                        <textarea class="form-control zone_summernote" name="zone_description[{{ $locale }}]" id="zone_description[{{ $locale }}]" cols="30" rows="10"></textarea>
-                                        <span class="text-danger" id="message_zone_description_{{ $locale }}"></span>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="zone_note[{{ $locale }}]">Zone Note ({{ strtoupper($locale) }})</label>
-                                        <input type="text" class="form-control" name="zone_note[{{ $locale }}]" id="zone_note[{{ $locale }}]" placeholder="Zone Note ({{ strtoupper($locale) }})">
-                                        <span class="text-danger" id="message_zone_note_{{ $locale }}"></span>
-                                    </div>
+                    {{-- Zone Class & Image Section --}}
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h6 class="mb-0">Basic Information</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                {{-- Zone Class --}}
+                                <div class="col-md-6 mb-3">
+                                    <label for="zone_class" class="form-label">
+                                        Zone Class <span class="text-danger">*</span>
+                                    </label>
+                                    <select class="form-select" id="zone_class" name="zone_class" required>
+                                        <option value="">-- Select Zone Class --</option>
+                                    </select>
+                                    <span class="text-danger" id="message_zone_zone_class"></span>
                                 </div>
-                            @endforeach
+
+                                {{-- Zone Image --}}
+                                <div class="col-md-6 mb-3">
+                                    <label for="zone_image" class="form-label">
+                                        Zone Image
+                                    </label>
+                                    <input type="file" class="form-control" id="zone_image" name="zone_image"
+                                        accept="image/jpeg,image/png,image/jpg,image/webp">
+                                    <div class="form-text">
+                                        Supported formats: JPG, PNG, WEBP (Max: 5MB)
+                                    </div>
+                                    <span class="text-danger" id="message_zone_zone_image"></span>
+                                </div>
+
+                                {{-- Image Preview --}}
+                                <div class="col-md-12">
+                                    <div id="current_zone_image"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    {{-- Translation Tabs --}}
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">Content (Multi-language)</h6>
+                        </div>
+                        <div class="card-body">
+                            <ul class="nav nav-tabs mb-3" id="zoneFormTab" role="tablist">
+                                @foreach ($locales as $locale => $properties)
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link {{ $loop->first ? 'active' : '' }}"
+                                            id="zone-form-{{ $locale }}-tab" data-bs-toggle="tab"
+                                            data-bs-target="#zone-form-{{ $locale }}" type="button"
+                                            role="tab" aria-controls="zone-form-{{ $locale }}"
+                                            aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                                            <img src="{{ asset('flags/' . $locale . '.png') }}"
+                                                alt="{{ $locale }}" style="width: 20px; margin-right: 5px;"
+                                                onerror="this.style.display='none'">
+                                            {{ $properties['native'] }}
+                                        </button>
+                                    </li>
+                                @endforeach
+                            </ul>
+
+                            <div class="tab-content">
+                                @foreach ($locales as $locale => $properties)
+                                    <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
+                                        id="zone-form-{{ $locale }}" role="tabpanel"
+                                        aria-labelledby="zone-form-{{ $locale }}-tab">
+
+                                        {{-- Zone Name --}}
+                                        <div class="mb-3">
+                                            <label for="zone_name_{{ $locale }}" class="form-label">
+                                                Zone Name ({{ $properties['native'] }}) <span
+                                                    class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" class="form-control"
+                                                id="zone_name_{{ $locale }}"
+                                                name="zone_name[{{ $locale }}]"
+                                                placeholder="Enter zone name in {{ $properties['native'] }}" required>
+                                            <span class="text-danger"
+                                                id="message_zone_zone_name_{{ $locale }}"></span>
+                                        </div>
+
+                                        {{-- Zone Subtitle --}}
+                                        <div class="mb-3">
+                                            <label for="zone_subtitle_{{ $locale }}" class="form-label">
+                                                Subtitle ({{ $properties['native'] }})
+                                            </label>
+                                            <input type="text" class="form-control"
+                                                id="zone_subtitle_{{ $locale }}"
+                                                name="zone_subtitle[{{ $locale }}]"
+                                                placeholder="Enter subtitle in {{ $properties['native'] }}">
+                                            <span class="text-danger"
+                                                id="message_zone_zone_subtitle_{{ $locale }}"></span>
+                                        </div>
+
+                                        {{-- Zone Description --}}
+                                        <div class="mb-3">
+                                            <label for="zone_description_{{ $locale }}" class="form-label">
+                                                Description ({{ $properties['native'] }}) <span
+                                                    class="text-danger">*</span>
+                                            </label>
+                                            <textarea class="form-control zone_description" id="zone_description_{{ $locale }}"
+                                                name="zone_description[{{ $locale }}]" rows="5"
+                                                placeholder="Enter description in {{ $properties['native'] }}"></textarea>
+                                            <span class="text-danger"
+                                                id="message_zone_zone_description_{{ $locale }}"></span>
+                                        </div>
+
+                                        {{-- Zone Note --}}
+                                        <div class="mb-3">
+                                            <label for="zone_note_{{ $locale }}" class="form-label">
+                                                Note ({{ $properties['native'] }})
+                                            </label>
+                                            <textarea class="form-control" id="zone_note_{{ $locale }}" name="zone_note[{{ $locale }}]"
+                                                rows="3" placeholder="Enter additional notes in {{ $properties['native'] }}"></textarea>
+                                            <span class="text-danger"
+                                                id="message_zone_zone_note_{{ $locale }}"></span>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="modal-footer" id="button_action_menu">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="ti ti-x me-1"></i> Cancel
+                    </button>
+                    <button type="submit" id="action_zone" class="btn btn-primary">
+                        <i class="ti ti-device-floppy me-1"></i> Save
+                    </button>
                 </div>
             </form>
         </div>

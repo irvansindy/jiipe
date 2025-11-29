@@ -1,170 +1,302 @@
 <script>
 $(function() {
-    var table_slider = $('#table_slider').dataTable({
+    // Initialize DataTable
+    var table_slider = $('#table_slider').DataTable({
         processing: true,
+        serverSide: false,
         ajax: {
             url: "{{ route('fetch-home-slider') }}",
             type: 'GET',
-                dataType: 'json'
-        },
-        columns: [{
-                data: 'translations[0].title',
-                name: 'translations[0].title',
-                defaultContent: '<i>Not set</i>'
+            dataSrc: function(json) {
+                if (json.meta && json.meta.status === 'success') {
+                    return json.data;
+                }
+                return [];
             },
-            { data: 'created_at', name: 'created_at', render: function(data) {
-                        return moment(data).format('LL');
-                    }},
+            error: function(xhr) {
+                console.error('DataTable error:', xhr);
+                alert('Failed to load slider data');
+            }
+        },
+        columns: [
+            {
+                data: null,
+                title: 'Preview',
+                orderable: false,
+                render: function(item) {
+                    if (!item.file) return '<i class="text-muted">No file</i>';
+
+                    var fullUrl = item.file.startsWith('http') ? item.file : '{{ url("/") }}/' + item.file;
+
+                    // Check if video
+                    if (fullUrl.match(/\.(mp4|webm|ogg)$/i)) {
+                        return '<video src="' + fullUrl + '" style="max-width:80px;max-height:60px;" muted></video>';
+                    }
+                    // Image
+                    return '<img src="' + fullUrl + '" style="max-width:80px;max-height:60px;" class="img-thumbnail">';
+                }
+            },
+            {
+                data: null,
+                title: 'Title',
+                render: function(item) {
+                    // Get first translation title
+                    if (item.translations && item.translations.length > 0) {
+                        return item.translations[0].title || '<i class="text-muted">No title</i>';
+                    }
+                    return '<i class="text-muted">No title</i>';
+                }
+            },
+            {
+                data: 'created_at',
+                title: 'Created At',
+                render: function(data) {
+                    return data ? moment(data).format('LL') : '-';
+                }
+            },
+            {
+                data: null,
+                title: 'Status',
+                render: function(item) {
+                    // Check if any translation is active
+                    if (item.translations && item.translations.length > 0) {
+                        var isActive = item.translations.some(t => t.is_active == 1);
+                        return isActive
+                            ? '<span class="badge bg-success">Active</span>'
+                            : '<span class="badge bg-secondary">Inactive</span>';
+                    }
+                    return '<span class="badge bg-secondary">Inactive</span>';
+                }
+            },
             {
                 data: null,
                 title: 'Action',
-                wrap: true,
+                orderable: false,
                 render: function(item) {
-                    return '<button type="button" data-slider_id="' + item.id +
-                        '" class="btn btn-outline-info btn-sm mt-2 detail_slider" data-toggle="modal" data-target="#ModalSlider">View</button>'
+                    return `
+                        <div class="btn-group" role="group">
+                            <button type="button"
+                                data-slider_id="${item.id}"
+                                class="btn btn-sm btn-outline-info detail_slider"
+                                title="Edit">
+                                <i class="ti ti-edit"></i>
+                            </button>
+                            <button type="button"
+                                data-id="${item.id}"
+                                class="btn btn-sm btn-outline-danger btn-delete-slider"
+                                title="Delete">
+                                <i class="ti ti-trash"></i>
+                            </button>
+                        </div>
+                    `;
                 }
-            },
-        ]
-    })
+            }
+        ],
+        order: [[2, 'desc']], // Order by created_at descending
+        language: {
+            processing: "Loading...",
+            emptyTable: "No sliders found"
+        }
+    });
+
+    // Refresh table button
+    $('#refresh_table_slider').on('click', function() {
+        table_slider.ajax.reload();
+    });
+
+    // AJAX setup
     $.ajaxSetup({
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
     });
 
-    $('.slider_description').summernote()
+    // Initialize Summernote
+    $('.slider_description').summernote({
+        height: 150,
+        toolbar: [
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['link']],
+            ['view', ['fullscreen', 'codeview']]
+        ]
+    });
 
+    // Create slider button
     $('#create_slider').on('click', function(e) {
-        $('#ModalSliderLabel').text('Create Slider');
-        // alert('bisa modal')
+        e.preventDefault();
+        $('#ModalSliderLabel').text('Create New Slider');
         $('#slider_form')[0].reset();
         $('#slider_id').val('');
+
+        // Clear all error messages
         $('[id^="message_"]').text('');
+
+        // Clear preview
         $('#current_image, #current_video').html('');
-        $('.slider_description').summernote('code', '');
+
+        // Reset summernote
+        $('.slider_description').each(function() {
+            $(this).summernote('code', '');
+        });
+
+        // Check is_active by default
+        $('#is_active').prop('checked', true);
+
         $('#ModalSlider').modal('show');
     });
 
+    // Edit slider button
     $(document).on('click', '.detail_slider', function() {
         let btn = $(this);
         let id = btn.data('slider_id');
+
         $('#slider_id').val(id);
-        $.ajax({
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            url: "{{ route('fetch-home-slider-id') }}",
-            type: 'GET',
-            data: {
-                id: id
-            },
-            success: function(res) {
-                var fileUrl = res.data.file;
-                if (fileUrl) {
-                    // Tambahkan base URL jika fileUrl masih berupa path relatif
-                    // Sesuaikan dengan base URL aplikasi Anda
-                    var fullUrl = fileUrl;
-                    if (!fileUrl.startsWith('http')) {
-                        fullUrl = window.location.origin + '/' + fileUrl;
-                        // Atau gunakan base URL spesifik:
-                        // fullUrl = 'https://yourdomain.com/' + fileUrl;
-                    }
-
-                    if (fullUrl.match(/\.(mp4|webm|ogg)$/i)) {
-                        $('#current_video').html('<video src="'+fullUrl+'" controls style="max-width:300px;max-height:180px;"></video>');
-                        $('#current_image').html('');
-                    } else if (fullUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
-                        $('#current_image').html('<img src="'+fullUrl+'" style="max-width:200px;max-height:120px;">');
-                        $('#current_video').html('');
-                    }
-                } else {
-                    $('#current_image, #current_video').html('');
-                }
-                console.log('File URL:', fileUrl);
-                console.log('Full URL:', fullUrl);
-                
-                var translations = res.data.translations
-                if (translations) {
-                    Object.keys(translations).forEach(function(locale){
-                        var t = translations[locale];
-
-                        $('#slider_title_'+t.locale).val(t.title);
-                        $('#slider_description_'+t.locale).val(t.description);
-                        $('#slider_description_'+t.locale).summernote('code', t.description);
-                        $('#is_active_'+t.locale).prop('checked', t.is_active == 1);
-                    });
-                }
-
-                $('#ModalSlider .modal-title').text('Edit Slider');
-                $('#ModalSlider').modal('show');
-            }
-        })
-    });
-
-    $('#slider_form').on('submit', function(e) {
-        e.preventDefault();
-        var form = this;
-        var $form = $(form);
-        var id = $('#slider_id').val();
-        var url = id ? '{{ route("update-home-slider") }}' : '{{ route("store-home-slider") }}';
-        var method = id ? 'POST' : 'POST';
-        var formData = new FormData(form);
-
-        // if (id) {
-        //     formData.append('_method', 'PUT');
-        // }
-
         $('[id^="message_"]').text('');
 
         $.ajax({
+            url: "{{ route('fetch-home-slider-id') }}",
+            type: 'GET',
+            data: { id: id },
+            beforeSend: function() {
+                btn.prop('disabled', true).html('<i class="ti ti-loader"></i>');
+            },
+            success: function(res) {
+                var slider = res.data;
+
+                // Display current file
+                $('#current_image, #current_video').html('');
+                if (slider.file) {
+                    var fullUrl = slider.file.startsWith('http')
+                        ? slider.file
+                        : '{{ url("/") }}/' + slider.file;
+
+                    if (fullUrl.match(/\.(mp4|webm|ogg)$/i)) {
+                        $('#current_video').html(
+                            '<video src="' + fullUrl + '" controls style="max-width:100%;max-height:200px;"></video>' +
+                            '<p class="text-muted small mt-1">Current video (upload new to replace)</p>'
+                        );
+                    } else if (fullUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+                        $('#current_image').html(
+                            '<img src="' + fullUrl + '" class="img-thumbnail" style="max-width:100%;max-height:200px;">' +
+                            '<p class="text-muted small mt-1">Current image (upload new to replace)</p>'
+                        );
+                    }
+                }
+
+                // Fill translation fields
+                var translations = slider.translations;
+                if (translations) {
+                    // Handle object format (keyed by locale)
+                    $.each(translations, function(locale, t) {
+                        // alert(locale)
+                        $('#slider_title_' + t.locale).val(t.title || '');
+                        $('#slider_description_' + t.locale).summernote('code', t.description || '');
+                    });
+
+                    // Set is_active based on first translation
+                    var firstTranslation = Object.values(translations)[0];
+                    if (firstTranslation) {
+                        $('#is_active').prop('checked', firstTranslation.is_active == 1);
+                    }
+                }
+
+                $('#ModalSliderLabel').text('Edit Slider');
+                $('#ModalSlider').modal('show');
+            },
+            error: function(xhr) {
+                alert('Error loading slider: ' + (xhr.responseJSON?.meta?.message || 'Server error'));
+            },
+            complete: function() {
+                btn.prop('disabled', false).html('<i class="ti ti-edit"></i>');
+            }
+        });
+    });
+
+    // Submit form
+    $('#slider_form').on('submit', function(e) {
+        e.preventDefault();
+
+        var form = this;
+        var id = $('#slider_id').val();
+        var url = id ? '{{ route("update-home-slider") }}' : '{{ route("store-home-slider") }}';
+        var formData = new FormData(form);
+
+        // Clear previous errors
+        $('[id^="message_"]').text('');
+
+        // Show loading state
+        $('#action_slider').prop('disabled', true).html(
+            '<span class="spinner-border spinner-border-sm me-1"></span>Saving...'
+        );
+
+        $.ajax({
             url: url,
-            type: method,
+            type: 'POST',
             data: formData,
             contentType: false,
             processData: false,
             dataType: 'json',
             success: function(res) {
                 if (res.meta && res.meta.status === 'success') {
-                    $('#ModalSliderVideo').modal('hide');
-                    location.reload();
+                    $('#ModalSlider').modal('hide');
+                    table_slider.ajax.reload();
+
+                    // Show success message (optional - requires notification library)
+                    alert(res.meta.message || 'Slider saved successfully');
                 } else {
-                    alert(res.meta.message || 'Unexpected response');
+                    alert(res.meta?.message || 'Unexpected response');
                 }
             },
             error: function(xhr) {
-                if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.data) {
+                if (xhr.status === 422 && xhr.responseJSON?.data) {
+                    // Validation errors
                     var errors = xhr.responseJSON.data;
-                    Object.keys(errors).forEach(function(key){
-                        var name = key.replace(/\./g, '_');
-                        var selector = '#message_' + name;
+                    $.each(errors, function(key, messages) {
+                        var fieldName = key.replace(/\./g, '_');
+                        var selector = '#message_' + fieldName;
                         if ($(selector).length) {
-                            $(selector).text(errors[key][0]);
+                            $(selector).text(messages[0]);
                         } else {
-                            console.warn('Unhandled error key', key, errors[key]);
+                            console.warn('No error field for:', key);
                         }
                     });
                 } else {
-                    var msg = (xhr.responseJSON && xhr.responseJSON.meta && xhr.responseJSON.meta.message) ? xhr.responseJSON.meta.message : 'Server error';
+                    var msg = xhr.responseJSON?.meta?.message || 'Server error occurred';
                     alert(msg);
                 }
+            },
+            complete: function() {
+                $('#action_slider').prop('disabled', false).html('Save');
             }
         });
     });
 
-    $(document).on('click', '.btn-delete-slider', function(){
-        if (!confirm('Delete this slider?')) return;
+    // Delete slider
+    $(document).on('click', '.btn-delete-slider', function() {
+        if (!confirm('Are you sure you want to delete this slider?')) return;
+
         var id = $(this).data('id');
+        var btn = $(this);
+
+        btn.prop('disabled', true);
+
         $.ajax({
-            url: '/admin/home-sliders/' + id,
+            url: '{{ route("delete-home-slider", ":id") }}'.replace(':id', id),
             type: 'POST',
             data: { _method: 'DELETE' },
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
             dataType: 'json',
-            success: function(res){
+            success: function(res) {
                 if (res.meta && res.meta.status === 'success') {
-                    location.reload();
+                    table_slider.ajax.reload();
+                    alert('Slider deleted successfully');
                 } else {
-                    alert(res.meta.message || 'Delete failed');
+                    alert(res.meta?.message || 'Delete failed');
                 }
             },
-            error: function(xhr){
-                alert('Delete failed');
+            error: function(xhr) {
+                alert('Failed to delete slider: ' + (xhr.responseJSON?.meta?.message || 'Server error'));
+            },
+            complete: function() {
+                btn.prop('disabled', false);
             }
         });
     });

@@ -89,8 +89,8 @@
                                                 </li>
                                             </ul>
                                             <div class="tab-content border border-top-0 p-3">
-                                                <div class="tab-pane fade show active" id="tab-special-zone"
-                                                    role="tabpanel" aria-labelledby="special-zone">
+                                                <div class="tab-pane fade show active" id="tab-special-zone" role="tabpanel"
+                                                    aria-labelledby="special-zone">
                                                     @include('layouts.admin.zone.special_zone')
                                                 </div>
                                                 <div class="tab-pane fade" id="tab-zone" role="tabpanel"
@@ -197,7 +197,8 @@
                                             <p class="small text-muted mt-1">Current image (upload new to replace)</p>
                                         </div>
                                     @endif
-                                    <input type="file" class="form-control" id="video_thumbnail" name="video_thumbnail">
+                                    <input type="file" class="form-control" id="video_thumbnail"
+                                        name="video_thumbnail">
                                     @error('video_thumbnail')
                                         <div class="text-danger small">{{ $message }}</div>
                                     @enderror
@@ -217,7 +218,9 @@
                         <div class="card-header bg-primary">
                             <h4 class="text-white m-0">Users Review</h4>
                         </div>
-                        <div class="card-body"></div>
+                        <div class="card-body">
+                            @include('layouts.admin.home.table_user_review')
+                        </div>
                     </div>
                 </div>
             </div>
@@ -246,6 +249,7 @@
 @endsection
 @include('layouts.admin.home.modal.slider.modal_slider')
 @include('layouts.admin.home.modal.tenant.modal_tenant')
+@include('layouts.admin.home.modal.review.modal_review')
 @push('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.3/css/dataTables.bootstrap5.min.css">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
@@ -259,5 +263,4 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
     @include('layouts.admin.home.js.home_js')
-
 @endpush

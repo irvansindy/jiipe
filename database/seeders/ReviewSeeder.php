@@ -15,7 +15,7 @@ class ReviewSeeder extends Seeder
 
         $reviews = [
             [
-                'photo' => '/asset/testimonial/.tmb/thumb_db6ef-joko-widodo-169-1_adaptiveResize_100_100.png',
+                'photo' => 'thumb_db6ef-joko-widodo-169-1_adaptiveResize_100_100.png',
                 'name' => 'Ir. H. Joko Widodo',
                 'position' => 'President of the Republic of Indonesia',
                 'translations' => [
@@ -28,7 +28,7 @@ class ReviewSeeder extends Seeder
                 ],
             ],
             [
-                'photo' => '/asset/testimonial/.tmb/thumb_b090a-tony-wenas-presiden-direktur-p_adaptiveResize_100_100.png',
+                'photo' => 'thumb_b090a-tony-wenas-presiden-direktur-p_adaptiveResize_100_100.png',
                 'name' => 'Tony Wenas',
                 'position' => 'President Director of PT Freeport Indonesia',
                 'translations' => [
@@ -41,7 +41,7 @@ class ReviewSeeder extends Seeder
                 ],
             ],
             [
-                'photo' => '/asset/testimonial/.tmb/thumb_bca7d-airlanggaa-hartarto_adaptiveResize_100_100.jpg',
+                'photo' => 'thumb_bca7d-airlanggaa-hartarto_adaptiveResize_100_100.jpg',
                 'name' => 'Airlangga Hartarto',
                 'position' => 'Coordinating Minister for Economic Affairs of Republic of Indonesia',
                 'translations' => [
@@ -54,7 +54,7 @@ class ReviewSeeder extends Seeder
                 ],
             ],
             [
-                'photo' => '/asset/testimonial/.tmb/thumb_2d278-haryanto-adikoesoemo_adaptiveResize_100_100.jpeg',
+                'photo' => 'thumb_2d278-haryanto-adikoesoemo_adaptiveResize_100_100.jpeg',
                 'name' => 'Haryanto Adikoesoemo',
                 'position' => 'President Director of AKR Corporindo',
                 'translations' => [
@@ -67,7 +67,7 @@ class ReviewSeeder extends Seeder
                 ],
             ],
             [
-                'photo' => '/asset/testimonial/.tmb/thumb_4c4d4-baahlil-lahadalia_adaptiveResize_100_100.jpg',
+                'photo' => 'thumb_4c4d4-baahlil-lahadalia_adaptiveResize_100_100.jpg',
                 'name' => 'Bahlil Lahadalia',
                 'position' => 'Minister of Investment of Indonesia, (Former Head of BKPM)',
                 'translations' => [
@@ -80,7 +80,7 @@ class ReviewSeeder extends Seeder
                 ],
             ],
             [
-                'photo' => '/asset/testimonial/.tmb/thumb_330dc-boy-robyanto_adaptiveResize_100_100.png',
+                'photo' => 'thumb_330dc-boy-robyanto_adaptiveResize_100_100.png',
                 'name' => 'Boy Robyanto',
                 'position' => 'President Director of Pelindo III',
                 'translations' => [
@@ -93,7 +93,7 @@ class ReviewSeeder extends Seeder
                 ],
             ],
             [
-                'photo' => '/asset/testimonial/.tmb/thumb_eb8f9-anthony-muki-tan_adaptiveResize_100_100.jpeg',
+                'photo' => 'thumb_eb8f9-anthony-muki-tan_adaptiveResize_100_100.jpeg',
                 'name' => 'Anthony Mukti Tan',
                 'position' => 'President Director of PT Rodamas',
                 'translations' => [
@@ -106,7 +106,7 @@ class ReviewSeeder extends Seeder
                 ],
             ],
             [
-                'photo' => '/asset/testimonial/.tmb/thumb_048b2-wijaaya-haddi_adaptiveResize_100_100.jfif',
+                'photo' => 'thumb_048b2-wijaaya-haddi_adaptiveResize_100_100.jfif',
                 'name' => 'Hadi Wijaya',
                 'position' => 'Site Manager of Clariant Adsorbents, Gresik',
                 'translations' => [
@@ -119,7 +119,7 @@ class ReviewSeeder extends Seeder
                 ],
             ],
             [
-                'photo' => '/asset/testimonial/.tmb/thumb_0b240-1637035575_adaptiveResize_100_100.jpg',
+                'photo' => 'thumb_0b240-1637035575_adaptiveResize_100_100.jpg',
                 'name' => 'Hengky Pratoko',
                 'position' => 'Head of Indonesia Logistic dan Forwarder Association, East Java',
                 'translations' => [
@@ -132,7 +132,7 @@ class ReviewSeeder extends Seeder
                 ],
             ],
             [
-                'photo' => '/asset/testimonial/.tmb/thumb_01e0a-doddy-zulferdi-1_adaptiveResize_100_100.jpg',
+                'photo' => 'thumb_01e0a-doddy-zulferdi-1_adaptiveResize_100_100.jpg',
                 'name' => 'Doddy Zulverdi',
                 'position' => 'Head of Representative Bank Indonesia East Java Province',
                 'translations' => [
@@ -145,7 +145,7 @@ class ReviewSeeder extends Seeder
                 ],
             ],
             [
-                'photo' => '/asset/testimonial/.tmb/thumb_35f37-c2774_adaptiveResize_100_100.jpg',
+                'photo' => 'thumb_35f37-c2774_adaptiveResize_100_100.jpg',
                 'name' => 'Michael Jiang',
                 'position' => 'Executive Director PT Hailiang Nova Material Indonesia',
                 'translations' => [

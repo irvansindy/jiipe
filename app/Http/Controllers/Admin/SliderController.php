@@ -10,116 +10,215 @@ use App\Models\HomeSliderTranslation;
 use Illuminate\Support\Str;
 use App\Helpers\FormatResponseJson;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+
 class SliderController extends Controller
 {
+    /**
+     * Fetch all sliders with translations
+     */
     public function fetch()
     {
-        $locale = app()->getLocale();
-        $sliders = HomeSlider::with(['translations' => fn($q) => $q->where('locale', $locale)])->get();
-        return FormatResponseJson::success($sliders, 'Fetched Slider Successfully');
+        try {
+            $sliders = HomeSlider::with('translations')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return FormatResponseJson::success($sliders, 'Fetched Sliders Successfully');
+        } catch (\Throwable $th) {
+            return FormatResponseJson::error(null, $th->getMessage(), 500);
+        }
     }
+
+    /**
+     * Fetch single slider by ID
+     */
     public function fetchById(Request $request)
     {
         try {
-            // dd($request->id);
-            $sliders = HomeSlider::with('translations')
-            ->where('id', $request->id)->first();
-            return FormatResponseJson::success($sliders,'Fetched Slider Successfully');
+            $slider = HomeSlider::with('translations')
+            ->findOrFail($request->id);
+
+            // Transform translations to be keyed by locale for easier frontend handling
+            $transformedTranslations = [];
+            foreach ($slider->translations as $translation) {
+                $transformedTranslations[$translation->locale] = [
+                    'locale' => $translation->locale,
+                    'title' => $translation->title,
+                    'description' => $translation->description,
+                    'is_active' => $translation->is_active,
+                ];
+            }
+
+            $slider->translations = $transformedTranslations;
+
+            return FormatResponseJson::success($slider, 'Fetched Slider Successfully');
         } catch (\Throwable $th) {
-            return FormatResponseJson::error(null,$th->getMessage(), 400);
+            return FormatResponseJson::error(null, $th->getMessage(), 404);
         }
     }
-    public function save(Request $request, $id = null)
+
+    /**
+     * Store new slider
+     */
+    public function store(Request $request)
+    {
+        return $this->save($request);
+    }
+
+    /**
+     * Update existing slider
+     */
+    public function update(Request $request)
+    {
+        return $this->save($request, $request->id);
+    }
+
+    /**
+     * Save (create or update) slider
+     */
+    private function save(Request $request, $id = null)
     {
         try {
             $locales = config('laravellocalization.supportedLocales');
 
+            // Validation rules
+            // $rules = [
+            //     'id' => 'nullable|exists:home_sliders,id',
+            //     'slider_file' => $id ? 'nullable' : 'required',
+            //     'slider_file' => 'mimetypes:image/jpeg,image/png,image/jpg,image/webp,video/mp4,video/ogg,video/webm|max:20480', // 20MB
+            //     'title' => 'required|array',
+            //     'description' => 'required|array',
+            //     'is_active' => 'nullable|boolean',
+            // ];
             $rules = [
-                // file inputs (either image or video can be provided)
-                'slider_file' => 'nullable|mimetypes:image/jpeg,image/png,image/webp,video/mp4,video/ogg,video/webm|max:2048',
+                'id' => 'nullable|exists:home_sliders,id',
 
-                // translations arrays + per-locale required
+                'slider_file' => [
+                    $id ? 'nullable' : 'required',
+                    'file',
+                    'mimetypes:image/jpeg,image/png,image/jpg,image/webp,video/mp4,video/ogg,video/webm',
+                    'max:20480', // 20MB
+                ],
+
                 'title' => 'required|array',
                 'description' => 'required|array',
-                'title.*' => 'required|string|max:255',
-                'description.*' => 'required|string',
+                'is_active' => 'nullable|boolean',
             ];
 
-            $validator = Validator::make($request->all(), $rules);
+
+            // Add per-locale validation
+            foreach (array_keys($locales) as $locale) {
+                $rules["title.{$locale}"] = 'required|string|max:255';
+                $rules["description.{$locale}"] = 'required|string';
+            }
+
+            $validator = Validator::make($request->all(), $rules, [
+                'slider_file.required' => 'File (image or video) is required',
+                'slider_file.mimetypes' => 'File must be an image (jpg, png, webp) or video (mp4, ogg, webm)',
+                'slider_file.max' => 'File size must not exceed 20MB',
+                'title.*.required' => 'Title is required for all languages',
+                'description.*.required' => 'Description is required for all languages',
+            ]);
 
             if ($validator->fails()) {
-                return FormatResponseJson::error($validator->errors(),'Validation failed', 422);
+                return FormatResponseJson::error($validator->errors(), 'Validation failed', 422);
             }
 
             DB::beginTransaction();
 
-            // find existing slider if updating
-            $slider = $request->id ? HomeSlider::find($request->id) : null;
-            // handle uploaded file(s) and map to single 'file' column
-            $filePath = null;
+            // Find existing slider if updating
+            $slider = $id ? HomeSlider::find($id) : null;
+
+            // Handle file upload
+            $filePath = $slider ? $slider->file : null; // Keep existing file by default
+
             if ($request->hasFile('slider_file')) {
+                // Delete old file if exists
                 if ($slider && $slider->file) {
-                    $old = public_path(ltrim($slider->file, '/'));
-                    if (file_exists($old)) @unlink($old);
+                    $oldFilePath = public_path(ltrim($slider->file, '/'));
+                    if (File::exists($oldFilePath)) {
+                        File::delete($oldFilePath);
+                    }
                 }
-                $slider_file = $request->file('slider_file');
-                $slider_fileName = Str::random(12) . '_' . time() . '.' . $slider_file->getClientOriginalExtension();
-                $dest = public_path('uploads/home-slider');
-                if (!is_dir($dest)) mkdir($dest, 0755, true);
-                $slider_file->move($dest, $slider_fileName);
-                $filePath = '/uploads/home-slider/' . $slider_fileName;
-            } else {
-                // no uploaded file; when creating, file column will be null; when updating, keep existing
-                $filePath = $slider ? $slider->file : null;
+
+                // Upload new file
+                $file = $request->file('slider_file');
+                $extension = $file->getClientOriginalExtension();
+                $fileName = Str::random(20) . '_' . time() . '.' . $extension;
+                $destinationPath = public_path('uploads/home-slider');
+
+                // Create directory if not exists
+                if (!File::isDirectory($destinationPath)) {
+                    File::makeDirectory($destinationPath, 0755, true);
+                }
+
+                // Move file
+                $file->move($destinationPath, $fileName);
+                $filePath = 'uploads/home-slider/' . $fileName;
             }
 
-            $mainData = [
-                'file' => $filePath,
-            ];
-
+            // Create or update main slider record
             if ($slider) {
-                // update existing using updateOrCreate (match by id)
-                $slider = HomeSlider::updateOrCreate(['id' => $request->id], $mainData + $slider->toArray());
-                $slider->fill($mainData);
-                $slider->save();
+                $slider->update(['file' => $filePath]);
             } else {
-                // create new
-                $slider = HomeSlider::create($mainData);
+                $slider = HomeSlider::create(['file' => $filePath]);
             }
 
-            // translations: ensure each locale saved (required)
-            foreach ($locales as $locale => $props) {
+            // Handle translations for each locale
+            foreach ($locales as $locale => $properties) {
+                $translationData = [
+                    'title' => $request->input("title.{$locale}"),
+                    'description' => $request->input("description.{$locale}"),
+                    'is_active' => $request->input('is_active', 1) ? 1 : 0, // Global is_active
+                ];
+
                 HomeSliderTranslation::updateOrCreate(
                     [
                         'home_sliders' => $slider->id,
                         'locale' => $locale,
                     ],
-                    [
-                        'title' => $request->input("title.{$locale}"),
-                        'description' => $request->input("description.{$locale}"),
-                        'is_active' => $request->input("is_active.{$locale}", 0) ? 1 : 0,
-                    ]
+                    $translationData
                 );
             }
 
             DB::commit();
 
-            $message = $id ? 'Slider updated successfully.' : 'Slider created successfully.';
+            $message = $id ? 'Slider updated successfully' : 'Slider created successfully';
             return FormatResponseJson::success(['id' => $slider->id], $message);
+
         } catch (\Throwable $th) {
             DB::rollBack();
             return FormatResponseJson::error(null, $th->getMessage(), 500);
         }
     }
 
-    // route targets
-    public function store(Request $request)
+    /**
+     * Delete slider
+     */
+    public function destroy($id)
     {
-        return $this->save($request, null);
-    }
+        try {
+            $slider = HomeSlider::findOrFail($id);
 
-    public function update(Request $request)
-    {
-        return $this->save($request);
+            // Delete file if exists
+            if ($slider->file) {
+                $filePath = public_path(ltrim($slider->file, '/'));
+                if (File::exists($filePath)) {
+                    File::delete($filePath);
+                }
+            }
+
+            // Delete translations (cascade should handle this, but explicit is better)
+            HomeSliderTranslation::where('home_sliders', $id)->delete();
+
+            // Delete slider
+            $slider->delete();
+
+            return FormatResponseJson::success(null, 'Slider deleted successfully');
+
+        } catch (\Throwable $th) {
+            return FormatResponseJson::error(null, $th->getMessage(), 500);
+        }
     }
 }

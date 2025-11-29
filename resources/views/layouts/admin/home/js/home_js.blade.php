@@ -1,3 +1,4 @@
 @include('layouts.admin.home.js.slider_js')
 @include('layouts.admin.zone.zone_js')
 @include('layouts.admin.home.js.tenant_js')
+@include('layouts.admin.home.js.review_js')

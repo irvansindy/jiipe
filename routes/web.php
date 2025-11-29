@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\TenantController;
 use App\Http\Controllers\Admin\Video360Controller;
+use App\Http\Controllers\Admin\ReviewUserController;
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
@@ -100,6 +101,7 @@ Route::group([
         Route::get('fetch-home-slider-id', [SliderController::class, 'fetchById'])->name('fetch-home-slider-id');
         Route::post('store-home-slider', [SliderController::class,'store'])->name('store-home-slider');
         Route::post('update-home-slider', [SliderController::class,'update'])->name('update-home-slider');
+        Route::delete('delete-home-slider/{id}', [SliderController::class,'destroy'])->name('delete-home-slider');
 
         Route::get('/menu-permission', [MenuPermissionController::class, 'index'])->name('menu-permission');
         Route::get('/fetch-menu-permission', [MenuPermissionController::class, 'fetchData'])->name('fetch-menu-permission');
@@ -121,7 +123,7 @@ Route::group([
 
         Route::get('/list-appointment', [FormAppointment::class, 'index'])->name('list-appointment');
         Route::get('/form-appointment', [FormAppointment::class, 'formView'])->name('form-appointment');
-        Route::post('/store-quick-appointment', [FormAppointment::class, 'store'])->name('store-quick-appointment');
+        // Route::post('/store-quick-appointment', [FormAppointment::class, 'store'])->name('store-quick-appointment');
         Route::post('/store-basic-information', [FormAppointment::class, 'storeBasicInformation'])->name('store-basic-information');
         Route::post('/store-reason', [FormAppointment::class, 'storeReason'])->name('store-reason');
 
@@ -145,9 +147,22 @@ Route::group([
         Route::get('fetch-tenant-by-id/{id}', [TenantController::class, 'fetchTenantById'])->name('fetch-tenant-by-id');
         Route::post('store-tenant', [TenantController::class, 'storeTenant'])->name('store-tenant');
         Route::post('update-tenant', [TenantController::class,'updateTenant'])->name('update-tenant');
+        Route::delete('tenant/{id}', [TenantController::class, 'deleteTenant']);
 
         // video 360
         Route::post('submit-video360', [Video360Controller::class,'store'])->name('submit-video360');
+
+        // Route::get('/reviews', [ReviewUserController::class, 'index'])->name('admin.reviews.index');
+        // Review routes
+        Route::prefix('admin')->middleware(['auth'])->group(function () {
+            // Review routes
+            Route::get('/reviews/fetch', [ReviewUserController::class, 'fetch'])->name('fetch-reviews');
+            Route::get('/reviews/{id}/edit', [ReviewUserController::class, 'edit']);
+            Route::post('/reviews', [ReviewUserController::class, 'store']);
+            Route::put('/reviews/{id}', [ReviewUserController::class, 'update']);
+            Route::delete('/reviews/{id}', [ReviewUserController::class, 'destroy']);
+            Route::post('/reviews/{id}/toggle-status', [ReviewUserController::class, 'toggleStatus']);
+        });
 
         Route::get('article-and-news', [NewsAndArticleController::class, 'index'])->name('article-and-news');
         Route::get('fetch-article-and-news', [NewsAndArticleController::class, 'fetch'])->name('fetch-article-and-news');

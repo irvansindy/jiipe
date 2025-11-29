@@ -7,5 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class TenantTranslation extends Model
 {
     protected $table = "tenant_translations";
-    protected $guarded = [];
+
+    protected $fillable = [
+        'tenant_id',
+        'locale',
+        'name',
+        'description'
+    ];
+
+    // Disable timestamps if not using created_at/updated_at
+    public $timestamps = true;
+
+    // Relasi
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class, 'tenant_id');
+    }
 }
