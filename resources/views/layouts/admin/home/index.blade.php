@@ -230,7 +230,21 @@
                         <div class="card-header bg-primary">
                             <h4 class="text-white m-0">Frequently Asked Questions (FAQ)</h4>
                         </div>
-                        <div class="card-body"></div>
+                        <div class="card-body">
+                            <ul class="nav nav-pills justify-content-end mb-2" id="chart-tab-tab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="btn btn-outline-dark me-1" id="refresh_table_faq" type="button" title="Refresh Table">
+                                        <i class="ti ti-refresh"></i>
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="btn btn-outline-primary" id="btnAddFaq" type="button" data-bs-toggle="modal" data-bs-target="#faqModal" title="Create FAQ">
+                                        <i class="ti ti-pencil"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                            @include('layouts.admin.home.table_faq')
+                        </div>
                     </div>
                 </div>
             </div>
@@ -250,6 +264,7 @@
 @include('layouts.admin.home.modal.slider.modal_slider')
 @include('layouts.admin.home.modal.tenant.modal_tenant')
 @include('layouts.admin.home.modal.review.modal_review')
+@include('layouts.admin.home.modal.faq.modal_faq')
 @push('css')
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.3/css/dataTables.bootstrap5.min.css">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">

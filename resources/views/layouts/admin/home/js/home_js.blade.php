@@ -2,3 +2,4 @@
 @include('layouts.admin.zone.zone_js')
 @include('layouts.admin.home.js.tenant_js')
 @include('layouts.admin.home.js.review_js')
+@include('layouts.admin.home.js.faq_js')

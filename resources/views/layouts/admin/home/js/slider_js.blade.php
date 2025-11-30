@@ -1,5 +1,59 @@
 <script>
 $(function() {
+    // ============================================
+    // HELPER FUNCTIONS
+    // ============================================
+
+    function showLoading() {
+        $('#loadingOverlaySlider').fadeIn();
+        $('#action_slider .btn-text').addClass('d-none');
+        $('#action_slider .spinner-border').removeClass('d-none');
+        $('#action_slider').prop('disabled', true);
+    }
+
+    function hideLoading() {
+        $('#loadingOverlaySlider').fadeOut();
+        $('#action_slider .btn-text').removeClass('d-none');
+        $('#action_slider .spinner-border').addClass('d-none');
+        $('#action_slider').prop('disabled', false);
+    }
+
+    function resetForm() {
+        $('#slider_form')[0].reset();
+        $('#slider_id').val('');
+
+        // Clear all error messages
+        $('[id^="message_"]').text('');
+
+        // Clear preview
+        $('#current_image, #current_video').html('');
+
+        // Reset summernote
+        $('.slider_description').each(function() {
+            $(this).summernote('code', '');
+        });
+
+        // Check is_active by default
+        $('#is_active').prop('checked', true);
+    }
+
+    // Initialize Summernote
+    function initSummernote() {
+        $('.slider_description').summernote({
+            height: 150,
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link']],
+                ['view', ['fullscreen', 'codeview']]
+            ]
+        });
+    }
+
+    // ============================================
+    // INITIALIZE
+    // ============================================
+
     // Initialize DataTable
     var table_slider = $('#table_slider').DataTable({
         processing: true,
@@ -15,7 +69,11 @@ $(function() {
             },
             error: function(xhr) {
                 console.error('DataTable error:', xhr);
-                alert('Failed to load slider data');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Failed to load slider data'
+                });
             }
         },
         columns: [
@@ -40,7 +98,6 @@ $(function() {
                 data: null,
                 title: 'Title',
                 render: function(item) {
-                    // Get first translation title
                     if (item.translations && item.translations.length > 0) {
                         return item.translations[0].title || '<i class="text-muted">No title</i>';
                     }
@@ -58,7 +115,6 @@ $(function() {
                 data: null,
                 title: 'Status',
                 render: function(item) {
-                    // Check if any translation is active
                     if (item.translations && item.translations.length > 0) {
                         var isActive = item.translations.some(t => t.is_active == 1);
                         return isActive
@@ -99,48 +155,29 @@ $(function() {
         }
     });
 
-    // Refresh table button
-    $('#refresh_table_slider').on('click', function() {
-        table_slider.ajax.reload();
-    });
-
     // AJAX setup
     $.ajaxSetup({
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
     });
 
-    // Initialize Summernote
-    $('.slider_description').summernote({
-        height: 150,
-        toolbar: [
-            ['style', ['bold', 'italic', 'underline', 'clear']],
-            ['para', ['ul', 'ol', 'paragraph']],
-            ['insert', ['link']],
-            ['view', ['fullscreen', 'codeview']]
-        ]
+    // Initialize Summernote on page load
+    initSummernote();
+
+    // ============================================
+    // EVENT HANDLERS
+    // ============================================
+
+    // Refresh table button
+    $('#refresh_table_slider').on('click', function() {
+        table_slider.ajax.reload();
     });
 
     // Create slider button
     $('#create_slider').on('click', function(e) {
         e.preventDefault();
         $('#ModalSliderLabel').text('Create New Slider');
-        $('#slider_form')[0].reset();
-        $('#slider_id').val('');
-
-        // Clear all error messages
-        $('[id^="message_"]').text('');
-
-        // Clear preview
-        $('#current_image, #current_video').html('');
-
-        // Reset summernote
-        $('.slider_description').each(function() {
-            $(this).summernote('code', '');
-        });
-
-        // Check is_active by default
-        $('#is_active').prop('checked', true);
-
+        resetForm();
+        initSummernote();
         $('#ModalSlider').modal('show');
     });
 
@@ -152,61 +189,68 @@ $(function() {
         $('#slider_id').val(id);
         $('[id^="message_"]').text('');
 
+        showLoading();
+
         $.ajax({
             url: "{{ route('fetch-home-slider-id') }}",
             type: 'GET',
             data: { id: id },
-            beforeSend: function() {
-                btn.prop('disabled', true).html('<i class="ti ti-loader"></i>');
-            },
             success: function(res) {
-                var slider = res.data;
+                hideLoading();
 
-                // Display current file
-                $('#current_image, #current_video').html('');
-                if (slider.file) {
-                    var fullUrl = slider.file.startsWith('http')
-                        ? slider.file
-                        : '{{ url("/") }}/' + slider.file;
+                if (res.meta && res.meta.status === 'success') {
+                    var slider = res.data;
 
-                    if (fullUrl.match(/\.(mp4|webm|ogg)$/i)) {
-                        $('#current_video').html(
-                            '<video src="' + fullUrl + '" controls style="max-width:100%;max-height:200px;"></video>' +
-                            '<p class="text-muted small mt-1">Current video (upload new to replace)</p>'
-                        );
-                    } else if (fullUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
-                        $('#current_image').html(
-                            '<img src="' + fullUrl + '" class="img-thumbnail" style="max-width:100%;max-height:200px;">' +
-                            '<p class="text-muted small mt-1">Current image (upload new to replace)</p>'
-                        );
+                    // Display current file
+                    $('#current_image, #current_video').html('');
+                    if (slider.file) {
+                        var fullUrl = slider.file.startsWith('http')
+                            ? slider.file
+                            : '{{ url("/") }}/' + slider.file;
+
+                        if (fullUrl.match(/\.(mp4|webm|ogg)$/i)) {
+                            $('#current_video').html(
+                                '<video src="' + fullUrl + '" controls style="max-width:100%;max-height:200px;"></video>' +
+                                '<p class="text-muted small mt-1">Current video (upload new to replace)</p>'
+                            );
+                        } else if (fullUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+                            $('#current_image').html(
+                                '<img src="' + fullUrl + '" class="img-thumbnail" style="max-width:100%;max-height:200px;">' +
+                                '<p class="text-muted small mt-1">Current image (upload new to replace)</p>'
+                            );
+                        }
                     }
-                }
 
-                // Fill translation fields
-                var translations = slider.translations;
-                if (translations) {
-                    // Handle object format (keyed by locale)
-                    $.each(translations, function(locale, t) {
-                        // alert(locale)
-                        $('#slider_title_' + t.locale).val(t.title || '');
-                        $('#slider_description_' + t.locale).summernote('code', t.description || '');
-                    });
+                    // Reinitialize summernote
+                    $('.slider_description').summernote('destroy');
+                    initSummernote();
 
-                    // Set is_active based on first translation
-                    var firstTranslation = Object.values(translations)[0];
-                    if (firstTranslation) {
-                        $('#is_active').prop('checked', firstTranslation.is_active == 1);
+                    // Fill translation fields
+                    var translations = slider.translations;
+                    if (translations) {
+                        $.each(translations, function(locale, t) {
+                            $('#slider_title_' + t.locale).val(t.title || '');
+                            $('#slider_description_' + t.locale).summernote('code', t.description || '');
+                        });
+
+                        // Set is_active based on first translation
+                        var firstTranslation = Object.values(translations)[0];
+                        if (firstTranslation) {
+                            $('#is_active').prop('checked', firstTranslation.is_active == 1);
+                        }
                     }
-                }
 
-                $('#ModalSliderLabel').text('Edit Slider');
-                $('#ModalSlider').modal('show');
+                    $('#ModalSliderLabel').text('Edit Slider');
+                    $('#ModalSlider').modal('show');
+                }
             },
             error: function(xhr) {
-                alert('Error loading slider: ' + (xhr.responseJSON?.meta?.message || 'Server error'));
-            },
-            complete: function() {
-                btn.prop('disabled', false).html('<i class="ti ti-edit"></i>');
+                hideLoading();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: xhr.responseJSON?.meta?.message || 'Failed to load slider data'
+                });
             }
         });
     });
@@ -223,10 +267,7 @@ $(function() {
         // Clear previous errors
         $('[id^="message_"]').text('');
 
-        // Show loading state
-        $('#action_slider').prop('disabled', true).html(
-            '<span class="spinner-border spinner-border-sm me-1"></span>Saving...'
-        );
+        showLoading();
 
         $.ajax({
             url: url,
@@ -236,17 +277,28 @@ $(function() {
             processData: false,
             dataType: 'json',
             success: function(res) {
+                hideLoading();
+
                 if (res.meta && res.meta.status === 'success') {
                     $('#ModalSlider').modal('hide');
+
+                    // Destroy summernote before hiding modal
+                    $('.slider_description').summernote('destroy');
+
                     table_slider.ajax.reload();
 
-                    // Show success message (optional - requires notification library)
-                    alert(res.meta.message || 'Slider saved successfully');
-                } else {
-                    alert(res.meta?.message || 'Unexpected response');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: res.meta.message || 'Slider saved successfully',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
                 }
             },
             error: function(xhr) {
+                hideLoading();
+
                 if (xhr.status === 422 && xhr.responseJSON?.data) {
                     // Validation errors
                     var errors = xhr.responseJSON.data;
@@ -255,50 +307,78 @@ $(function() {
                         var selector = '#message_' + fieldName;
                         if ($(selector).length) {
                             $(selector).text(messages[0]);
-                        } else {
-                            console.warn('No error field for:', key);
                         }
                     });
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error!',
+                        text: 'Please check all required fields'
+                    });
                 } else {
-                    var msg = xhr.responseJSON?.meta?.message || 'Server error occurred';
-                    alert(msg);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: xhr.responseJSON?.meta?.message || 'Server error occurred'
+                    });
                 }
-            },
-            complete: function() {
-                $('#action_slider').prop('disabled', false).html('Save');
             }
         });
     });
 
     // Delete slider
     $(document).on('click', '.btn-delete-slider', function() {
-        if (!confirm('Are you sure you want to delete this slider?')) return;
-
         var id = $(this).data('id');
-        var btn = $(this);
 
-        btn.prop('disabled', true);
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                showLoading();
 
-        $.ajax({
-            url: '{{ route("delete-home-slider", ":id") }}'.replace(':id', id),
-            type: 'POST',
-            data: { _method: 'DELETE' },
-            dataType: 'json',
-            success: function(res) {
-                if (res.meta && res.meta.status === 'success') {
-                    table_slider.ajax.reload();
-                    alert('Slider deleted successfully');
-                } else {
-                    alert(res.meta?.message || 'Delete failed');
-                }
-            },
-            error: function(xhr) {
-                alert('Failed to delete slider: ' + (xhr.responseJSON?.meta?.message || 'Server error'));
-            },
-            complete: function() {
-                btn.prop('disabled', false);
+                $.ajax({
+                    url: '{{ route("delete-home-slider", ":id") }}'.replace(':id', id),
+                    type: 'POST',
+                    data: { _method: 'DELETE' },
+                    dataType: 'json',
+                    success: function(res) {
+                        hideLoading();
+
+                        if (res.meta && res.meta.status === 'success') {
+                            table_slider.ajax.reload();
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: 'Slider has been deleted.',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        }
+                    },
+                    error: function(xhr) {
+                        hideLoading();
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: xhr.responseJSON?.meta?.message || 'Failed to delete slider'
+                        });
+                    }
+                });
             }
         });
+    });
+
+    // Clean up summernote when modal is hidden
+    $('#ModalSlider').on('hidden.bs.modal', function () {
+        $('.slider_description').summernote('destroy');
     });
 });
 </script>

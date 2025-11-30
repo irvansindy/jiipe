@@ -31,6 +31,7 @@ use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\TenantController;
 use App\Http\Controllers\Admin\Video360Controller;
 use App\Http\Controllers\Admin\ReviewUserController;
+use App\Http\Controllers\Admin\FAQController;
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
@@ -163,6 +164,16 @@ Route::group([
             Route::delete('/reviews/{id}', [ReviewUserController::class, 'destroy']);
             Route::post('/reviews/{id}/toggle-status', [ReviewUserController::class, 'toggleStatus']);
         });
+
+        Route::prefix('admin')->middleware(['auth'])->group(function () {
+    // FAQ routes
+    Route::get('/faq/fetch', [FAQController::class, 'fetch'])->name('fetch-faq');
+    Route::get('/faq/{id}/edit', [FAQController::class, 'edit']);
+    Route::post('/faq', [FAQController::class, 'store']);
+    Route::put('/faq/{id}', [FAQController::class, 'update']);
+    Route::delete('/faq/{id}', [FAQController::class, 'destroy']);
+    Route::post('/faq/{id}/toggle-status', [FAQController::class, 'toggleStatus']);
+});
 
         Route::get('article-and-news', [NewsAndArticleController::class, 'index'])->name('article-and-news');
         Route::get('fetch-article-and-news', [NewsAndArticleController::class, 'fetch'])->name('fetch-article-and-news');

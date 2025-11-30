@@ -13,6 +13,13 @@ class FrequentlyAskedQuestionsTranslation extends Model
         'answer'
     ];
 
+    protected $casts = [
+        'faq_id' => 'integer',
+    ];
+
+    /**
+     * Get the FAQ that owns the translation
+     */
     public function faq()
     {
         return $this->belongsTo(FrequentlyAskedQuestions::class, 'faq_id');
