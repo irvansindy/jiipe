@@ -15,7 +15,7 @@
                         <div class="col-md-20">
                             <div class="items">
                                 <div class="pictures">
-                                    <img src="{{ asset('storage/zone/feature/' . $feature['image'] ?? '') }}" alt="{{ $feature->translations[0]['name'] ?? '' }}" class="img-fluid" decoding="async" loading="lazy">
+                                    <img src="{{ asset('uploads/zones/feature/' . $feature['image'] ?? '') }}" alt="{{ $feature->translations[0]['name'] ?? '' }}" class="img-fluid" decoding="async" loading="lazy">
                                     <span class="names_ap">{{ $feature->translations[0]['name'] ?? '' }}</span>
                                 </div>
                                 <div class="content">

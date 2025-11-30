@@ -1,7 +1,7 @@
 <div class="row artikel">
     @foreach ($zones ?? [] as $index => $zone)
         <div class="col-md-20">
-            <img src="{{ asset('storage/zone/detail/'.$zone['image_detail'] ?? '') }}" alt="{{ $zone->translations[0]['name'] ?? '' }}" class="img-fluid" decoding="async" loading="lazy">
+            <img src="{{ asset('uploads/zones/detail/'.$zone['image_detail'] ?? '') }}" alt="{{ $zone->translations[0]['name'] ?? '' }}" class="img-fluid" decoding="async" loading="lazy">
 
             <p class="judul">{{ $zone->translations[0]['name'] ?? '' }}</p>
             <p class="sub-judul">{{ $zone->translations[0]['subtitle'] ?? '' }}</p>

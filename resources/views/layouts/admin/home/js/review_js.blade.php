@@ -39,10 +39,10 @@ $(document).ready(function() {
                 render: function(item) {
                     return `
                     <div class="btn-group" role="group">
-                        <button type="button" data-review_id="${item.id}" class="btn btn-outline-info btn-sm mt-2 detail_user_review" data-toggle="modal" data-target="#reviewModal">
+                        <button type="button" data-review_id="${item.id}" class="btn btn-outline-info mt-2 detail_user_review" data-toggle="modal" data-target="#reviewModal">
                             <i class="ti ti-edit"></i>
                         </button>
-                        <button type="button" data-id="${item.id}" class="btn btn-outline-danger btn-sm mt-2 btn-delete">
+                        <button type="button" data-id="${item.id}" class="btn btn-outline-danger mt-2 btn-delete">
                             <i class="ti ti-trash"></i>
                         </button>
                     </div>

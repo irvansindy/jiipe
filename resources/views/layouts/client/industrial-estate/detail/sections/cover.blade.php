@@ -1,5 +1,5 @@
 <section class="cover-industri_jippe1">
-    <img src="{{ asset('storage/zone/cover/'.$zone['image_cover'] ?? '') }}" decoding="async" loading="lazy" alt="Cover Industri" class="cover-image" />
+    <img src="{{ asset('uploads/zones/cover/'.$zone['image_cover'] ?? '') }}" decoding="async" loading="lazy" alt="Cover Industri" class="cover-image" />
 
     <div class="prelative container">
         <div class="row"></div>

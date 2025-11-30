@@ -9,7 +9,7 @@
                     aria-label="Close"></button>
             </div>
 
-            <form method="post" id="zone_form" enctype="multipart/form-data" data-mode="create">
+            <form method="post" id="zone_form" enctype="multipart/form-data">
                 <div class="modal-body">
                     @csrf
 
@@ -34,7 +34,7 @@
                                     <select class="form-select" id="zone_class" name="zone_class" required>
                                         <option value="">-- Select Zone Class --</option>
                                     </select>
-                                    <span class="text-danger" id="message_zone_zone_class"></span>
+                                    <span class="text-danger" id="message_zone_class"></span>
                                 </div>
 
                                 {{-- Zone Image --}}
@@ -47,7 +47,7 @@
                                     <div class="form-text">
                                         Supported formats: JPG, PNG, WEBP (Max: 5MB)
                                     </div>
-                                    <span class="text-danger" id="message_zone_zone_image"></span>
+                                    <span class="text-danger" id="message_zone_image"></span>
                                 </div>
 
                                 {{-- Image Preview --}}
@@ -98,7 +98,7 @@
                                                 name="zone_name[{{ $locale }}]"
                                                 placeholder="Enter zone name in {{ $properties['native'] }}" required>
                                             <span class="text-danger"
-                                                id="message_zone_zone_name_{{ $locale }}"></span>
+                                                id="message_zone_name_{{ $locale }}"></span>
                                         </div>
 
                                         {{-- Zone Subtitle --}}
@@ -111,7 +111,7 @@
                                                 name="zone_subtitle[{{ $locale }}]"
                                                 placeholder="Enter subtitle in {{ $properties['native'] }}">
                                             <span class="text-danger"
-                                                id="message_zone_zone_subtitle_{{ $locale }}"></span>
+                                                id="message_zone_subtitle_{{ $locale }}"></span>
                                         </div>
 
                                         {{-- Zone Description --}}
@@ -124,7 +124,7 @@
                                                 name="zone_description[{{ $locale }}]" rows="5"
                                                 placeholder="Enter description in {{ $properties['native'] }}"></textarea>
                                             <span class="text-danger"
-                                                id="message_zone_zone_description_{{ $locale }}"></span>
+                                                id="message_zone_description_{{ $locale }}"></span>
                                         </div>
 
                                         {{-- Zone Note --}}
@@ -135,7 +135,7 @@
                                             <textarea class="form-control" id="zone_note_{{ $locale }}" name="zone_note[{{ $locale }}]"
                                                 rows="3" placeholder="Enter additional notes in {{ $properties['native'] }}"></textarea>
                                             <span class="text-danger"
-                                                id="message_zone_zone_note_{{ $locale }}"></span>
+                                                id="message_zone_note_{{ $locale }}"></span>
                                         </div>
                                     </div>
                                 @endforeach
@@ -150,10 +150,45 @@
                         <i class="ti ti-x me-1"></i> Cancel
                     </button>
                     <button type="submit" id="action_zone" class="btn btn-primary">
-                        <i class="ti ti-device-floppy me-1"></i> Save
+                        <span class="btn-text"><i class="ti ti-device-floppy me-1"></i> Save</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                     </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+{{-- Loading Overlay --}}
+<div id="loadingOverlayZone" style="display: none;">
+    <div class="spinner"></div>
+</div>
+
+<style>
+#loadingOverlayZone {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loadingOverlayZone .spinner {
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #3498db;
+    width: 60px;
+    height: 60px;
+    animation: spinZone 1s linear infinite;
+}
+
+@keyframes spinZone {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>

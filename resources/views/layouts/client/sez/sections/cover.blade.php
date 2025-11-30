@@ -1,6 +1,6 @@
 <section class="cover-industri_jippe1 no_background">
     <img id="dynamic-cover-image"
-        src="{{ asset('storage/zone/'. $data['sezPages'][0]['thumbnail'] ?? '') }}"
+        src="{{ asset('uploads/zones/'. $data['sezPages'][0]['thumbnail'] ?? '') }}"
         alt="{{ $data['sezPages'][0]['title'] ?? 'SEZ Gresik JIIPE' }}"
         class="img img-fluid w-100"
         loading="lazy"

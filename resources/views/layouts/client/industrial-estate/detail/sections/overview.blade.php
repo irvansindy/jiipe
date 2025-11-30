@@ -72,7 +72,7 @@
                             @foreach ($clusters ?? [] as $index => $clustering)
                             {{-- @dd($clustering['image']) --}}
                                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                    <img src="{{ asset('storage/zone/cluster/' . $clustering['image']) ?? asset('asset/images/static/d8f0dfd17c0001.jpg') }}" class="d-block w-100"
+                                    <img src="{{ asset('uploads/zones/cluster/' . $clustering['image']) ?? asset('asset/images/static/d8f0dfd17c0001.jpg') }}" class="d-block w-100"
                                         alt="{{ $clustering->translations[0]['name'] ?? '' }}">
                                 </div>
                             @endforeach

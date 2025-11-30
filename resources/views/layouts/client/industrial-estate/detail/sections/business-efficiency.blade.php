@@ -9,7 +9,7 @@
             <div class="col-md-45">
                 <div class="row">
                     <div class="col-md-20">
-                        <img src="{{ asset('storage/zone/dev/thumb_22006-timer_adaptiveResize_59_59.png' ?? '') }}" decoding="async" loading="lazy" alt="Layanan Perijinan Terpadu" style="margin-top:40px">
+                        <img src="{{ asset('uploads/zones/dev/thumb_22006-timer_adaptiveResize_59_59.png' ?? '') }}" decoding="async" loading="lazy" alt="Layanan Perijinan Terpadu" style="margin-top:40px">
                         <div class="judul">
                             <p>Layanan Perijinan Terpadu</p>
                         </div>
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="col-md-20">
-                        <img src="{{ asset('storage/zone/dev/thumb_dc10e-repeat_adaptiveResize_59_59.png' ?? '') }}" decoding="async" loading="lazy" alt="Zona Industri" style="margin-top:40px">
+                        <img src="{{ asset('uploads/zones/dev/thumb_dc10e-repeat_adaptiveResize_59_59.png' ?? '') }}" decoding="async" loading="lazy" alt="Zona Industri" style="margin-top:40px">
 
                         <div class="judul">
                             <p>Ijin Konstruksi Langsung</p>
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class="col-md-20">
-                        <img src="{{ asset('storage/zone/dev/thumb_83784-icn-3_adaptiveResize_59_59.png' ?? '') }}" decoding="async" loading="lazy" alt="Ijin Konstruksi Langsung" style="margin-top:40px">
+                        <img src="{{ asset('uploads/zones/dev/thumb_83784-icn-3_adaptiveResize_59_59.png' ?? '') }}" decoding="async" loading="lazy" alt="Ijin Konstruksi Langsung" style="margin-top:40px">
 
                         <div class="judul">
                             <p>Zona Industri</p>

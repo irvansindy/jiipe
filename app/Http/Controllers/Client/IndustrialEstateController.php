@@ -19,7 +19,6 @@ class IndustrialEstateController extends Controller
         }, 'zoneClass.translations' => function($query) {
             $query->where('locale', app()->getLocale());
         }])->where('zone_class_id', 1)->get();
-        // dd($zones);
         return view('layouts.client.industrial-estate.index', compact('zones'));
     }
 

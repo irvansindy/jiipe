@@ -135,13 +135,25 @@ Route::group([
         Route::post('/store-about-us-vision-mission', [AboutUsController::class, 'storeVisionMission'])->name('store-about-us-vision-mission');
         Route::post('/store-about-us-content-detail', [AboutUsController::class, 'storeContentDetail'])->name('store-about-us-content-detail');
 
-        Route::get('special-economic-zone', [ZoneController::class, 'index'])->name('special-economic-zone');
-        Route::get('fetch-zone', [ZoneController::class, 'fetchZone'])->name('fetch-zone');
-        Route::get('fetch-special-zone', [ZoneController::class, 'fetchSpecialZone'])->name('fetch-special-zone');
-        Route::get('fetch-zone-class', [ZoneController::class, 'fetchZoneClass'])->name('fetch-zone-class');
-        Route::get('zone/{id}/detail', [ZoneController::class, 'getZoneDetail'])->name('zone-detail');
-        Route::post('store-zone', [ZoneController::class, 'storeZone'])->name('store-zone');
-        Route::post('zone/{id}/update', [ZoneController::class, 'updateZone'])->name('zone-update');
+        // Route::get('special-economic-zone', [ZoneController::class, 'index'])->name('special-economic-zone');
+        // Route::get('fetch-zone', [ZoneController::class, 'fetchZone'])->name('fetch-zone');
+        // Route::get('fetch-special-zone', [ZoneController::class, 'fetchSpecialZone'])->name('fetch-special-zone');
+        // Route::get('fetch-zone-class', [ZoneController::class, 'fetchZoneClass'])->name('fetch-zone-class');
+        // Route::get('zone/{id}/detail', [ZoneController::class, 'getZoneDetail'])->name('zone-detail');
+        // Route::post('store-zone', [ZoneController::class, 'storeZone'])->name('store-zone');
+        // Route::post('zone/{id}/update', [ZoneController::class, 'updateZone'])->name('zone-update');
+
+        Route::prefix('admin')->middleware(['auth'])->group(function () {
+            // Zone routes
+            Route::get('/zone', [ZoneController::class, 'index'])->name('zone.index');
+            Route::get('/zone/fetch', [ZoneController::class, 'fetchZone'])->name('fetch-zone');
+            Route::get('/zone/fetch-special', [ZoneController::class, 'fetchSpecialZone'])->name('fetch-special-zone');
+            Route::get('/zone/fetch-class', [ZoneController::class, 'fetchZoneClass'])->name('fetch-zone-class');
+            Route::post('/zone/store', [ZoneController::class, 'storeZone'])->name('store-zone');
+            Route::get('/zone/{id}/detail', [ZoneController::class, 'getZoneDetail']);
+            Route::post('/zone/{id}/update', [ZoneController::class, 'updateZone']);
+            Route::delete('/zone/{id}/delete', [ZoneController::class, 'deleteZone']);
+        });
 
         // tenant
         Route::get('fetch-tenant', [TenantController::class, 'fetchTenant'])->name('fetch-tenant');
@@ -166,14 +178,14 @@ Route::group([
         });
 
         Route::prefix('admin')->middleware(['auth'])->group(function () {
-    // FAQ routes
-    Route::get('/faq/fetch', [FAQController::class, 'fetch'])->name('fetch-faq');
-    Route::get('/faq/{id}/edit', [FAQController::class, 'edit']);
-    Route::post('/faq', [FAQController::class, 'store']);
-    Route::put('/faq/{id}', [FAQController::class, 'update']);
-    Route::delete('/faq/{id}', [FAQController::class, 'destroy']);
-    Route::post('/faq/{id}/toggle-status', [FAQController::class, 'toggleStatus']);
-});
+            // FAQ routes
+            Route::get('/faq/fetch', [FAQController::class, 'fetch'])->name('fetch-faq');
+            Route::get('/faq/{id}/edit', [FAQController::class, 'edit']);
+            Route::post('/faq', [FAQController::class, 'store']);
+            Route::put('/faq/{id}', [FAQController::class, 'update']);
+            Route::delete('/faq/{id}', [FAQController::class, 'destroy']);
+            Route::post('/faq/{id}/toggle-status', [FAQController::class, 'toggleStatus']);
+        });
 
         Route::get('article-and-news', [NewsAndArticleController::class, 'index'])->name('article-and-news');
         Route::get('fetch-article-and-news', [NewsAndArticleController::class, 'fetch'])->name('fetch-article-and-news');

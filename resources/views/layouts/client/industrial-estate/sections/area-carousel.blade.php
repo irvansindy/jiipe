@@ -6,7 +6,7 @@
             @endphp --}}
             @foreach ($zones ?? [] as $index => $zone)
                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}" ns_image="{{ $zone['image'] ?? '' }}">
-                    <img src="{{ asset('storage/zone/' . $zone['image'] ?? '') }}" class="d-block w-100"
+                    <img src="{{ asset('uploads/zones/' . $zone['image'] ?? '') }}" class="d-block w-100"
                         alt="{{ __('JIIPE Industrial Estate Gresik') }}" decoding="async" loading="lazy">
                 </div>
             @endforeach

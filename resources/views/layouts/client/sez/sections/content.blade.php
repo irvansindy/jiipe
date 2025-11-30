@@ -15,7 +15,7 @@
                                 <li class="tab-link {{ $index === 0 ? 'active' : '' }}"
                                     data-tab="tab-{{ $index }}"
                                     data-title="{{ $sezPage['title'] }}"
-                                    data-thumbnail="{{ asset('storage/zone/'. ($sezPage['thumbnail'] ?? 'asset/images/default-cover.jpg')) }}">
+                                    data-thumbnail="{{ asset('uploads/zones/'. ($sezPage['thumbnail'] ?? 'asset/images/default-cover.jpg')) }}">
                                     <a href="javascript:void(0)">
                                         {{ $sezPage['menu_title'] ?? $sezPage['title'] }}
                                     </a>
@@ -28,7 +28,7 @@
                             @foreach ($data['sezPages'] as $index => $sezPage)
                                 <option value="tab-{{ $index }}"
                                         data-title="{{ $sezPage['title'] }}"
-                                        data-thumbnail="{{ asset('storage/zone/'. ($sezPage['thumbnail'] ?? 'asset/images/default-cover.jpg')) }}"
+                                        data-thumbnail="{{ asset('uploads/zones/'. ($sezPage['thumbnail'] ?? 'asset/images/default-cover.jpg')) }}"
                                         {{ $index === 0 ? 'selected' : '' }}>
                                     {{ $sezPage['menu_title'] ?? $sezPage['title'] }}
                                 </option>
@@ -53,7 +53,7 @@
                             @if ($index === 0)
                                 {{-- Default/First Content (PP 71/2021) --}}
                                 <p>
-                                    <img src="{{ asset('storage/zone/pp_71_1.jpg') }}" class="img img-fluid">
+                                    <img src="{{ asset('uploads/zones/pp_71_1.jpg') }}" class="img img-fluid">
                                 </p>
                                 <p>(As per PP No.71 / 2021)</p>
                                 <p>
@@ -92,7 +92,7 @@
                                     establishing JIIPE as Gresik SEZ.
                                 </p>
                                 <p>
-                                    <img src="{{ asset('storage/zone/pp_71_2.jpg') }}" class="img img-fluid">
+                                    <img src="{{ asset('uploads/zones/pp_71_2.jpg') }}" class="img img-fluid">
                                 </p>
                                 <p>
                                     Bambang Soetiono stated in his statement, "With the establishment of JIIPE as KEK Gresik, we
@@ -143,7 +143,7 @@
                                 </p>
                                 <hr>
                                 <p>
-                                    <img src="{{ asset('storage/zone/pp_71_3.jpg') }}" class="img img-fluid">
+                                    <img src="{{ asset('uploads/zones/pp_71_3.jpg') }}" class="img img-fluid">
                                 </p>
                             @else
                                 {{-- Dynamic content from database for other tabs --}}
