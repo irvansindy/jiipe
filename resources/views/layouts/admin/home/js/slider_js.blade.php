@@ -133,13 +133,13 @@ $(function() {
                         <div class="btn-group" role="group">
                             <button type="button"
                                 data-slider_id="${item.id}"
-                                class="btn btn-sm btn-outline-info detail_slider"
+                                class="btn btn-outline-info detail_slider"
                                 title="Edit">
                                 <i class="ti ti-edit"></i>
                             </button>
                             <button type="button"
                                 data-id="${item.id}"
-                                class="btn btn-sm btn-outline-danger btn-delete-slider"
+                                class="btn btn-outline-danger btn-delete-slider"
                                 title="Delete">
                                 <i class="ti ti-trash"></i>
                             </button>

@@ -112,10 +112,10 @@ class HomeController extends Controller
             ->map(function($review) use ($locale) {
                 $trans = $review->translations->first();
                 return [
-                    'name' => $trans ? $trans->name : '',
+                    'name' => $review ? $review->name : '',
                     'description' => $trans ? $trans->description : '',
                     'photo' => $review->photo,
-                    'position' => $trans ? $trans->position : '',
+                    'position' => $review ? $review->position : '',
                 ];
             });
         });

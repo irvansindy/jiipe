@@ -248,16 +248,6 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="row">
-                <div class="col-md-12 col-lg-12 col-sm-12">
-                    <div class="card">
-                        <div class="card-header bg-primary">
-                            <h4 class="text-white m-0">News, Blog, Article</h4>
-                        </div>
-                        <div class="card-body"></div>
-                    </div>
-                </div>
-            </div> --}}
         </div>
     </div>
 @endsection

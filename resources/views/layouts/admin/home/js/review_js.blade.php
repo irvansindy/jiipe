@@ -38,12 +38,14 @@ $(document).ready(function() {
                 wrap: true,
                 render: function(item) {
                     return `
+                    <div class="btn-group" role="group">
                         <button type="button" data-review_id="${item.id}" class="btn btn-outline-info btn-sm mt-2 detail_user_review" data-toggle="modal" data-target="#reviewModal">
-                            <i class="ti ti-eye"></i> View
+                            <i class="ti ti-edit"></i>
                         </button>
                         <button type="button" data-id="${item.id}" class="btn btn-outline-danger btn-sm mt-2 btn-delete">
-                            <i class="ti ti-trash"></i> Delete
+                            <i class="ti ti-trash"></i>
                         </button>
+                    </div>
                     `;
                 }
             },
