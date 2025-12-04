@@ -3,64 +3,38 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\PageAppointment;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
+use App\Http\Requests\AppointmentRequest;
+use App\Services\AppointmentService;
+use App\Services\EmailService;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class AppointmentController extends Controller
 {
+    protected $appointmentService;
+    protected $emailService;
+
+    public function __construct(
+        AppointmentService $appointmentService,
+        EmailService $emailService
+    ) {
+        $this->appointmentService = $appointmentService;
+        $this->emailService = $emailService;
+    }
+
     /**
      * Store the appointment form submission
      */
-    public function storeQuickAppointment(Request $request)
+    public function storeQuickAppointment(AppointmentRequest $request)
     {
         try {
-            // Validate the form
-            $validator = Validator::make($request->all(), [
-                'QuickAppointment.first_name' => 'required|string|max:255',
-                'QuickAppointment.last_name' => 'required|string|max:255',
-                'QuickAppointment.phone_number' => 'required|string|max:20',
-                'QuickAppointment.email' => 'required|email',
-                'QuickAppointment.company_name' => 'required|string|max:255',
-                'QuickAppointment.country_origin' => 'required|in:Indonesia,Outside of Indonesia',
-                'QuickAppointment.reason' => 'required|string',
-                'QuickAppointment.classification' => 'required|string',
-                'QuickAppointment.land_plot' => 'required|numeric|min:0',
-                'QuickAppointment.timeline' => 'required|string',
-                'QuickAppointment.power' => 'required|numeric|min:0',
-                'QuickAppointment.industrial_water' => 'required|numeric|min:0',
-                'QuickAppointment.natural_gas' => 'required|numeric|min:0',
-                'QuickAppointment.throughput_via_seaport' => 'required|numeric|min:0',
-                'g-recaptcha-response' => 'required|captcha',
+            // Log incoming request untuk debugging
+            Log::info('Appointment submission started', [
+                'email' => $request->input('QuickAppointment.email'),
+                'company' => $request->input('QuickAppointment.company_name')
             ]);
 
-            $validator->setAttributeNames([
-                'QuickAppointment.first_name' => 'First Name',
-                'QuickAppointment.last_name' => 'Last Name',
-                'QuickAppointment.phone_number' => 'Phone Number',
-                'QuickAppointment.email' => 'Email',
-                'QuickAppointment.company_name' => 'Company Name',
-                'QuickAppointment.country_origin' => 'Country Origin',
-                'QuickAppointment.reason' => 'Reason',
-                'QuickAppointment.classification' => 'Industry Classification',
-                'QuickAppointment.land_plot' => 'Land Plot',
-                'QuickAppointment.timeline' => 'Timeline',
-                'QuickAppointment.power' => 'Power',
-                'QuickAppointment.industrial_water' => 'Industrial Water',
-                'QuickAppointment.natural_gas' => 'Natural Gas',
-                'QuickAppointment.throughput_via_seaport' => 'Throughput via Seaport',
-                'g-recaptcha-response' => 'reCAPTCHA',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            // If you have an AppointmentSubmission model, save the data
-            // Otherwise, just send an email or log it
+            // Prepare appointment data
             $appointmentData = [
                 'first_name' => $request->input('QuickAppointment.first_name'),
                 'last_name' => $request->input('QuickAppointment.last_name'),
@@ -80,12 +54,45 @@ class AppointmentController extends Controller
                 'throughput_via_seaport' => $request->input('QuickAppointment.throughput_via_seaport'),
             ];
 
-            // TODO: Save to database or send email as per your requirement
-            // PageAppointment::create($appointmentData);
+            // Save to database
+            $appointment = $this->appointmentService->createAppointment($appointmentData);
 
-            return redirect()->back()->with('success', 'Appointment submitted successfully! We will contact you soon.');
-        } catch (\Throwable $th) {
-            return redirect()->back()->with('error', 'An error occurred: ' . $th->getMessage());
+            Log::info('Appointment saved to database', ['id' => $appointment->id]);
+
+            // Send emails
+            $emailSent = $this->emailService->sendAppointmentEmails($appointmentData);
+
+            if ($emailSent) {
+                Log::info('Appointment emails sent successfully');
+            } else {
+                Log::warning('Appointment emails failed to send');
+            }
+
+            // Success message
+            $message = 'Appointment submitted successfully! We will contact you soon.';
+            if (!$emailSent) {
+                $message .= ' Note: Confirmation email could not be sent, but your appointment has been recorded.';
+            }
+
+            return redirect()->back()->with('success', $message);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Validation errors
+            Log::error('Appointment validation error', ['errors' => $e->errors()]);
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+
+        } catch (Exception $e) {
+            // General errors
+            Log::error('Appointment submission error', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return redirect()->back()
+                ->with('error', 'An error occurred while submitting your appointment. Please try again.')
+                ->withInput();
         }
     }
 }

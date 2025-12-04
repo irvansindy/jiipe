@@ -93,6 +93,39 @@
                     </div>
                 </div>
 
+                <!-- Success/Error Messages -->
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> {{ session('success') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> {{ session('error') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
+@if($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Validation Errors:</strong>
+        <ul class="mb-0">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
                 <form action="{{ route('store-quick-appointment') }}" id="contactForm" method="POST">
                     @csrf
 
@@ -134,8 +167,8 @@
                                     Email *
                                 </label>
                                 <div class="col-lg-50 col-sm-60 form-group">
-                                    <input id="email" name="QuickAppointment[email]" placeholder="yourname@mail.com"
-                                        type="email" required class="form-control">
+                                    <input id="email" name="QuickAppointment[email]"
+                                        placeholder="yourname@mail.com" type="email" required class="form-control">
                                 </div>
                             </div>
 
@@ -279,7 +312,8 @@
                                         </label>
                                         <div class="col-lg-40 col-sm-60 form-group">
                                             <select class="custom-select" name="QuickAppointment[timeline]" required>
-                                                <option value="" disabled selected hidden>@lang('system.select your timeline construction')</option>
+                                                <option value="" disabled selected hidden>@lang('system.select your timeline construction')
+                                                </option>
                                                 <option value="1 - 2 Years">@lang('system.1 - 2 years')</option>
                                                 <option value="More than 2 Years">@lang('system.more than 2 years')</option>
                                             </select>
@@ -391,7 +425,8 @@
                             <div class="row px-5">
                                 <div class="col-lg-60 col-md-60 col-sm-60">
                                     <input type="hidden" name="reff" value="index">
-                                    <button type="submit" class="btn btn-block btn-danger">@lang('system.submit')</button>
+                                    <button type="submit"
+                                        class="btn btn-block btn-danger">@lang('system.submit')</button>
                                 </div>
                             </div>
                         </div>
@@ -425,55 +460,114 @@
         background-color: #e9ecef;
         padding: 0.375rem 0.75rem;
     }
+
+    .alert {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 4px;
+}
+.alert-success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+.alert-danger {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
 </style>
 
-@push('scripts')
+@push('js')
+    {!! NoCaptcha::renderJs() !!}
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Handle "Other" reason field
+
+            /* ---------------------------------------------
+             * 1. Handle "Other" for Reason (Radio Button)
+             * -------------------------------------------*/
             var reasonRadios = document.querySelectorAll('input[name="QuickAppointment[reason]"]');
             var reasonOtherRow = document.getElementById('reason_other_row');
+            var reasonOtherInput = document.getElementById('reason_other');
 
-            reasonRadios.forEach(function(radio) {
-                radio.addEventListener('change', function() {
-                    if (this.value === 'Other') {
-                        reasonOtherRow.classList.remove('d-none');
-                    } else {
-                        reasonOtherRow.classList.add('d-none');
-                    }
-                });
-            });
-
-            // Handle "Other" classification field
-            var classificationSelect = document.getElementById('classification');
-            var classificationOtherRow = document.getElementById('classification_other_row');
-
-            if (classificationSelect) {
-                classificationSelect.addEventListener('change', function() {
-                    if (this.value === 'Other') {
-                        classificationOtherRow.classList.remove('d-none');
-                    } else {
-                        classificationOtherRow.classList.add('d-none');
-                    }
-                });
+            function toggleReasonOther() {
+                var checked = document.querySelector('input[name="QuickAppointment[reason]"]:checked');
+                if (checked && checked.value === 'Other') {
+                    reasonOtherRow.classList.remove('d-none');
+                    reasonOtherInput.setAttribute('required', 'required');
+                    reasonOtherInput.focus();
+                } else {
+                    reasonOtherRow.classList.add('d-none');
+                    reasonOtherInput.removeAttribute('required');
+                    reasonOtherInput.value = '';
+                }
             }
 
-            // Form validation
+            // Bind event untuk setiap radio
+            reasonRadios.forEach(function(radio) {
+                radio.addEventListener('change', toggleReasonOther);
+            });
+
+            // Jalankan saat load (untuk old value validasi)
+            toggleReasonOther();
+
+
+            /* ---------------------------------------------
+             * 2. Handle "Other" for Classification (Select)
+             * -------------------------------------------*/
+            var classificationSelect = document.getElementById('classification');
+            var classificationOtherRow = document.getElementById('classification_other_row');
+            var classificationOtherInput = document.getElementById('classification_other');
+
+            function toggleClassificationOther() {
+                if (classificationSelect.value == 'Other') {
+                    classificationOtherRow.classList.remove('d-none');
+                    classificationOtherInput.setAttribute('required', 'required');
+                    classificationOtherInput.focus();
+                } else {
+                    classificationOtherRow.classList.add('d-none');
+                    classificationOtherInput.removeAttribute('required');
+                    classificationOtherInput.value = '';
+                }
+            }
+
+            if (classificationSelect) {
+                classificationSelect.addEventListener('change', toggleClassificationOther);
+                toggleClassificationOther(); // inisialisasi
+            }
+
+
+            /* ---------------------------------------------
+             * 3. Form reCAPTCHA Validation + Debug (opsional)
+             * -------------------------------------------*/
             var form = document.getElementById('contactForm');
+
             if (form) {
                 form.addEventListener('submit', function(e) {
+                    console.log('Form submitting...');
+
                     var recaptchaResponse = grecaptcha.getResponse();
+                    console.log('reCAPTCHA response:', recaptchaResponse);
+
                     if (recaptchaResponse.length === 0) {
                         e.preventDefault();
                         alert('Please complete the reCAPTCHA verification.');
                         return false;
                     }
+
+                    // Debug data
+                    var formData = new FormData(form);
+                    console.log('Form data:');
+                    for (var pair of formData.entries()) {
+                        console.log(pair[0] + ': ' + pair[1]);
+                    }
+
+                    console.log('Form validated, submitting...');
                 });
             }
+
         });
     </script>
-@endpush
-@push('js')
-        {!! NoCaptcha::renderJs() !!}
 @endpush

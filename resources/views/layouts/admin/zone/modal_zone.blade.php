@@ -72,9 +72,6 @@
                                             data-bs-target="#zone-form-{{ $locale }}" type="button"
                                             role="tab" aria-controls="zone-form-{{ $locale }}"
                                             aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                            <img src="{{ asset('flags/' . $locale . '.png') }}"
-                                                alt="{{ $locale }}" style="width: 20px; margin-right: 5px;"
-                                                onerror="this.style.display='none'">
                                             {{ $properties['native'] }}
                                         </button>
                                     </li>

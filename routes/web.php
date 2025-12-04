@@ -72,7 +72,6 @@ Route::group([
     Route::get('/international-desk', [InternationalDeskController::class, 'index'])->name('international-desk');
 
     Route::get('/contact', [ContactClient::class,'index'])->name('contact');
-    Route::post('/appointment/store', [AppointmentClient::class, 'storeQuickAppointment'])->name('store-quick-appointment');
     Route::get('/career', [CareerClient::class,'index'])->name('career');
     Route::get('/career/{id}', [CareerClient::class, 'detail'])->name('client.career.detail');
     Route::post('/career/{id}', [CareerClient::class, 'apply'])->name('client.career.apply');
@@ -95,6 +94,7 @@ Route::group([
     // })->name('dashboard');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/news-blog', [NewsAndArticleController::class, 'index'])->name('news-blog');
+    Route::post('/appointment/store', [AppointmentClient::class, 'storeQuickAppointment'])->name('store-quick-appointment');
 
     Route::group(['middleware' => ['auth']], function () {
         Route::get('home-page', [HomeController::class,'index'])->name('home-page');
