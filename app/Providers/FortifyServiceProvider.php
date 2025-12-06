@@ -18,6 +18,7 @@ use Laravel\Fortify\Fortify;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
@@ -42,19 +43,30 @@ class FortifyServiceProvider extends ServiceProvider
          * Custom authentication (email + password)
          */
         Fortify::authenticateUsing(function (Request $request) {
+            // validate input first
             Validator::make($request->all(), [
                 'email'    => 'required|email',
                 'password' => 'required',
                 'g-recaptcha-response' => 'required|captcha',
+            ], [
+                'email.required'=> 'User tidak ditemukan',
+                'email.email'=> 'Format email tidak valid',
+                'password.required'=> 'Password tidak boleh kosong',
+                'g-recaptcha-response.required' => 'Please complete the CAPTCHA to proceed.',
+                'g-recaptcha-response.captcha' => 'CAPTCHA verification failed. Please try again.',
             ])->validate();
 
             $user = User::where('email', $request->email)->first();
 
             if ($user && Hash::check($request->password, $user->password)) {
+                // Manually login user so we can respect the "remember" checkbox
+                // Auth::login will persist the session and (if true) create a long-lived cookie
+                Auth::login($user, $request->boolean('remember'));
+
                 return $user;
             }
 
-            return null;
+            return null; // authentication failed
         });
 
         Fortify::createUsersUsing(CreateNewUser::class);

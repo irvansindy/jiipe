@@ -18,7 +18,7 @@
                             value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" />
 
                         @error('email')
-                            <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ __($message) }}</small>
                         @enderror
                     </div>
 
@@ -27,16 +27,16 @@
                             class="form-control @error('password') is-invalid @enderror" />
 
                         @error('password')
-                            <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger">{{ __($message) }}</small>
                         @enderror
                     </div>
                     {{-- reCAPTCHA --}}
                     <div class="mylogin recaptcha-wrapper">
                         {!! NoCaptcha::display(['data-theme' => 'light']) !!}
-                        <br/>
+                        <br />
                     </div>
                     @error('g-recaptcha-response')
-                        <small class="text-danger mb-1">{{ $message }}</small>
+                        <small class="text-danger mb-1">{{ __($message) }}</small>
                     @enderror
 
                     <div class="mylogin">
@@ -45,7 +45,8 @@
 
                     <div class="mylogin mesign">
                         <label>
-                            <input type="checkbox" class="remember" name="remember" /> Keep me sign in
+                            <input type="checkbox" class="remember" name="remember" value="1"
+                                {{ old('remember') ? 'checked' : '' }} /> Keep me sign in
                         </label>
                     </div>
                 </form>
@@ -53,7 +54,7 @@
                 {{-- Alert error global (misalnya credential salah) --}}
                 @if ($errors->has('email') || $errors->has('username'))
                     <div class="text-danger mt-2">
-                        Invalid credentials, please try again.
+                        {{ __($errors->first('email') ?: 'Invalid credentials, please try again.') }}
                     </div>
                 @endif
             </div><!--loginpanelinner-->
@@ -157,12 +158,12 @@
         }
 
         .recaptcha-wrapper .g-recaptcha {
-            transform: scale(0.85);  /* atur sesuai kebutuhan */
+            transform: scale(0.85);
+            /* atur sesuai kebutuhan */
             transform-origin: center;
         }
-
     </style>
 @endsection
 @push('js')
-        {!! NoCaptcha::renderJs() !!}
+    {!! NoCaptcha::renderJs() !!}
 @endpush

@@ -13,6 +13,7 @@ trait PasswordValidationRules
      */
     protected function passwordRules(): array
     {
-        return ['required', 'string', Password::default(), 'confirmed'];
+        // Enforce a minimum password length of 12 characters.
+        return ['required', 'string', Password::min(12), 'confirmed'];
     }
 }
