@@ -158,8 +158,8 @@
                     defaultContent: '<i>Not set</i>'
                 },
                 {
-                    data: 'jobLevel.name',
-                    name: 'jobLevel.name',
+                    data: 'job_level.name',
+                    name: 'job_level.name',
                     defaultContent: '<i>Not set</i>'
                 },
                 {
@@ -179,11 +179,23 @@
             ]
         });
 
-        // Filter otomatis saat dropdown berubah
-        $('#master_career_location, #master_career_education, #master_career_job_level, #master_career_company')
-            .on('change', function() {
-                tableCareerList.ajax.reload();
-            });
+        // NOTE: removed automatic reload on select change. Table will reload only on form submit.
+
+        // Handle form submit (Apply Filters)
+        $('#filterCareerForm').on('submit', function(e) {
+            e.preventDefault();
+            tableCareerList.ajax.reload();
+        });
+
+        // Reset filters
+        $('#resetCareerFilters').on('click', function() {
+            // clear select2 selects
+            $('#master_career_location').val(null).trigger('change');
+            $('#master_career_education').val(null).trigger('change');
+            $('#master_career_job_level').val(null).trigger('change');
+            $('#master_career_company').val(null).trigger('change');
+            tableCareerList.ajax.reload();
+        });
 
         $('#refresh_table_career_list').click(function() {
             tableCareerList.ajax.reload();
@@ -250,10 +262,10 @@
                     $('#career_factory').val(response.data.factory.id).trigger('change');
                     $('#career_location').val(response.data.location.id).trigger('change');
                     $('#career_job_level').val(response.data.job_level.id).trigger(
-                    'change');
+                        'change');
                     $('#career_range_salary').val(response.data.range_salary);
                     $('#career_education').val(response.data.education.id).trigger(
-                    'change');
+                        'change');
                     $('#career_experience').val(response.data.minimum_experience);
                     $('#career_description').summernote('code', response.data.description);
                 },

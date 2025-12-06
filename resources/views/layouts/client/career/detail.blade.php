@@ -9,8 +9,8 @@
             <nav class="t-breadcrumb wow fadeInUp" aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
-                    <li class="breadcrumb-item"><a
-                            href="{{ route('career', app()->getLocale()) }}">{{ __('Career') }}</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('career', app()->getLocale()) }}">{{ __('Career') }}</a>
+                    </li>
                     <li class="breadcrumb-item active" aria-current="page">{{ __('Detail') }}</li>
                 </ol>
             </nav>
@@ -21,7 +21,7 @@
     <!-- Cover Section -->
     <section id="cover-karir">
         <div class="karir-images"
-            style="background-image: url('{{ asset('images/static/60a0467c29Website_header_vacancy.jpg') }}') !important;">
+            style="background-image: url('{{ asset('uploads/career/header/header_career.jpg') }}') !important;">
             <div class="prelative container">
             </div>
         </div>
@@ -425,6 +425,132 @@
                     }, 1000);
                 @endif
             });
+            // Add loading overlay and submit via AJAX (plain JS)
+            (function() {
+                var overlayHtml =
+                    '<div id="career-loading-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:99999;align-items:center;justify-content:center;">' +
+                    '<div class="spinner-border text-light" role="status" aria-hidden="true" style="width:3rem;height:3rem;"></div></div>';
+                // append overlay using plain JS to avoid relying on jQuery
+                var body = document.getElementsByTagName('body')[0];
+                var tempDiv = document.createElement('div');
+                tempDiv.innerHTML = overlayHtml;
+                body.appendChild(tempDiv.firstChild);
+
+                var form = document.getElementById('CareerNewForm');
+                // ensure there is a container for alerts
+                var alertContainer = document.getElementById('career-alerts');
+                if (!alertContainer) {
+                    alertContainer = document.createElement('div');
+                    alertContainer.id = 'career-alerts';
+                    form.parentNode.insertBefore(alertContainer, form);
+                }
+
+                // capturing listener to ensure it runs before any other submit handlers
+                form.addEventListener('submit', function(e) {
+                    // noop: capture phase binding ensures our handler runs first
+                }, true);
+
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    // validate using jQuery validate if available
+                    var valid = true;
+                    if (window.jQuery && typeof jQuery(form).valid === 'function') {
+                        valid = jQuery(form).valid();
+                    }
+                    if (!valid) {
+                        return;
+                    }
+
+                    // show overlay and disable submit
+                    var overlay = document.getElementById('career-loading-overlay');
+                    overlay.style.display = 'flex';
+                    var submitButtons = form.querySelectorAll('button[type=submit]');
+                    submitButtons.forEach(function(btn) {
+                        btn.disabled = true;
+                    });
+                    alertContainer.innerHTML = '';
+
+                    var formData = new FormData(form);
+
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        credentials: 'same-origin',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value
+                        }
+                    }).then(function(resp) {
+                        if (!resp.ok) throw resp;
+                        return resp.json();
+                    }).then(function(json) {
+                        // on success, reload the page so flash message appears
+                        window.location.reload();
+                    }).catch(function(err) {
+                        // hide overlay and re-enable submit
+                        var overlay = document.getElementById('career-loading-overlay');
+                        overlay.style.display = 'none';
+                        submitButtons.forEach(function(btn) {
+                            btn.disabled = false;
+                        });
+
+                        if (err && err.status === 422) {
+                            err.json().then(function(res) {
+                                var errors = res.errors || (res.meta && res.meta.message ? {
+                                    error: [res.meta.message]
+                                } : null);
+                                if (errors) {
+                                    var div = document.createElement('div');
+                                    div.className =
+                                    'alert alert-danger alert-dismissible fade show';
+                                    var ul = document.createElement('ul');
+                                    ul.className = 'mb-0';
+                                    Object.keys(errors).forEach(function(k) {
+                                        (errors[k] || []).forEach(function(m) {
+                                            var li = document.createElement('li');
+                                            li.textContent = m;
+                                            ul.appendChild(li);
+                                        });
+                                    });
+                                    div.appendChild(ul);
+                                    var btn = document.createElement('button');
+                                    btn.type = 'button';
+                                    btn.className = 'btn-close';
+                                    btn.setAttribute('data-bs-dismiss', 'alert');
+                                    btn.setAttribute('aria-label', 'Close');
+                                    div.appendChild(btn);
+                                    alertContainer.appendChild(div);
+                                    window.scrollTo({
+                                        top: form.getBoundingClientRect().top + window
+                                            .scrollY - 100,
+                                        behavior: 'smooth'
+                                    });
+                                    return;
+                                }
+                            }).catch(function() {});
+                        }
+
+                        // generic error
+                        var div = document.createElement('div');
+                        div.className = 'alert alert-danger alert-dismissible fade show';
+                        div.textContent = 'Failed to submit application. Please try again later.';
+                        var btnClose = document.createElement('button');
+                        btnClose.type = 'button';
+                        btnClose.className = 'btn-close';
+                        btnClose.setAttribute('data-bs-dismiss', 'alert');
+                        btnClose.setAttribute('aria-label', 'Close');
+                        div.appendChild(btnClose);
+                        alertContainer.appendChild(div);
+                    });
+                });
+
+                // ensure overlay hidden on load
+                window.addEventListener('load', function() {
+                    var ov = document.getElementById('career-loading-overlay');
+                    if (ov) ov.style.display = 'none';
+                });
+            })();
         </script>
     @endpush
 @endsection

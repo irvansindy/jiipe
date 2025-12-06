@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\FormatResponseJson;
+use App\Models\CareerEmail;
 class CareerController extends Controller
 {
     public function index()
@@ -88,6 +89,126 @@ class CareerController extends Controller
     public function enquire()
     {
         return view('layouts.admin.career.enquire');
+    }
+
+    // ----- CareerEmail (Enquire) CRUD -----
+    public function fetchCareerEnquire(Request $request)
+    {
+        try {
+            $query = CareerEmail::query();
+
+            if ($request->filled('position_id')) {
+                $query->where('position_id', $request->position_id);
+            }
+
+            if ($request->filled('email')) {
+                $query->where('email', 'like', '%' . $request->email . '%');
+            }
+
+            $enquires = $query->orderBy('created_at', 'desc')->get();
+            $message = $enquires->isEmpty() ? 'No enquiries found.' : $enquires->count() . ' enquiries fetched successfully.';
+
+            return FormatResponseJson::success($enquires, $message);
+        } catch (\Throwable $th) {
+            return FormatResponseJson::error(null, $th->getMessage(), 500);
+        }
+    }
+
+    public function storeOrUpdateCareerEmail(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $rules = [
+                'position_id' => 'required|integer',
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'phone' => 'nullable|string|max:50',
+                'file_cv' => 'nullable|file|max:5120',
+                'file_complementary_documents' => 'nullable|file|max:5120',
+                'education' => 'nullable|string|max:255',
+                'body' => 'nullable|string',
+                'date' => 'nullable|date',
+                'job_level' => 'nullable|string|max:255',
+                'experience' => 'nullable|string|max:255',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                DB::rollBack();
+                return FormatResponseJson::error(null, ['errors' => $validator->errors()], 422);
+            }
+
+            $data = $validator->validated();
+
+            // handle file uploads
+            if ($request->hasFile('file_cv')) {
+                $data['file_cv'] = $request->file('file_cv')->store('career/emails', 'uploads');
+            }
+            if ($request->hasFile('file_complementary_documents')) {
+                $data['file_complementary_documents'] = $request->file('file_complementary_documents')->store('career/emails', 'uploads');
+            }
+
+            // If updating, remove old files if new ones provided
+            if ($request->filled('id')) {
+                $existing = CareerEmail::find($request->id);
+                if ($existing) {
+                    if (isset($data['file_cv']) && $existing->file_cv) {
+                        Storage::disk('uploads')->delete($existing->file_cv);
+                    }
+                    if (isset($data['file_complementary_documents']) && $existing->file_complementary_documents) {
+                        Storage::disk('uploads')->delete($existing->file_complementary_documents);
+                    }
+                }
+            }
+
+            $careerEmail = CareerEmail::updateOrCreate(
+                ['id' => $request->input('id')],
+                $data
+            );
+
+            DB::commit();
+
+            $msg = $request->filled('id') ? 'Enquire updated successfully.' : 'Enquire created successfully.';
+            return FormatResponseJson::success($careerEmail, $msg);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return FormatResponseJson::error(null, $th->getMessage(), 500);
+        }
+    }
+
+    public function detailCareerEnquire(Request $request)
+    {
+        try {
+            $id = $request->input('career_email_id') ?? $request->input('id');
+            $enquire = CareerEmail::find($id);
+            return FormatResponseJson::success($enquire, 'Enquire details fetched successfully.');
+        } catch (\Throwable $th) {
+            return FormatResponseJson::error(null, $th->getMessage(), 500);
+        }
+    }
+
+    public function deleteCareerEnquire($id)
+    {
+        try {
+            DB::beginTransaction();
+            $enquire = CareerEmail::findOrFail($id);
+
+            if ($enquire->file_cv) {
+                Storage::disk('uploads')->delete($enquire->file_cv);
+            }
+            if ($enquire->file_complementary_documents) {
+                Storage::disk('uploads')->delete($enquire->file_complementary_documents);
+            }
+
+            $enquire->delete();
+            DB::commit();
+
+            return FormatResponseJson::success(null, 'Enquire deleted successfully.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return FormatResponseJson::error(null, $th->getMessage(), 500);
+        }
     }
     public function storeHeader(Request $request)
     {

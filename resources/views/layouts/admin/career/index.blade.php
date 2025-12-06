@@ -20,22 +20,33 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="row">
-                        <div class="col-sm-6 col-md-3 col-lg-3 mb-2">
-                            <select class="form-control" name="master_career_location" id="master_career_location"></select>
+                    <form id="filterCareerForm">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-3 col-lg-3 mb-2">
+                                <select class="form-control" name="master_career_location"
+                                    id="master_career_location"></select>
+                            </div>
+                            <div class="col-sm-6 col-md-3 col-lg-3 mb-2">
+                                <select class="form-control" name="master_career_education"
+                                    id="master_career_education"></select>
+                            </div>
+                            <div class="col-sm-6 col-md-3 col-lg-3 mb-2">
+                                <select class="form-control" name="master_career_job_level"
+                                    id="master_career_job_level"></select>
+                            </div>
+                            <div class="col-sm-6 col-md-3 col-lg-3 mb-2">
+                                <select class="form-control" name="master_career_company"
+                                    id="master_career_company"></select>
+                            </div>
                         </div>
-                        <div class="col-sm-6 col-md-3 col-lg-3 mb-2">
-                            <select class="form-control" name="master_career_education"
-                                id="master_career_education"></select>
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary me-2" id="applyCareerFilters">Apply
+                                    Filters</button>
+                                <button type="button" class="btn btn-secondary" id="resetCareerFilters">Reset</button>
+                            </div>
                         </div>
-                        <div class="col-sm-6 col-md-3 col-lg-3 mb-2">
-                            <select class="form-control" name="master_career_job_level"
-                                id="master_career_job_level"></select>
-                        </div>
-                        <div class="col-sm-6 col-md-3 col-lg-3 mb-2">
-                            <select class="form-control" name="master_career_company" id="master_career_company"></select>
-                        </div>
-                    </div>
+                    </form>
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h5 class="mb-0">Career List</h5>
                         <ul class="nav nav-pills justify-content-end mb-0" id="chart-tab-tab" role="tablist">

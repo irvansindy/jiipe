@@ -133,23 +133,41 @@ class CareerController extends Controller
             $supportPath = $request->file('support_file')->store('career/support', 'uploads');
         }
 
+        // Ensure body is not null (DB column is not nullable)
+        $body = $request->input('message');
+        if ($body === null) {
+            $body = '';
+        }
+
         // Save to database (create CareerApplication model and migration)
         CareerEmail::create([
             'position_id' => $career->id,
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
             'file_cv' => $cvPath,
             'file_complementary_documents' => $supportPath,
             'education' => $career->education_id,
-            'body' => $request->message,
+            'body' => $body,
             'date' => now(),
-            'job_level' => $request->job_level,
-            'experience' => $request->experience,
+            // Prefer to store job level text from the career model if available
+            'job_level' => $career->jobLevel?->name ?? $request->input('job_level'),
+            'experience' => $request->input('experience'),
         ]);
 
         // Send email notification (optional)
         // Mail::to('recruitment@bkms.jiipe.co.id')->send(new CareerApplicationMail($data));
+
+        // If AJAX request, return JSON; otherwise redirect back with success flash
+        if ($request->ajax()) {
+            return response()->json([
+                'meta' => [
+                    'status' => 'success',
+                    'message' => 'Your application has been submitted successfully. We will contact you soon.'
+                ],
+                'data' => null
+            ], 200);
+        }
 
         return redirect()->back()->with('success', 'Your application has been submitted successfully. We will contact you soon.');
     }

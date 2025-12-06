@@ -18,7 +18,7 @@
 
 <!-- Cover Section -->
 <section id="cover-karir">
-    <div class="karir-images" style="background-image: url('{{ $careerHeader && $careerHeader->image ? asset('storage/' . $careerHeader->image) : asset('images/default-career-header.jpg') }}') !important;">
+    <div class="karir-images" style="background-image: url('{{ $careerHeader && $careerHeader->image ? asset('uploads/career/header/' . $careerHeader->image) : asset('uploads/career/header/header_career.jpg') }}') !important;">
         <div class="prelative container">
         </div>
     </div>
@@ -29,7 +29,7 @@
     <div class="prelative container">
         <div class="row">
             <div class="col-md-15">
-                <img src="{{ asset('asset/images/beijing-red.png') }}" alt="career icon">
+                <img src="{{ asset('asset/images/beijing-red.png') }}" alt="career icon" decoding="async" loading="lazy">
                 <p class="info">
                     {{ __('Job Vacancies') }}
                 </p>

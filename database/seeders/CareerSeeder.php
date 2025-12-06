@@ -17,6 +17,12 @@ class CareerSeeder extends Seeder
 {
     public function run()
     {
+        CareerHeaderTranslation::truncate();
+        CareerHeader::truncate();
+        CareerSectionTranslation::truncate();
+        CareerSection::truncate();
+        Career::truncate();
+
         // Seed Master Data first
         $this->seedMasterData();
 
@@ -67,7 +73,7 @@ class CareerSeeder extends Seeder
     private function seedCareerHeader()
     {
         $careerHeader = CareerHeader::create([
-            'image' => 'career-header.jpg'
+            'image' => 'header_career.jpg'
         ]);
 
         $translations = [

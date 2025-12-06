@@ -10,6 +10,7 @@ use App\Models\BasicInformation;
 use App\Models\BasicInformationTranslation;
 use App\Models\Reason;
 use App\Models\ReasonTranslation;
+use App\Models\PageAppointment;
 use App\Helpers\FormatResponseJson;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -26,6 +27,44 @@ class FormAppointment extends Controller
         $basicInfo = BasicInformation::with('translations')->first();
         $reason = Reason::with('translations')->first();
         return view('layouts.admin.form_appointment.form_view', compact('appointment', 'basicInfo', 'reason'));
+    }
+    public function fetchAppointment(Request $request)
+    {
+        try {
+            $query = PageAppointment::query();
+
+            // apply filters if provided
+            if ($request->filled('reason')) {
+                $query->where('reason', $request->input('reason'));
+            }
+            if ($request->filled('classification')) {
+                $query->where('classification', $request->input('classification'));
+            }
+            if ($request->filled('land_plot')) {
+                $query->where('land_plot', $request->input('land_plot'));
+            }
+            if ($request->filled('timeline')) {
+                $query->where('timeline', $request->input('timeline'));
+            }
+            if ($request->filled('power')) {
+                $query->where('power', $request->input('power'));
+            }
+            if ($request->filled('industrial_water')) {
+                $query->where('industrial_water', $request->input('industrial_water'));
+            }
+            if ($request->filled('natural_gas')) {
+                $query->where('natural_gas', $request->input('natural_gas'));
+            }
+            if ($request->filled('throughput_via_seaport')) {
+                $query->where('throughput_via_seaport', $request->input('throughput_via_seaport'));
+            }
+
+            $appointments = $query->get(['first_name', 'last_name', 'phone', 'email', 'company_name', 'country_origin', 'reason', 'classification', 'industrial_water', 'land_plot', 'timeline', 'power', 'natural_gas', 'throughput_via_seaport', 'created_at']);
+
+            return FormatResponseJson::success($appointments, 'Data fetched successfully.');
+        } catch (\Throwable $th) {
+            return FormatResponseJson::error(null, $th->getMessage(), 500);
+        }
     }
     public function store(Request $request)
     {

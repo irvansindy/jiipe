@@ -124,6 +124,7 @@ Route::group([
 
         Route::get('/list-appointment', [FormAppointment::class, 'index'])->name('list-appointment');
         Route::get('/form-appointment', [FormAppointment::class, 'formView'])->name('form-appointment');
+        Route::get('/fetch-appointment', [FormAppointment::class, 'fetchAppointment'])->name('fetch-appointment');
         // Route::post('/store-quick-appointment', [FormAppointment::class, 'store'])->name('store-quick-appointment');
         Route::post('/store-basic-information', [FormAppointment::class, 'storeBasicInformation'])->name('store-basic-information');
         Route::post('/store-reason', [FormAppointment::class, 'storeReason'])->name('store-reason');
@@ -215,6 +216,11 @@ Route::group([
         Route::get('career-list', [CareerController::class, 'index'])->name('career-list');
         Route::get('career-static', [CareerController::class, 'static'])->name('career-static');
         Route::get('career-enquire', [CareerController::class, 'enquire'])->name('career-enquire');
+        // Career enquire (CareerEmail) routes
+        Route::get('fetch-career-enquire', [CareerController::class, 'fetchCareerEnquire'])->name('fetch-career-enquire');
+        Route::post('store-or-update-career-email', [CareerController::class, 'storeOrUpdateCareerEmail'])->name('store-or-update-career-email');
+        Route::get('get-career-enquire-details', [CareerController::class, 'detailCareerEnquire'])->name('get-career-enquire-details');
+        Route::delete('delete-career-enquire/{id}', [CareerController::class, 'deleteCareerEnquire'])->name('delete-career-enquire');
         Route::get('fetch-career-list', [CareerController::class, 'fetchCareer'])->name('fetch-career-list');
         Route::get('get-career-details', [CareerController::class, 'detailCareer'])->name('get-career-details');
         Route::post('store-career-header', [CareerController::class, 'storeHeader'])->name('store-career-header');
