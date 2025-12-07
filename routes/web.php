@@ -157,11 +157,11 @@ Route::group([
         });
 
         // tenant
-        Route::get('fetch-tenant', [TenantController::class, 'fetchTenant'])->name('fetch-tenant');
-        Route::get('fetch-tenant-by-id/{id}', [TenantController::class, 'fetchTenantById'])->name('fetch-tenant-by-id');
-        Route::post('store-tenant', [TenantController::class, 'storeTenant'])->name('store-tenant');
-        Route::post('update-tenant', [TenantController::class,'updateTenant'])->name('update-tenant');
-        Route::delete('tenant/{id}', [TenantController::class, 'deleteTenant']);
+        Route::get('fetch-tenant', [TenantController::class, 'fetch'])->name('fetch-tenant');
+        Route::get('fetch-tenant-by-id/{id}', [TenantController::class, 'fetchById'])->name('fetch-tenant-by-id');
+        Route::post('store-tenant', [TenantController::class, 'store'])->name('store-tenant');
+        Route::post('update-tenant', [TenantController::class,'update'])->name('update-tenant');
+        Route::delete('tenant/{id}', [TenantController::class, 'destroy']);
 
         // video 360
         Route::post('submit-video360', [Video360Controller::class,'store'])->name('submit-video360');

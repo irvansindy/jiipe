@@ -26,7 +26,7 @@
                             <input type="file" class="form-control" id="logo" name="logo" accept="image/*">
                             <small class="text-muted">Max size: 2MB. Format: JPG, PNG, GIF</small>
                             <span class="text-danger" id="message_logo"></span>
-                            <div class="border rounded p-2 text-center">
+                            <div class="border rounded p-2 text-center" id="section_current_logo">
                                 <img id="current_logo" src="" alt="Logo Preview"
                                     style="max-width: 200px; max-height: 200px; object-fit: contain;">
                             </div>
@@ -65,7 +65,7 @@
                                         Name ({{ $properties['native'] }}) <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" id="tenant_name_{{ $locale }}"
-                                        name="name[{{ $locale }}]" value="" required>
+                                        name="name[{{ $locale }}]" value="">
                                     <span class="text-danger" id="message_name_{{ $locale }}"></span>
                                 </div>
 
@@ -96,8 +96,9 @@
                         <i class="ti ti-x"></i> Close
                     </button>
                     <button type="submit" id="action_tenant" class="btn btn-primary">
-                        <span class="spinner-border spinner-border-sm d-none"></span>
-                        <i class="ti ti-device-floppy"></i> Save
+                        <span class="btn-text"><i class="ti ti-device-floppy me-1"></i> Save</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status"
+                            aria-hidden="true"></span>
                     </button>
                 </div>
             </form>
@@ -126,9 +127,50 @@
                     <i class="ti ti-x"></i> Cancel
                 </button>
                 <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                    <span class="spinner-border spinner-border-sm d-none me-2" id="confirmDeleteSpinner"></span>
                     <i class="ti ti-trash"></i> Delete
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+{{-- Loading Overlay Tenant --}}
+<div id="loadingOverlayTenant" style="display: none;">
+    <div class="spinner"></div>
+</div>
+
+<style>
+    #loadingOverlayTenant {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 2147483646;
+        /* slightly below swal container */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #loadingOverlayTenant .spinner {
+        border: 5px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 5px solid #3498db;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>

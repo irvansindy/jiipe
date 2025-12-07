@@ -11,8 +11,7 @@ class TenantTranslation extends Model
     protected $fillable = [
         'tenant_id',
         'locale',
-        'name',
-        'description'
+        'name'
     ];
 
     // Disable timestamps if not using created_at/updated_at

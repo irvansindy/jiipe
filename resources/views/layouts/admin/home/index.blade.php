@@ -256,8 +256,8 @@
 @include('layouts.admin.home.modal.review.modal_review')
 @include('layouts.admin.home.modal.faq.modal_faq')
 @push('css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.3/css/dataTables.bootstrap5.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('asset/css/cdn/datatable-bootstrap5.css') }}">
+    <link href="{{ asset('asset/css/cdn/summernote.css') }}" rel="stylesheet">
 @endpush
 @push('js')
     <script src="{{ asset('asset/js/cdn/jquery-v3-7-1.js') }}"></script>
