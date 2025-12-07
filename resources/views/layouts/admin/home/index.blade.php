@@ -140,74 +140,87 @@
                             <h4 class="text-white m-0"> Tour</h4>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('submit-video360') }}" method="post" id="cover_form"
-                                enctype="multipart/form-data">
-                                @csrf
+                            <div id="video360-form-wrapper" style="position: relative;">
+                                <form action="{{ route('submit-video360') }}" method="post" id="cover_form"
+                                    enctype="multipart/form-data">
+                                    @csrf
 
-                                {{-- Hidden ID Field --}}
-                                @if ($video = app(\App\Http\Controllers\Admin\Video360Controller::class)->fetchVideo360())
-                                    <input type="hidden" name="id" value="{{ $video->id }}">
-                                @endif
+                                    {{-- Hidden ID Field --}}
+                                    @if ($video = app(\App\Http\Controllers\Admin\Video360Controller::class)->fetchVideo360())
+                                        <input type="hidden" name="id" value="{{ $video->id }}">
+                                    @endif
 
-                                <div class="mb-3">
-                                    <ul class="nav nav-tabs mb-3" id="videoTab" role="tablist">
-                                        @foreach ($locales as $locale => $properties)
-                                            <li class="nav-item" role="presentation">
-                                                <button class="nav-link {{ $loop->first ? 'active' : '' }}"
-                                                    id="video-{{ $locale }}-tab" data-bs-toggle="tab"
-                                                    data-bs-target="#video-{{ $locale }}" type="button"
-                                                    role="tab" aria-controls="video-{{ $locale }}"
-                                                    aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                                    {{ $properties['native'] }}
-                                                </button>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                    <div class="tab-content">
-                                        @foreach ($locales as $locale => $properties)
-                                            <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
-                                                id="video-{{ $locale }}" role="tabpanel"
-                                                aria-labelledby="video-{{ $locale }}-tab">
-                                                <div class="mb-3">
-                                                    <label for="video_title_{{ $locale }}" class="form-label">video
-                                                        Title ({{ $properties['native'] }})</label>
-                                                    <input type="text" class="form-control"
-                                                        id="video_title_{{ $locale }}"
-                                                        name="video_title[{{ $locale }}]"
-                                                        value="{{ old('video_title_' . $locale, $video ? optional($video->translations->where('locale', $locale)->first())->title : '') }}">
-                                                    @error('video_title_' . $locale)
-                                                        <div class="text-danger small">{{ $message }}</div>
-                                                    @enderror
+                                    <div class="mb-3">
+                                        <ul class="nav nav-tabs mb-3" id="videoTab" role="tablist">
+                                            @foreach ($locales as $locale => $properties)
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link {{ $loop->first ? 'active' : '' }}"
+                                                        id="video-{{ $locale }}-tab" data-bs-toggle="tab"
+                                                        data-bs-target="#video-{{ $locale }}" type="button"
+                                                        role="tab" aria-controls="video-{{ $locale }}"
+                                                        aria-selected="{{ $loop->first ? 'true' : 'false' }}">
+                                                        {{ $properties['native'] }}
+                                                    </button>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                        <div class="tab-content">
+                                            @foreach ($locales as $locale => $properties)
+                                                <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
+                                                    id="video-{{ $locale }}" role="tabpanel"
+                                                    aria-labelledby="video-{{ $locale }}-tab">
+                                                    <div class="mb-3">
+                                                        <label for="video_title_{{ $locale }}"
+                                                            class="form-label">video
+                                                            Title ({{ $properties['native'] }})</label>
+                                                        <input type="text" class="form-control"
+                                                            id="video_title_{{ $locale }}"
+                                                            name="video_title[{{ $locale }}]"
+                                                            value="{{ old('video_title.' . $locale, $video ? optional($video->translations->where('locale', $locale)->first())->title : '') }}">
+                                                        @error('video_title.' . $locale)
+                                                            <div class="text-danger small">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+
                                                 </div>
-
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="embed_code">Embed Code for Video 360</label>
+                                        <textarea class="form-control" id="embed_code" name="embed_code">{{ old('embed_code', $video ? $video->embed_code : '') }}</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="video_thumbnail" class="form-label">Video Thumbnail</label>
+                                        @if ($video && $video->thumbnail)
+                                            <div class="mb-2">
+                                                <img src="{{ asset($video->thumbnail) }}" alt="Current thumbnail"
+                                                    class="img-thumbnail" style="max-height: 150px;">
+                                                <p class="small text-muted mt-1">Current image (upload new to replace)</p>
                                             </div>
-                                        @endforeach
+                                        @endif
+                                        <input type="file" class="form-control" id="video_thumbnail"
+                                            name="video_thumbnail"
+                                            accept="image/jpeg,image/png,image/gif,image/webp,.jpeg,.jpg,.png,.gif,.webp">
+                                        @error('video_thumbnail')
+                                            <div class="text-danger small">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">
+                                        {{ $video ? 'Update Changes' : 'Save Changes' }}
+                                    </button>
+                                </form>
+
+                                <div id="video360-loading" class="video-loading d-none" aria-hidden="true">
+                                    <div class="text-center">
+                                        <div class="spinner-border text-primary" role="status" aria-hidden="true">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <div class="mt-2">Processing...</div>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="embed_code">Embed Code for Video 360</label>
-                                    <textarea class="form-control" id="embed_code" name="embed_code">{{ old('embed_code', $video ? $video->embed_code : '') }}</textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="video_thumbnail" class="form-label">Video Thumbnail</label>
-                                    @if ($video && $video->thumbnail)
-                                        <div class="mb-2">
-                                            <img src="{{ asset($video->thumbnail) }}" alt="Current thumbnail"
-                                                class="img-thumbnail" style="max-height: 150px;">
-                                            <p class="small text-muted mt-1">Current image (upload new to replace)</p>
-                                        </div>
-                                    @endif
-                                    <input type="file" class="form-control" id="video_thumbnail"
-                                        name="video_thumbnail">
-                                    @error('video_thumbnail')
-                                        <div class="text-danger small">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <button type="submit" class="btn btn-primary">
-                                    {{ $video ? 'Update Changes' : 'Save Changes' }}
-                                </button>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -233,12 +246,14 @@
                         <div class="card-body">
                             <ul class="nav nav-pills justify-content-end mb-2" id="chart-tab-tab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="btn btn-outline-dark me-1" id="refresh_table_faq" type="button" title="Refresh Table">
+                                    <button class="btn btn-outline-dark me-1" id="refresh_table_faq" type="button"
+                                        title="Refresh Table">
                                         <i class="ti ti-refresh"></i>
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="btn btn-outline-primary" id="btnAddFaq" type="button" data-bs-toggle="modal" data-bs-target="#faqModal" title="Create FAQ">
+                                    <button class="btn btn-outline-primary" id="btnAddFaq" type="button"
+                                        data-bs-toggle="modal" data-bs-target="#faqModal" title="Create FAQ">
                                         <i class="ti ti-pencil"></i>
                                     </button>
                                 </li>
@@ -256,6 +271,21 @@
 @include('layouts.admin.home.modal.review.modal_review')
 @include('layouts.admin.home.modal.faq.modal_faq')
 @push('css')
+    <style>
+        .video-loading {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        .video-loading.d-none {
+            display: none;
+        }
+    </style>
     <link rel="stylesheet" href="{{ asset('asset/css/cdn/datatable-bootstrap5.css') }}">
     <link href="{{ asset('asset/css/cdn/summernote.css') }}" rel="stylesheet">
 @endpush
@@ -267,4 +297,103 @@
     <script src="{{ asset('asset/js/cdn/select2.js') }}"></script>
     <script src="{{ asset('asset/js/cdn/moment.js') }}"></script>
     @include('layouts.admin.home.js.home_js')
+    <script>
+        (function() {
+            var $form = $('#cover_form');
+            var $overlay = $('#video360-loading');
+            if (!$form.length) return;
+
+            function clearErrors() {
+                $form.find('.text-danger.small.ajax-error').remove();
+                $form.find('.is-invalid').removeClass('is-invalid');
+            }
+
+            $form.on('submit', function(e) {
+                e.preventDefault();
+                clearErrors();
+                var btn = $form.find('button[type="submit"]');
+                if ($overlay.length) $overlay.removeClass('d-none');
+                btn.prop('disabled', true);
+
+                var url = $form.attr('action');
+                var method = ($form.attr('method') || 'POST').toUpperCase();
+                var fd = new FormData(this);
+
+                $.ajax({
+                    url: url,
+                    type: method,
+                    data: fd,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'Accept': 'application/json'
+                    },
+                    success: function(res) {
+                        if ($overlay.length) $overlay.addClass('d-none');
+                        btn.prop('disabled', false);
+                        if (res && res.success) {
+                            if (res.video && res.video.id) {
+                                if ($form.find('input[name="id"]').length) {
+                                    $form.find('input[name="id"]').val(res.video.id);
+                                } else {
+                                    $form.prepend('<input type="hidden" name="id" value="' + res
+                                        .video.id + '">');
+                                }
+                            }
+                            var alertBox = $(
+                                '<div class="alert alert-success alert-dismissible mt-2" role="alert">' +
+                                (res.message || 'Saved') +
+                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+                            );
+                            $form.prepend(alertBox);
+                            setTimeout(function() {
+                                alertBox.alert('close');
+                            }, 3000);
+                        } else {
+                            var alertBox = $(
+                                '<div class="alert alert-warning mt-2" role="alert">Unexpected response</div>'
+                            );
+                            $form.prepend(alertBox);
+                        }
+                    },
+                    error: function(xhr) {
+                        if ($overlay.length) $overlay.addClass('d-none');
+                        btn.prop('disabled', false);
+                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                            var errors = xhr.responseJSON.errors;
+                            $.each(errors, function(key, msgs) {
+                                var name;
+                                if (key.indexOf('.') !== -1) {
+                                    var parts = key.split('.');
+                                    name = parts[0] + '[' + parts.slice(1).join('][') + ']';
+                                } else {
+                                    name = key;
+                                }
+                                var $field = $form.find('[name="' + name + '"]');
+                                // sanitize messages: replace underscores and dots with spaces
+                                var cleanMsgs = msgs.map(function(m) {
+                                    return (m || '').replace(/[_\.]/g, ' ');
+                                });
+                                var $err = $('<div class="text-danger small ajax-error">' +
+                                    cleanMsgs.join('<br>') + '</div>');
+                                if ($field.length) {
+                                    $field.addClass('is-invalid');
+                                    $field.after($err);
+                                } else {
+                                    $form.prepend($err);
+                                }
+                            });
+                        } else {
+                            var msg = (xhr.responseJSON && xhr.responseJSON.message) ? xhr
+                                .responseJSON.message : 'Server error';
+                            var alertBox = $('<div class="alert alert-danger mt-2" role="alert">' +
+                                msg + '</div>');
+                            $form.prepend(alertBox);
+                        }
+                    }
+                });
+            });
+        })();
+    </script>
 @endpush

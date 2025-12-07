@@ -3,7 +3,8 @@
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="reviewModalLabel">Add Review</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <form id="reviewForm" enctype="multipart/form-data">
                 @csrf
@@ -15,14 +16,14 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="name">Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="name" name="name" required>
+                                <input type="text" class="form-control" id="name" name="name" >
                                 <small class="text-danger" id="error-name"></small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="position">Position <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="position" name="position" required>
+                                <input type="text" class="form-control" id="position" name="position" >
                                 <small class="text-danger" id="error-position"></small>
                             </div>
                         </div>
@@ -31,7 +32,8 @@
                     <div class="form-group">
                         <label for="photo">Photo</label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="photo" name="photo" accept="image/*">
+                            <input type="file" class="custom-file-input" id="photo" name="photo"
+                                accept="image/*">
                             <label class="custom-file-label" for="photo">Choose file</label>
                         </div>
                         <small class="text-danger" id="error-photo"></small>
@@ -45,32 +47,38 @@
 
                     <ul class="nav nav-tabs mb-3" id="reviewDescTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="tab-id" data-bs-toggle="tab" data-bs-target="#desc-id" type="button">
+                            <button class="nav-link active" id="tab-id" data-bs-toggle="tab"
+                                data-bs-target="#desc-id" type="button">
                                 Indonesian
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab-en" data-bs-toggle="tab" data-bs-target="#desc-en" type="button">
+                            <button class="nav-link" id="tab-en" data-bs-toggle="tab" data-bs-target="#desc-en"
+                                type="button">
                                 English
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab-zh" data-bs-toggle="tab" data-bs-target="#desc-zh" type="button">
+                            <button class="nav-link" id="tab-zh" data-bs-toggle="tab" data-bs-target="#desc-zh"
+                                type="button">
                                 Chinese (Simplified)
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab-ja" data-bs-toggle="tab" data-bs-target="#desc-ja" type="button">
+                            <button class="nav-link" id="tab-ja" data-bs-toggle="tab" data-bs-target="#desc-ja"
+                                type="button">
                                 Japanese
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab-ko" data-bs-toggle="tab" data-bs-target="#desc-ko" type="button">
+                            <button class="nav-link" id="tab-ko" data-bs-toggle="tab" data-bs-target="#desc-ko"
+                                type="button">
                                 Korean
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab-tw" data-bs-toggle="tab" data-bs-target="#desc-tw" type="button">
+                            <button class="nav-link" id="tab-tw" data-bs-toggle="tab" data-bs-target="#desc-tw"
+                                type="button">
                                 Chinese (Traditional)
                             </button>
                         </li>
@@ -79,15 +87,17 @@
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="desc-id" role="tabpanel">
                             <div class="form-group">
-                                <label for="description_id">Review (Indonesian) <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="description_id" name="description_id" rows="4" required></textarea>
+                                <label for="description_id">Review (Indonesian) <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" id="description_id" name="description_id" rows="4" ></textarea>
                                 <small class="text-danger" id="error-description_id"></small>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="desc-en" role="tabpanel">
                             <div class="form-group">
-                                <label for="description_en">Review (English) <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="description_en" name="description_en" rows="4" required></textarea>
+                                <label for="description_en">Review (English) <span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" id="description_en" name="description_en" rows="4" ></textarea>
                                 <small class="text-danger" id="error-description_en"></small>
                             </div>
                         </div>
@@ -122,9 +132,11 @@
                     </div>
 
                     <div class="form-group mt-3">
-                        <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" value="1" checked>
-                            <label class="custom-control-label" for="is_active">Active</label>
+                        <div class="mb-3 form-check form-switch">
+                            <input type="hidden" name="is_active" value="0">
+                            <input class="form-check-input" type="checkbox" id="is_active" name="is_active"
+                                value="1" checked>
+                            <label class="form-check-label" for="is_active">Active</label>
                         </div>
                     </div>
                 </div>
@@ -133,7 +145,8 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" id="btnSubmit">
                         <span class="btn-text">Save</span>
-                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status"
+                            aria-hidden="true"></span>
                     </button>
                 </div>
             </form>
@@ -146,30 +159,35 @@
 </div>
 
 <style>
-#loadingOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    #loadingOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-.spinner {
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid #3498db;
-    width: 60px;
-    height: 60px;
-    animation: spin 1s linear infinite;
-}
+    .spinner {
+        border: 5px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 5px solid #3498db;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+    }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 </style>
