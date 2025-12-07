@@ -27,8 +27,8 @@ class SliderRequest extends FormRequest
             'slider_file' => [
                 $isUpdate ? 'nullable' : 'required',
                 'file',
-                'mimetypes:image/jpeg,image/png,image/jpg,image/webp,video/mp4,video/ogg,video/webm',
-                'max:20480', // 20MB
+                'mimetypes:video/mp4,video/ogg,video/webm',
+                'max:20000', // 20MB
             ],
             'title' => 'required|array',
             'description' => 'required|array',
@@ -50,9 +50,9 @@ class SliderRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'slider_file.required' => 'File (image or video) is required',
+            'slider_file.required' => 'File (video) is required',
             'slider_file.file' => 'The uploaded item must be a valid file',
-            'slider_file.mimetypes' => 'File must be an image (jpg, png, webp) or video (mp4, ogg, webm)',
+            'slider_file.mimetypes' => 'File must be a video (mp4, ogg, webm)',
             'slider_file.max' => 'File size must not exceed 20MB',
             'title.required' => 'Title is required',
             'title.array' => 'Title must be an array',

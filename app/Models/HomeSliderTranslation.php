@@ -11,11 +11,9 @@ class HomeSliderTranslation extends Model
         'locale',
         'title',
         'description',
-        'is_active',
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
         'home_sliders' => 'integer',
     ];
 
@@ -30,11 +28,6 @@ class HomeSliderTranslation extends Model
     /**
      * Scope for active translations only
      */
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
-    }
-
     /**
      * Scope for specific locale
      */

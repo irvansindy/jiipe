@@ -260,12 +260,11 @@
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
 @endpush
 @push('js')
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.3.3/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script src="{{ asset('asset/js/cdn/jquery-v3-7-1.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/datatable.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/datatable-bootstrap5.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/summernote.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/select2.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/moment.js') }}"></script>
     @include('layouts.admin.home.js.home_js')
 @endpush

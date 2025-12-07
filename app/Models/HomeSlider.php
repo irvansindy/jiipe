@@ -8,6 +8,10 @@ class HomeSlider extends Model
 {
     protected $fillable = [
         'file', // migration uses 'file' to store image/video path
+        'is_active',
+    ];
+    protected $casts = [
+        'is_active' => 'boolean',
     ];
     public function translations()
     {

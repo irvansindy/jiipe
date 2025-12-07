@@ -1,5 +1,13 @@
 <script>
     $(document).ready(function() {
+
+        // Ensure SweetAlert2 is rendered above Bootstrap modals
+        // Adds a style tag with a very high z-index so swal dialogs aren't hidden.
+        if ($('head').find('#swal2-zindex-style').length === 0) {
+            $('head').append(
+                '<style id="swal2-zindex-style">.swal2-container{z-index:2147483647!important}.swal2-popup{z-index:2147483647!important}</style>'
+            );
+        }
         // ============================================
         // HELPER FUNCTIONS
         // ============================================
@@ -353,28 +361,48 @@
                 error: function(xhr) {
                     hideLoading();
 
-                    if (xhr.status === 422 && xhr.responseJSON?.data) {
-                        // Validation errors
-                        var errors = xhr.responseJSON.data;
+                    // Prefer structured validation errors under `errors`,
+                    // but fall back to `data` for older formats.
+                    var errors = xhr.responseJSON?.errors || xhr.responseJSON?.data || null;
+
+                    if (xhr.status === 422 && errors) {
+                        // errors is an object: { "zone_class": ["..."], "zone_name.id": ["..."] }
                         $.each(errors, function(key, messages) {
+                            var messageText = '';
+
+                            if (Array.isArray(messages)) {
+                                messageText = messages.length ? messages[0] : '';
+                            } else if (typeof messages === 'string') {
+                                messageText = messages;
+                            } else if (messages && messages[0]) {
+                                messageText = messages[0];
+                            }
+
                             var fieldName = key.replace(/\./g, '_');
                             var selector = '#message_' + fieldName;
+
                             if ($(selector).length) {
-                                $(selector).text(messages[0]);
+                                $(selector).text(messageText);
                             }
                         });
 
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Validation Error!',
-                            text: 'Please check all required fields'
-                        });
+                        // Show a generic toast if no specific span was updated
+                        if (!$('[id^="message_"]').filter(function() {
+                                return $(this).text().trim() !== '';
+                            }).length) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Validation Error!',
+                                text: xhr.responseJSON?.message ||
+                                    'Please check all required fields'
+                            });
+                        }
                     } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Error!',
-                            text: xhr.responseJSON?.meta?.message ||
-                                'Server error occurred'
+                            text: xhr.responseJSON?.meta?.message || xhr
+                                .responseJSON?.message || 'Server error occurred'
                         });
                     }
                 }

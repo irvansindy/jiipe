@@ -38,11 +38,13 @@ class SliderService
                 'locale' => $translation->locale,
                 'title' => $translation->title,
                 'description' => $translation->description,
-                'is_active' => $translation->is_active,
             ];
         }
 
         $slider->translations = $transformedTranslations;
+
+        // expose slider-level is_active for frontend
+        $slider->is_active = (bool) $slider->is_active;
 
         return $slider;
     }
@@ -61,7 +63,11 @@ class SliderService
                 $filePath = $this->uploadFile($file);
             }
 
-            $slider = HomeSlider::create(['file' => $filePath]);
+            // Store is_active on the slider (not on translations)
+            $slider = HomeSlider::create([
+                'file' => $filePath,
+                'is_active' => $data['is_active'] ?? 1,
+            ]);
 
             $this->saveTranslations($slider, $data);
 
@@ -92,6 +98,8 @@ class SliderService
             $oldFilePath = $slider->file;
 
             // Handle file upload
+            $updateData = [];
+
             if ($file) {
                 // Delete old file
                 if ($oldFilePath) {
@@ -100,8 +108,13 @@ class SliderService
 
                 // Upload new file
                 $newFilePath = $this->uploadFile($file);
-                $slider->update(['file' => $newFilePath]);
+                $updateData['file'] = $newFilePath;
             }
+
+            // Update is_active on the slider
+            $updateData['is_active'] = $data['is_active'] ?? 1;
+
+            $slider->update($updateData);
 
             $this->updateTranslations($slider, $data);
 
@@ -145,7 +158,7 @@ class SliderService
     }
 
     /**
-     * Upload file and return path
+     * Upload file and return filename only
      */
     private function uploadFile($file): string
     {
@@ -161,15 +174,28 @@ class SliderService
         // Move file
         $file->move($destinationPath, $fileName);
 
-        return 'uploads/home-slider/' . $fileName;
+        // Return filename only; store filename in DB instead of full path
+        return $fileName;
     }
 
     /**
      * Delete file from storage
+     *
+     * Accepts either a full path (e.g. 'uploads/home-slider/xxx.jpg')
+     * or a filename only ('xxx.jpg'). If a filename is provided,
+     * the file is assumed to live under `public/uploads/home-slider`.
      */
     private function deleteFile(string $filePath): bool
     {
-        $fullPath = public_path(ltrim($filePath, '/'));
+        $trimmed = ltrim($filePath, '/');
+
+        // If it already looks like a path (contains slash or starts with 'uploads/'), use it as-is.
+        if (strpos($trimmed, '/') !== false || strpos($trimmed, '\\') !== false || strpos($trimmed, 'uploads/') === 0) {
+            $fullPath = public_path($trimmed);
+        } else {
+            // Otherwise assume it's a filename stored in DB and build the path.
+            $fullPath = public_path('uploads/home-slider/' . $trimmed);
+        }
 
         if (File::exists($fullPath)) {
             return File::delete($fullPath);
@@ -184,7 +210,6 @@ class SliderService
     private function saveTranslations(HomeSlider $slider, array $data): void
     {
         $locales = config('laravellocalization.supportedLocales');
-        $isActive = $data['is_active'] ?? 1;
 
         foreach (array_keys($locales) as $locale) {
             HomeSliderTranslation::create([
@@ -192,7 +217,6 @@ class SliderService
                 'locale' => $locale,
                 'title' => $data['title'][$locale] ?? '',
                 'description' => $data['description'][$locale] ?? '',
-                'is_active' => $isActive,
             ]);
         }
     }
@@ -203,7 +227,6 @@ class SliderService
     private function updateTranslations(HomeSlider $slider, array $data): void
     {
         $locales = config('laravellocalization.supportedLocales');
-        $isActive = $data['is_active'] ?? 1;
 
         foreach (array_keys($locales) as $locale) {
             HomeSliderTranslation::updateOrCreate(
@@ -214,7 +237,6 @@ class SliderService
                 [
                     'title' => $data['title'][$locale] ?? '',
                     'description' => $data['description'][$locale] ?? '',
-                    'is_active' => $isActive,
                 ]
             );
         }

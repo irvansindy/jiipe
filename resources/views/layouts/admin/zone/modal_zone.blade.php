@@ -31,7 +31,7 @@
                                     <label for="zone_class" class="form-label">
                                         Zone Class <span class="text-danger">*</span>
                                     </label>
-                                    <select class="form-select" id="zone_class" name="zone_class" required>
+                                    <select class="form-select" id="zone_class" name="zone_class">
                                         <option value="">-- Select Zone Class --</option>
                                     </select>
                                     <span class="text-danger" id="message_zone_class"></span>
@@ -93,7 +93,7 @@
                                             <input type="text" class="form-control"
                                                 id="zone_name_{{ $locale }}"
                                                 name="zone_name[{{ $locale }}]"
-                                                placeholder="Enter zone name in {{ $properties['native'] }}" required>
+                                                placeholder="Enter zone name in {{ $properties['native'] }}">
                                             <span class="text-danger"
                                                 id="message_zone_name_{{ $locale }}"></span>
                                         </div>

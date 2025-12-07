@@ -28,12 +28,12 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="slider_file" class="form-label">
-                                        Upload Image or Video <span class="text-danger">*</span>
+                                        Upload File Non-Image/Video <span class="text-danger">*</span>
                                     </label>
                                     <input type="file" class="form-control" id="slider_file" name="slider_file"
-                                        accept="image/jpeg,image/png,image/jpg,image/webp,video/mp4,video/ogg,video/webm">
+                                        accept="video/mp4,video/ogg,video/webm">
                                     <div class="form-text">
-                                        Supported formats: JPG, PNG, WEBP, MP4, OGG, WEBM (Max: 20MB)
+                                        Supported formats: MP4, OGG, WEBM (Max: 20MB)
                                     </div>
                                     <span class="text-danger" id="message_slider_file"></span>
 
@@ -61,7 +61,7 @@
                                             data-bs-target="#slider-{{ $locale }}" type="button" role="tab"
                                             aria-controls="slider-{{ $locale }}"
                                             aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                            
+
                                             {{ $properties['native'] }}
                                         </button>
                                     </li>
