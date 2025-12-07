@@ -4,9 +4,10 @@ namespace App\Services;
 
 use App\Models\Review;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class ReviewService
 {
@@ -29,16 +30,16 @@ class ReviewService
     {
         DB::beginTransaction();
         try {
-            $photoPath = null;
+            $photoFileName = null;
             if (!empty($data['_file_photo']) && $data['_file_photo']->isValid()) {
-                $photoPath = $data['_file_photo']->store('reviews/photos', 'uploads');
+                $photoFileName = $this->uploadFile($data['_file_photo']);
             }
 
             $review = Review::create([
                 'name' => Arr::get($data, 'name'),
                 'position' => Arr::get($data, 'position'),
                 'is_active' => Arr::get($data, 'is_active', 0),
-                'photo' => $photoPath,
+                'photo' => $photoFileName,
             ]);
 
             foreach ($this->locales as $locale) {
@@ -71,10 +72,11 @@ class ReviewService
 
             if (!empty($data['_file_photo']) && $data['_file_photo']->isValid()) {
                 // delete old photo
-                if ($review->photo && Storage::disk('uploads')->exists($review->photo)) {
-                    Storage::disk('uploads')->delete($review->photo);
+                if ($review->photo) {
+                    $this->deleteFile($review->photo);
                 }
-                $review->photo = $data['_file_photo']->store('reviews/photos', 'uploads');
+                $fileName = $this->uploadFile($data['_file_photo']);
+                $review->photo = $fileName;
             }
 
             $review->save();
@@ -105,8 +107,8 @@ class ReviewService
         DB::beginTransaction();
         try {
             $review = Review::findOrFail($id);
-            if ($review->photo && Storage::disk('uploads')->exists($review->photo)) {
-                Storage::disk('uploads')->delete($review->photo);
+            if ($review->photo) {
+                $this->deleteFile($review->photo);
             }
             $review->translations()->delete();
             $review->delete();
@@ -116,6 +118,49 @@ class ReviewService
             DB::rollBack();
             throw $th;
         }
+    }
+
+    /**
+     * Upload file to `public/uploads/review` and return filename only
+     *
+     * @param \Illuminate\Http\UploadedFile $file
+     * @return string
+     * @throws Exception
+     */
+    private function uploadFile($file): string
+    {
+        $extension = $file->getClientOriginalExtension();
+        $fileName = 'review_' . Str::random(20) . '_' . time() . '.' . $extension;
+        $destinationPath = public_path('uploads/review');
+
+        if (!File::isDirectory($destinationPath)) {
+            File::makeDirectory($destinationPath, 0755, true);
+        }
+
+        $moved = $file->move($destinationPath, $fileName);
+        if (!$moved) {
+            throw new Exception('Failed to move uploaded file');
+        }
+
+        return $fileName;
+    }
+
+    /**
+     * Delete uploaded file from `public/uploads/review` by filename
+     *
+     * @param string $fileName
+     * @return bool
+     */
+    private function deleteFile(string $fileName): bool
+    {
+        $trimmed = ltrim($fileName, '/');
+        $fullPath = public_path('uploads/review/' . $trimmed);
+
+        if (File::exists($fullPath)) {
+            return File::delete($fullPath);
+        }
+
+        return false;
     }
 
     public function toggleStatus(int $id)
