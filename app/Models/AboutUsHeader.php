@@ -12,4 +12,11 @@ class AboutUsHeader extends Model
     {
         return $this->hasMany(AboutUsHeaderTranslation::class, 'about_us_header_id', 'id');
     }
+
+    // Return full public URL for the stored image filename
+    public function getImageUrlAttribute()
+    {
+        if (! $this->image) return null;
+        return asset('uploads/about-us/header/' . $this->image);
+    }
 }

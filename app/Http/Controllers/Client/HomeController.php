@@ -20,8 +20,8 @@ class HomeController extends Controller
         $cacheKey = "home_sliders_{$locale}";
         $sliders = Cache::remember($cacheKey, 3600, function () use ($locale) {
             return HomeSlider::with(['translations' => function($q) use ($locale) {
-                $q->where('locale', $locale)->where('is_active', 1);
-            }])->get()->map(function($slider) use ($locale) {
+                $q->where('locale', $locale);
+            }])->where('is_active', 1)->get()->map(function($slider) use ($locale) {
                 $trans = $slider->translations->first();
                 return [
                     'file' => $slider->file,

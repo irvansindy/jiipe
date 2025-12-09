@@ -31,7 +31,7 @@
                         </div>
                         <div class="card-body">
                             <form action="{{ route('store-about-us-header') }}" method="post" id="cover_form"
-                                enctype="multipart/form-data">
+                                class="form-with-overlay" enctype="multipart/form-data">
                                 @csrf
 
                                 {{-- Hidden ID Field --}}
@@ -78,7 +78,7 @@
                                     <label for="cover_image" class="form-label">Cover Image</label>
                                     @if ($aboutUsHeader && $aboutUsHeader->image)
                                         <div class="mb-2">
-                                            <img src="{{ asset('storage/' . $aboutUsHeader->image) }}" alt="Current Cover"
+                                            <img src="{{ asset('uploads/about-us/header/' . $aboutUsHeader->image) }}" alt="Current Cover"
                                                 class="img-thumbnail" style="max-height: 150px;">
                                             <p class="small text-muted mt-1">Current image (upload new to replace)</p>
                                         </div>
@@ -92,6 +92,14 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ $aboutUsHeader ? 'Update Changes' : 'Save Changes' }}
                                 </button>
+                                <div id="cover-loading" class="form-loading d-none" aria-hidden="true">
+                                    <div class="text-center">
+                                        <div class="spinner-border text-primary" role="status" aria-hidden="true">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <div class="mt-2">Processing...</div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -108,7 +116,7 @@
                         </div>
                         <div class="card-body">
                             <form action="{{ route('store-about-us-content') }}" method="post" id="content_form"
-                                enctype="multipart/form-data">
+                                class="form-with-overlay" enctype="multipart/form-data">
                                 @csrf
 
                                 {{-- Hidden ID Field --}}
@@ -177,7 +185,7 @@
                                             <label for="content_image" class="form-label">Content Image</label>
                                             @if ($aboutUsContent && $aboutUsContent->image)
                                                 <div class="mb-2">
-                                                    <img src="{{ asset('storage/' . $aboutUsContent->image) }}"
+                                                    <img src="{{ asset('uploads/about-us/content/' . $aboutUsContent->image) }}"
                                                         alt="Current Content" class="img-thumbnail"
                                                         style="max-height: 150px;">
                                                     <p class="small text-muted mt-1">Current image (upload new to replace)
@@ -206,6 +214,14 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ $aboutUsContent ? 'Update Changes' : 'Save Changes' }}
                                 </button>
+                                <div id="content-loading" class="form-loading d-none" aria-hidden="true">
+                                    <div class="text-center">
+                                        <div class="spinner-border text-primary" role="status" aria-hidden="true">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <div class="mt-2">Processing...</div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -222,7 +238,7 @@
                         </div>
                         <div class="card-body">
                             <form method="POST" action="{{ route('store-about-us-vision-mission') }}"
-                                id="vision_mission_form" enctype="multipart/form-data">
+                                id="vision_mission_form" class="form-with-overlay" enctype="multipart/form-data">
                                 @csrf
 
                                 {{-- Hidden ID Field --}}
@@ -252,7 +268,8 @@
                                                 aria-labelledby="tab-vision-{{ $locale }}">
                                                 <div class="mb-3">
                                                     <label for="title_{{ $locale }}" class="form-label">Title
-                                                        ({{ $properties['native'] }})</label>
+                                                        ({{ $properties['native'] }})
+                                                    </label>
                                                     <input type="text" class="form-control"
                                                         id="title_{{ $locale }}" name="title[{{ $locale }}]"
                                                         value="{{ old('title.' . $locale, $aboutUsVisionMission ? optional($aboutUsVisionMission->translations->where('locale', $locale)->first())->title : '') }}">
@@ -283,6 +300,14 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ $aboutUsVisionMission ? 'Update Changes' : 'Save Changes' }}
                                 </button>
+                                <div id="vision-loading" class="form-loading d-none" aria-hidden="true">
+                                    <div class="text-center">
+                                        <div class="spinner-border text-primary" role="status" aria-hidden="true">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <div class="mt-2">Processing...</div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -326,16 +351,163 @@
     @include('layouts.admin.about_us.modal_content_detail')
 @endsection
 @push('css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.3/css/dataTables.bootstrap5.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('asset/css/cdn/datatable-bootstrap5.css') }}">
+    <link href="{{ asset('asset/css/cdn/select2.css') }}" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+        .form-loading {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+
+        .form-loading.d-none {
+            display: none;
+        }
+
+        .form-with-overlay {
+            position: relative;
+        }
+        /* FIX: Pastikan SweetAlert selalu di atas modal Bootstrap */
+        .swal2-container {
+            z-index: 9999 !important;
+        }
+
+        /* Bootstrap modal default z-index adalah 1050-1060 */
+        .modal {
+            z-index: 1050;
+        }
+
+        .modal-backdrop {
+            z-index: 1040;
+        }
+    </style>
 @endpush
+
 @push('js')
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.3.3/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script src="{{ asset('asset/js/cdn/jquery-v3-7-1.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/datatable.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/datatable-bootstrap5.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/summernote.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/select2.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/moment.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     @include('layouts.admin.about_us.content_detail_js')
+
+    <script>
+        (function() {
+            function clearErrors($form) {
+                $form.find('.text-danger.small.ajax-error').remove();
+                $form.find('.is-invalid').removeClass('is-invalid');
+            }
+
+            function showOverlay(id) {
+                $('#' + id).removeClass('d-none');
+            }
+
+            function hideOverlay(id) {
+                $('#' + id).addClass('d-none');
+            }
+
+            function handleAjaxSubmit(selector, loadingId) {
+                $(document).on('submit', selector, function(e) {
+                    e.preventDefault();
+                    var $form = $(this);
+                    clearErrors($form);
+                    var btn = $form.find('button[type="submit"]');
+                    btn.prop('disabled', true);
+                    showOverlay(loadingId);
+
+                    var url = $form.attr('action');
+                    var method = ($form.attr('method') || 'POST').toUpperCase();
+                    var fd = new FormData(this);
+
+                    $.ajax({
+                        url: url,
+                        type: method,
+                        data: fd,
+                        processData: false,
+                        contentType: false,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            'Accept': 'application/json'
+                        },
+                        success: function(res) {
+                            hideOverlay(loadingId);
+                            btn.prop('disabled', false);
+                            var message = 'Saved successfully';
+                            if (res && res.message) message = res.message;
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: message,
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+
+                            // If server returns an id, ensure hidden input is present
+                            if (res && (res.id || (res.data && res.data.id))) {
+                                var id = res.id || res.data.id;
+                                if ($form.find('input[name="id"]').length) {
+                                    $form.find('input[name="id"]').val(id);
+                                } else {
+                                    $form.prepend('<input type="hidden" name="id" value="' + id + '">');
+                                }
+                            }
+                        },
+                        error: function(xhr) {
+                            hideOverlay(loadingId);
+                            btn.prop('disabled', false);
+                            if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                                var errors = xhr.responseJSON.errors;
+                                $.each(errors, function(key, msgs) {
+                                    var name = key;
+                                    if (name.indexOf('.') !== -1) {
+                                        var parts = name.split('.');
+                                        name = parts[0] + '[' + parts.slice(1).join('][') + ']';
+                                    }
+                                    var $field = $form.find('[name="' + name + '"]');
+                                    var cleanMsgs = msgs.map(function(m) {
+                                        return (m || '').replace(/[_\.]/g, ' ');
+                                    });
+                                    var $err = $('<div class="text-danger small ajax-error">' + cleanMsgs.join('<br>') + '</div>');
+                                    if ($field.length) {
+                                        $field.addClass('is-invalid');
+                                        $field.after($err);
+                                    } else {
+                                        var idKey = 'message_' + key.replace(/[^a-zA-Z0-9_]/g, '_');
+                                        var $msgHolder = $('#' + idKey);
+                                        if ($msgHolder.length) {
+                                            $msgHolder.text(cleanMsgs[0]);
+                                        } else {
+                                            $form.prepend($err);
+                                        }
+                                    }
+                                });
+                            } else {
+                                var msg = (xhr.responseJSON && xhr.responseJSON.message) ? xhr.responseJSON.message : 'Server error';
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: msg
+                                });
+                            }
+                        }
+                    });
+                });
+            }
+
+            // attach handlers
+            handleAjaxSubmit('#cover_form', 'cover-loading');
+            handleAjaxSubmit('#content_form', 'content-loading');
+            handleAjaxSubmit('#vision_mission_form', 'vision-loading');
+        })();
+    </script>
 @endpush

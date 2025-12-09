@@ -135,6 +135,8 @@ Route::group([
         Route::post('/store-about-us-content', [AboutUsController::class, 'storeContent'])->name('store-about-us-content');
         Route::post('/store-about-us-vision-mission', [AboutUsController::class, 'storeVisionMission'])->name('store-about-us-vision-mission');
         Route::post('/store-about-us-content-detail', [AboutUsController::class, 'storeContentDetail'])->name('store-about-us-content-detail');
+        // Content Detail
+        Route::delete('/delete-content-detail', [AboutUsController::class, 'deleteContentDetail'])->name('delete-about-us-content-detail');
 
         // Route::get('special-economic-zone', [ZoneController::class, 'index'])->name('special-economic-zone');
         // Route::get('fetch-zone', [ZoneController::class, 'fetchZone'])->name('fetch-zone');

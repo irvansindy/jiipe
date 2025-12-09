@@ -2,7 +2,7 @@
     @php
         // dd($aboutUsHeader);
     @endphp
-    <img src="{{ asset('storage/about_us/cover/' . $aboutUsHeader->image ?? '') }}" decoding="async" loading="lazy"
+    <img src="{{ asset('uploads/about-us/header/' . $aboutUsHeader->image ?? '') }}" decoding="async" loading="lazy"
         alt="Cover Industri" class="cover-image" />
 
     <div class="prelative container">

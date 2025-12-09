@@ -19,4 +19,11 @@ class AboutUsContentDetail extends Model
     {
         return $this->belongsTo(AboutUsContentDetailCategories::class, 'category_id', 'id');
     }
+
+    // Full public URL for icon image
+    public function getIconUrlAttribute()
+    {
+        if (! $this->icon) return null;
+        return asset('uploads/about-us/content_detail/' . $this->icon);
+    }
 }

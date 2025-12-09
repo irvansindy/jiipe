@@ -287,8 +287,9 @@
         }
     </style>
     <link rel="stylesheet" href="{{ asset('asset/css/cdn/datatable-bootstrap5.css') }}">
-    <link href="{{ asset('asset/css/cdn/summernote.css') }}" rel="stylesheet">
-@endpush
+    {{-- <link href="{{ asset('asset/css/cdn/summernote.css') }}" rel="stylesheet"> --}}
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
+    @endpush
 @push('js')
     <script src="{{ asset('asset/js/cdn/jquery-v3-7-1.js') }}"></script>
     <script src="{{ asset('asset/js/cdn/datatable.js') }}"></script>
@@ -297,7 +298,7 @@
     <script src="{{ asset('asset/js/cdn/select2.js') }}"></script>
     <script src="{{ asset('asset/js/cdn/moment.js') }}"></script>
     @include('layouts.admin.home.js.home_js')
-    <script>
+    {{-- <script>
         (function() {
             var $form = $('#cover_form');
             var $overlay = $('#video360-loading');
@@ -395,5 +396,168 @@
                 });
             });
         })();
-    </script>
+    </script> --}}
+
+    <script>
+    (function() {
+        function clearErrors($form) {
+            $form.find('.text-danger.small.ajax-error').remove();
+            $form.find('.is-invalid').removeClass('is-invalid');
+        }
+
+        function showOverlay(id) {
+            $('#' + id).removeClass('d-none');
+        }
+
+        function hideOverlay(id) {
+            $('#' + id).addClass('d-none');
+        }
+
+        function handleAjaxSubmit(selector, loadingId, options = {}) {
+            $(document).on('submit', selector, function(e) {
+                e.preventDefault();
+                var $form = $(this);
+                clearErrors($form);
+                var btn = $form.find('button[type="submit"]');
+                btn.prop('disabled', true);
+                showOverlay(loadingId);
+
+                var url = $form.attr('action');
+                var method = ($form.attr('method') || 'POST').toUpperCase();
+                var fd = new FormData(this);
+
+                $.ajax({
+                    url: url,
+                    type: method,
+                    data: fd,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                        'Accept': 'application/json'
+                    },
+                    success: function(res) {
+                        hideOverlay(loadingId);
+                        btn.prop('disabled', false);
+                        var message = 'Saved successfully';
+                        if (res && res.message) message = res.message;
+                        var alertBox = $(
+                            '<div class="alert alert-success alert-dismissible mt-2" role="alert">' +
+                            message +
+                            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
+                        );
+                        $form.prepend(alertBox);
+                        setTimeout(function() {
+                            alertBox.alert('close');
+                        }, 3000);
+
+                        // If server returns an id, ensure hidden input is present
+                        if (res && (res.id || (res.data && res.data.id))) {
+                            var id = res.id || res.data.id;
+                            if ($form.find('input[name="id"]').length) {
+                                $form.find('input[name="id"]').val(id);
+                            } else {
+                                $form.prepend('<input type="hidden" name="id" value="' + id +
+                                    '">');
+                            }
+                        }
+
+                        // Callback khusus setelah sukses
+                        if (options.onSuccess && typeof options.onSuccess === 'function') {
+                            options.onSuccess(res, $form);
+                        }
+                    },
+                    error: function(xhr) {
+                        hideOverlay(loadingId);
+                        btn.prop('disabled', false);
+                        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
+                            var errors = xhr.responseJSON.errors;
+                            $.each(errors, function(key, msgs) {
+                                var name = key;
+                                // convert dot notation to bracket for array inputs
+                                if (name.indexOf('.') !== -1) {
+                                    var parts = name.split('.');
+                                    name = parts[0] + '[' + parts.slice(1).join('][') +
+                                        ']';
+                                }
+                                var $field = $form.find('[name="' + name + '"]');
+                                var cleanMsgs = msgs.map(function(m) {
+                                    return (m || '').replace(/[_\.]/g, ' ');
+                                });
+                                var $err = $(
+                                    '<div class="text-danger small ajax-error">' +
+                                    cleanMsgs.join('<br>') + '</div>');
+                                if ($field.length) {
+                                    $field.addClass('is-invalid');
+                                    $field.after($err);
+                                } else {
+                                    // fallback: put error near top with id-friendly key
+                                    var idKey = 'message_' + key.replace(
+                                        /[^a-zA-Z0-9_]/g, '_');
+                                    var $msgHolder = $('#' + idKey);
+                                    if ($msgHolder.length) {
+                                        $msgHolder.text(cleanMsgs[0]);
+                                    } else {
+                                        $form.prepend($err);
+                                    }
+                                }
+                            });
+                        } else {
+                            var msg = (xhr.responseJSON && xhr.responseJSON.message) ? xhr
+                                .responseJSON.message : 'Server error';
+                            var alertBox = $(
+                                '<div class="alert alert-danger mt-2" role="alert">' + msg +
+                                '</div>');
+                            $form.prepend(alertBox);
+                        }
+                    }
+                });
+            });
+        }
+
+        // Handle Cover Form dengan callback khusus untuk update gambar
+        handleAjaxSubmit('#cover_form', 'cover-loading', {
+            onSuccess: function(res, $form) {
+                // Update gambar jika ada
+                if (res.data && res.data.image_url) {
+                    var $imageContainer = $form.find('.mb-2');
+                    if ($imageContainer.length) {
+                        // Update existing image
+                        $imageContainer.find('img').attr('src', res.data.image_url);
+                    } else {
+                        // Create new image display
+                        var imageHtml = '<div class="mb-2">' +
+                            '<img src="' + res.data.image_url + '" alt="Current Cover" class="img-thumbnail" style="max-height: 150px;">' +
+                            '<p class="small text-muted mt-1">Current image (upload new to replace)</p>' +
+                            '</div>';
+                        $form.find('label[for="cover_image"]').after(imageHtml);
+                    }
+
+                    // Clear file input
+                    $form.find('#cover_image').val('');
+                }
+
+                // Update translations jika ada
+                if (res.data && res.data.translations) {
+                    res.data.translations.forEach(function(trans) {
+                        var $input = $form.find('#cover_title_' + trans.locale);
+                        if ($input.length && trans.title) {
+                            $input.val(trans.title);
+                        }
+                    });
+                }
+
+                // Update button text jika dari create menjadi update
+                var $submitBtn = $form.find('button[type="submit"]');
+                if ($submitBtn.text().trim() === 'Save Changes') {
+                    $submitBtn.text('Update Changes');
+                }
+            }
+        });
+
+        // attach handlers untuk form lainnya
+        handleAjaxSubmit('#content_form', 'content-loading');
+        handleAjaxSubmit('#vision_mission_form', 'vision-loading');
+    })();
+</script>
 @endpush

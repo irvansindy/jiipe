@@ -10,9 +10,12 @@
 
             <div class="col-md-45">
                 <div class="judul mb-4 pb-4">
-                    <h2>{{ $contributionsTitle ?? 'JIIPE Contributions' }}</h2>
+                    @php
+                        // dd($aboutUsContent);
+                    @endphp
+                    <h2>{!! $aboutUsContent->translations[0]->title ?? '' !!}</h2>
                     <h5>
-                        <p>{!! $contributionsDescription ?? '' !!}</p>
+                        <p>{!! $aboutUsContent->translations[0]->subtitle ?? '' !!}</p>
                     </h5>
                 </div>
 
@@ -23,7 +26,7 @@
                     </div>
                     <div class="col-md-30">
                         <div class="content">
-                            {!! $aboutUsHeader->translations[0]->description ?? '' !!}
+                            {!! $aboutUsContent->translations[0]->content ?? '' !!}
                         </div>
                     </div>
                 </div>

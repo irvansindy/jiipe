@@ -11,7 +11,7 @@
                         <div class="owl-item" style="width: 1580.83px; margin-right: 15px;">
                             <div class="embed-responsive embed-responsive-21by9">
                                 <video class="embed-responsive-item" muted="">
-                                    <source src="/{{ $slider['file'] }}" type="video/mp4">
+                                    <source src="{{ asset('uploads/home-slider/' . $slider['file']) }}" type="video/mp4">
                                 </video>
                                 <div class="home-container">
                                     <div class="home-caption">

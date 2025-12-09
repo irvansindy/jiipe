@@ -16,16 +16,19 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="position">Position <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" id="position" name="position" min="1" value="1" required>
+                                <input type="number" class="form-control" id="position" name="position" min="1"
+                                    value="1" required>
                                 <small class="text-muted">Urutan tampilan FAQ (angka kecil muncul lebih dulu)</small>
                                 <small class="text-danger" id="error-position"></small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mt-4">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" value="1" checked>
-                                    <label class="custom-control-label" for="is_active">Active</label>
+                                <div class="mb-3 form-check form-switch">
+                                    <input type="hidden" name="is_active" value="0">
+                                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active"
+                                        value="1" checked>
+                                    <label class="form-check-label" for="is_active">Active</label>
                                 </div>
                             </div>
                         </div>
@@ -36,32 +39,38 @@
 
                     <ul class="nav nav-tabs mb-3" id="faqTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="tab-id" data-bs-toggle="tab" data-bs-target="#faq-id" type="button">
+                            <button class="nav-link active" id="tab-id" data-bs-toggle="tab" data-bs-target="#faq-id"
+                                type="button">
                                 Indonesian
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab-en" data-bs-toggle="tab" data-bs-target="#faq-en" type="button">
+                            <button class="nav-link" id="tab-en" data-bs-toggle="tab" data-bs-target="#faq-en"
+                                type="button">
                                 English
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab-zh" data-bs-toggle="tab" data-bs-target="#faq-zh" type="button">
+                            <button class="nav-link" id="tab-zh" data-bs-toggle="tab" data-bs-target="#faq-zh"
+                                type="button">
                                 Chinese (Simplified)
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab-ja" data-bs-toggle="tab" data-bs-target="#faq-ja" type="button">
+                            <button class="nav-link" id="tab-ja" data-bs-toggle="tab" data-bs-target="#faq-ja"
+                                type="button">
                                 Japanese
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab-ko" data-bs-toggle="tab" data-bs-target="#faq-ko" type="button">
+                            <button class="nav-link" id="tab-ko" data-bs-toggle="tab" data-bs-target="#faq-ko"
+                                type="button">
                                 Korean
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="tab-tw" data-bs-toggle="tab" data-bs-target="#faq-tw" type="button">
+                            <button class="nav-link" id="tab-tw" data-bs-toggle="tab" data-bs-target="#faq-tw"
+                                type="button">
                                 Chinese (Traditional)
                             </button>
                         </li>
@@ -71,8 +80,10 @@
                         <!-- Indonesian -->
                         <div class="tab-pane fade show active" id="faq-id" role="tabpanel">
                             <div class="form-group">
-                                <label for="question_id">Question (Indonesian) <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="question_id" name="question_id" required>
+                                <label for="question_id">Question (Indonesian) <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="question_id" name="question_id"
+                                    required>
                                 <small class="text-danger" id="error-question_id"></small>
                             </div>
                             <div class="form-group">
@@ -86,7 +97,8 @@
                         <div class="tab-pane fade" id="faq-en" role="tabpanel">
                             <div class="form-group">
                                 <label for="question_en">Question (English) <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="question_en" name="question_en" required>
+                                <input type="text" class="form-control" id="question_en" name="question_en"
+                                    required>
                                 <small class="text-danger" id="error-question_en"></small>
                             </div>
                             <div class="form-group">
@@ -158,7 +170,8 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary" id="btnSubmitFaq">
                         <span class="btn-text">Save</span>
-                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status"
+                            aria-hidden="true"></span>
                     </button>
                 </div>
             </form>
@@ -171,30 +184,35 @@
 </div>
 
 <style>
-#loadingOverlayFaq {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    #loadingOverlayFaq {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-#loadingOverlayFaq .spinner {
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid #3498db;
-    width: 60px;
-    height: 60px;
-    animation: spin 1s linear infinite;
-}
+    #loadingOverlayFaq .spinner {
+        border: 5px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 5px solid #3498db;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+    }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 </style>

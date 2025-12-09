@@ -47,7 +47,6 @@ class GalleryController extends Controller
             ->whereNotNull('url_video')
             ->orderBy('date_input', 'desc');
 
-        // dd($isAjax);
         // ✅ Default load hanya 3 item
         if ($isAjax) {
             // Saat AJAX (klik View All) → tampilkan semua

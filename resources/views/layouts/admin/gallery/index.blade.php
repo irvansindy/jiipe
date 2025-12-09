@@ -23,43 +23,18 @@
                     <div class="card">
                         <div class="card-header bg-primary d-flex align-items-center justify-content-between">
                             <h4 class="text-white m-0">List Gallery</h4>
-                            <button class="btn btn-outline-light" id="create_gallery" type="button" title="Create Gallery" data-bs-toggle="modal" data-bs-target="#modalGallery">
+                            <button class="btn btn-outline-light" id="create_gallery" type="button" title="Create Gallery"
+                                data-bs-toggle="modal" data-bs-target="#modalGallery">
                                 <i class="ti ti-pencil"></i>
                             </button>
                         </div>
-                        {{-- <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="card text-bg-dark">
-                                        <img src="https://dummyimage.com/700x500/c9cecf/000000" class="card-img"
-                                            alt="...">
-                                        <div class="card-img-overlay">
-                                            <h5 class="card-title">Card title</h5>
-
-                                            <!-- Tombol aksi di kanan bawah -->
-                                            <div class="position-absolute bottom-0 end-0 p-3 d-flex gap-2">
-                                                <button type="button" class="btn btn-sm btn-primary">
-                                                    <i class="bi bi-pencil"></i> Edit
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-secondary">
-                                                    <i class="bi bi-eye"></i> View/Hide
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-danger">
-                                                    <i class="bi bi-trash"></i> Delete
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div> --}}
                         <div class="card-body">
                             <div class="row">
                                 @forelse ($galleries as $gallery)
                                     <div class="col-md-3 mb-4">
                                         <div class="card text-bg-dark">
-                                            <img src="{{ optional($gallery)->image ? asset('storage/'.$gallery->image) : 'https://dummyimage.com/700x500/c9cecf/000000' }}" class="card-img" alt="..." loading="lazy" decoding="async">
+                                            <img src="{{ optional($gallery)->image ? asset('uploads/gallery/' . $gallery->image) : 'https://dummyimage.com/700x500/c9cecf/000000' }}"
+                                                class="card-img" alt="..." loading="lazy" decoding="async">
 
                                             <div class="card-img-overlay">
                                                 <h5 class="card-title">
@@ -68,10 +43,15 @@
 
                                                 <!-- Tombol aksi di kanan bawah -->
                                                 <div class="position-absolute bottom-0 end-0 p-3 d-flex gap-2">
-                                                    <button type="button" class="btn btn-sm btn-primary action_edit_gallery" data-bs-toggle="modal" data-bs-target="#modalGallery" data-gallery_id="{{ $gallery->id }}">
+                                                    <button type="button"
+                                                        class="btn btn-sm btn-primary action_edit_gallery"
+                                                        data-bs-toggle="modal" data-bs-target="#modalGallery"
+                                                        data-gallery_id="{{ $gallery->id }}">
                                                         <i class="ti ti-pencil"></i>
                                                     </button>
-                                                    <button type="button" class="btn btn-sm btn-secondary action_view_gallery" data-gallery_id="{{ $gallery->id }}">
+                                                    <button type="button"
+                                                        class="btn btn-sm btn-secondary action_view_gallery"
+                                                        data-gallery_id="{{ $gallery->id }}">
                                                         <i class="ti ti-eye"></i>
                                                     </button>
                                                 </div>
@@ -102,10 +82,10 @@
     </div>
 @endsection
 @push('css')
-    
 @endpush
 @push('js')
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     @include('layouts.admin.gallery.gallery_js')
 @endpush
