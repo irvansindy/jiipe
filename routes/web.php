@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\TenantController;
 use App\Http\Controllers\Admin\Video360Controller;
 use App\Http\Controllers\Admin\ReviewUserController;
 use App\Http\Controllers\Admin\FAQController;
+use App\Http\Controllers\Admin\LanguageController;
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
@@ -138,13 +139,21 @@ Route::group([
         // Content Detail
         Route::delete('/delete-content-detail', [AboutUsController::class, 'deleteContentDetail'])->name('delete-about-us-content-detail');
 
-        // Route::get('special-economic-zone', [ZoneController::class, 'index'])->name('special-economic-zone');
-        // Route::get('fetch-zone', [ZoneController::class, 'fetchZone'])->name('fetch-zone');
-        // Route::get('fetch-special-zone', [ZoneController::class, 'fetchSpecialZone'])->name('fetch-special-zone');
-        // Route::get('fetch-zone-class', [ZoneController::class, 'fetchZoneClass'])->name('fetch-zone-class');
-        // Route::get('zone/{id}/detail', [ZoneController::class, 'getZoneDetail'])->name('zone-detail');
-        // Route::post('store-zone', [ZoneController::class, 'storeZone'])->name('store-zone');
-        // Route::post('zone/{id}/update', [ZoneController::class, 'updateZone'])->name('zone-update');
+        Route::get('special-economic-zone', [ZoneController::class, 'index'])->name('special-economic-zone');
+        Route::get('fetch-zone', [ZoneController::class, 'fetchZone'])->name('fetch-zone');
+        Route::get('fetch-special-zone', [ZoneController::class, 'fetchSpecialZone'])->name('fetch-special-zone');
+        Route::get('fetch-zone-class', [ZoneController::class, 'fetchZoneClass'])->name('fetch-zone-class');
+        Route::get('zone/{id}/detail', [ZoneController::class, 'getZoneDetail'])->name('zone-detail');
+        Route::post('store-zone', [ZoneController::class, 'storeZone'])->name('store-zone');
+        Route::post('zone/{id}/update', [ZoneController::class, 'updateZone'])->name('zone-update');
+
+        Route::get('/language', [LanguageController::class, 'index'])->name('language');
+        Route::get('/fetch-language', [LanguageController::class, 'fetch'])->name('fetch-language');
+        Route::get('/fetch-id', [LanguageController::class, 'fetchById'])->name('fetch-language-id');
+        Route::post('/store', [LanguageController::class, 'store'])->name('store-language');
+        Route::post('/update', [LanguageController::class, 'update'])->name('update-language');
+        Route::delete('/delete/{id}', [LanguageController::class, 'destroy'])->name('delete-language');
+        Route::post('/sync-config', [LanguageController::class, 'syncFromConfig'])->name('sync-language-config');
 
         Route::prefix('admin')->middleware(['auth'])->group(function () {
             // Zone routes
