@@ -23,7 +23,7 @@
                     <div class="mb-3">
                         <label for="brochure_image" class="form-label">
                             File Brochure <span class="text-danger">*</span>
-                            <small class="text-muted">(Max 2MB, JPG/PNG/WebP)</small>
+                            <small class="text-muted">(Max 2MB, Pdf)</small>
                         </label>
                         <input type="file" class="form-control" id="brochure_image" name="image"
                             accept=".pdf,application/pdf">

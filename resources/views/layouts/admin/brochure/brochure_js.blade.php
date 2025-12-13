@@ -19,7 +19,7 @@ $(document).ready(function() {
         // Clear all error messages
         $('[id^="error_brochure_"]').text('');
 
-        // Clear image preview
+        // Clear PDF preview
         $('#preview_brochure_image').html('');
 
         // Clear file indicators
@@ -30,32 +30,49 @@ $(document).ready(function() {
         // Reset status to active
         $('#status_active').prop('checked', true);
 
-        // Image is required for create
+        // PDF is required for create
         $('#brochure_image').prop('required', true);
     }
 
-    // Preview image upload
-    function previewImage(input, previewElementId) {
+    // Preview PDF upload
+    function previewPDF(input, previewElementId) {
         const file = input.files[0];
         const previewElement = $(`#${previewElementId}`);
 
         if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
+            // Get file size in MB
+            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+
+            // Check if file is PDF
+            if (file.type === 'application/pdf') {
                 previewElement.html(`
-                    <img src="${e.target.result}" class="img-thumbnail" style="max-width:300px;max-height:300px;">
-                    <p class="text-muted small mt-1">New image selected</p>
+                    <div class="alert alert-success py-2 mb-0">
+                        <div class="d-flex align-items-center">
+                            <i class="ti ti-file-pdf" style="font-size: 2rem; color: #dc3545;"></i>
+                            <div class="ms-3">
+                                <strong>${file.name}</strong><br>
+                                <small class="text-muted">Size: ${fileSizeMB} MB</small>
+                            </div>
+                        </div>
+                        <p class="text-muted small mb-0 mt-2">New PDF file selected</p>
+                    </div>
                 `);
-            };
-            reader.readAsDataURL(file);
+            } else {
+                previewElement.html(`
+                    <div class="alert alert-danger py-2 mb-0">
+                        <i class="ti ti-alert-circle me-2"></i>
+                        Please select a valid PDF file
+                    </div>
+                `);
+            }
         } else {
             previewElement.html('');
         }
     }
 
-    // Handle image upload preview
+    // Handle PDF upload preview
     $('#brochure_image').on('change', function() {
-        previewImage(this, 'preview_brochure_image');
+        previewPDF(this, 'preview_brochure_image');
     });
 
     // ============================================
@@ -94,18 +111,32 @@ $(document).ready(function() {
                     // Clear error messages
                     $('[id^="error_brochure_"]').text('');
 
-                    // Image is not required for update
+                    // PDF is not required for update
                     $('#brochure_image').prop('required', false);
 
                     // Set status
                     $(`input[name='is_active'][value='${data.is_active}']`).prop('checked', true);
 
-                    // Show current image
+                    // Show current PDF file
                     if (data.image && data.image !== 'default.jpg') {
-                        let imageUrl = data.image.startsWith('http') ? data.image : '{{ url('/uploads') }}/' + data.image;
+                        let fileName = data.image.split('/').pop();
+                        let fileUrl = data.image.startsWith('http') ? data.image : '{{ url('/uploads') }}/' + data.image;
+
                         $('#preview_brochure_image').html(`
-                            <img src="${imageUrl}" class="img-thumbnail" style="max-width:300px;max-height:300px;">
-                            <p class="text-muted small mt-1">Current image (upload new to replace)</p>
+                            <div class="alert alert-info py-2 mb-0">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <i class="ti ti-file-pdf" style="font-size: 2rem; color: #dc3545;"></i>
+                                        <div class="ms-3">
+                                            <strong>${fileName}</strong><br>
+                                            <small class="text-muted">Current file (upload new to replace)</small>
+                                        </div>
+                                    </div>
+                                    <a href="${fileUrl}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="ti ti-external-link"></i> View
+                                    </a>
+                                </div>
+                            </div>
                         `);
                     }
 
@@ -114,15 +145,23 @@ $(document).ready(function() {
                         $(`#brochure_title_${locale}`).val(trans.title);
                         $(`#brochure_subtitle_${locale}`).val(trans.subtitle);
 
-                        // Show current file if exists
+                        // Show current translation file if exists
                         if (trans.file) {
                             let fileName = trans.file.split('/').pop();
                             $(`#current_file_${locale}`).html(`
                                 <div class="alert alert-info py-2 mb-0">
-                                    <i class="ti ti-file-pdf me-1"></i> Current: ${fileName}
-                                    <a href="{{ url('/uploads') }}/${trans.file}" target="_blank" class="ms-2">
-                                        <i class="ti ti-external-link"></i> View
-                                    </a>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center">
+                                            <i class="ti ti-file-pdf me-2" style="font-size: 1.5rem; color: #dc3545;"></i>
+                                            <div>
+                                                <strong>${fileName}</strong><br>
+                                                <small class="text-muted">Current PDF file</small>
+                                            </div>
+                                        </div>
+                                        <a href="{{ url('/uploads') }}/${trans.file}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                            <i class="ti ti-external-link"></i> View
+                                        </a>
+                                    </div>
                                 </div>
                             `);
                         }

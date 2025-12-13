@@ -121,7 +121,7 @@
 @endpush
 
 @push('js')
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('asset/js/cdn/jquery-v3-7-1.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/sweetalert2.js') }}"></script>
     @include('layouts.admin.brochure.brochure_js')
 @endpush

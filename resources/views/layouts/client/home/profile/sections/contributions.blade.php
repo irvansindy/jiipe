@@ -10,9 +10,6 @@
 
             <div class="col-md-45">
                 <div class="judul mb-4 pb-4">
-                    @php
-                        // dd($aboutUsContent);
-                    @endphp
                     <h2>{!! $aboutUsContent->translations[0]->title ?? '' !!}</h2>
                     <h5>
                         <p>{!! $aboutUsContent->translations[0]->subtitle ?? '' !!}</p>
@@ -21,8 +18,9 @@
 
                 <div class="row gambar-content">
                     <div class="col-md-30">
-                        <img src="{{ asset('storage/about_us/content/about_us_content.jpg') }}"
-                            alt="@lang('system.profile - jiipe industrial estate in gresik')" class="img-fluid">
+                        {{-- storage/about_us/content/about_us_content.jpg --}}
+                        <img src="{{ asset('uploads/about-us/content/' . $aboutUsContent->image) }}" alt="@lang('system.profile - jiipe industrial estate in gresik')"
+                            class="img-fluid">
                     </div>
                     <div class="col-md-30">
                         <div class="content">
