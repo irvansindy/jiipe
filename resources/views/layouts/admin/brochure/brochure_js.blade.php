@@ -1,128 +1,284 @@
 <script>
-    function showLoader() {
-        $("#modalLoader").fadeIn(200);
+$(document).ready(function() {
+    // ============================================
+    // HELPER FUNCTIONS
+    // ============================================
+
+    function showLoading() {
+        $('#loadingOverlayBrochure').css('display', 'flex').hide().fadeIn(200);
     }
 
-    function hideLoader() {
-        $("#modalLoader").fadeOut(200);
+    function hideLoading() {
+        $('#loadingOverlayBrochure').fadeOut(200);
     }
 
-    $(() => {
-        var table_brochure = $('#table_brochure').DataTable({
-            processing: true,
-            ajax: {
-                url: '{{ route('fetch-brochures') }}',
-                type: 'GET',
-                dataType: 'json'
+    function resetForm() {
+        $('#formBrochure')[0].reset();
+        $('#brochure_id').val('');
+
+        // Clear all error messages
+        $('[id^="error_brochure_"]').text('');
+
+        // Clear image preview
+        $('#preview_brochure_image').html('');
+
+        // Clear file indicators
+        @foreach(config('laravellocalization.supportedLocales') as $locale => $properties)
+        $('#current_file_{{ $locale }}').html('');
+        @endforeach
+
+        // Reset status to active
+        $('#status_active').prop('checked', true);
+
+        // Image is required for create
+        $('#brochure_image').prop('required', true);
+    }
+
+    // Preview image upload
+    function previewImage(input, previewElementId) {
+        const file = input.files[0];
+        const previewElement = $(`#${previewElementId}`);
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewElement.html(`
+                    <img src="${e.target.result}" class="img-thumbnail" style="max-width:300px;max-height:300px;">
+                    <p class="text-muted small mt-1">New image selected</p>
+                `);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewElement.html('');
+        }
+    }
+
+    // Handle image upload preview
+    $('#brochure_image').on('change', function() {
+        previewImage(this, 'preview_brochure_image');
+    });
+
+    // ============================================
+    // EVENT HANDLERS
+    // ============================================
+
+    // Create brochure button
+    $('#create_brochure').on('click', function() {
+        resetForm();
+        $('#modalBrochureLabel').text('Add Brochure');
+        $('#modalBrochure').modal('show');
+    });
+
+    // Edit brochure button
+    $(document).on('click', '.btn-edit-brochure', function() {
+        let brochureId = $(this).data('id');
+
+        showLoading();
+
+        $.ajax({
+            url: "{{ route('fetch-brochure-id') }}",
+            method: 'GET',
+            data: { id: brochureId },
+            success: function(res) {
+                hideLoading();
+
+                if (res.status === 'success' || (res.meta && res.meta.status === 'success')) {
+                    let data = res.data;
+
+                    $('#brochure_id').val(data.id);
+                    $('#modalBrochureLabel').text('Edit Brochure');
+
+                    // Clear form first
+                    $('#formBrochure')[0].reset();
+
+                    // Clear error messages
+                    $('[id^="error_brochure_"]').text('');
+
+                    // Image is not required for update
+                    $('#brochure_image').prop('required', false);
+
+                    // Set status
+                    $(`input[name='is_active'][value='${data.is_active}']`).prop('checked', true);
+
+                    // Show current image
+                    if (data.image && data.image !== 'default.jpg') {
+                        let imageUrl = data.image.startsWith('http') ? data.image : '{{ url('/uploads') }}/' + data.image;
+                        $('#preview_brochure_image').html(`
+                            <img src="${imageUrl}" class="img-thumbnail" style="max-width:300px;max-height:300px;">
+                            <p class="text-muted small mt-1">Current image (upload new to replace)</p>
+                        `);
+                    }
+
+                    // Fill translations
+                    $.each(data.translations, function(locale, trans) {
+                        $(`#brochure_title_${locale}`).val(trans.title);
+                        $(`#brochure_subtitle_${locale}`).val(trans.subtitle);
+
+                        // Show current file if exists
+                        if (trans.file) {
+                            let fileName = trans.file.split('/').pop();
+                            $(`#current_file_${locale}`).html(`
+                                <div class="alert alert-info py-2 mb-0">
+                                    <i class="ti ti-file-pdf me-1"></i> Current: ${fileName}
+                                    <a href="{{ url('/uploads') }}/${trans.file}" target="_blank" class="ms-2">
+                                        <i class="ti ti-external-link"></i> View
+                                    </a>
+                                </div>
+                            `);
+                        }
+                    });
+
+                    $('#modalBrochure').modal('show');
+                }
             },
-            columns: [
-                {
-                    data: null,
-                    render: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
+            error: function(xhr) {
+                hideLoading();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: xhr.responseJSON?.message || 'Failed to load brochure data'
+                });
+            }
+        });
+    });
+
+    // Delete brochure button
+    $(document).on('click', '.btn-delete-brochure', function() {
+        let brochureId = $(this).data('id');
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                showLoading();
+
+                $.ajax({
+                    url: `/admin/brochure/${brochureId}/delete`,
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(res) {
+                        hideLoading();
+
+                        if (res.status === 'success' || (res.meta && res.meta.status === 'success')) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: res.message || 'Brochure has been deleted.',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+
+                            // Reload page or update UI
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 2000);
+                        }
+                    },
+                    error: function(xhr) {
+                        hideLoading();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: xhr.responseJSON?.message || 'Failed to delete brochure'
+                        });
                     }
-                },
-                {
-                    data: 'translations[0].title',
-                    defaultContent: '<i>Not set</i>'
-                },
-                {
-                    data: 'date_input',
-                    defaultContent: '<i>Not set</i>'
-                },
-                {
-                    'data': null,
-                    title: 'Action',
-                    wrap: true,
-                    "render": function(item) {
-                        return '<button type="button" data-brochure_id="'+item.id+'" class="btn btn-outline-info btn-sm mt-2 detail_brochure" data-toggle="modal" data-target="#ModalBrochure"><i class="ti ti-pencil"></i></button>'
-                    }
-                },
-            ],
-        })
-        
-        $('#create_brochure').click((e) => {
-            e.preventDefault()
-            $('#ModalBrochureLabel').empty().html('Create Brochure')
-            $('#brochure_form')[0].reset()
-            $('#input_id').empty().val()
-            $('#button_action_brochure').empty().html(`
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="submit_brochure">Submit</button>
-            `)
-        })
+                });
+            }
+        });
+    });
 
-        $(document).on('click', '.detail_brochure', function (e) {
-            e.preventDefault()
-            let brochure_id = $(this).data('brochure_id')
-            $('#ModalBrochure').modal('show')
-            $('#ModalBrochureLabel').empty().html('Detail Brochure')
-            $('#brochure_form')[0].reset()
-            $('#button_action_brochure').empty().html(`
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="update_brochure">Update</button>
-            `)
-            ajaxRequest({
-                url: '{{ route("fetch-brochures-id") }}',
-                method: 'GET',
-                data: { id: brochure_id },
-                onSuccess: function (res) {
-                    let brochure = res.data;
-                    $('#ModalBrochureLabel').text("Detail Brochure");
-                    if (brochure.translations.length > 0) {
-                        $.each(brochure.translations, function(i, brochure) {
-                            // Set judul
-                            $(`#brochure_title_${brochure.locale}`).val(brochure.title);
+    // Submit form
+    $('#formBrochure').on('submit', function(e) {
+        e.preventDefault();
 
-                            // Hapus link lama jika ada
-                            $(`#current_file_${brochure.locale}`).empty();
+        let brochureId = $('#brochure_id').val();
+        let url = brochureId ? `/admin/brochure/${brochureId}/update` : '{{ route("store-brochure") }}';
+        let formData = new FormData(this);
 
-                            // Jika ada file, buat link
-                            if (brochure.file) {
-                                const fileUrl = "{{ Storage::url('') }}" + brochure.file; // base Storage path
-                                $(`#current_file_${brochure.locale}`).html(`
-                                    <small class="d-block">
-                                        File sekarang:
-                                        <a href="${fileUrl}" target="_blank">Lihat PDF</a>
-                                    </small>
-                                `);
-                            }
-                        })
-                    }
+        // Clear previous errors
+        $('[id^="error_brochure_"]').text('');
 
-                    $('#brochure_is_active').val(brochure.is_active)
-                    $('#brochure_is_active').prop('checked', brochure.is_active == 1 ? true : false)
+        showLoading();
+        $('#btnSaveBrochure').prop('disabled', true).html('<i class="ti ti-loader me-1"></i> Saving...');
 
-                    $('#button_action_brochure').html(`
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="button" class="btn btn-primary" id="update_brochure">Update</button>
-                    `);
-                },
-                onError: function (xhr) {
-                    console.error(xhr.responseText);
-                    alert('Terjadi kesalahan saat ambil detail brochure.');
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(res) {
+                hideLoading();
+                $('#btnSaveBrochure').prop('disabled', false).html('<i class="ti ti-device-floppy me-1"></i> Save');
+
+                if (res.status === 'success' || (res.meta && res.meta.status === 'success')) {
+                    $('#modalBrochure').modal('hide');
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: res.message || (brochureId ? 'Brochure updated successfully!' : 'Brochure created successfully!'),
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                    // Reload page or update UI
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
                 }
-            })
-        })
+            },
+            error: function(xhr) {
+                hideLoading();
+                $('#btnSaveBrochure').prop('disabled', false).html('<i class="ti ti-device-floppy me-1"></i> Save');
 
-        $(document).on('click', '#submit_brochure', (e) => {
-            e.preventDefault()
-            ajaxRequest({
-                formSelector: '#brochure_form',
-                url: '{{ route("store-brochures") }}',
-                method: 'POST',
-                onSuccess: function (res) {
-                    Swal.fire('Berhasil!', 'Data berhasil ditambahkan', 'success');
+                if (xhr.status === 422 && xhr.responseJSON?.errors) {
+                    let errors = xhr.responseJSON.errors;
+
+                    // Display field-specific errors
+                    $.each(errors, function(key, messages) {
+                        let fieldName = key.replace(/\./g, '_');
+                        let errorElement = $(`#error_brochure_${fieldName}`);
+
+                        if (errorElement.length) {
+                            errorElement.text(Array.isArray(messages) ? messages[0] : messages);
+                        }
+                    });
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validation Error!',
+                        text: 'Please check all required fields'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: xhr.responseJSON?.message || 'Server error occurred'
+                    });
                 }
-            });
-        })
+            }
+        });
+    });
 
-        $(document).on('click', '#update_brochure', (e) => {
-            e.preventDefault()
-            ajaxSubmit('#brochure_form', '{{ route("store-brochures") }}', 'POST', function(res){
-                Swal.fire('Berhasil!', 'Data berhasil ditambahkan', 'success');
-                // aksi tambahan: reload table, close modal, dsb.
-            });
-        })
-    })
+    // Clean up on modal close
+    $('#modalBrochure').on('hidden.bs.modal', function() {
+        resetForm();
+    });
+
+    // Debug: Check if modal exists
+    console.log('Modal Brochure exists:', $('#modalBrochure').length > 0);
+    console.log('Loading overlay exists:', $('#loadingOverlayBrochure').length > 0);
+});
 </script>

@@ -303,9 +303,31 @@ Route::group([
         Route::post('update-gallery', [GalleryController::class,'update'])->name('update-gallery');
 
         Route::get('brochures', [BrochureController::class,'index'])->name('brochures');
-        Route::get('fetch-brochures', [BrochureController::class,'fetch'])->name('fetch-brochures');
-        Route::get('fetch-brochures-id', [BrochureController::class,'fetchById'])->name('fetch-brochures-id');
-        Route::post('store-brochures', [BrochureController::class,'store'])->name('store-brochures');
+        // Route::get('fetch-brochures', [BrochureController::class,'fetch'])->name('fetch-brochures');
+        // Route::get('fetch-brochures-id', [BrochureController::class,'fetchById'])->name('fetch-brochures-id');
+        // Route::post('store-brochures', [BrochureController::class,'store'])->name('store-brochures');
+        /**
+         * Brochure Routes
+         */
+        Route::prefix('admin/brochure')->middleware(['auth'])->group(function () {
+            // Index page
+            // Route::get('/', [BrochureController::class, 'index'])->name('brochure-index');
+
+            // Fetch all brochures (AJAX)
+            Route::get('/fetch', [BrochureController::class, 'fetch'])->name('fetch-brochure');
+
+            // Fetch brochure by ID (AJAX)
+            Route::get('/fetch-id', [BrochureController::class, 'fetchById'])->name('fetch-brochure-id');
+
+            // Create new brochure
+            Route::post('/store', [BrochureController::class, 'store'])->name('store-brochure');
+
+            // Update brochure
+            Route::post('/{id}/update', [BrochureController::class, 'update'])->name('update-brochure');
+
+            // Delete brochure
+            Route::delete('/{id}/delete', [BrochureController::class, 'delete'])->name('delete-brochure');
+        });
 
         Route::get('career-list', [CareerController::class, 'index'])->name('career-list');
         Route::get('career-static', [CareerController::class, 'static'])->name('career-static');

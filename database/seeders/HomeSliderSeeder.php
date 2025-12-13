@@ -14,7 +14,7 @@ class HomeSliderSeeder extends Seeder
         HomeSliderTranslation::truncate();
         $sliders = [
             [
-                'file' => 'asset/carousel-slider-video/344f5-Office_1.mp4',
+                'file' => '344f5-Office_1.mp4',
                 'translations' => [
                     'en' => [
                         'title' => "JIIPE's Central Administration & Management Hub",
@@ -43,7 +43,7 @@ class HomeSliderSeeder extends Seeder
                 ],
             ],
             [
-                'file' => 'asset/carousel-slider-video/896d3-POWER PLANT.mp4',
+                'file' => '896d3-POWER PLANT.mp4',
                 'translations' => [
                     'en' => [
                         'title' => "Utility Center: The Backbone of JIIPE's Industry",
@@ -72,7 +72,7 @@ class HomeSliderSeeder extends Seeder
                 ],
             ],
             [
-                'file' => 'asset/carousel-slider-video/bc6b9-PORTS.mp4',
+                'file' => 'bc6b9-PORTS.mp4',
                 'translations' => [
                     'en' => [
                         'title' => "JIIPE Port: Indonesia's Logistics Gateway",
@@ -101,7 +101,7 @@ class HomeSliderSeeder extends Seeder
                 ],
             ],
             [
-                'file' => 'asset/carousel-slider-video/7c380-Gate_1.mp4',
+                'file' => '7c380-Gate_1.mp4',
                 'translations' => [
                     'en' => [
                         'title' => "Grand Entrance to JIIPE",
@@ -130,7 +130,7 @@ class HomeSliderSeeder extends Seeder
                 ],
             ],
             [
-                'file' => 'asset/carousel-slider-video/75eed-Infrastructure_1.mp4',
+                'file' => '75eed-Infrastructure_1.mp4',
                 'translations' => [
                     'en' => [
                         'title' => "JIIPE's Advanced Infrastructure",
