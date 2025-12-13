@@ -19,14 +19,14 @@
             <form id="formBrochure" enctype="multipart/form-data">
                 <input type="hidden" id="brochure_id" name="brochure_id">
                 <div class="modal-body">
-                    {{-- File Brochure --}}
+                    {{-- Cover Image --}}
                     <div class="mb-3">
                         <label for="brochure_image" class="form-label">
-                            File Brochure <span class="text-danger">*</span>
-                            <small class="text-muted">(Max 2MB, Pdf)</small>
+                            Cover Image <span class="text-danger">*</span>
+                            <small class="text-muted">(Max 2MB, PNG/WebP)</small>
                         </label>
                         <input type="file" class="form-control" id="brochure_image" name="image"
-                            accept=".pdf,application/pdf">
+                            accept="image/png,image/webp">
 
                         <small class="text-danger" id="error_brochure_image"></small>
 
@@ -97,10 +97,13 @@
                                         PDF File ({{ $properties['native'] }})
                                         <small class="text-muted">(Max 5MB)</small>
                                     </label>
-                                    <input type="file" class="form-control"
+                                    <input type="file" class="form-control brochure-pdf-input"
                                         id="brochure_file_{{ $locale }}" name="file[{{ $locale }}]"
-                                        accept="application/pdf">
+                                        accept="application/pdf" data-locale="{{ $locale }}">
                                     <small class="text-danger" id="error_brochure_file_{{ $locale }}"></small>
+
+                                    {{-- PDF Preview --}}
+                                    <div id="preview_brochure_file_{{ $locale }}" class="mt-2"></div>
 
                                     {{-- Current file indicator --}}
                                     <div id="current_file_{{ $locale }}" class="mt-2"></div>

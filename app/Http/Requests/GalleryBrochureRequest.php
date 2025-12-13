@@ -23,7 +23,7 @@ class GalleryBrochureRequest extends FormRequest
         $isUpdate = $this->route('id') !== null;
 
         $rules = [
-            'image' => $isUpdate ? 'nullable|file|mimes:pdf|max:5120' : 'required|file|mimes:pdf|max:5120',
+            'image' => $isUpdate ? 'nullable|image|mimes:png,webp|max:2048' : 'required|image|mimes:png,webp|max:2048',
             'is_active' => 'required|in:0,1',
         ];
 
@@ -43,7 +43,7 @@ class GalleryBrochureRequest extends FormRequest
     {
         $locales = config('laravellocalization.supportedLocales');
         $attributes = [
-            'image' => 'Main PDF File',
+            'image' => 'Cover Image',
             'is_active' => 'Status',
         ];
 
@@ -63,10 +63,10 @@ class GalleryBrochureRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'image.required' => 'Main PDF file is required',
-            'image.file' => 'File must be a valid file',
-            'image.mimes' => 'File must be in PDF format',
-            'image.max' => 'PDF file size cannot exceed 5MB',
+            'image.required' => 'Cover image is required',
+            'image.image' => 'File must be an image',
+            'image.mimes' => 'Image must be in PNG or WebP format',
+            'image.max' => 'Image size cannot exceed 2MB',
             'is_active.required' => 'Status is required',
             'is_active.in' => 'Status must be either Active (1) or Inactive (0)',
             'title.*.required' => 'Title field is required for all languages',
@@ -75,8 +75,8 @@ class GalleryBrochureRequest extends FormRequest
             'subtitle.*.string' => 'Subtitle must be a text',
             'subtitle.*.max' => 'Subtitle cannot exceed 255 characters',
             'file.*.file' => 'File must be a valid file',
-            'file.*.mimes' => 'Translation file must be in PDF format',
-            'file.*.max' => 'Translation PDF file size cannot exceed 5MB',
+            'file.*.mimes' => 'PDF file must be in PDF format',
+            'file.*.max' => 'PDF file size cannot exceed 5MB',
         ];
     }
 }

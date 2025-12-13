@@ -19,19 +19,49 @@ $(document).ready(function() {
         // Clear all error messages
         $('[id^="error_brochure_"]').text('');
 
-        // Clear PDF preview
+        // Clear image preview
         $('#preview_brochure_image').html('');
 
-        // Clear file indicators
+        // Clear PDF previews and file indicators
         @foreach(config('laravellocalization.supportedLocales') as $locale => $properties)
+        $('#preview_brochure_file_{{ $locale }}').html('');
         $('#current_file_{{ $locale }}').html('');
         @endforeach
 
         // Reset status to active
         $('#status_active').prop('checked', true);
 
-        // PDF is required for create
+        // Image is required for create
         $('#brochure_image').prop('required', true);
+    }
+
+    // Preview image upload (PNG/WebP only)
+    function previewImage(input, previewElementId) {
+        const file = input.files[0];
+        const previewElement = $(`#${previewElementId}`);
+
+        if (file) {
+            // Check if file is PNG or WebP
+            if (file.type === 'image/png' || file.type === 'image/webp') {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewElement.html(`
+                        <img src="${e.target.result}" class="img-thumbnail" style="max-width:300px;max-height:300px;">
+                        <p class="text-muted small mt-1">New image selected</p>
+                    `);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewElement.html(`
+                    <div class="alert alert-danger py-2 mb-0">
+                        <i class="ti ti-alert-circle me-2"></i>
+                        Please select a valid PNG or WebP image
+                    </div>
+                `);
+            }
+        } else {
+            previewElement.html('');
+        }
     }
 
     // Preview PDF upload
@@ -70,9 +100,15 @@ $(document).ready(function() {
         }
     }
 
-    // Handle PDF upload preview
+    // Handle image upload preview
     $('#brochure_image').on('change', function() {
-        previewPDF(this, 'preview_brochure_image');
+        previewImage(this, 'preview_brochure_image');
+    });
+
+    // Handle PDF upload preview for all locales
+    $('.brochure-pdf-input').on('change', function() {
+        const locale = $(this).data('locale');
+        previewPDF(this, `preview_brochure_file_${locale}`);
     });
 
     // ============================================
@@ -111,32 +147,18 @@ $(document).ready(function() {
                     // Clear error messages
                     $('[id^="error_brochure_"]').text('');
 
-                    // PDF is not required for update
+                    // Image is not required for update
                     $('#brochure_image').prop('required', false);
 
                     // Set status
                     $(`input[name='is_active'][value='${data.is_active}']`).prop('checked', true);
 
-                    // Show current PDF file
+                    // Show current image
                     if (data.image && data.image !== 'default.jpg') {
-                        let fileName = data.image.split('/').pop();
-                        let fileUrl = data.image.startsWith('http') ? data.image : '{{ url('/uploads') }}/' + data.image;
-
+                        let imageUrl = data.image.startsWith('http') ? data.image : '{{ url('/uploads') }}/' + data.image;
                         $('#preview_brochure_image').html(`
-                            <div class="alert alert-info py-2 mb-0">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex align-items-center">
-                                        <i class="ti ti-file-pdf" style="font-size: 2rem; color: #dc3545;"></i>
-                                        <div class="ms-3">
-                                            <strong>${fileName}</strong><br>
-                                            <small class="text-muted">Current file (upload new to replace)</small>
-                                        </div>
-                                    </div>
-                                    <a href="${fileUrl}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                        <i class="ti ti-external-link"></i> View
-                                    </a>
-                                </div>
-                            </div>
+                            <img src="${imageUrl}" class="img-thumbnail" style="max-width:300px;max-height:300px;">
+                            <p class="text-muted small mt-1">Current image (upload new to replace)</p>
                         `);
                     }
 
@@ -145,7 +167,7 @@ $(document).ready(function() {
                         $(`#brochure_title_${locale}`).val(trans.title);
                         $(`#brochure_subtitle_${locale}`).val(trans.subtitle);
 
-                        // Show current translation file if exists
+                        // Show current translation PDF file if exists
                         if (trans.file) {
                             let fileName = trans.file.split('/').pop();
                             $(`#current_file_${locale}`).html(`
