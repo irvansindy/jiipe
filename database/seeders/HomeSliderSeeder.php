@@ -163,6 +163,7 @@ class HomeSliderSeeder extends Seeder
         foreach ($sliders as $sliderData) {
             $slider = HomeSlider::create([
                 'file' => $sliderData['file'],
+                'is_active' => 1,
             ]);
             foreach ($sliderData['translations'] as $locale => $trans) {
                 HomeSliderTranslation::create([
@@ -170,7 +171,6 @@ class HomeSliderSeeder extends Seeder
                     'locale' => $locale,
                     'title' => $trans['title'],
                     'description' => $trans['description'],
-                    'is_active' => 1,
                 ]);
             }
         }
