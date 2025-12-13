@@ -41,13 +41,13 @@ class GalleryBrochureService
             $translations[$locale] = [
                 'title' => $trans ? $trans->title : '',
                 'subtitle' => $trans ? $trans->sub_title : '',
-                'file' => $trans ? $trans->file : '',
+                'file' => $trans && $trans->file ? 'brochures/files/' . $trans->file : '',
             ];
         }
 
         return [
             'id' => $brochure->id,
-            'image' => $brochure->image,
+            'image' => $brochure->image && $brochure->image !== 'default.jpg' ? 'brochures/images/' . $brochure->image : $brochure->image,
             'is_active' => $brochure->is_active,
             'translations' => $translations,
         ];
@@ -86,7 +86,7 @@ class GalleryBrochureService
             DB::rollBack();
 
             if (isset($imagePath) && $imagePath) {
-                $this->deleteFile($imagePath);
+                $this->deleteFile($imagePath, 'brochures/images');
             }
 
             throw $e;
@@ -107,7 +107,7 @@ class GalleryBrochureService
 
             if ($imageFile) {
                 if ($oldImagePath && $oldImagePath !== 'default.jpg') {
-                    $this->deleteFile($oldImagePath);
+                    $this->deleteFile($oldImagePath, 'brochures/images');
                 }
                 $brochure->image = $this->uploadFile($imageFile, 'brochures/images');
             }
@@ -140,14 +140,14 @@ class GalleryBrochureService
 
             // Delete main image
             if ($brochure->image && $brochure->image !== 'default.jpg') {
-                $this->deleteFile($brochure->image);
+                $this->deleteFile($brochure->image, 'brochures/images');
             }
 
             // Delete translation files
             $translations = GalleryBrochuresTranslations::where('gallery_brochure_id', $id)->get();
             foreach ($translations as $trans) {
                 if ($trans->file) {
-                    $this->deleteFile($trans->file);
+                    $this->deleteFile($trans->file, 'brochures/files');
                 }
             }
 
@@ -164,19 +164,26 @@ class GalleryBrochureService
     }
 
     /**
-     * Upload file and return path
+     * Upload file and return filename only (without path)
      */
     private function uploadFile($file, string $folder): string
     {
-        return $file->store($folder, 'uploads');
+        // Generate unique filename
+        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+        // Store file in the specified folder
+        $file->storeAs($folder, $filename, 'uploads');
+
+        // Return only filename (without path)
+        return $filename;
     }
 
     /**
      * Delete file from storage
      */
-    private function deleteFile(string $filePath): bool
+    private function deleteFile(string $filename, string $folder): bool
     {
-        $fullPath = public_path('uploads/' . $filePath);
+        $fullPath = public_path('uploads/' . $folder . '/' . $filename);
 
         if (File::exists($fullPath)) {
             return File::delete($fullPath);
@@ -231,7 +238,7 @@ class GalleryBrochureService
 
                 // Delete old file if exists
                 if ($oldTrans && $oldTrans->file) {
-                    $this->deleteFile($oldTrans->file);
+                    $this->deleteFile($oldTrans->file, 'brochures/files');
                 }
 
                 $transData['file'] = $this->uploadFile($files[$locale], 'brochures/files');

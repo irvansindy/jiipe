@@ -35,7 +35,7 @@
                                         <div class="card h-100">
                                             {{-- Image --}}
                                             <div class="position-relative" style="height: 200px; overflow: hidden;">
-                                                <img src="{{ $brochure->image && $brochure->image !== 'default.jpg' ? asset('uploads/' . $brochure->image) : 'https://via.placeholder.com/300x200?text=No+Image' }}"
+                                                <img src="{{ $brochure->image && $brochure->image !== 'default.jpg' ? asset('uploads/brochures/images/' . $brochure->image) : 'https://via.placeholder.com/300x200?text=No+Image' }}"
                                                     class="card-img-top" alt="{{ $brochure->translations->first()->title ?? 'No Title' }}"
                                                     style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
 
@@ -59,7 +59,7 @@
                                                 {{-- PDF File Indicator --}}
                                                 @if($brochure->translations->first()->file)
                                                     <div class="mt-2">
-                                                        <a href="{{ asset('uploads/' . $brochure->translations->first()->file) }}"
+                                                        <a href="{{ asset('uploads/brochures/files/' . $brochure->translations->first()->file) }}"
                                                            target="_blank" class="btn btn-sm btn-outline-primary w-100">
                                                             <i class="ti ti-file-pdf me-1"></i> View PDF
                                                         </a>
