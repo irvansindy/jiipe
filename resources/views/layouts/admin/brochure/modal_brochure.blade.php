@@ -1,5 +1,6 @@
 {{-- Loading Overlay --}}
-<div id="loadingOverlayBrochure" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+<div id="loadingOverlayBrochure"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
      background: rgba(0,0,0,0.7); z-index: 9999; align-items: center; justify-content: center;">
     <div class="spinner-border text-light" role="status" style="width: 3rem; height: 3rem;">
         <span class="visually-hidden">Loading...</span>
@@ -18,14 +19,15 @@
             <form id="formBrochure" enctype="multipart/form-data">
                 <input type="hidden" id="brochure_id" name="brochure_id">
                 <div class="modal-body">
-                    {{-- Cover Image --}}
+                    {{-- File Brochure --}}
                     <div class="mb-3">
                         <label for="brochure_image" class="form-label">
-                            Cover Image <span class="text-danger">*</span>
+                            File Brochure <span class="text-danger">*</span>
                             <small class="text-muted">(Max 2MB, JPG/PNG/WebP)</small>
                         </label>
                         <input type="file" class="form-control" id="brochure_image" name="image"
-                               accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
+                            accept=".pdf,application/pdf">
+
                         <small class="text-danger" id="error_brochure_image"></small>
 
                         {{-- Image Preview --}}
@@ -36,11 +38,13 @@
                     <div class="mb-3">
                         <label class="form-label">Status <span class="text-danger">*</span></label><br>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="is_active" id="status_active" value="1" checked>
+                            <input class="form-check-input" type="radio" name="is_active" id="status_active"
+                                value="1" checked>
                             <label class="form-check-label" for="status_active">Active</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="is_active" id="status_inactive" value="0">
+                            <input class="form-check-input" type="radio" name="is_active" id="status_inactive"
+                                value="0">
                             <label class="form-check-label" for="status_inactive">Inactive</label>
                         </div>
                         <br><small class="text-danger" id="error_brochure_is_active"></small>
@@ -81,9 +85,11 @@
                                     <label for="brochure_subtitle_{{ $locale }}" class="form-label">
                                         Subtitle ({{ $properties['native'] }})
                                     </label>
-                                    <input type="text" class="form-control" id="brochure_subtitle_{{ $locale }}"
+                                    <input type="text" class="form-control"
+                                        id="brochure_subtitle_{{ $locale }}"
                                         name="subtitle[{{ $locale }}]" placeholder="Enter brochure subtitle">
-                                    <small class="text-danger" id="error_brochure_subtitle_{{ $locale }}"></small>
+                                    <small class="text-danger"
+                                        id="error_brochure_subtitle_{{ $locale }}"></small>
                                 </div>
 
                                 <div class="mb-3">
@@ -91,8 +97,9 @@
                                         PDF File ({{ $properties['native'] }})
                                         <small class="text-muted">(Max 5MB)</small>
                                     </label>
-                                    <input type="file" class="form-control" id="brochure_file_{{ $locale }}"
-                                        name="file[{{ $locale }}]" accept="application/pdf">
+                                    <input type="file" class="form-control"
+                                        id="brochure_file_{{ $locale }}" name="file[{{ $locale }}]"
+                                        accept="application/pdf">
                                     <small class="text-danger" id="error_brochure_file_{{ $locale }}"></small>
 
                                     {{-- Current file indicator --}}
