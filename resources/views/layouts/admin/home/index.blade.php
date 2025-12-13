@@ -287,7 +287,7 @@
         }
     </style>
     <link rel="stylesheet" href="{{ asset('asset/css/cdn/datatable-bootstrap5.css') }}">
-    {{-- <link href="{{ asset('asset/css/cdn/summernote.css') }}" rel="stylesheet"> --}}
+    <link rel="stylesheet" href="{{ asset('asset/css/cdn/select2.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
     @endpush
 @push('js')

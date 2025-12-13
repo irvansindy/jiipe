@@ -67,21 +67,27 @@
                     </div>
                 </div>
                 @include('layouts.admin.zone.modal_zone')
+                @include('layouts.admin.zone.cluster.modal_zone_cluster')
+                @include('layouts.admin.zone.sub_development.modal_sub_development')
+                @include('layouts.admin.zone.sub_regional.modal_sub_regional')
             </div>
         </div>
     </div>
 @endsection
 @push('css')
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.3/css/dataTables.bootstrap5.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('asset/css/cdn/datatable-bootstrap5.css') }}">
+    <link rel="stylesheet" href="{{ asset('asset/css/cdn/select2.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
 @endpush
 @push('js')
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.3.3/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ asset('asset/js/cdn/jquery-v3-7-1.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/datatable.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/datatable-bootstrap5.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/summernote.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/select2.js') }}"></script>
+    <script src="{{ asset('asset/js/cdn/moment.js') }}"></script>
     @include('layouts.admin.zone.zone_js')
+    @include('layouts.admin.zone.cluster.zone_cluster_js')
+    @include('layouts.admin.zone.sub_development.sub_development_js')
+    @include('layouts.admin.zone.sub_regional.sub_regional_js')
 @endpush

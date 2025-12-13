@@ -28,13 +28,13 @@
                     <div class="card-header bg-primary d-flex justify-content-between align-items-center">
                         <h4 class="text-white m-0">Languages</h4>
                         <div>
-                            <button class="btn btn-light btn-sm me-2" id="sync_config_btn" title="Sync from Config">
+                            <button type="button" class="btn btn-light btn-sm me-2" id="sync_config_btn" title="Sync from Config">
                                 <i class="ti ti-refresh"></i> Sync Config
                             </button>
-                            <button class="btn btn-light btn-sm me-2" id="refresh_table_language" title="Refresh Table">
+                            <button type="button" class="btn btn-light btn-sm me-2" id="refresh_table_language" title="Refresh Table">
                                 <i class="ti ti-refresh"></i>
                             </button>
-                            <button class="btn btn-light btn-sm" id="create_language" data-bs-toggle="modal" data-bs-target="#ModalLanguage">
+                            <button type="button" class="btn btn-light btn-sm" id="create_language" data-bs-toggle="modal" data-bs-target="#ModalLanguage">
                                 <i class="ti ti-plus"></i> Add Language
                             </button>
                         </div>

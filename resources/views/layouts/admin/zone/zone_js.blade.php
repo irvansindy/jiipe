@@ -88,6 +88,78 @@
             });
         }
 
+        // Fungsi untuk render action buttons dengan dropdown Zone Cluster dan Sub Development
+        function renderZoneActionButtons(item) {
+            let buttons = '<div class="btn-group" role="group">';
+
+            // Button Edit Zone
+            buttons += `
+                <button type="button"
+                    data-zone_id="${item.id}"
+                    class="btn btn-outline-info detail_zone"
+                    title="Edit">
+                    <i class="ti ti-edit"></i>
+                </button>
+            `;
+
+            // Button Delete Zone
+            buttons += `
+                <button type="button"
+                    data-id="${item.id}"
+                    class="btn btn-outline-danger btn-delete-zone"
+                    title="Delete">
+                    <i class="ti ti-trash"></i>
+                </button>
+            `;
+
+            // Dropdown untuk Zone Cluster, Sub Development, dan Regional Advantages (hanya untuk zone_class_id = 1)
+            if (item.zone_class_id === 1) {
+                // Escape single quotes in zone name
+                let zoneName = (item.translations && item.translations.length > 0 ?
+                    item.translations[0].name : 'Unknown').replace(/'/g, "\\'");
+
+                buttons += `
+                    <button type="button"
+                            class="btn btn-outline-primary dropdown-toggle"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            title="Zone Management">
+                        <i class="ti ti-sitemap"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <h6 class="dropdown-header">Zone Management</h6>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item"
+                               href="javascript:void(0)"
+                               onclick="openZoneClusterModal(${item.id}, '${zoneName}')">
+                                <i class="ti ti-list me-2"></i> Manage Clusters
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               href="javascript:void(0)"
+                               onclick="openSubDevelopmentModal(${item.id}, '${zoneName}')">
+                                <i class="ti ti-building me-2"></i> Manage Developments
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               href="javascript:void(0)"
+                               onclick="openRegionalAdvantagesModal(${item.id}, '${zoneName}')">
+                                <i class="ti ti-award me-2"></i> Manage Advantages
+                            </a>
+                        </li>
+                    </ul>
+                `;
+            }
+
+            buttons += '</div>';
+            return buttons;
+        }
+
         // ============================================
         // INITIALIZE
         // ============================================
@@ -125,23 +197,8 @@
                     title: 'Action',
                     orderable: false,
                     searchable: false,
-                    render: function(item) {
-                        return `
-                    <div class="btn-group" role="group">
-                        <button type="button"
-                            data-zone_id="${item.id}"
-                            class="btn btn-outline-info detail_zone"
-                            title="Edit">
-                            <i class="ti ti-edit"></i>
-                        </button>
-                        <button type="button"
-                            data-id="${item.id}"
-                            class="btn btn-outline-danger btn-delete-zone"
-                            title="Delete">
-                            <i class="ti ti-trash"></i>
-                        </button>
-                    </div>
-                `;
+                    render: function(data, type, item) {
+                        return renderZoneActionButtons(item);
                     }
                 }
             ],
@@ -185,23 +242,8 @@
                     title: 'Action',
                     orderable: false,
                     searchable: false,
-                    render: function(item) {
-                        return `
-                    <div class="btn-group" role="group">
-                        <button type="button"
-                            data-zone_id="${item.id}"
-                            class="btn btn-outline-info detail_zone"
-                            title="Edit">
-                            <i class="ti ti-edit"></i>
-                        </button>
-                        <button type="button"
-                            data-id="${item.id}"
-                            class="btn btn-outline-danger btn-delete-zone"
-                            title="Delete">
-                            <i class="ti ti-trash"></i>
-                        </button>
-                    </div>
-                `;
+                    render: function(data, type, item) {
+                        return renderZoneActionButtons(item);
                     }
                 }
             ],

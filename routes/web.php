@@ -33,7 +33,10 @@ use App\Http\Controllers\Admin\Video360Controller;
 use App\Http\Controllers\Admin\ReviewUserController;
 use App\Http\Controllers\Admin\FAQController;
 use App\Http\Controllers\Admin\LanguageController;
-
+use App\Http\Controllers\Admin\SubDevelopmentController;
+use App\Http\Controllers\Admin\SubRegionalAdvantagesController;
+use App\Http\Controllers\Admin\ZoneClusterController;
+use App\Http\Controllers\Admin\SubResourceEnergyController;
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
     'middleware' => [
@@ -165,6 +168,86 @@ Route::group([
             Route::get('/zone/{id}/detail', [ZoneController::class, 'getZoneDetail']);
             Route::post('/zone/{id}/update', [ZoneController::class, 'updateZone']);
             Route::delete('/zone/{id}/delete', [ZoneController::class, 'deleteZone']);
+        });
+
+        /**
+         * Zone Cluster Routes (only for zone_class_id = 1)
+         */
+        Route::prefix('admin/zone-clusters')->middleware(['auth'])->group(function () {
+            // Fetch clusters by zone
+            Route::get('zone/{zoneId}', [ZoneClusterController::class, 'fetchClusters']);
+
+            // Get cluster detail
+            Route::get('{id}', [ZoneClusterController::class, 'getClusterDetail']);
+
+            // Create new cluster
+            Route::post('store', [ZoneClusterController::class, 'storeCluster']);
+
+            // Update cluster
+            Route::post('update/{id}', [ZoneClusterController::class, 'updateCluster']);
+
+            // Delete cluster
+            Route::delete('delete/{id}', [ZoneClusterController::class, 'deleteCluster']);
+        });
+
+        /**
+         * Sub Development Routes (only for zone_class_id = 1)
+         */
+        Route::prefix('admin/sub-developments')->middleware(['auth'])->group(function () {
+            // Fetch developments by zone
+            Route::get('zone/{zoneId}', [SubDevelopmentController::class, 'fetchDevelopments']);
+
+            // Get development detail
+            Route::get('{id}', [SubDevelopmentController::class, 'getDevelopmentDetail']);
+
+            // Create new development
+            Route::post('store', [SubDevelopmentController::class, 'storeDevelopment']);
+
+            // Update development
+            Route::post('update/{id}', [SubDevelopmentController::class, 'updateDevelopment']);
+
+            // Delete development
+            Route::delete('delete/{id}', [SubDevelopmentController::class, 'deleteDevelopment']);
+        });
+
+        /**
+         * Sub Regional Advantages Routes (only for zone_class_id = 1)
+         */
+        Route::prefix('admin/regional-advantages')->middleware(['auth'])->group(function () {
+            // Fetch advantages by zone
+            Route::get('zone/{zoneId}', [SubRegionalAdvantagesController::class, 'fetchAdvantages']);
+
+            // Get advantage detail
+            Route::get('{id}', [SubRegionalAdvantagesController::class, 'getAdvantageDetail']);
+
+            // Create new advantage
+            Route::post('store', [SubRegionalAdvantagesController::class, 'storeAdvantage']);
+
+            // Update advantage
+            Route::post('update/{id}', [SubRegionalAdvantagesController::class, 'updateAdvantage']);
+
+            // Delete advantage
+            Route::delete('delete/{id}', [SubRegionalAdvantagesController::class, 'deleteAdvantage']);
+        });
+
+        /**
+         * Sub Resource Energy Routes (only for zone_class_id = 1)
+         */
+        Route::prefix('admin/resource-energies')->middleware(['auth'])->group(function () {
+            // Fetch energies by zone
+            Route::get('zone/{zoneId}', [SubResourceEnergyController::class, 'fetchEnergies']);
+
+            // Get energy detail
+            Route::get('{id}', [SubResourceEnergyController::class, 'getEnergyDetail']);
+
+            // Create new energy
+            Route::post('store', [SubResourceEnergyController::class, 'storeEnergy']);
+
+            // Update energy
+            Route::post('update/{id}', [SubResourceEnergyController::class, 'updateEnergy']);
+
+            // Delete energy
+            Route::delete('delete/{id}', [SubResourceEnergyController::class, 'deleteEnergy']);
         });
 
         // tenant
