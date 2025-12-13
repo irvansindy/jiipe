@@ -20,8 +20,13 @@ class SubResourceEnergyRequest extends FormRequest
     public function rules(): array
     {
         $locales = array_keys(config('laravellocalization.supportedLocales'));
+        $isUpdate = $this->route('id') !== null;
+
         $rules = [
             'zone_id' => 'required|integer|exists:zones,id',
+            'image' => $isUpdate ? 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048' : 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:1024',
+            'order' => 'nullable|integer|min:0',
         ];
 
         foreach ($locales as $locale) {
@@ -40,6 +45,9 @@ class SubResourceEnergyRequest extends FormRequest
         $locales = config('laravellocalization.supportedLocales');
         $attributes = [
             'zone_id' => 'Zone',
+            'image' => 'Image',
+            'icon' => 'Icon',
+            'order' => 'Display Order',
         ];
 
         foreach ($locales as $locale => $properties) {
@@ -59,6 +67,11 @@ class SubResourceEnergyRequest extends FormRequest
         return [
             'zone_id.required' => 'Zone is required',
             'zone_id.exists' => 'Selected zone does not exist',
+            'image.required' => 'Image is required',
+            'image.image' => 'File must be an image',
+            'image.max' => 'Image size cannot exceed 2MB',
+            'icon.image' => 'Icon file must be an image',
+            'icon.max' => 'Icon size cannot exceed 1MB',
             'name.*.required' => 'Name field is required for all languages',
         ];
     }

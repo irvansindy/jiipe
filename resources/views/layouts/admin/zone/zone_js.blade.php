@@ -112,7 +112,7 @@
                 </button>
             `;
 
-            // Dropdown untuk Zone Cluster, Sub Development, dan Regional Advantages (hanya untuk zone_class_id = 1)
+            // Dropdown untuk Zone Management (hanya untuk zone_class_id = 1)
             if (item.zone_class_id === 1) {
                 // Escape single quotes in zone name
                 let zoneName = (item.translations && item.translations.length > 0 ?
@@ -150,6 +150,13 @@
                                href="javascript:void(0)"
                                onclick="openRegionalAdvantagesModal(${item.id}, '${zoneName}')">
                                 <i class="ti ti-award me-2"></i> Manage Advantages
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               href="javascript:void(0)"
+                               onclick="openResourceEnergyModal(${item.id}, '${zoneName}')">
+                                <i class="ti ti-bolt me-2"></i> Manage Resources
                             </a>
                         </li>
                     </ul>

@@ -109,7 +109,7 @@ $(document).ready(function() {
                     data: 'image',
                     render: function(data) {
                         if (data) {
-                            let imageUrl = data.startsWith('http') ? data : '{{ url('/uploads') }}/' + data;
+                            let imageUrl = data.startsWith('http') ? data : '{{ url('/uploads/zones/facilities') }}/' + data;
                             return `<img src="${imageUrl}" class="img-thumbnail" style="max-width:60px;max-height:60px;">`;
                         }
                         return '<span class="text-muted">No image</span>';
@@ -119,7 +119,7 @@ $(document).ready(function() {
                     data: 'icon',
                     render: function(data) {
                         if (data) {
-                            let iconUrl = data.startsWith('http') ? data : '{{ url('/uploads') }}/' + data;
+                            let iconUrl = data.startsWith('http') ? data : '{{ url('/uploads/zones/facilities') }}/' + data;
                             return `<img src="${iconUrl}" class="img-thumbnail" style="max-width:40px;max-height:40px;">`;
                         }
                         return '<span class="text-muted">No icon</span>';
@@ -237,7 +237,7 @@ $(document).ready(function() {
 
                         // Show current image/icon
                         if (data.image) {
-                            let imageUrl = data.image.startsWith('http') ? data.image : '{{ url('/uploads') }}/' + data.image;
+                            let imageUrl = data.image.startsWith('http') ? data.image : '{{ url('/uploads/zones/facilities') }}/' + data.image;
                             $('#preview_energy_image').html(`
                                 <img src="${imageUrl}" class="img-thumbnail" style="max-width:200px;max-height:200px;">
                                 <p class="text-muted small mt-1">Current image (upload new to replace)</p>
@@ -245,7 +245,7 @@ $(document).ready(function() {
                         }
 
                         if (data.icon) {
-                            let iconUrl = data.icon.startsWith('http') ? data.icon : '{{ url('/uploads') }}/' + data.icon;
+                            let iconUrl = data.icon.startsWith('http') ? data.icon : '{{ url('/uploads/zones/facilities') }}/' + data.icon;
                             $('#preview_energy_icon').html(`
                                 <img src="${iconUrl}" class="img-thumbnail" style="max-width:150px;max-height:150px;">
                                 <p class="text-muted small mt-1">Current icon (upload new to replace)</p>

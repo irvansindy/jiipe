@@ -70,6 +70,7 @@
                 @include('layouts.admin.zone.cluster.modal_zone_cluster')
                 @include('layouts.admin.zone.sub_development.modal_sub_development')
                 @include('layouts.admin.zone.sub_regional.modal_sub_regional')
+                @include('layouts.admin.zone.sub_resource.modal_sub_resource')
             </div>
         </div>
     </div>
@@ -90,4 +91,5 @@
     @include('layouts.admin.zone.cluster.zone_cluster_js')
     @include('layouts.admin.zone.sub_development.sub_development_js')
     @include('layouts.admin.zone.sub_regional.sub_regional_js')
+    @include('layouts.admin.zone.sub_resource.sub_resource_js')
 @endpush
