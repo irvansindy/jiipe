@@ -19,7 +19,7 @@ class AboutUsContentSeeder extends Seeder
 
         // Content 1: JIIPE Contributions
         $content1 = AboutUsContent::create([
-            'image' => 'profil-sec1.jpg', // Sesuaikan dengan nama file yang ada
+            'image' => 'oHRurlztpSwo_1765214335.jpg', // Sesuaikan dengan nama file yang ada
             'video_url' => 'https://www.youtube.com/watch?v=bPyOISQp_Mw',
         ]);
 
