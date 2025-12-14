@@ -109,13 +109,25 @@ Route::group([
         Route::delete('delete-home-slider/{id}', [SliderController::class,'destroy'])->name('delete-home-slider');
 
         Route::get('/menu-permission', [MenuPermissionController::class, 'index'])->name('menu-permission');
-        Route::get('/fetch-menu-permission', [MenuPermissionController::class, 'fetchData'])->name('fetch-menu-permission');
-        Route::get('/fetch-menu-permission-v2', [MenuPermissionController::class, 'fetchMenu'])->name('fetch-menu-permission-v2');
-        Route::get('/fetch-detail-menu', [MenuPermissionController::class, 'showData'])->name('fetch-detail-menu');
-        Route::get('/fetch-child-menu', [MenuPermissionController::class, 'getChildMenus'])->name('fetch-child-menu');
-        Route::get('/fetch-parent-menu', [MenuPermissionController::class, 'getChildMenus'])->name('fetch-parent-menu');
-        Route::post('/store-menu-permission', [MenuPermissionController::class, 'storeData'])->name('store-menu-permission');
-        Route::post('/update-menu-permission', [MenuPermissionController::class, 'updateData'])->name('update-menu-permission');
+        // Tambahkan route ini di web.php atau routes admin Anda
+        Route::prefix('admin/menu-permission')->middleware(['auth'])->group(function () {
+            Route::get('/', [MenuPermissionController::class, 'index'])->name('menu-permission.index');
+            Route::get('/fetch', [MenuPermissionController::class, 'fetchMenu'])->name('fetch-menu-permission-v2');
+            Route::get('/fetch-data', [MenuPermissionController::class, 'fetchData'])->name('fetch-menu-permission');
+            Route::post('/store', [MenuPermissionController::class, 'storeData'])->name('store-menu-permission');
+            Route::get('/detail', [MenuPermissionController::class, 'showData'])->name('fetch-detail-menu');
+            Route::post('/update', [MenuPermissionController::class, 'updateData'])->name('update-menu-permission');
+            Route::get('/child-menus', [MenuPermissionController::class, 'getChildMenus'])->name('fetch-child-menu');
+            Route::post('/toggle-status', [MenuPermissionController::class, 'toggleStatus'])->name('toggle-menu-status');
+        });
+
+        // Route::get('/fetch-menu-permission', [MenuPermissionController::class, 'fetchData'])->name('fetch-menu-permission');
+        // Route::get('/fetch-menu-permission-v2', [MenuPermissionController::class, 'fetchMenu'])->name('fetch-menu-permission-v2');
+        // Route::get('/fetch-detail-menu', [MenuPermissionController::class, 'showData'])->name('fetch-detail-menu');
+        // Route::get('/fetch-child-menu', [MenuPermissionController::class, 'getChildMenus'])->name('fetch-child-menu');
+        // Route::get('/fetch-parent-menu', [MenuPermissionController::class, 'getChildMenus'])->name('fetch-parent-menu');
+        // Route::post('/store-menu-permission', [MenuPermissionController::class, 'storeData'])->name('store-menu-permission');
+        // Route::post('/update-menu-permission', [MenuPermissionController::class, 'updateData'])->name('update-menu-permission');
 
         Route::get('users', [UserController::class,'index'])->name('users');
         Route::get('fetch-users', [UserController::class,'fetchUser'])->name('fetch-users');
