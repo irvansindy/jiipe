@@ -8,10 +8,7 @@
         <div class="clear"></div>
 
         <div class="testimonial-list owl-carousel owl-theme">
-            @php
-                $reviews = app(\App\Http\Controllers\Client\HomeController::class)->getReviews();
-            @endphp
-            @forelse($reviews as $review)
+            @forelse($reviews as $index => $review)
                 <div class="card text-center">
                     <div class="card-body shadow-effect">
                         <span class="icon"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
@@ -19,7 +16,10 @@
                     </div>
                     <div class="card-footer">
                         <div class="profile-card__img">
-                            <img src="{{ asset('uploads/review/'.$review['photo']) }}" alt="{{ $review['name'] }}">
+                            {{-- ⚡ LAZY LOADING: Images --}}
+                            <img {{ $index < 3 ? 'src' : 'data-src' }}="{{ asset('uploads/review/'.$review['photo']) }}"
+                                 {{ $index < 3 ? '' : 'loading=lazy' }}
+                                 alt="{{ $review['name'] }}">
                         </div>
                         <div class="profile-card__info">
                             <h6>{{ $review['name'] }}</h6>
@@ -40,6 +40,7 @@
     </div>
 </section>
 
+@push('scripts')
 <script src="{{ asset('asset/js/owlslider/owl.carousel.min.js') }}"></script>
 <script>
     $('.testimonial-list').owlCarousel({
@@ -48,6 +49,7 @@
         nav: true,
         dots: true,
         center: true,
+        lazyLoad: true, // ⚡ Enable lazy loading
         autoplay: true,
         autoplayTimeout: 5000,
         autoplayHoverPause: true,
@@ -56,15 +58,10 @@
             '<i class="fa fa-chevron-right"></i>'
         ],
         responsive: {
-            0: {
-                items: 1
-            },
-            768: {
-                items: 2
-            },
-            992: {
-                items: 3
-            }
+            0: { items: 1 },
+            768: { items: 2 },
+            992: { items: 3 }
         }
     });
 </script>
+@endpush

@@ -6,9 +6,6 @@
             </div>
         </div>
         <div class="row">
-            @php
-                $news = app(\App\Http\Controllers\Client\HomeController::class)->getNews();
-            @endphp
             @foreach($news as $key => $item)
                 <div class="col-lg-{{ $key == 0 ? '30' : '15' }} col-sm-60">
                     <div class="items {{ $key == 0 ? 'active' : '' }} pb-lg-4 pb-sm-1">

@@ -43,6 +43,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous">
     </script>
 
+    <!-- jQuery (if not already included) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Owl Carousel JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/js/bootstrap.min.js"
         crossorigin="anonymous"></script>
@@ -62,7 +68,7 @@
     <link rel="stylesheet" href="{{ asset('asset/css/creative/creativeresponsive.css') }}?ver=1.0.25">
     <link rel="stylesheet" href="{{ asset('asset/js/slick/slick.min.js') }}">
     <link rel="stylesheet" href="{{ asset('asset/css/cdn/swiper.css') }}">
-    
+
     @stack('css')
     {{-- Google Webmaster & Analytics --}}
     {!! $google_tools_webmaster ?? '' !!}
@@ -116,6 +122,10 @@
             s.parentNode.insertBefore(hm, s);
         })();
     </script>
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
 </head>
 
 <body>

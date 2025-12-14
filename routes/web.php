@@ -45,9 +45,20 @@ Route::group([
         'localeViewPath'
     ]
 ], function () {
-    Route::get('/', function () {
-        return view('layouts.client.home.index');
-    })->name('home');
+
+    // ⚡ OPTIMIZED HOME ROUTE
+    // Menggunakan method index() yang sudah fetch semua data sekaligus
+
+    Route::get('/', [HomeClient::class, 'index'])->name('home');
+
+    // Optional: Route untuk clear cache manual (untuk admin)
+    Route::middleware(['auth', 'role:super-admin'])->group(function () {
+        Route::post('/admin/clear-home-cache', function () {
+            HomeClient::clearCache();
+            return back()->with('success', 'Home page cache cleared successfully!');
+        })->name('admin.clear-home-cache');
+    });
+
     Route::get('profile', [ProfileController::class,'index'])->name('profile');
     Route::get('industrial-estate', [IndustrialEstateController::class,'index'])->name('industrial-estate');
     Route::get('/industrial-estate/id/{id}', [IndustrialEstateController::class, 'zoneDetail'])->name('area.detail');

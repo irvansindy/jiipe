@@ -3,6 +3,14 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\HomeSlider;
+use App\Models\AreaShowCase;
+use App\Models\Tenant;
+use App\Models\VideoTour;
+use App\Models\Review;
+use App\Models\FrequentlyAskedQuestions;
+use App\Models\News;
+use App\Observers\HomeCacheObserver;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Models\Language;
 use Illuminate\Support\Facades\Schema;
@@ -26,9 +34,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // if (app()->environment('local')) {
-        //     URL::forceScheme('https');
-        // }
         Schema::defaultStringLength(191);
 
         if (Schema::hasTable('languages')) {
@@ -103,5 +108,13 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('menus', $menus);
         });
+
+        HomeSlider::observe(HomeCacheObserver::class);
+        AreaShowCase::observe(HomeCacheObserver::class);
+        Tenant::observe(HomeCacheObserver::class);
+        VideoTour::observe(HomeCacheObserver::class);
+        Review::observe(HomeCacheObserver::class);
+        FrequentlyAskedQuestions::observe(HomeCacheObserver::class);
+        News::observe(HomeCacheObserver::class);
     }
 }

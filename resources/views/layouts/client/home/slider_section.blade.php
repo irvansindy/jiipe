@@ -1,60 +1,49 @@
 <link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}">
-
 <section class="home-slider creative">
     <div class="homewrapper">
-        <div class="home-box owl-carousel owl-theme">
-
-            @php
-                $sliders = app(\App\Http\Controllers\Client\HomeController::class)->getSliders();
-            @endphp
-
-            @foreach ($sliders as $slider)
-                <div class="item">
-                    <div class="embed-responsive embed-responsive-21by9">
-                        <div class="video-wrapper">
-
-                            <video class="embed-responsive-item home-video" muted preload="none">
-                                <source data-src="{{ asset('uploads/home-slider/' . $slider['file']) }}"
-                                    type="video/mp4">
-                            </video>
-
-                            <!-- Skeleton Loader -->
-                            <div class="video-skeleton">
-                                <div class="skeleton shimmer"></div>
-                            </div>
-
-                            <div class="home-container">
-                                <div class="home-caption">
-                                    <h2 class="title">{{ $slider['title'] }}</h2>
-                                    <span class="sub-title">
-                                        <p>{{ $slider['description'] }}</p>
-                                    </span>
-                                    <ul class="button">
-                                        <li>
-                                            <a href="{{ route('contact') }}" class="btn_slider btn-light btn-red">
-                                                @lang('system.contact us')
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://www.jiipe.com/#videojiipe"
-                                                class="btn_slider btn-light btn-blue">
-                                                @lang('system.video profile')
-                                            </a>
-                                        </li>
-                                    </ul>
+        <div class="home-box owl-carousel owl-theme owl-loaded">
+            <div class="owl-stage-outer">
+                <div class="owl-stage">
+                    {{-- @php
+                        $sliders = app(\App\Http\Controllers\Client\HomeController::class)->getSliders();
+                    @endphp --}}
+                    @foreach ($sliders as $slider)
+                        <div class="owl-item" style="width: 1580.83px; margin-right: 15px;">
+                            <div class="embed-responsive embed-responsive-21by9">
+                                <video class="embed-responsive-item" muted="">
+                                    <source src="{{ asset('uploads/home-slider/' . $slider['file']) }}"
+                                        type="video/mp4">
+                                </video>
+                                <div class="home-container">
+                                    <div class="home-caption">
+                                        <h2 class="title">{{ $slider['title'] }}</h2>
+                                        <span class="sub-title">
+                                            <p>{{ $slider['description'] }}</p>
+                                        </span>
+                                        <ul class="button">
+                                            <li><a href="{{ route('contact') }}"
+                                                    class="btn_slider btn-light btn-red">@lang('system.contact us')</a></li>
+                                            <li><a href="https://www.jiipe.com/#videojiipe"
+                                                    class="btn_slider btn-light btn-blue">@lang('system.video profile')</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
-                    </div>
+                    @endforeach
                 </div>
-            @endforeach
-
+            </div>
+            <div class="owl-nav disabled">
+                <button type="button" role="presentation" class="owl-prev"><span
+                        aria-label="Previous">‹</span></button>
+                <button type="button" role="presentation" class="owl-next"><span aria-label="Next">›</span></button>
+            </div>
+            <div class="owl-dots disabled"></div>
         </div>
     </div>
 
-    {{-- Navigasi Box --}}
-    <div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom justify-center" style="width:100%;">
+    <div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom justify-center"
+        style="display: block; width: 100%;">
         <ul>
             <li class="hover">
                 <a href="#contact">
@@ -79,7 +68,18 @@
                 </a>
             </li>
             <li>
-                <a href="/asset/brochure/323829b435(Comp) eBrochure - JIIPE Brochure English.pdf" target="_blank">
+                <a href="/asset/brochure/61a6ed0108(Comp) eBrochure - JIIPE Brochure English.pdf" target="_blank"
+                    class="hashmb d-none">
+                    <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
+                        <div class="icon"><i class="fa fa-book-open"></i></div>
+                        <div class="text">
+                            <p>@lang('system.download')</p>
+                            <h6>@lang('system.jiipe e-brochure')</h6>
+                        </div>
+                    </div>
+                </a>
+                <a href="/asset/brochure/323829b435(Comp) eBrochure - JIIPE Brochure English.pdf" target="_blank"
+                    class="hashds">
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-book-open"></i></div>
                         <div class="text">
@@ -101,86 +101,55 @@
                 </a>
             </li>
         </ul>
+        <div class="clear"></div>
     </div>
 </section>
-<style>
-    .video-wrapper {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        background: #000;
-    }
-
-    .video-wrapper video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .video-skeleton {
-        position: absolute;
-        inset: 0;
-        z-index: 5;
-    }
-
-    .skeleton {
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(100deg,
-                #f7f7f7 35%,
-                #e0e0e0 50%,
-                #f7f7f7 65%);
-        background-size: 200% 100%;
-    }
-
-
-    .shimmer {
-        animation: shimmer 1.3s infinite linear;
-    }
-
-    @keyframes shimmer {
-        to {
-            background-position: -200% 0;
-        }
-    }
-</style>
 <script>
     $(document).ready(function() {
-
         var homeSlider = $('.home-box').owlCarousel({
             items: 1,
             loop: true,
+            margin: 15,
+            nav: false,
+            dots: false,
             autoplay: true,
             autoplayTimeout: 8000,
-            smartSpeed: 1000,
+            autoplayHoverPause: true,
             animateOut: 'fadeOut',
             animateIn: 'fadeIn',
-            onInitialized: loadAndPlayVideo,
-            onTranslated: loadAndPlayVideo
+            smartSpeed: 1000,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                768: {
+                    items: 1
+                },
+                1024: {
+                    items: 1
+                }
+            },
+            onInitialized: function(event) {
+                playCurrentVideo(event);
+            },
+            onTranslated: function(event) {
+                stopAllVideos();
+                playCurrentVideo(event);
+            },
+            onChanged: function(event) {
+                stopAllVideos();
+            }
         });
 
-        function loadAndPlayVideo() {
-            stopAllVideos();
-
-            var $active = $('.home-box .owl-item.active');
-            var video = $active.find('video').get(0);
-            var source = $active.find('source');
-            var skeleton = $active.find('.video-skeleton');
-
-            if (!video || !source.length) return;
-
-            if (!source.attr('src')) {
-                source.attr('src', source.data('src'));
-                video.load();
-            }
-
-            skeleton.show();
-
-            video.oncanplay = function() {
-                skeleton.fadeOut(400);
+        function playCurrentVideo(event) {
+            var activeItem = $('.home-box .owl-item.active');
+            var video = activeItem.find('video').get(0);
+            if (video) {
                 video.currentTime = 0;
-                video.play().catch(() => {});
-            };
+                video.play().catch(function(error) {
+                    console.log('Video autoplay prevented:', error);
+                });
+            }
         }
 
         function stopAllVideos() {
@@ -189,15 +158,27 @@
                 this.currentTime = 0;
             });
         }
-
-        $('.home-box video').prop('muted', true).attr({
-            playsinline: '',
-            'webkit-playsinline': ''
+        $('.owl-prev').click(function() {
+            homeSlider.trigger('prev.owl.carousel');
         });
-
+        $('.owl-next').click(function() {
+            homeSlider.trigger('next.owl.carousel');
+        });
+        $(document).keydown(function(e) {
+            if (e.keyCode == 37) {
+                homeSlider.trigger('prev.owl.carousel');
+            }
+            if (e.keyCode == 39) {
+                homeSlider.trigger('next.owl.carousel');
+            }
+        });
+        $('.home-box video').each(function() {
+            this.muted = true;
+            this.setAttribute('playsinline', '');
+            this.setAttribute('webkit-playsinline', '');
+        });
         $('.home-box video').on('ended', function() {
             homeSlider.trigger('next.owl.carousel');
         });
-
     });
 </script>
