@@ -121,7 +121,7 @@
                             </div>
                             <div class="text">
                                 <p>@lang('system.watch')</p>
-                            <h6 class="title">@lang('system.video tour')</h6>
+                                <h6 class="title">@lang('system.video tour')</h6>
                             </div>
                         </div>
                     </a>

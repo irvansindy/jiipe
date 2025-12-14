@@ -349,6 +349,7 @@ Route::group([
         Route::get('company', [CareerController::class,'fetchCareerCompany'])->name('company');
 
         Route::get('contact-overview', [ContactController::class,'index'])->name('contact-overview');
+        Route::get('fetch-contact-overview', [ContactController::class,'fetchContactOverview'])->name('fetch-contact-overview');
         Route::post('store-contact-overview', [ContactController::class,'storeContactOverview'])->name('store-contact-overview');
     });
 });
