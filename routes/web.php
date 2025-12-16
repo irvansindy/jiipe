@@ -14,6 +14,7 @@ use App\Http\Controllers\Client\ContactController as ContactClient;
 use App\Http\Controllers\Client\CareerController as CareerClient;
 use App\Http\Controllers\Client\GalleryController as GalleryClient;
 use App\Http\Controllers\Client\AppointmentController as AppointmentClient;
+use App\Http\Controllers\Client\BrochureDownloadController;
 // admin side
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NewsAndArticleController;
@@ -57,6 +58,21 @@ Route::group([
             HomeClient::clearCache();
             return back()->with('success', 'Home page cache cleared successfully!');
         })->name('admin.clear-home-cache');
+    });
+
+    // Client routes
+    Route::group([
+        'prefix' => LaravelLocalization::setLocale(),
+        'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
+    ], function () {
+
+        // Method 1: Download through controller (recommended)
+        Route::get('/brochure/download/{id}', [BrochureDownloadController::class, 'download'])
+            ->name('brochure.download');
+
+        // Method 2: Track and redirect to direct file
+        Route::get('/brochure/track/{id}', [BrochureDownloadController::class, 'trackAndRedirect'])
+            ->name('brochure.track');
     });
 
     Route::get('profile', [ProfileController::class,'index'])->name('profile');
@@ -107,7 +123,12 @@ Route::group([
     // Route::get('/dashboard', function () {
     //     return view('layouts.admin.dashboard.index');
     // })->name('dashboard');
+    // Dashboard routes
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/visitor-chart', [DashboardController::class, 'getVisitorChartData'])->name('dashboard.visitor-chart');
+    Route::post('/dashboard/clear-cache', [DashboardController::class, 'clearCache'])
+        ->middleware('role:super-admin')
+        ->name('dashboard.clear-cache');
     Route::get('/news-blog', [NewsAndArticleController::class, 'index'])->name('news-blog');
     Route::post('/appointment/store', [AppointmentClient::class, 'storeQuickAppointment'])->name('store-quick-appointment');
 

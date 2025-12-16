@@ -3,6 +3,16 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\PageAppointment;
+use App\Models\Career;
+use App\Models\CareerEmail;
+use App\Models\BrochureDownload;
+use App\Models\Visitor;
+use App\Observers\AppointmentObserver;
+use App\Observers\CareerObserver;
+use App\Observers\CareerEmailObserver;
+use App\Observers\BrochureDownloadObserver;
+use App\Observers\VisitorObserver;
 use App\Models\HomeSlider;
 use App\Models\AreaShowCase;
 use App\Models\Tenant;
@@ -116,5 +126,11 @@ class AppServiceProvider extends ServiceProvider
         Review::observe(HomeCacheObserver::class);
         FrequentlyAskedQuestions::observe(HomeCacheObserver::class);
         News::observe(HomeCacheObserver::class);
+        // Register observers for auto cache clearing
+        PageAppointment::observe(AppointmentObserver::class);
+        Career::observe(CareerObserver::class);
+        CareerEmail::observe(CareerEmailObserver::class);
+        BrochureDownload::observe(BrochureDownloadObserver::class);
+        Visitor::observe(VisitorObserver::class);
     }
 }

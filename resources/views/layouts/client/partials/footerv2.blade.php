@@ -88,24 +88,24 @@
 
                                     {{-- Mobile Version --}}
                                     <a href="{{ $brochureUrl }}" target="_blank"
-                                        class="hashmb {{ $isMobile ? '' : 'd-none' }}" download>
+                                        class="hashmb {{ $isMobile ? '' : 'd-none' }} track-brochure-download" data-brochure-id="{{ $brochure->translations->first()->id }}" download>
                                         Download Brochure
                                     </a>
 
                                     {{-- Desktop Version --}}
                                     <a href="{{ $brochureUrl }}" target="_blank"
-                                        class="hashds {{ $isMobile ? 'd-none' : '' }}">
+                                        class="hashds {{ $isMobile ? 'd-none' : '' }} track-brochure-download" data-brochure-id="{{ $brochure->translations->first()->id }}" download>
                                         Download Brochure
                                     </a>
                                 @else
                                     {{-- Fallback to static files if no active brochure --}}
                                     <a href="/asset/brochure/(Mobile Version) E-Brochure JIIPE-Ineractive.pdf"
-                                        target="_blank" class="hashmb {{ $isMobile ? '' : 'd-none' }}">
+                                        target="_blank" class="hashmb {{ $isMobile ? '' : 'd-none' }} track-brochure-download">
                                         Download Brochure
                                     </a>
 
                                     <a href="/asset/brochure/(Desktop Version) E-Brochure JIIPE-Ineractive.pdf"
-                                        target="_blank" class="hashds {{ $isMobile ? 'd-none' : '' }}">
+                                        target="_blank" class="hashds {{ $isMobile ? 'd-none' : '' }} track-brochure-download">
                                         Download Brochure
                                     </a>
                                 @endif
@@ -159,3 +159,51 @@
     </div>
 
 </footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Track brochure downloads
+        const brochureLinks = document.querySelectorAll('.track-brochure-download');
+
+        brochureLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const brochureId = this.getAttribute('data-brochure-id');
+
+                if (brochureId) {
+                    // Send tracking request (non-blocking)
+                    trackBrochureDownload(brochureId);
+                }
+            });
+        });
+    });
+
+    /**
+     * Track brochure download via AJAX
+     */
+    function trackBrochureDownload(brochureId) {
+        // Use sendBeacon for non-blocking request
+        if (navigator.sendBeacon) {
+            const data = new FormData();
+            data.append('brochure_id', brochureId);
+            data.append('_token', document.querySelector('meta[name="csrf-token"]')?.content || '');
+
+            navigator.sendBeacon('/api/track-brochure-download', data);
+        } else {
+            // Fallback to fetch
+            fetch('/api/track-brochure-download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+                },
+                body: JSON.stringify({
+                    brochure_id: brochureId
+                }),
+                keepalive: true // Important: keeps request alive even if page closes
+            }).catch(err => {
+                // Silent fail
+                console.error('Tracking failed:', err);
+            });
+        }
+    }
+</script>
