@@ -22,7 +22,7 @@
                 <div class="col-lg-18 col-sm-60 garis-lurus-right">
                     <div class="widget">
                         <h4 class="widget-title line">SITE OFFICE</h4>
-                        <div class="widget-office">
+                        <div class="widget-office">s
                             <p class="title">PT. Berkah Kawasan Manyar Sejahtera</p>
                             <p>
                                 Jl. Raya Manyar Km. 11,<br>

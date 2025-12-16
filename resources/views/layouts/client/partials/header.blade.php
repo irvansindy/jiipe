@@ -37,7 +37,7 @@
                                 <i class="fa fa-calendar-alt"></i>
                             </div>
                             <a class="text-appointment mx-1 my-1"
-                                href="{{ $settings['section2_home_header_link_button'] ?? '#' }}"
+                                href="{{ $settings['contact2'] ?? '#contact2' }}"
                                 title="{{ $settings['section2_home_header_button_text'] ?? '' }}">
                                 @lang('system.quick appointment')
                             </a>
