@@ -35,6 +35,8 @@ class DatabaseSeeder extends Seeder
             CareerSeeder::class,
             GallerySeeder::class,
             AboutUsSeeder::class,
+            AboutUsContentSeeder::class,
+            ContactOverviewSeeder::class,
         ]);
     }
 }
