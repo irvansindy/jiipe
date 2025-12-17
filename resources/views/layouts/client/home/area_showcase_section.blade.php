@@ -1,44 +1,14 @@
-{{-- ============================================
-     area_showcase_section.blade.php (OPTIMIZED)
-     ============================================ --}}
-<link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}">
-
-<section class="kawasan-slider">
-    <div id="kawasan_wrapper_one" class="kawasan-slider-one carousel slide" data-ride="carousel" data-interval="6000">
-        <div class="carousel-inner">
-            @foreach ($showcases as $i => $showcase)
-                <div class="carousel-item {{ $i == 0 ? 'active' : '' }}">
-                    {{-- ⚡ LAZY LOADING: First image eager, rest lazy --}}
-                    <img src="{{ $i === 0 ? asset($showcase['image']) : '' }}"
-                         {{ $i === 0 ? '' : 'loading=lazy data-src=' . asset($showcase['image']) }}
-                         class="d-block w-100"
-                         alt="{{ $showcase['title'] }}">
-                </div>
-            @endforeach
-        </div>
-    </div>
-    <ol class="carousel-indicators">
-        @foreach ($showcases as $i => $showcase)
-            <li data-target="#kawasan_wrapper_one" data-slide-to="{{ $i }}" data-attr="{{ $i }}"
-                class="data_{{ $i }} {{ $i == 0 ? 'active' : '' }}">
-                <div class="wrapper-box">
-                    <h4 class="title">{{ $showcase['title'] }}</h4>
-                    <span class="area">{{ $showcase['description'] }}</span>
-                </div>
-            </li>
-        @endforeach
-    </ol>
-</section>
-
 <section class="profile-jiipe">
     <div class="prelative container py-5">
         <div class="row">
             <div class="col-lg-30 col-sm-60">
                 <div class="jiipe-images">
-                    <img src="{{ asset('asset/images/88c9d580881605997852JIIPE INVESTOR UPDATE (website) (2).jpg') }}"
+                    {{-- Encode URL dengan benar untuk handle spasi --}}
+                    <img src="{{ asset('uploads/blog/' . rawurlencode('ab135-JIIPE INVESTOR UPDATE (website).jpg')) }}"
                         class="img-fluid"
                         alt="JIIPE Profile"
-                        loading="lazy">
+                        loading="lazy"
+                        onerror="this.onerror=null; this.src='{{ asset('uploads/blog/ab135-JIIPE INVESTOR UPDATE (website).jpg') }}';">
                 </div>
             </div>
             <div class="col-lg-30 col-sm-60">
@@ -64,8 +34,8 @@
                             are flocking to JIIPE.
                         </p>
                         <ul class="button">
-                            <li><a href="cn/home/blogDetail/id/403">了解更多信息</a></li>
-                            <li><a href="home/blogDetail/id/403">Find More info</a></li>
+                            <li><a href="{{ route('blog.detail', ['id' => 403]) }}">了解更多信息</a></li>
+                            <li><a href="{{ route('blog.detail', ['id' => 403]) }}">Find More info</a></li>
                         </ul>
                     </div>
                 </div>
@@ -75,17 +45,3 @@
     @include('layouts.client.home.partials.navigation_box')
     <div class="clear"></div>
 </section>
-
-<section class="video-jiipe" id="videojiipe">
-    <div class="embed-responsive embed-responsive-21by9">
-        <video class="embed-responsive-item" controls preload="metadata">
-            @if (app()->getLocale() == 'zh')
-                <source src="https://jiipe.com//Video_jiipe/Company%20Profile%20JIIPE%20CINA%20-%20SUB%20English.mp4" type="video/mp4">
-            @else
-                <source src="{{ asset('asset/video/62e1d25a28720.mp4') }}" type="video/mp4">
-            @endif
-        </video>
-    </div>
-</section>
-
-@include('layouts.client.home.partials.navigation_box')

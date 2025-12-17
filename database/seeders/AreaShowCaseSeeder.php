@@ -14,7 +14,7 @@ class AreaShowCaseSeeder extends Seeder
         AreaShowCaseTranslation::truncate();
         $showcases = [
             [
-                'image' => 'asset/masterplant-picture/.tmb/thumb_48b7b-masterplan-industri-des-2024_resize_1312_500.jpg',
+                'image' => 'thumb_48b7b-masterplan-industri-des-2024_resize_1312_500.jpg',
                 'position' => 1,
                 'is_active' => 1,
                 'translations' => [
@@ -45,7 +45,7 @@ class AreaShowCaseSeeder extends Seeder
                 ],
             ],
             [
-                'image' => 'asset/masterplant-picture/.tmb/thumb_0efdc-ports-masterplan-2024_resize_1312_500.jpg',
+                'image' => 'thumb_0efdc-ports-masterplan-2024_resize_1312_500.jpg',
                 'position' => 2,
                 'is_active' => 1,
                 'translations' => [
@@ -76,7 +76,7 @@ class AreaShowCaseSeeder extends Seeder
                 ],
             ],
             [
-                'image' => 'asset/masterplant-picture/.tmb/thumb_a34c9-residential_resize_1312_500.jpg',
+                'image' => 'thumb_a34c9-residential_resize_1312_500.jpg',
                 'position' => 3,
                 'is_active' => 1,
                 'translations' => [
