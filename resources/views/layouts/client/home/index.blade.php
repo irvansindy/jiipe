@@ -12,7 +12,7 @@
     @include('components.appointment-form')
 @endsection
 
-@push('scripts')
+@push('js')
 <script>
     // ⚡ Preload critical resources
     document.addEventListener('DOMContentLoaded', function() {
