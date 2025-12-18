@@ -243,6 +243,8 @@
             });
         }
     </script>
+    {{-- Global Tracking Script - TAMBAHKAN INI --}}
+    <script src="{{ asset('asset/js/global-tracking.js') }}"></script>
     @stack('js')
 </body>
 <!-- [Body] end -->
