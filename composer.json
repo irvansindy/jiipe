@@ -34,7 +34,8 @@
         },
         "files": [
             "app/Helpers/CategoryHelper.php",
-            "app/Helpers/UploadHelper.php"
+            "app/Helpers/UploadHelper.php",
+            "app/Helpers/ImageHelper.php"
         ]
     },
     "autoload-dev": {

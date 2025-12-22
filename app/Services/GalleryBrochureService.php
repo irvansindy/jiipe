@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\GalleryBrochure;
 use App\Models\GalleryBrochuresTranslations;
+use App\Helpers\ImageHelper; // ✅ Import ImageHelper
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Exception;
@@ -47,7 +48,9 @@ class GalleryBrochureService
 
         return [
             'id' => $brochure->id,
-            'image' => $brochure->image && $brochure->image !== 'default.jpg' ? 'brochures/images/' . $brochure->image : $brochure->image,
+            'image' => $brochure->image && $brochure->image !== 'default.jpg'
+                ? 'brochures/images/' . $brochure->image
+                : $brochure->image,
             'is_active' => $brochure->is_active,
             'translations' => $translations,
         ];
@@ -63,8 +66,9 @@ class GalleryBrochureService
         try {
             $imagePath = null;
 
+            // ✅ Upload dan optimize image ke WebP
             if ($imageFile) {
-                $imagePath = $this->uploadFile($imageFile, 'brochures/images');
+                $imagePath = $this->uploadAndOptimizeImage($imageFile, 'brochures/images');
             }
 
             $brochure = GalleryBrochure::create([
@@ -85,6 +89,7 @@ class GalleryBrochureService
         } catch (Exception $e) {
             DB::rollBack();
 
+            // Cleanup jika error
             if (isset($imagePath) && $imagePath) {
                 $this->deleteFile($imagePath, 'brochures/images');
             }
@@ -105,11 +110,15 @@ class GalleryBrochureService
 
             $oldImagePath = $brochure->image;
 
+            // ✅ Upload dan optimize image baru
             if ($imageFile) {
+                // Delete old image
                 if ($oldImagePath && $oldImagePath !== 'default.jpg') {
                     $this->deleteFile($oldImagePath, 'brochures/images');
                 }
-                $brochure->image = $this->uploadFile($imageFile, 'brochures/images');
+
+                // Upload dan optimize ke WebP
+                $brochure->image = $this->uploadAndOptimizeImage($imageFile, 'brochures/images');
             }
 
             $brochure->is_active = $data['is_active'];
@@ -138,12 +147,19 @@ class GalleryBrochureService
         try {
             $brochure = GalleryBrochure::findOrFail($id);
 
-            // Delete main image
+            // Delete main image (termasuk WebP)
             if ($brochure->image && $brochure->image !== 'default.jpg') {
                 $this->deleteFile($brochure->image, 'brochures/images');
+
+                // ✅ Delete file JPG original jika ada
+                $originalPath = preg_replace('/\.webp$/i', '.jpg', $brochure->image);
+                $this->deleteFile($originalPath, 'brochures/images');
+
+                $originalPath = preg_replace('/\.webp$/i', '.png', $brochure->image);
+                $this->deleteFile($originalPath, 'brochures/images');
             }
 
-            // Delete translation files
+            // Delete translation files (PDFs)
             $translations = GalleryBrochuresTranslations::where('gallery_brochure_id', $id)->get();
             foreach ($translations as $trans) {
                 if ($trans->file) {
@@ -164,7 +180,50 @@ class GalleryBrochureService
     }
 
     /**
-     * Upload file and return filename only (without path)
+     * ✅ NEW: Upload dan optimize image ke WebP
+     */
+    private function uploadAndOptimizeImage($file, string $folder): string
+    {
+        // Generate unique filename
+        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+        // Full path untuk upload
+        $uploadPath = public_path('uploads/' . $folder);
+
+        // Buat direktori jika belum ada
+        if (!File::exists($uploadPath)) {
+            File::makeDirectory($uploadPath, 0755, true);
+        }
+
+        // Move file ke folder tujuan
+        $file->move($uploadPath, $filename);
+
+        // Path relatif dari public
+        $relativePath = 'uploads/' . $folder . '/' . $filename;
+
+        // ✅ Optimize dan convert ke WebP
+        try {
+            $webpPath = ImageHelper::optimizeImage(
+                $relativePath,  // Path relatif
+                1200,          // Max width 1200px
+                85             // Quality 85%
+            );
+
+            // Extract filename dari path
+            $webpFilename = basename($webpPath);
+
+            // Return hanya filename (konsisten dengan method lama)
+            return $webpFilename;
+
+        } catch (Exception $e) {
+            // Jika gagal optimize, tetap return filename original
+            \Log::warning("Failed to optimize image: " . $e->getMessage());
+            return $filename;
+        }
+    }
+
+    /**
+     * Upload file (untuk PDF) - tidak perlu optimize
      */
     private function uploadFile($file, string $folder): string
     {
