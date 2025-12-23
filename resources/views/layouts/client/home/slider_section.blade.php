@@ -41,68 +41,7 @@
             <div class="owl-dots disabled"></div>
         </div>
     </div>
-
-    <div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom justify-center"
-        style="display: block; width: 100%;">
-        <ul>
-            <li class="hover">
-                <a href="#contact">
-                    <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
-                        <div class="icon"><i class="fa fa-calendar-alt"></i></div>
-                        <div class="text">
-                            <p>@lang('system.quick appointment')</p>
-                            <h6 class="title">@lang('system.proposal request')</h6>
-                        </div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#videotour">
-                    <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
-                        <div class="icon"><i class="fa fa-map-marked-alt"></i></div>
-                        <div class="text">
-                            <p>@lang('system.watch')</p>
-                            <h6 class="title">@lang('system.video tour')</h6>
-                        </div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="/asset/brochure/61a6ed0108(Comp) eBrochure - JIIPE Brochure English.pdf" target="_blank"
-                    class="hashmb d-none">
-                    <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
-                        <div class="icon"><i class="fa fa-book-open"></i></div>
-                        <div class="text">
-                            <p>@lang('system.download')</p>
-                            <h6>@lang('system.jiipe e-brochure')</h6>
-                        </div>
-                    </div>
-                </a>
-                <a href="/asset/brochure/323829b435(Comp) eBrochure - JIIPE Brochure English.pdf" target="_blank"
-                    class="hashds">
-                    <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
-                        <div class="icon"><i class="fa fa-book-open"></i></div>
-                        <div class="text">
-                            <p>@lang('system.download')</p>
-                            <h6>@lang('system.jiipe e-brochure')</h6>
-                        </div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="#faq">
-                    <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
-                        <div class="icon"><i class="fa fa-comment-alt"></i></div>
-                        <div class="text">
-                            <p>@lang('system.frequently')</p>
-                            <h6>@lang('system.ask questions')</h6>
-                        </div>
-                    </div>
-                </a>
-            </li>
-        </ul>
-        <div class="clear"></div>
-    </div>
+    @include('layouts.client.home.partials.navigation_box')
 </section>
 <script>
     $(document).ready(function() {
