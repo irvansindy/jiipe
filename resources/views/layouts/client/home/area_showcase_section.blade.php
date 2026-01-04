@@ -1,25 +1,32 @@
-{{-- ============================================
-     area_showcase_section.blade.php (OPTIMIZED)
-     ============================================ --}}
-<link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}">
+{{-- filepath: resources/views/layouts/client/home/area_showcase_section.blade.php --}}
+<link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}" media="print" onload="this.media='all'">
 
 <section class="kawasan-slider">
     <div id="kawasan_wrapper_one" class="kawasan-slider-one carousel slide" data-ride="carousel" data-interval="6000">
         <div class="carousel-inner">
             @foreach ($showcases as $i => $showcase)
                 <div class="carousel-item {{ $i == 0 ? 'active' : '' }}">
-                    {{-- ⚡ LAZY LOADING: First image eager, rest lazy --}}
-                    <img src="{{ $i === 0 ? asset('uploads/showcase/'.$showcase['image']) : '' }}"
-                         {{ $i === 0 ? '' : 'loading=lazy data-src=' . asset('uploads/showcase/'.$showcase['image']) }}
-                         class="d-block w-100"
-                         alt="{{ $showcase['title'] }}">
+                    {{-- ⚡ First image eager, rest lazy loaded --}}
+                    @if($i === 0)
+                        <img src="{{ asset('uploads/showcase/'.$showcase['image']) }}"
+                             class="d-block w-100"
+                             alt="{{ $showcase['title'] }}"
+                             fetchpriority="high">
+                    @else
+                        <img data-src="{{ asset('uploads/showcase/'.$showcase['image']) }}"
+                             class="d-block w-100 lazy"
+                             alt="{{ $showcase['title'] }}"
+                             loading="lazy">
+                    @endif
                 </div>
             @endforeach
         </div>
     </div>
     <ol class="carousel-indicators">
         @foreach ($showcases as $i => $showcase)
-            <li data-target="#kawasan_wrapper_one" data-slide-to="{{ $i }}" data-attr="{{ $i }}"
+            <li data-target="#kawasan_wrapper_one"
+                data-slide-to="{{ $i }}"
+                data-attr="{{ $i }}"
                 class="data_{{ $i }} {{ $i == 0 ? 'active' : '' }}">
                 <div class="wrapper-box">
                     <h4 class="title">{{ $showcase['title'] }}</h4>
@@ -35,9 +42,9 @@
         <div class="row">
             <div class="col-lg-30 col-sm-60">
                 <div class="jiipe-images">
-                    {{-- Encode URL dengan benar untuk handle spasi --}}
-                    <img src="{{ asset('uploads/blog/' . rawurlencode('ab135-JIIPE INVESTOR UPDATE (website).jpg')) }}"
-                        class="img-fluid"
+                    {{-- ⚡ Lazy load dengan proper encoding --}}
+                    <img data-src="{{ asset('uploads/blog/' . rawurlencode('ab135-JIIPE INVESTOR UPDATE (website).jpg')) }}"
+                        class="img-fluid lazy"
                         alt="JIIPE Profile"
                         loading="lazy"
                         onerror="this.onerror=null; this.src='{{ asset('uploads/blog/ab135-JIIPE INVESTOR UPDATE (website).jpg') }}';">
@@ -80,7 +87,11 @@
 
 <section class="video-jiipe" id="videojiipe">
     <div class="embed-responsive embed-responsive-21by9">
-        <video class="embed-responsive-item" controls preload="metadata">
+        {{-- ⚡ Video dengan lazy loading --}}
+        <video class="embed-responsive-item"
+               controls
+               preload="none"
+               poster="{{ asset('asset/images/video-placeholder.jpg') }}">
             @if (app()->getLocale() == 'zh')
                 <source src="https://jiipe.com//Video_jiipe/Company%20Profile%20JIIPE%20CINA%20-%20SUB%20English.mp4" type="video/mp4">
             @else
@@ -90,4 +101,75 @@
     </div>
 </section>
 
-@include('layouts.client.home.partials.navigation_box')
+@push('js')
+<script>
+// ⚡ Lazy load images
+(function() {
+    'use strict';
+
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        img.classList.remove('lazy');
+                    }
+                    observer.unobserve(img);
+                }
+            });
+        }, {
+            rootMargin: '50px 0px', // Start loading 50px before entering viewport
+            threshold: 0.01
+        });
+
+        // Observe all lazy images
+        document.querySelectorAll('img.lazy').forEach(img => {
+            imageObserver.observe(img);
+        });
+
+        // ⚡ Lazy load carousel images on slide change
+        $('#kawasan_wrapper_one').on('slide.bs.carousel', function(e) {
+            const $nextSlide = $(e.relatedTarget);
+            const $img = $nextSlide.find('img.lazy');
+
+            if ($img.length && $img.data('src')) {
+                $img.attr('src', $img.data('src'));
+                $img.removeAttr('data-src');
+                $img.removeClass('lazy');
+            }
+        });
+    } else {
+        // Fallback for browsers without IntersectionObserver
+        document.querySelectorAll('img.lazy').forEach(img => {
+            if (img.dataset.src) {
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+            }
+        });
+    }
+
+    // ⚡ Lazy load video when in viewport
+    if ('IntersectionObserver' in window) {
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const video = entry.target;
+                    video.preload = 'metadata';
+                    videoObserver.unobserve(video);
+                }
+            });
+        }, {
+            rootMargin: '200px 0px'
+        });
+
+        const video = document.querySelector('#videojiipe video');
+        if (video) {
+            videoObserver.observe(video);
+        }
+    }
+})();
+</script>
+@endpush

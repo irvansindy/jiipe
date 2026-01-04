@@ -1,4 +1,5 @@
-{{-- Tenants Section --}}
+{{-- filepath: resources/views/layouts/client/home/tenant_section.blade.php --}}
+{{-- Tenants Section - TAMPILAN TETAP SEPERTI ASLI, HANYA TAMBAH LAZY LOADING --}}
 <section class="video-jiipe" id="tenants">
     <div class="prelative container my-5">
         <div class="row">
@@ -16,9 +17,22 @@
             <!-- Swiper -->
             <div class="swiper mySwiper">
                 <div class="swiper-wrapper">
-                    @forelse($tenants as $tenant)
+                    @forelse($tenants as $index => $tenant)
                         <div class="swiper-slide">
-                            <img class="img-thumbnail" src="{{ asset('uploads/tenant-logo/' . $tenant['logo']) }}" alt="{{ $tenant['name'] }}">
+                            {{-- ⚡ HANYA TAMBAH LAZY LOADING - TAMPILAN TETAP SAMA --}}
+                            @if($index < 6)
+                                {{-- First 6 logos load immediately --}}
+                                <img class="img-thumbnail"
+                                     src="{{ asset('uploads/tenant-logo/' . $tenant['logo']) }}"
+                                     alt="{{ $tenant['name'] }}"
+                                     loading="{{ $index < 3 ? 'eager' : 'lazy' }}">
+                            @else
+                                {{-- Rest lazy load --}}
+                                <img class="img-thumbnail"
+                                     src="{{ asset('uploads/tenant-logo/' . $tenant['logo']) }}"
+                                     alt="{{ $tenant['name'] }}"
+                                     loading="lazy">
+                            @endif
                         </div>
                     @empty
                         <div class="swiper-slide">
@@ -109,8 +123,13 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Check if Swiper is loaded
-        if (typeof Swiper !== 'undefined') {
+        // ⚡ Wait for Swiper to load
+        function initTenantSwiper() {
+            if (typeof Swiper === 'undefined') {
+                setTimeout(initTenantSwiper, 100);
+                return;
+            }
+
             var swiper = new Swiper("#tenants .mySwiper", {
                 slidesPerView: 6,
                 spaceBetween: 20,
@@ -153,8 +172,8 @@
             setTimeout(function() {
                 swiper.update();
             }, 500);
-        } else {
-            console.error('Swiper library not loaded!');
         }
+
+        initTenantSwiper();
     });
 </script>

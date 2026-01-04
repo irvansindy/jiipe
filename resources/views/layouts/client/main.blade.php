@@ -16,46 +16,61 @@
 
     <title>{{ $title ?? config('app.name') }}</title>
 
-    <!-- Preconnect to external domains (CRITICAL for performance) -->
+    <!-- ⚡ CRITICAL: Preconnect to external domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="preconnect" href="https://use.fontawesome.com">
+    <link rel="dns-prefetch" href="https://code.jquery.com">
 
-    {{-- Preload Critical Fonts only if files exist --}}
-    {{-- Uncomment if you're hosting Font Awesome locally:
-    <link rel="preload" href="{{ asset('asset/fonts/fontawesome/webfonts/fa-solid-900.woff2') }}" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="{{ asset('asset/fonts/fontawesome/webfonts/fa-brands-400.woff2') }}" as="font" type="font/woff2" crossorigin>
-    --}}
+    <!-- ⚡ CRITICAL CSS - Inline untuk above-the-fold -->
+    <style>
+        /* Critical CSS - Minimal styles untuk first paint */
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .home-slider { min-height: 100vh; position: relative; background: #000; }
+        .kawasan-slider { position: relative; }
+        .carousel-inner { position: relative; width: 100%; overflow: hidden; }
+        .carousel-item { position: relative; display: none; width: 100%; }
+        .carousel-item.active { display: block; }
+        img { max-width: 100%; height: auto; }
+    </style>
 
-    <!-- Google Fonts - Combined (Roboto + Montserrat + Public Sans if needed) -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;700&display=swap">
+    <!-- ⚡ Preload Critical Fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;700&display=swap"></noscript>
 
-    <!-- Critical CSS - Load first -->
-    <link rel="stylesheet" href="{{ asset('asset/backend/css/style.default.css') }}">
+    <!-- ⚡ Critical CSS - Load synchronously -->
     <link rel="stylesheet" href="{{ asset('asset/js/bootstrap-4.0.0/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('asset/backend/css/style.default.css') }}">
 
-    <!-- Font Awesome - Use all.min.css only (single file) -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+    <!-- ⚡ Non-Critical CSS - Defer loading dengan media print trick -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ asset('asset/css/styles.css') }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ asset('asset/css/media.styles.css') }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ asset('asset/css/animate.css') }}" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ asset('asset/css/creative/creative.css') }}?ver=1.0.32" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ asset('asset/css/creative/creativeresponsive.css') }}?ver=1.0.25" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="{{ asset('asset/css/cdn/swiper.css') }}" media="print" onload="this.media='all'">
 
-    <!-- Other CSS -->
-    <link rel="stylesheet" href="{{ asset('asset/css/styles.css') }}">
-    <link rel="stylesheet" href="{{ asset('asset/css/media.styles.css') }}">
-    <link rel="stylesheet" href="{{ asset('asset/css/animate.css') }}">
-    <link rel="stylesheet" href="{{ asset('asset/css/creative/creative.css') }}?ver=1.0.32">
-    <link rel="stylesheet" href="{{ asset('asset/css/creative/creativeresponsive.css') }}?ver=1.0.25">
-
-    <!-- Owl Carousel CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="{{ asset('asset/css/cdn/swiper.css') }}">
+    <!-- Fallback untuk browser tanpa JavaScript -->
+    <noscript>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css">
+        <link rel="stylesheet" href="{{ asset('asset/css/styles.css') }}">
+        <link rel="stylesheet" href="{{ asset('asset/css/media.styles.css') }}">
+        <link rel="stylesheet" href="{{ asset('asset/css/animate.css') }}">
+        <link rel="stylesheet" href="{{ asset('asset/css/creative/creative.css') }}?ver=1.0.32">
+        <link rel="stylesheet" href="{{ asset('asset/css/creative/creativeresponsive.css') }}?ver=1.0.25">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+        <link rel="stylesheet" href="{{ asset('asset/css/cdn/swiper.css') }}">
+    </noscript>
 
     @stack('css')
 
-    <!-- Google Tag Manager (Keep in head for early tracking) -->
+    <!-- ⚡ Google Tag Manager - Async -->
     <script>
         (function(w, d, s, l, i) {
             w[l] = w[l] || [];
@@ -84,7 +99,7 @@
         }
     @endphp
 
-    <!-- Google Analytics -->
+    <!-- ⚡ Google Analytics - Async -->
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ $n_id_ga }}"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -93,7 +108,7 @@
         gtag('config', '{{ $n_id_ga }}');
     </script>
 
-    <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) - Async -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-9JZLPMYER5"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -102,12 +117,13 @@
         gtag('config', 'G-9JZLPMYER5');
     </script>
 
-    <!-- Baidu Tongji Tracking Code -->
+    <!-- ⚡ Baidu Tongji - Async -->
     <script>
         var _hmt = _hmt || [];
         (function() {
             var hm = document.createElement("script");
             hm.src = "https://hm.baidu.com/hm.js?11d4567d21afc44b50922f500bef6a4c";
+            hm.async = true;
             var s = document.getElementsByTagName("script")[0];
             s.parentNode.insertBefore(hm, s);
         })();
@@ -132,24 +148,49 @@
     @yield('content')
     @include('layouts.client.partials.footerv2')
 
-    <!-- JavaScript - Load at bottom in specific order (no defer for compatibility) -->
-    <!-- jQuery MUST load first -->
+    <!-- ⚡ JavaScript - Load at bottom with DEFER -->
+    <!-- jQuery MUST load first (tanpa defer karena dependency) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" crossorigin="anonymous"></script>
 
-    <!-- Popper.js (required by Bootstrap) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
+    <!-- ⚡ Other libraries dengan DEFER -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" defer crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/js/bootstrap.min.js" defer crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" defer></script>
+    <script src="{{ asset('asset/js/slick/slick.min.js') }}" defer></script>
+    <script src="{{ asset('asset/js/cdn/swiper.js') }}" defer></script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <!-- ⚡ Initialize plugins setelah DOM ready -->
+    <script>
+        // Ensure all deferred scripts are loaded before initializing
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if jQuery and plugins are loaded
+            function checkPluginsLoaded() {
+                if (typeof $ !== 'undefined' &&
+                    typeof $.fn.owlCarousel !== 'undefined' &&
+                    typeof Swiper !== 'undefined') {
+                    console.log('✅ All plugins loaded');
+                    return true;
+                }
+                return false;
+            }
 
-    <!-- Owl Carousel JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+            // Wait for plugins to load
+            var checkInterval = setInterval(function() {
+                if (checkPluginsLoaded()) {
+                    clearInterval(checkInterval);
+                    // Plugins ready - page-specific scripts will run from @stack('js')
+                }
+            }, 100);
 
-    <!-- Slick -->
-    <script src="{{ asset('asset/js/slick/slick.min.js') }}"></script>
-
-    <!-- Swiper -->
-    <script src="{{ asset('asset/js/cdn/swiper.js') }}"></script>
+            // Timeout after 5 seconds
+            setTimeout(function() {
+                clearInterval(checkInterval);
+                if (!checkPluginsLoaded()) {
+                    console.warn('⚠️ Some plugins failed to load');
+                }
+            }, 5000);
+        });
+    </script>
 
     <!-- Custom scripts (after all libraries loaded) -->
     @stack('js')
