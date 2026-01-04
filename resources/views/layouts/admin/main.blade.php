@@ -29,6 +29,10 @@
     <!-- [Feather Icons] https://feathericons.com -->
     <link rel="stylesheet" href="{{ asset('dist/assets/fonts/feather.css') }}">
     <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
+    <!-- Preload Font Awesome (penting!) -->
+    <link rel="preload" href="{{ asset('asset/fonts/fontawesome/webfonts/fa-solid-900.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ asset('asset/fonts/fontawesome/webfonts/fa-brands-400.woff2') }}" as="font" type="font/woff2" crossorigin>
+
     <link rel="stylesheet" href="{{ asset('dist/assets/fonts/fontawesome.css') }}">
     <!-- [Material Icons] https://fonts.google.com/icons -->
     <link rel="stylesheet" href="{{ asset('dist/assets/fonts/material.css') }}">
