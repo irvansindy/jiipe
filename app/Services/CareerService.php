@@ -167,27 +167,63 @@ class CareerService
      */
     public function saveSection(array $data): CareerSection
     {
+        \Log::info('=== START saveSection ===');
+        \Log::info('Data received:', $data);
+
         DB::beginTransaction();
         try {
             $section = CareerSection::first();
+            \Log::info('Existing section:', ['found' => $section !== null, 'id' => $section?->id]);
 
             if (!$section) {
+                \Log::info('Creating new section...');
                 $section = CareerSection::create([]);
+                \Log::info('New section created:', ['id' => $section->id]);
+            } else {
+                \Log::info('Using existing section:', ['id' => $section->id]);
             }
 
+            // Handle translations
             if (!empty($data['title']) && is_array($data['title'])) {
+                \Log::info('Processing translations:', ['count' => count($data['title'])]);
+
                 foreach ($data['title'] as $locale => $title) {
-                    CareerSectionTranslation::updateOrCreate(
-                        ['career_section_id' => $section->id, 'locale' => $locale],
-                        ['title' => $title, 'content' => $data['content'][$locale] ?? null]
+                    $content = $data['content'][$locale] ?? null;
+
+                    $translation = CareerSectionTranslation::updateOrCreate(
+                        [
+                            'career_section_id' => $section->id,
+                            'locale' => $locale
+                        ],
+                        [
+                            'title' => $title,
+                            'content' => $content
+                        ]
                     );
+
+                    \Log::info("Translation saved for locale: {$locale}", [
+                        'id' => $translation->id,
+                        'title' => $title,
+                        'content_length' => strlen($content ?? '')
+                    ]);
                 }
+            } else {
+                \Log::warning('No translations data or invalid format', ['data' => $data]);
             }
 
             DB::commit();
-            return $section;
+            \Log::info('Transaction committed successfully');
+
+            $result = $section->fresh(['translations']);
+            \Log::info('=== END saveSection SUCCESS ===', ['section_id' => $result->id]);
+
+            return $result;
         } catch (Exception $e) {
             DB::rollBack();
+            \Log::error('=== saveSection FAILED ===', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             throw $e;
         }
     }

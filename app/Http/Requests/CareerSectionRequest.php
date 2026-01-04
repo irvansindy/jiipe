@@ -17,8 +17,8 @@ class CareerSectionRequest extends FormRequest
         $rules = [];
 
         foreach (array_keys($locales) as $locale) {
-            $rules["title.{$locale}"] = 'required|string|max:255';
-            $rules["content.{$locale}"] = 'nullable|string';
+            $rules["section1_title.{$locale}"] = 'nullable|string|max:255';
+            $rules["section1_content.{$locale}"] = 'nullable|string';
         }
 
         return $rules;
@@ -30,8 +30,8 @@ class CareerSectionRequest extends FormRequest
         $attributes = [];
 
         foreach ($locales as $locale => $props) {
-            $attributes["title.{$locale}"] = "Section Title ({$props['native']})";
-            $attributes["content.{$locale}"] = "Section Content ({$props['native']})";
+            $attributes["section1_title.{$locale}"] = "Title ({$props['native']})";
+            $attributes["section1_content.{$locale}"] = "Content ({$props['native']})";
         }
 
         return $attributes;

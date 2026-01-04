@@ -27,31 +27,33 @@
                             <h4 class="text-white m-0">Cover</h4>
                         </div>
                         <div class="card-body">
-                                @if(session('success'))
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <strong>Success!</strong> {{ session('success') }}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                    </div>
-                                @endif
+                            {{-- PERBAIKAN: Alert khusus untuk Cover --}}
+                            @if(session('cover_success'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Success!</strong> {{ session('cover_success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            @endif
 
-                                @if(session('error'))
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <strong>Error!</strong> {{ session('error') }}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                    </div>
-                                @endif
+                            @if(session('cover_error'))
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong> {{ session('cover_error') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            @endif
 
-                                @if($errors->any())
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <strong>Validation Errors:</strong>
-                                        <ul class="mb-0">
-                                            @foreach($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                    </div>
-                                @endif
+                            @if($errors->any() && (session('cover_error') || old('cover_title')))
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Validation Errors:</strong>
+                                    <ul class="mb-0">
+                                        @foreach($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            @endif
+
                             <form action="{{ route('store-career-header') }}" method="post" id="cover_form"
                                 enctype="multipart/form-data">
                                 @csrf
@@ -149,6 +151,33 @@
                             <h4 class="text-white m-0">Section 1</h4>
                         </div>
                         <div class="card-body">
+                            {{-- PERBAIKAN: Alert khusus untuk Section 1 --}}
+                            @if(session('section1_success'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Success!</strong> {{ session('section1_success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            @endif
+
+                            @if(session('section1_error'))
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong> {{ session('section1_error') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            @endif
+
+                            @if($errors->any() && (session('section1_error') || old('section1_title')))
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Validation Errors:</strong>
+                                    <ul class="mb-0">
+                                        @foreach($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            @endif
+
                             <form action="{{ route('store-career-section1') }}" method="post" id="section_1_form"
                                 enctype="multipart/form-data">
                                 @csrf

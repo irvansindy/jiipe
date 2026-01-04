@@ -147,67 +147,87 @@ class CareerController extends Controller
         }
     }
     public function storeHeader(CareerHeaderRequest $request)
-    {
-        try {
-            \Log::info('=== storeHeader Controller START ===');
-            \Log::info('Request data:', $request->all());
-            \Log::info('Has file:', ['has_cover_image' => $request->hasFile('cover_image')]);
+{
+    try {
+        \Log::info('=== storeHeader Controller START ===');
+        \Log::info('Request data:', $request->all());
+        \Log::info('Has file:', ['has_cover_image' => $request->hasFile('cover_image')]);
 
-            // Map incoming field names to service shape
-            $payload = [
-                'title' => $request->input('cover_title'),
-            ];
+        $payload = [
+            'title' => $request->input('cover_title'),
+        ];
 
-            \Log::info('Payload prepared:', $payload);
+        \Log::info('Payload prepared:', $payload);
 
-            $file = $request->file('cover_image');
+        $file = $request->file('cover_image');
 
-            if ($file) {
-                \Log::info('File details:', [
-                    'original_name' => $file->getClientOriginalName(),
-                    'size' => $file->getSize(),
-                    'mime' => $file->getMimeType(),
-                    'valid' => $file->isValid()
-                ]);
-            }
-
-            $header = $this->careerService->saveHeader($payload, $file);
-
-            \Log::info('=== storeHeader Controller SUCCESS ===', ['header_id' => $header->id]);
-
-            return redirect()->back()->with('success', 'Cover berhasil disimpan.');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            \Log::error('Validation error:', ['errors' => $e->errors()]);
-            return redirect()->back()
-                ->withErrors($e->errors())
-                ->withInput()
-                ->with('error', 'Validation failed: ' . json_encode($e->errors()));
-        } catch (\Exception $e) {
-            \Log::error('=== storeHeader Controller FAILED ===', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+        if ($file) {
+            \Log::info('File details:', [
+                'original_name' => $file->getClientOriginalName(),
+                'size' => $file->getSize(),
+                'mime' => $file->getMimeType(),
+                'valid' => $file->isValid()
             ]);
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Cover gagal disimpan: ' . $e->getMessage());
         }
+
+        $header = $this->careerService->saveHeader($payload, $file);
+
+        \Log::info('=== storeHeader Controller SUCCESS ===', ['header_id' => $header->id]);
+
+        // PERBAIKAN: Gunakan session key yang spesifik untuk cover
+        return redirect()->back()->with('cover_success', 'Cover berhasil disimpan.');
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        \Log::error('Validation error:', ['errors' => $e->errors()]);
+        return redirect()->back()
+            ->withErrors($e->errors())
+            ->withInput()
+            ->with('cover_error', 'Validation failed: ' . json_encode($e->errors()));
+    } catch (\Exception $e) {
+        \Log::error('=== storeHeader Controller FAILED ===', [
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        return redirect()->back()
+            ->withInput()
+            ->with('cover_error', 'Cover gagal disimpan: ' . $e->getMessage());
     }
+}
 
-    public function storeSection1(CareerSectionRequest $request)
-    {
-        try {
-            $payload = [
-                'title' => $request->input('section1_title') ?? $request->input('title'),
-                'content' => $request->input('section1_content') ?? $request->input('content'),
-            ];
+public function storeSection1(CareerSectionRequest $request)
+{
+    try {
+        \Log::info('=== storeSection1 Controller START ===');
+        \Log::info('Request data:', $request->all());
 
-            $this->careerService->saveSection($payload);
+        $payload = [
+            'title' => $request->input('section1_title'),
+            'content' => $request->input('section1_content'),
+        ];
 
-            return redirect()->back()->with('success', 'Section 1 berhasil disimpan.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menyimpan Section 1: ' . $e->getMessage());
-        }
+        \Log::info('Payload prepared:', $payload);
+
+        $section = $this->careerService->saveSection($payload);
+
+        \Log::info('=== storeSection1 Controller SUCCESS ===', ['section_id' => $section->id]);
+
+        // PERBAIKAN: Gunakan session key yang spesifik untuk section1
+        return redirect()->back()->with('section1_success', 'Section 1 berhasil disimpan.');
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        \Log::error('Validation error:', ['errors' => $e->errors()]);
+        return redirect()->back()
+            ->withErrors($e->errors())
+            ->withInput()
+            ->with('section1_error', 'Validation failed: ' . json_encode($e->errors()));
+    } catch (\Exception $e) {
+        \Log::error('=== storeSection1 Controller FAILED ===', [
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        return redirect()->back()
+            ->withInput()
+            ->with('section1_error', 'Gagal menyimpan Section 1: ' . $e->getMessage());
     }
+}
 
     public function storeOrUpdateCareer(CareerRequest $request)
     {
