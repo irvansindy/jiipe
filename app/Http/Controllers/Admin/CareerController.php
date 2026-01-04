@@ -19,39 +19,34 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Storage;
 use App\Helpers\FormatResponseJson;
 use App\Models\CareerEmail;
+use App\Services\CareerService;
+use App\Services\CareerEmailService;
+use App\Http\Requests\CareerRequest;
+use App\Http\Requests\CareerEmailRequest;
+use App\Http\Requests\CareerHeaderRequest;
+use App\Http\Requests\CareerSectionRequest;
+
 class CareerController extends Controller
 {
+    protected $careerService;
+    protected $careerEmailService;
+
+    public function __construct(CareerService $careerService, CareerEmailService $careerEmailService)
+    {
+        $this->careerService = $careerService;
+        $this->careerEmailService = $careerEmailService;
+    }
+
     public function index()
     {
         return view('layouts.admin.career.index');
     }
+
     public function fetchCareer(Request $request)
     {
         try {
-            $query = Career::with(['factory', 'location', 'education', 'jobLevel']);
-
-            // Apply filters jika ada
-            if ($request->filled('location_id')) {
-                $query->where('location_id', $request->location_id);
-            }
-
-            if ($request->filled('education_id')) {
-                $query->where('education_id', $request->education_id);
-            }
-
-            if ($request->filled('job_level_id')) {
-                $query->where('job_level_id', $request->job_level_id);
-            }
-
-            if ($request->filled('company_id')) {
-                $query->where('company_id', $request->company_id);
-                // atau jika company dari relasi factory:
-                // $query->whereHas('factory', function($q) use ($request) {
-                //     $q->where('id', $request->company_id);
-                // });
-            }
-
-            $careers = $query->get();
+            $filters = $request->only(['location_id', 'education_id', 'job_level_id', 'company_id', 'factory_id']);
+            $careers = $this->careerService->getAllCareers($filters);
             $message = count($careers) > 0 ? count($careers) . ' careers fetched successfully.' : 'No careers found.';
 
             return FormatResponseJson::success($careers, $message);
@@ -59,33 +54,40 @@ class CareerController extends Controller
             return FormatResponseJson::error(null, $e->getMessage(), 500);
         }
     }
+
     public function fetchCareerLocation()
     {
         $location = MasterCompanyLocation::all();
-        return FormatResponseJson::success($location,'Location fetched successfully');
+        return FormatResponseJson::success($location, 'Location fetched successfully');
     }
+
     public function fetchCareerEducation()
     {
         $education = MasterEducation::all();
-        return FormatResponseJson::success($education,'Education fetched successfully');
+        return FormatResponseJson::success($education, 'Education fetched successfully');
     }
+
     public function fetchCareerJobLevel()
     {
         $jobLevels = MasterJobLevel::all();
-        return FormatResponseJson::success($jobLevels,'Job Levels fetched successfully');
+        return FormatResponseJson::success($jobLevels, 'Job Levels fetched successfully');
     }
+
     public function fetchCareerCompany()
     {
         $companies = MasterCompany::all();
-        return FormatResponseJson::success($companies,'Companies fetched successfully');
+        return FormatResponseJson::success($companies, 'Companies fetched successfully');
     }
+
     public function static()
     {
         $locales = config('laravellocalization.supportedLocales');
         $career_header = CareerHeader::with('translations')->first();
         $career_section = CareerSection::with('translations')->first();
+        // dd($career_header, $career_section);
         return view('layouts.admin.career.static', compact('locales', 'career_header', 'career_section'));
     }
+
     public function enquire()
     {
         return view('layouts.admin.career.enquire');
@@ -95,18 +97,9 @@ class CareerController extends Controller
     public function fetchCareerEnquire(Request $request)
     {
         try {
-            $query = CareerEmail::query();
-
-            if ($request->filled('position_id')) {
-                $query->where('position_id', $request->position_id);
-            }
-
-            if ($request->filled('email')) {
-                $query->where('email', 'like', '%' . $request->email . '%');
-            }
-
-            $enquires = $query->orderBy('created_at', 'desc')->get();
-            $message = $enquires->isEmpty() ? 'No enquiries found.' : $enquires->count() . ' enquiries fetched successfully.';
+            $filters = $request->only(['position_id', 'email']);
+            $enquires = $this->careerEmailService->getAllEnquires($filters);
+            $message = count($enquires) ? count($enquires) . ' enquiries fetched successfully.' : 'No enquiries found.';
 
             return FormatResponseJson::success($enquires, $message);
         } catch (\Throwable $th) {
@@ -114,65 +107,21 @@ class CareerController extends Controller
         }
     }
 
-    public function storeOrUpdateCareerEmail(Request $request)
+    public function storeOrUpdateCareerEmail(CareerEmailRequest $request)
     {
         try {
-            DB::beginTransaction();
+            $data = $request->validated();
 
-            $rules = [
-                'position_id' => 'required|integer',
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'phone' => 'nullable|string|max:50',
-                'file_cv' => 'nullable|file|max:5120',
-                'file_complementary_documents' => 'nullable|file|max:5120',
-                'education' => 'nullable|string|max:255',
-                'body' => 'nullable|string',
-                'date' => 'nullable|date',
-                'job_level' => 'nullable|string|max:255',
-                'experience' => 'nullable|string|max:255',
+            $files = [
+                'file_cv' => $request->file('file_cv'),
+                'file_complementary_documents' => $request->file('file_complementary_documents'),
             ];
 
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails()) {
-                DB::rollBack();
-                return FormatResponseJson::error(null, ['errors' => $validator->errors()], 422);
-            }
-
-            $data = $validator->validated();
-
-            // handle file uploads
-            if ($request->hasFile('file_cv')) {
-                $data['file_cv'] = $request->file('file_cv')->store('career/emails', 'uploads');
-            }
-            if ($request->hasFile('file_complementary_documents')) {
-                $data['file_complementary_documents'] = $request->file('file_complementary_documents')->store('career/emails', 'uploads');
-            }
-
-            // If updating, remove old files if new ones provided
-            if ($request->filled('id')) {
-                $existing = CareerEmail::find($request->id);
-                if ($existing) {
-                    if (isset($data['file_cv']) && $existing->file_cv) {
-                        Storage::disk('uploads')->delete($existing->file_cv);
-                    }
-                    if (isset($data['file_complementary_documents']) && $existing->file_complementary_documents) {
-                        Storage::disk('uploads')->delete($existing->file_complementary_documents);
-                    }
-                }
-            }
-
-            $careerEmail = CareerEmail::updateOrCreate(
-                ['id' => $request->input('id')],
-                $data
-            );
-
-            DB::commit();
+            $careerEmail = $this->careerEmailService->createOrUpdateEnquire($data + ['id' => $request->input('id')], $files);
 
             $msg = $request->filled('id') ? 'Enquire updated successfully.' : 'Enquire created successfully.';
             return FormatResponseJson::success($careerEmail, $msg);
         } catch (\Throwable $th) {
-            DB::rollBack();
             return FormatResponseJson::error(null, $th->getMessage(), 500);
         }
     }
@@ -181,7 +130,7 @@ class CareerController extends Controller
     {
         try {
             $id = $request->input('career_email_id') ?? $request->input('id');
-            $enquire = CareerEmail::find($id);
+            $enquire = $this->careerEmailService->getEnquireById($id);
             return FormatResponseJson::success($enquire, 'Enquire details fetched successfully.');
         } catch (\Throwable $th) {
             return FormatResponseJson::error(null, $th->getMessage(), 500);
@@ -191,198 +140,92 @@ class CareerController extends Controller
     public function deleteCareerEnquire($id)
     {
         try {
-            DB::beginTransaction();
-            $enquire = CareerEmail::findOrFail($id);
-
-            if ($enquire->file_cv) {
-                Storage::disk('uploads')->delete($enquire->file_cv);
-            }
-            if ($enquire->file_complementary_documents) {
-                Storage::disk('uploads')->delete($enquire->file_complementary_documents);
-            }
-
-            $enquire->delete();
-            DB::commit();
-
+            $this->careerEmailService->deleteEnquire($id);
             return FormatResponseJson::success(null, 'Enquire deleted successfully.');
         } catch (\Throwable $th) {
-            DB::rollBack();
             return FormatResponseJson::error(null, $th->getMessage(), 500);
         }
     }
-    public function storeHeader(Request $request)
+    public function storeHeader(CareerHeaderRequest $request)
     {
-        // Ambil header pertama (bisa untuk update)
-        $header = CareerHeader::first();
-
-        // ===== VALIDASI =====
-        $rules = [
-            'cover_image' => $header
-                ? 'nullable|image|mimes:jpeg,png,jpg|max:2048'
-                : 'required|image|mimes:jpeg,png,jpg|max:2048',
-        ];
-        foreach (config('laravellocalization.supportedLocales') as $locale => $properties) {
-            $rules["cover_title.$locale"] = 'required|string|max:255';
-        }
-
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        DB::beginTransaction();
         try {
-            if (!$header) {
-                $header = new CareerHeader();
-            }
+            \Log::info('=== storeHeader Controller START ===');
+            \Log::info('Request data:', $request->all());
+            \Log::info('Has file:', ['has_cover_image' => $request->hasFile('cover_image')]);
 
-            // Simpan file gambar
-            if ($request->hasFile('cover_image')) {
-                if ($header->image) {
-                    Storage::disk('uploads')->delete($header->image);
-                }
-                $header->image = $request->file('cover_image')->store('career/cover', 'uploads');
-            }
-            $header->save();
+            // Map incoming field names to service shape
+            $payload = [
+                'title' => $request->input('cover_title'),
+            ];
 
-            // Simpan translasi
-            foreach ($request->cover_title as $locale => $title) {
-                $translation = CareerHeaderTranslation::firstOrNew([
-                    'career_header_id' => $header->id,
-                    'locale' => $locale,
-                    'title' => $title
+            \Log::info('Payload prepared:', $payload);
+
+            $file = $request->file('cover_image');
+
+            if ($file) {
+                \Log::info('File details:', [
+                    'original_name' => $file->getClientOriginalName(),
+                    'size' => $file->getSize(),
+                    'mime' => $file->getMimeType(),
+                    'valid' => $file->isValid()
                 ]);
-                $translation->title = $title;
-                $translation->save();
             }
 
-            DB::commit();
+            $header = $this->careerService->saveHeader($payload, $file);
+
+            \Log::info('=== storeHeader Controller SUCCESS ===', ['header_id' => $header->id]);
+
             return redirect()->back()->with('success', 'Cover berhasil disimpan.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('Validation error:', ['errors' => $e->errors()]);
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput()
+                ->with('error', 'Validation failed: ' . json_encode($e->errors()));
         } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Cover gagal disimpan: ' . $e->getMessage());
+            \Log::error('=== storeHeader Controller FAILED ===', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Cover gagal disimpan: ' . $e->getMessage());
         }
     }
 
-    public function storeSection1(Request $request)
+    public function storeSection1(CareerSectionRequest $request)
     {
-        // ====== RULES & VALIDASI ======
-        $rules = [];
-        foreach (config('laravellocalization.supportedLocales') as $locale => $properties) {
-            $rules["section1_title.$locale"]   = 'required|string|max:255';
-            $rules["section1_content.$locale"] = 'required|string'; // summernote html -> string
-        }
-
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        DB::beginTransaction();
         try {
-            // ====== MASTER SECTION 1 ======
-            // hanya 1 row, jadi update/insert
-            $section1 = CareerSection::first();
-            if (!$section1) {
-                $section1 = new CareerSection();
-            }
-            $section1->save();
+            $payload = [
+                'title' => $request->input('section1_title') ?? $request->input('title'),
+                'content' => $request->input('section1_content') ?? $request->input('content'),
+            ];
 
-            // ====== TRANSLATIONS ======
-            foreach ($request->section1_title as $locale => $title) {
-                $translation = CareerSectionTranslation::firstOrNew([
-                    'career_section_id' => $section1->id,
-                    'locale'             => $locale,
-                    'title' => $request->section1_title[$locale],
-                    'content' => $request->section1_content[$locale],
-                ]);
+            $this->careerService->saveSection($payload);
 
-                // $translation->title   = $title;
-                // $translation->content = $request->section1_content[$locale] ?? '';
-                $translation->save();
-            }
-
-            DB::commit();
-            return redirect()
-                ->back()
-                ->with('success', 'Section 1 berhasil disimpan.');
+            return redirect()->back()->with('success', 'Section 1 berhasil disimpan.');
         } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()
-                ->back()
-                ->with('error', 'Gagal menyimpan Section 1: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Gagal menyimpan Section 1: ' . $e->getMessage());
         }
     }
-    public function storeOrUpdateCareer(Request $request)
+
+    public function storeOrUpdateCareer(CareerRequest $request)
     {
         try {
-            // dd($request->all());
-            DB::beginTransaction();
-            $rules = [
-                'career_position' => 'required|string|max:255',
-                'career_factory' => 'required',
-                'career_location' => 'required',
-                'career_job_level' => 'required',
-                'career_range_salary' => 'nullable|string|max:255',
-                'career_education'  => 'required',
-                'career_experience' => 'required|string|max:255',
-                'career_description' => 'required|string',
-            ];
-
-            $messages = [
-                'career_position.required'  => 'Position wajib diisi.',
-                'career_factory.required' => 'Factory wajib dipilih.',
-                'career_location.required' => 'Location wajib dipilih.',
-                'career_job_level.required' => 'Job level wajib dipilih.',
-                'career_education.required' => 'Minimum education wajib dipilih.',
-                'career_experience.required' => 'Minimum experience wajib diisi.',
-                'career_description.required' => 'Job description wajib diisi.',
-            ];
-
-            $validator = Validator::make($request->all(), $rules, $messages);
-            if ($validator->fails()) {
-                DB::rollBack();
-                return FormatResponseJson::error(null, ['errors' => $validator->errors()], 422);
-            }
-            $validated = $validator->validated();
-
-            // Create or update Career
-            $career = Career::updateOrCreate(
-                ['id' => $request->input('career_id')],
-                [
-                    'position'      => $validated['career_position'],
-                    'factory_id'    => $validated['career_factory'],
-                    'location_id'   => $validated['career_location'],
-                    'education_id'  => $validated['career_education'],
-                    'job_level_id'  => $validated['career_job_level'],
-                    'range_salary'  => $validated['career_range_salary'],
-                    'minimum_experience'    => $validated['career_experience'],
-                    'description'   => $validated['career_description'],
-                ]
-            );
-
-            DB::commit();
-            $msg = $request->filled('id') ? 'Career updated successfully.' : 'Career created successfully.';
+            $career = $this->careerService->createOrUpdateCareer($request->all(), $request->input('career_id'));
+            $msg = $request->filled('career_id') ? 'Career updated successfully.' : 'Career created successfully.';
             return FormatResponseJson::success($career, $msg);
-
         } catch (\Throwable $th) {
-            DB::rollBack();
             return FormatResponseJson::error(null, $th->getMessage(), 500);
         }
     }
+
     public function detailCareer(Request $request)
     {
         try {
-            DB::beginTransaction();
-
-            $career = Career::with(['factory', 'location', 'education', 'jobLevel'])
-                ->where('id', $request->career_id)
-                ->first();
-
-            DB::commit();
+            $career = $this->careerService->getCareerById($request->career_id);
             return FormatResponseJson::success($career, 'Career details fetched successfully.');
         } catch (\Throwable $th) {
-            DB::rollBack();
             return FormatResponseJson::error(null, $th->getMessage(), 500);
         }
     }

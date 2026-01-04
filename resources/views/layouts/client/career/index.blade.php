@@ -18,7 +18,7 @@
 
 <!-- Cover Section -->
 <section id="cover-karir">
-    @dd($careerHeader)
+    {{-- @dd($careerHeader) --}}
     <div class="karir-images" style="background-image: url('{{ $careerHeader && $careerHeader->image ? asset('uploads/career/header/' . $careerHeader->image) : asset('uploads/career/header/header_career.jpg') }}') !important;">
         <div class="prelative container">
         </div>

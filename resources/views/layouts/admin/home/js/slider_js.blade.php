@@ -6,7 +6,7 @@
         if ($('head').find('#swal2-zindex-style').length === 0) {
             $('head').append(
                 '<style id="swal2-zindex-style">.swal2-container{z-index:2147483647!important}.swal2-popup{z-index:2147483647!important}</style>'
-                );
+            );
         }
         // ============================================
         // HELPER FUNCTIONS
