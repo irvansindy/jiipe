@@ -132,8 +132,12 @@
                 formData.append('_method', 'PUT');
             }
 
-            // Convert checkbox to boolean
-            formData.set('is_active', $('#is_active').is(':checked') ? 1 : 0);
+            // Ensure is_active is sent reliably: remove existing entries then append correct value
+            formData.delete('is_active');
+            formData.append('is_active', $('#is_active').is(':checked') ? 1 : 0);
+
+            // Debug: log formData entries (remove if not needed)
+            // console.log(Array.from(formData.entries()));
 
             showLoading();
             $('.text-danger').text('');
@@ -223,6 +227,12 @@
             });
         });
 
+        // Sync hidden is_active value when checkbox changes (keeps non-JS fallback correct)
+        $(document).on('change', '#is_active', function() {
+            const val = $(this).is(':checked') ? 1 : 0;
+            $('input[type="hidden"][name="is_active"]').val(val);
+        });
+
         // Edit button
         $(document).on('click', '.detail_user_review', function() {
             const id = $(this).data('review_id');
@@ -240,7 +250,8 @@
                     $('#reviewModalLabel').text('Edit Review');
                     $('#name').val(response.name);
                     $('#position').val(response.position);
-                    $('#is_active').prop('checked', response.is_active);
+                    // Ensure checked state is set correctly (handle "0" string and boolean true/false)
+                    $('#is_active').prop('checked', Number(response.is_active) === 1);
 
                     // Set translations untuk semua bahasa
                     locales.forEach(locale => {

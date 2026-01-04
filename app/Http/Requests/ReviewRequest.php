@@ -13,6 +13,13 @@ class ReviewRequest extends FormRequest
 
     public function rules()
     {
+        $photoRule = 'required|image|mimes:jpg,jpeg,png,webp|max:2048';
+
+        // Jika update (PUT / PATCH), photo boleh kosong
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
+            $photoRule = 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048';
+        }
+
         return [
             'name' => 'required|string|max:255',
             'position' => 'required|string|max:255',
@@ -23,9 +30,10 @@ class ReviewRequest extends FormRequest
             'description_ja' => 'required|string',
             'description_ko' => 'required|string',
             'description_tw' => 'required|string',
-            'photo' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'photo' => $photoRule,
         ];
     }
+
 
     public function messages()
     {
