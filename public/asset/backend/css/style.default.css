@@ -1159,6 +1159,7 @@ ul.list-inline li { display: inline-block; margin: 0 5px 10px 0; }
 }
 .replypanel textarea:focus {
 	border-color: #ccc; color: #666; background: #fff; font-style: normal;
+  font-display: swap;
 	box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
 }
 

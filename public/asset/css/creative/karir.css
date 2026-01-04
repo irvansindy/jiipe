@@ -1,22 +1,23 @@
 .karir-images {
-  background-image: url(../../images/2-karir_02.jpg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  font-family: 'Montserrat', sans-serif;
-  color: #ffffff;
-  font-style: normal;
-  font-weight: normal;
-  padding: 60px 0 !important;
-  height: 570px;
+    background-image: url(../../images/2-karir_02.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Montserrat', sans-serif;
+    color: #ffffff;
+    font-style: normal;
+    font-display: swap;
+    font-weight: normal;
+    padding: 60px 0 !important;
+    height: 570px;
 }
 .careerForm label.error {
-  font-weight: 800 !important;
-  font-size: 13px !important;
-  display: block !important;
-  margin-top: 5px !important;
-  color: #fb483a !important;
+    font-weight: 800 !important;
+    font-size: 13px !important;
+    display: block !important;
+    margin-top: 5px !important;
+    color: #fb483a !important;
 }
 .careerForm .form-line.error:after {
-  border-bottom: 2px solid #fb483a !important;
+    border-bottom: 2px solid #fb483a !important;
 }
