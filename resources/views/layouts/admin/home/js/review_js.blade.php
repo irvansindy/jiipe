@@ -62,14 +62,14 @@
             $('#reviewModalLabel').text('Add Review');
             $('#photo-preview').hide();
             $('.text-danger').text('');
-            // remove validation states and messages
             $('#reviewForm').find('.is-invalid').removeClass('is-invalid');
             $('#reviewForm').find('.ajax-error').remove();
-            // reset custom file input label and file value
             $('#photo').val('');
             $('.custom-file-label').text('Choose file');
             $('#photo-preview img').attr('src', '');
-            $('.custom-file-label').text('Choose file');
+
+            // PERBAIKAN: Gunakan ID yang spesifik
+            $('#review_is_active').prop('checked', true);
 
             // Reset semua textarea
             locales.forEach(locale => {
@@ -132,12 +132,16 @@
                 formData.append('_method', 'PUT');
             }
 
-            // Ensure is_active is sent reliably: remove existing entries then append correct value
-            formData.delete('is_active');
-            formData.append('is_active', $('#is_active').is(':checked') ? 1 : 0);
+            // Biarkan FormData natural handle is_active dari hidden input + checkbox
+            // TIDAK perlu manipulasi manual lagi
 
-            // Debug: log formData entries (remove if not needed)
-            // console.log(Array.from(formData.entries()));
+            // Debug log
+            console.log('=== REVIEW FORM DEBUG ===');
+            console.log('Checkbox Status:', $('#review_is_active').is(':checked'));
+            console.log('FormData entries:');
+            for (let pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
 
             showLoading();
             $('.text-danger').text('');
@@ -166,7 +170,6 @@
                 error: function(xhr) {
                     hideLoading();
 
-                    // Clear previous validation states
                     $('.text-danger').text('');
                     $('#reviewForm').find('.is-invalid').removeClass('is-invalid');
 
@@ -177,10 +180,8 @@
 
                         $.each(errors, function(key, value) {
                             const msg = Array.isArray(value) ? value[0] : value;
-                            // Put message into the small.text-danger by convention
                             $(`#error-${key}`).text(msg);
 
-                            // Try to mark the corresponding input as invalid
                             const nameSelectors = [
                                 `[name="${key}"], [name="${key}[]"]`,
                                 `[name="${key.replace(/\./g,'_')}"]`
@@ -194,7 +195,6 @@
                                 }
                             });
 
-                            // fallback: attach message near first input if none matched
                             if (!marked) {
                                 const $firstInput = $('#reviewForm').find(
                                     'input, textarea, select').first();
@@ -206,14 +206,12 @@
                             if (!firstMsg) firstMsg = msg;
                         });
 
-                        // Show a general validation error toast and keep modal open
                         Swal.fire({
                             icon: 'error',
                             title: 'Validation Error',
                             text: firstMsg || 'Please check the highlighted fields',
                         });
                     } else {
-                        // Non-validation errors
                         const message = (xhr.responseJSON && (xhr.responseJSON.message ||
                                 xhr.responseJSON.meta && xhr.responseJSON.meta.message)) ||
                             'Something went wrong!';
@@ -225,12 +223,6 @@
                     }
                 }
             });
-        });
-
-        // Sync hidden is_active value when checkbox changes (keeps non-JS fallback correct)
-        $(document).on('change', '#is_active', function() {
-            const val = $(this).is(':checked') ? 1 : 0;
-            $('input[type="hidden"][name="is_active"]').val(val);
         });
 
         // Edit button
@@ -250,13 +242,20 @@
                     $('#reviewModalLabel').text('Edit Review');
                     $('#name').val(response.name);
                     $('#position').val(response.position);
-                    // Ensure checked state is set correctly (handle "0" string and boolean true/false)
-                    $('#is_active').prop('checked', Number(response.is_active) === 1);
+
+                    // PERBAIKAN: Gunakan ID yang spesifik
+                    const isActive = parseInt(response.is_active) === 1;
+                    $('#review_is_active').prop('checked', isActive);
+
+                    // Debug log
+                    console.log('=== EDIT REVIEW DEBUG ===');
+                    console.log('Response is_active:', response.is_active);
+                    console.log('Parsed isActive:', isActive);
+                    console.log('Checkbox after set:', $('#review_is_active').is(':checked'));
 
                     // Set translations untuk semua bahasa
                     locales.forEach(locale => {
-                        const trans = response.translations.find(t => t.locale ===
-                            locale);
+                        const trans = response.translations.find(t => t.locale === locale);
                         if (trans) {
                             $(`#description_${locale}`).val(trans.description);
                         }
@@ -361,7 +360,6 @@
                 },
                 error: function(xhr) {
                     hideLoading();
-                    // Revert checkbox
                     $(`#status${id}`).prop('checked', !isChecked);
 
                     Swal.fire({

@@ -38,7 +38,7 @@ class ReviewService
             $review = Review::create([
                 'name' => Arr::get($data, 'name'),
                 'position' => Arr::get($data, 'position'),
-                'is_active' => Arr::get($data, 'is_active', 0),
+                'is_active' => Arr::get($data, 'is_active', 0), // Default 0 jika tidak ada
                 'photo' => $photoFileName,
             ]);
 
@@ -68,7 +68,11 @@ class ReviewService
 
             $review->name = Arr::get($data, 'name', $review->name);
             $review->position = Arr::get($data, 'position', $review->position);
-            $review->is_active = Arr::get($data, 'is_active', $review->is_active);
+
+            // PENTING: Pastikan is_active diupdate dengan benar
+            if (array_key_exists('is_active', $data)) {
+                $review->is_active = $data['is_active'];
+            }
 
             if (!empty($data['_file_photo']) && $data['_file_photo']->isValid()) {
                 // delete old photo
