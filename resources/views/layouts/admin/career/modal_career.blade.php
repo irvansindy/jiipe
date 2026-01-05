@@ -50,10 +50,10 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-6 col-lg-6 col-sm-12 mb-3">
+                        {{-- <div class="col-md-6 col-lg-6 col-sm-12 mb-3">
                             <label for="career_range_salary" class="form-label">Range Salary</label>
                             <input type="text" class="form-control" id="career_range_salary" name="career_range_salary">
-                        </div>
+                        </div> --}}
 
                         <div class="col-md-6 col-lg-6 col-sm-12 mb-3">
                             <label for="career_education" class="form-label">Minimum Education</label>

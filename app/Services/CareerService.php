@@ -19,11 +19,22 @@ class CareerService
      */
     public function getAllCareers(array $filters = [])
     {
-        $query = Career::query();
+        $query = Career::with([
+            'factory',
+            'location',
+            'education',
+            'jobLevel',
+        ]);
 
         // Add simple filters if provided
         if (!empty($filters['factory_id'])) {
-            $query->where('factory_id', $filters['factory_id']);
+            $query->where('factory_id', $filters['company_id']);
+        }
+        if (!empty($filters['education_id'])) {
+            $query->where('education_id', $filters['education_id']);
+        }
+        if (!empty($filters['job_level_id'])) {
+            $query->where('job_level_id', $filters['job_level_id']);
         }
         if (!empty($filters['location_id'])) {
             $query->where('location_id', $filters['location_id']);
@@ -47,9 +58,9 @@ class CareerService
                 'factory_id' => $data['career_factory'] ?? null,
                 'location_id' => $data['career_location'] ?? null,
                 'job_level_id' => $data['career_job_level'] ?? null,
-                'range_salary' => $data['career_range_salary'] ?? null,
+                // 'range_salary' => $data['career_range_salary'] ?? null,
                 'education_id' => $data['career_education'] ?? null,
-                'minimum_experience' => $data['career_experience'] ?? null,
+                'min_experience' => $data['career_experience'] ?? null,
                 'description' => $data['career_description'] ?? null,
             ];
 

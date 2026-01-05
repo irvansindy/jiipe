@@ -20,7 +20,7 @@ class CareerRequest extends FormRequest
             'career_location' => 'nullable|exists:master_company_locations,id',
             'career_job_level' => 'nullable|exists:master_job_levels,id',
             'career_range_salary' => 'nullable|string|max:255',
-            'career_education' => 'nullable|exists:master_educations,id',
+            'career_education' => 'nullable|exists:master_education,id',
             'career_experience' => 'nullable|string|max:255',
             'career_description' => 'nullable|string',
         ];
