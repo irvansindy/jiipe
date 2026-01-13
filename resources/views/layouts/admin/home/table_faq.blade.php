@@ -20,3 +20,8 @@
         </tfoot>
     </table>
 </div>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlayFaq" style="display: none;">
+    <div class="spinner"></div>
+</div>

@@ -317,13 +317,20 @@ Route::group([
         });
 
         Route::prefix('admin')->middleware(['auth'])->group(function () {
-            // FAQ routes
+
+            // FAQ Management
+            Route::get('/faq', [FAQController::class, 'index'])->name('admin.faq.index');
             Route::get('/faq/fetch', [FAQController::class, 'fetch'])->name('fetch-faq');
-            Route::get('/faq/{id}/edit', [FAQController::class, 'edit']);
-            Route::post('/faq', [FAQController::class, 'store']);
-            Route::put('/faq/{id}', [FAQController::class, 'update']);
-            Route::delete('/faq/{id}', [FAQController::class, 'destroy']);
-            Route::post('/faq/{id}/toggle-status', [FAQController::class, 'toggleStatus']);
+            Route::post('/faq', [FAQController::class, 'store'])->name('admin.faq.store');
+            Route::get('/faq/{id}', [FAQController::class, 'show'])->name('admin.faq.show');
+            Route::get('/faq/{id}/edit', [FAQController::class, 'edit'])->name('admin.faq.edit');
+            Route::put('/faq/{id}', [FAQController::class, 'update'])->name('admin.faq.update');
+            Route::delete('/faq/{id}', [FAQController::class, 'destroy'])->name('admin.faq.destroy');
+
+            // FAQ Additional Actions
+            Route::post('/faq/{id}/toggle-status', [FAQController::class, 'toggleStatus'])->name('admin.faq.toggle-status');
+            Route::post('/faq/reorder', [FAQController::class, 'reorder'])->name('admin.faq.reorder');
+
         });
 
         Route::get('article-and-news', [NewsAndArticleController::class, 'index'])->name('article-and-news');

@@ -159,4 +159,33 @@ class FAQService
             }
         }
     }
+
+    /**
+     * Reorder FAQs by given array of IDs
+     *
+     * @param array $order Array of FAQ IDs in the desired order
+     * @return bool
+     * @throws Exception
+     */
+    public function reorder(array $order)
+    {
+        DB::beginTransaction();
+
+        try {
+            foreach ($order as $index => $id) {
+                $faq = FrequentlyAskedQuestions::find($id);
+                if ($faq) {
+                    $faq->position = $index + 1;
+                    $faq->save();
+                }
+            }
+
+            DB::commit();
+
+            return true;
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
 }

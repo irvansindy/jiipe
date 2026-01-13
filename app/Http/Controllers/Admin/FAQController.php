@@ -132,4 +132,29 @@ class FAQController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Reorder FAQs
+     */
+    public function reorder(Request $request)
+    {
+        try {
+            $data = $request->validate([
+                'order' => 'required|array',
+                'order.*' => 'integer'
+            ]);
+
+            $this->faqService->reorder($data['order']);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Order updated successfully!'
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

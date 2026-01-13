@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class FAQRequest extends FormRequest
 {
@@ -11,70 +12,102 @@ class FAQRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true ;
+        return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'position' => 'required|integer|min:1',
-            'is_active' => 'required|boolean',
-            'question_id' => 'required|string|max:500',
-            'question_en' => 'required|string|max:500',
-            'question_zh' => 'nullable|string|max:500',
-            'question_ja' => 'nullable|string|max:500',
-            'question_ko' => 'nullable|string|max:500',
-            'question_tw' => 'nullable|string|max:500',
-            'answer_id' => 'required|string',
-            'answer_en' => 'required|string',
-            'answer_zh' => 'nullable|string',
-            'answer_ja' => 'nullable|string',
-            'answer_ko' => 'nullable|string',
-            'answer_tw' => 'nullable|string',
+            'is_active' => 'boolean',
         ];
+
+        // Validasi untuk setiap locale
+        $locales = ['id', 'en', 'zh', 'ja', 'ko', 'tw'];
+
+        foreach ($locales as $locale) {
+            // Untuk bahasa wajib (id dan en)
+            if (in_array($locale, ['id', 'en'])) {
+                $rules["question_{$locale}"] = 'required|string|max:500';
+                $rules["answer_{$locale}"] = 'required|string';
+            } else {
+                // Untuk bahasa opsional
+                $rules["question_{$locale}"] = 'nullable|string|max:500';
+                $rules["answer_{$locale}"] = 'nullable|string';
+            }
+        }
+
+        return $rules;
     }
 
     /**
-     * Get custom messages for validator errors.
+     * Get custom validation messages
      */
     public function messages(): array
     {
         return [
-            'position.required' => 'Position wajib diisi',
-            'position.integer' => 'Position harus berupa angka',
-            'position.min' => 'Position minimal 1',
-            'question_id.required' => 'Pertanyaan (ID) wajib diisi',
-            'question_id.max' => 'Pertanyaan (ID) maksimal 500 karakter',
-            'question_en.required' => 'Pertanyaan (EN) wajib diisi',
-            'question_en.max' => 'Pertanyaan (EN) maksimal 500 karakter',
-            'answer_id.required' => 'Jawaban (ID) wajib diisi',
-            'answer_en.required' => 'Jawaban (EN) wajib diisi',
+            'position.required' => 'Position is required',
+            'position.integer' => 'Position must be a number',
+            'position.min' => 'Position must be at least 1',
+
+            'question_id.required' => 'Question in Indonesian is required',
+            'question_id.max' => 'Question in Indonesian cannot exceed 500 characters',
+            'answer_id.required' => 'Answer in Indonesian is required',
+
+            'question_en.required' => 'Question in English is required',
+            'question_en.max' => 'Question in English cannot exceed 500 characters',
+            'answer_en.required' => 'Answer in English is required',
+
+            'question_zh.max' => 'Question in Chinese cannot exceed 500 characters',
+            'question_ja.max' => 'Question in Japanese cannot exceed 500 characters',
+            'question_ko.max' => 'Question in Korean cannot exceed 500 characters',
+            'question_tw.max' => 'Question in Traditional Chinese cannot exceed 500 characters',
         ];
     }
 
     /**
-     * Get custom attributes for validator errors.
+     * Prepare the data for validation
+     */
+    protected function prepareForValidation(): void
+    {
+        // Convert checkbox value to boolean
+        if ($this->has('is_active')) {
+            $this->merge([
+                'is_active' => filter_var($this->is_active, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? false
+            ]);
+        } else {
+            $this->merge(['is_active' => false]);
+        }
+
+        // Ensure position is an integer
+        if ($this->has('position')) {
+            $this->merge([
+                'position' => (int) $this->position
+            ]);
+        }
+    }
+
+    /**
+     * Get custom attributes for validator errors
      */
     public function attributes(): array
     {
         return [
-            'question_id' => 'Pertanyaan (Indonesian)',
-            'question_en' => 'Pertanyaan (English)',
-            'question_zh' => 'Pertanyaan (Chinese Simplified)',
-            'question_ja' => 'Pertanyaan (Japanese)',
-            'question_ko' => 'Pertanyaan (Korean)',
-            'question_tw' => 'Pertanyaan (Chinese Traditional)',
-            'answer_id' => 'Jawaban (Indonesian)',
-            'answer_en' => 'Jawaban (English)',
-            'answer_zh' => 'Jawaban (Chinese Simplified)',
-            'answer_ja' => 'Jawaban (Japanese)',
-            'answer_ko' => 'Jawaban (Korean)',
-            'answer_tw' => 'Jawaban (Chinese Traditional)',
+            'question_id' => 'Question (Indonesian)',
+            'answer_id' => 'Answer (Indonesian)',
+            'question_en' => 'Question (English)',
+            'answer_en' => 'Answer (English)',
+            'question_zh' => 'Question (Chinese Simplified)',
+            'answer_zh' => 'Answer (Chinese Simplified)',
+            'question_ja' => 'Question (Japanese)',
+            'answer_ja' => 'Answer (Japanese)',
+            'question_ko' => 'Question (Korean)',
+            'answer_ko' => 'Answer (Korean)',
+            'question_tw' => 'Question (Chinese Traditional)',
+            'answer_tw' => 'Answer (Chinese Traditional)',
         ];
     }
 }
