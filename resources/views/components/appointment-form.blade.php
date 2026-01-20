@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}">
 <section class="jiipe-contact" id="contact2">
-    <div class="navigasi-box navigasi-box-shadow">
+    {{-- <div class="navigasi-box navigasi-box-shadow">
         <ul>
             <li>
                 <a href="{{ route('home') }}#videotour">
@@ -69,8 +69,8 @@
             </li>
         </ul>
         <div class="clear"></div>
-    </div>
-
+    </div> --}}
+    @include('layouts.client.home.partials.navigation_box')
     <section id="contact">
         <div class="contact-images">
             <div class="prelative container">

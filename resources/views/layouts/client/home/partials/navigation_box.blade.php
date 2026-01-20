@@ -50,7 +50,7 @@
 
                 {{-- Desktop Version --}}
                 <a href="{{ $brochureUrl }}" target="_blank" rel="noopener"
-                    class="hashds {{ $isMobile ? 'd-none' : '' }} track-brochure-download"
+                    class="hash {{ $isMobile ? 'd-none' : '' }} track-brochure-download"
                     data-brochure-id="{{ $brochureId }}" download>
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-book-open"></i></div>
@@ -64,7 +64,7 @@
 
                 <a href="{{ asset('asset/brochure/(Desktop Version) E-Brochure JIIPE-Ineractive.pdf') }}"
                     target="_blank" rel="noopener"
-                    class="hashds {{ $isMobile ? 'd-none' : '' }} track-brochure-download">
+                    class="hash {{ $isMobile ? 'd-none' : '' }} track-brochure-download">
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-book-open"></i></div>
                         <div class="text">
