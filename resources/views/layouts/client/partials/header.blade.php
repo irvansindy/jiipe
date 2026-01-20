@@ -36,8 +36,7 @@
                             <div class="button-icon my-1">
                                 <i class="fa fa-calendar-alt"></i>
                             </div>
-                            <a class="text-appointment mx-1 my-1"
-                                href="{{ $settings['contact2'] ?? '#contact2' }}"
+                            <a class="text-appointment mx-1 my-1" href="{{ $settings['contact2'] ?? '#contact2' }}"
                                 title="{{ $settings['section2_home_header_button_text'] ?? '' }}">
                                 @lang('system.quick appointment')
                             </a>
@@ -127,8 +126,53 @@
         </div>
     </div>
 </header>
+
 <style>
-    /* Language Dropdown Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* Header Normal State */
+    .header-navigation {
+        position: relative;
+        background-color: #ffffff;
+        width: 100%;
+        transition: none;
+        /* Hapus transition di state normal */
+    }
+
+    /* Header Sticky State - hanya apply styling saat ada class body.has-scrolled */
+    body.has-scrolled .header-navigation.sticky {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 9999;
+        background-color: #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transform: translateY(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    /* Sticky header muncul */
+    body.has-scrolled .header-navigation.sticky.show {
+        transform: translateY(0);
+    }
+
+    /* Logo sticky - tampilkan hanya saat sticky aktif DAN show */
+    body.has-scrolled .header-navigation.sticky.show .sticky-logo-branding .sticky-main {
+        display: inline-block !important;
+    }
+
+    /* Sembunyikan logo sticky di state lain */
+    .sticky-logo-branding .sticky-main {
+        display: none !important;
+    }
+
+    /* Language Dropdown */
     .branding3 .language-dropdown-wrapper {
         display: flex;
         align-items: center;
@@ -153,8 +197,6 @@
         cursor: pointer;
         outline: none;
         appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
         background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
         background-repeat: no-repeat;
         background-position: right 8px center;
@@ -171,7 +213,6 @@
         box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.1);
     }
 
-    /* Responsive - Show on mobile/tablet */
     @media screen and (max-width: 1024px) {
         .branding3 {
             display: block !important;
@@ -188,19 +229,14 @@
             display: none !important;
         }
     }
-</style>
 
-<!-- Mobile nav overrides to match expected design -->
-<style>
+    /* Mobile Menu Styles */
     @media screen and (max-width: 1024px) {
-
-        /* Ensure toggle is on top and clickable */
         .navbar-toggle-btn {
             z-index: 100001;
             cursor: pointer;
         }
 
-        /* Base nav-menu for mobile */
         .nav-menu {
             position: fixed !important;
             top: 0 !important;
@@ -209,7 +245,6 @@
             max-width: 360px !important;
             height: 100vh !important;
             background-color: #c7332a !important;
-            /* JIIPE red */
             color: #ffffff !important;
             z-index: 100000 !important;
             transition: right 0.36s ease !important;
@@ -242,11 +277,8 @@
 
         .nav-menu .main-menu .sub-menu {
             display: none !important;
-            /* Force mobile submenu to behave as stacked items (not absolute) */
             position: static !important;
             width: 100% !important;
-            left: auto !important;
-            top: auto !important;
             padding-left: 12px !important;
             background: rgba(255, 255, 255, 0.03) !important;
             box-shadow: none !important;
@@ -257,7 +289,6 @@
             display: block !important;
         }
 
-        /* Make submenu items full-width and readable on mobile */
         .nav-menu .main-menu .sub-menu li a {
             display: block !important;
             width: 100% !important;
@@ -266,12 +297,10 @@
             background: transparent !important;
         }
 
-        /* Slight separator for nested levels */
         .nav-menu .main-menu .sub-menu li+li a {
             border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
         }
 
-        /* Close button: small translucent square with white X */
         .nav-menu .navbar-close {
             position: absolute !important;
             top: 14px !important;
@@ -306,18 +335,96 @@
             visibility: visible;
         }
 
-        /* Prevent body scroll when menu open */
         body.menu-open {
             overflow: hidden !important;
         }
     }
 </style>
-
 <script>
     (function() {
         'use strict';
 
-        // Initialize mobile menu when DOM is ready
+        // SOLUSI BARU: Sticky Header dengan state management yang lebih baik
+        function initStickyHeader() {
+            const headerNavigation = document.querySelector('.header-navigation');
+            const headerTopLogo = document.querySelector('.header-top-logo');
+
+            if (!headerNavigation || !headerTopLogo) return;
+
+            // Hitung posisi threshold untuk sticky
+            const getThreshold = () => {
+                return headerTopLogo.offsetHeight;
+            };
+
+            let threshold = getThreshold();
+            let ticking = false;
+            let lastScrollY = 0;
+
+            function updateStickyState() {
+                const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+                if (scrollY > threshold) {
+                    // User sudah scroll melewati threshold
+                    document.body.classList.add('has-scrolled');
+
+                    // Tambahkan class sticky jika belum ada
+                    if (!headerNavigation.classList.contains('sticky')) {
+                        headerNavigation.classList.add('sticky');
+                        // Trigger reflow untuk memastikan transition bekerja
+                        void headerNavigation.offsetWidth;
+                        // Tambahkan show untuk animasi masuk
+                        requestAnimationFrame(() => {
+                            headerNavigation.classList.add('show');
+                        });
+                    }
+                } else {
+                    // User di posisi atas (belum melewati threshold)
+                    if (headerNavigation.classList.contains('sticky')) {
+                        // Hilangkan show dulu (animasi keluar)
+                        headerNavigation.classList.remove('show');
+
+                        // Setelah animasi selesai, hapus sticky dan has-scrolled
+                        setTimeout(() => {
+                            // Double check masih di posisi atas
+                            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+                            if (currentScroll <= threshold) {
+                                headerNavigation.classList.remove('sticky');
+                                document.body.classList.remove('has-scrolled');
+                            }
+                        }, 300); // Match dengan durasi transition CSS
+                    }
+                }
+
+                lastScrollY = scrollY;
+                ticking = false;
+            }
+
+            function onScroll() {
+                if (!ticking) {
+                    requestAnimationFrame(updateStickyState);
+                    ticking = true;
+                }
+            }
+
+            // Recalculate threshold on resize
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    threshold = getThreshold();
+                    updateStickyState();
+                }, 250);
+            });
+
+            window.addEventListener('scroll', onScroll, {
+                passive: true
+            });
+
+            // Initial check
+            updateStickyState();
+        }
+
+        // Mobile menu - tidak ada perubahan
         function initMobileMenu() {
             const toggleBtn = document.querySelector('.navbar-toggle-btn');
             const navMenu = document.querySelector('.nav-menu');
@@ -326,7 +433,6 @@
 
             if (!toggleBtn || !navMenu) return;
 
-            // Create overlay element
             function createOverlay() {
                 let overlay = document.querySelector('.nav-menu-overlay');
                 if (!overlay) {
@@ -337,64 +443,43 @@
                 return overlay;
             }
 
-            // Open menu
             function openMenu() {
                 const overlay = createOverlay();
                 navMenu.classList.add('active');
                 document.body.classList.add('menu-open');
 
                 const toggler = toggleBtn.querySelector('.navbar-toggler');
-                if (toggler) {
-                    toggler.classList.add('active');
-                }
+                if (toggler) toggler.classList.add('active');
 
-                setTimeout(() => {
-                    overlay.classList.add('active');
-                }, 10);
+                setTimeout(() => overlay.classList.add('active'), 10);
             }
 
-            // Close menu
             function closeMenu() {
                 const overlay = document.querySelector('.nav-menu-overlay');
                 navMenu.classList.remove('active');
                 document.body.classList.remove('menu-open');
 
                 const toggler = toggleBtn.querySelector('.navbar-toggler');
-                if (toggler) {
-                    toggler.classList.remove('active');
-                }
+                if (toggler) toggler.classList.remove('active');
 
                 if (overlay) {
                     overlay.classList.remove('active');
                     setTimeout(() => {
-                        if (overlay.parentNode) {
-                            overlay.parentNode.removeChild(overlay);
-                        }
+                        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
                     }, 300);
                 }
 
-                // Close all open dropdowns when menu closes
                 document.querySelectorAll('.main-menu .has-children').forEach(el => {
                     el.classList.remove('active');
                 });
             }
 
-            // Toggle menu
-            function toggleMenu(e) {
+            toggleBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                navMenu.classList.contains('active') ? closeMenu() : openMenu();
+            });
 
-                if (navMenu.classList.contains('active')) {
-                    closeMenu();
-                } else {
-                    openMenu();
-                }
-            }
-
-            // Event: Toggle button click
-            toggleBtn.addEventListener('click', toggleMenu);
-
-            // Event: Close button click
             if (closeBtn) {
                 closeBtn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -402,58 +487,33 @@
                 });
             }
 
-            // Event: Overlay click to close menu
             document.addEventListener('click', (e) => {
-                if (e.target.classList.contains('nav-menu-overlay')) {
-                    closeMenu();
-                }
+                if (e.target.classList.contains('nav-menu-overlay')) closeMenu();
             });
 
-            // Event: Dropdown toggle for submenu items
             dropdownTriggers.forEach(trigger => {
                 trigger.addEventListener('click', (e) => {
-                    // Only for mobile/tablet
                     if (window.innerWidth <= 1024) {
                         e.preventDefault();
                         e.stopPropagation();
 
                         const parentLi = trigger.parentElement;
-                        const isActive = parentLi.classList.contains('active');
 
-                        // Close all other dropdowns
                         document.querySelectorAll('.main-menu .has-children').forEach(el => {
-                            if (el !== parentLi) {
-                                el.classList.remove('active');
-                            }
+                            if (el !== parentLi) el.classList.remove('active');
                         });
 
-                        // Toggle current dropdown
                         parentLi.classList.toggle('active');
                     }
                 });
             });
 
-            // Event: Close menu when clicking on a regular link (non-dropdown)
             document.querySelectorAll('.main-menu .menu-item:not(.has-children) > a').forEach(link => {
                 link.addEventListener('click', () => {
-                    if (window.innerWidth <= 1024) {
-                        closeMenu();
-                    }
+                    if (window.innerWidth <= 1024) closeMenu();
                 });
             });
 
-            // Event: Handle submenu item clicks
-            document.querySelectorAll('.main-menu .sub-menu a').forEach(link => {
-                link.addEventListener('click', () => {
-                    if (window.innerWidth <= 1024) {
-                        // Optionally close menu when clicking submenu items
-                        // Uncomment below if you want to close on submenu click:
-                        // closeMenu();
-                    }
-                });
-            });
-
-            // Event: Close menu when window resizes to desktop
             let resizeTimer;
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimer);
@@ -467,7 +527,6 @@
                 }, 250);
             });
 
-            // Event: Close menu with ESC key
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && navMenu.classList.contains('active')) {
                     closeMenu();
@@ -475,10 +534,13 @@
             });
         }
 
-        // Run when DOM is ready
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initMobileMenu);
+            document.addEventListener('DOMContentLoaded', () => {
+                initStickyHeader();
+                initMobileMenu();
+            });
         } else {
+            initStickyHeader();
             initMobileMenu();
         }
     })();

@@ -1,136 +1,300 @@
-/* Style universal untuk semua navigasi box */
+/* Force Override Bootstrap Classes */
+.navigasi-box .d-none,
+.navigasi-box .hashmb.d-none,
+.navigasi-box .hashds.d-none {
+    display: block !important;
+}
+
+/* Navigation Box Base Styles */
 .navigasi-box.navigasi-box-shadow.navigasi-box-border-bottom {
-    width: 100% !important;
-    /* padding: 5px !important; */
-    background: #fff !important;
-    position: relative !important;
-    z-index: 10 !important;
+    width: 100%;
+    background: #ffffff;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .navigasi-box ul {
     display: flex !important;
-    justify-content: space-between !important;
-    /* padding: 5px !important; */
-    padding: 0px 40px 0px 40px !important;
+    justify-content: space-evenly !important;
+    align-items: stretch !important;
+    padding: 20px 40px !important;
     margin: 0 !important;
-    width: 100% !important;
-    flex-wrap: nowrap !important;
     list-style: none !important;
-    overflow-x: visible !important;
+    width: 100% !important;
+    gap: 10px !important;
+    flex-wrap: nowrap !important;
 }
 
 .navigasi-box ul li {
     flex: 1 1 25% !important;
-    min-width: 0 !important;
-    max-width: 25% !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
     margin: 0 !important;
-    padding: 5px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    float: none !important;
-    width: auto !important;
+    padding: 0 !important;
+    border-right: 1px solid #e0e0e0 !important;
+    min-width: 0 !important;
+    position: relative !important;
+}
+
+.navigasi-box ul li:last-child {
+    border-right: none !important;
 }
 
 .navigasi-box ul li a {
     width: 100% !important;
+    height: 100% !important;
     text-decoration: none !important;
+    color: #666666 !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
+.navigasi-box ul li a:hover {
+    color: #d32f2f !important;
+}
+
+.navigasi-box ul li.hover a,
+.navigasi-box ul li a.active {
+    color: #d32f2f !important;
+}
+
+/* Navigation Body Layout */
 .navigasi-box ul li .navigasi-body {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    justify-content: flex-start !important;
-    padding: 5px !important;
-    height: auto !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    padding: 10px 15px !important;
     width: 100% !important;
-    text-align: left !important;
+}
+
+.navigasi-box ul li .navigasi-body.d-lg-flex,
+.navigasi-box ul li .navigasi-body.d-sm-inline-flex {
+    display: flex !important;
 }
 
 .navigasi-box ul li .navigasi-body .icon {
-    margin-right: 10px !important;
-    font-size: 16px !important;
+    font-size: 32px !important;
+    color: #c0c0c0 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    min-width: 20px !important;
+    min-width: 32px !important;
+    transition: color 0.3s ease !important;
+}
+
+.navigasi-box ul li a:hover .icon,
+.navigasi-box ul li.hover .icon {
+    color: #d32f2f !important;
 }
 
 .navigasi-box ul li .navigasi-body .text {
     text-align: left !important;
-    flex: 1 !important;
+    line-height: 1.3 !important;
+    display: block !important;
 }
 
 .navigasi-box ul li .navigasi-body .text p {
-    font-size: 10px !important;
-    margin: 0 0 2px 0 !important;
-    line-height: 1.2 !important;
+    font-size: 11px !important;
+    margin: 0 0 3px 0 !important;
+    color: #999999 !important;
+    font-weight: 400 !important;
+    display: block !important;
 }
 
 .navigasi-box ul li .navigasi-body .text h6 {
-    font-size: 11px !important;
+    font-size: 13px !important;
     margin: 0 !important;
-    line-height: 1.2 !important;
+    color: inherit !important;
+    font-weight: 600 !important;
     white-space: normal !important;
+    line-height: 1.3 !important;
+    display: block !important;
 }
 
-@media (max-width: 576px) {
+/* Tablet Styles */
+@media (max-width: 992px) {
     .navigasi-box ul {
+        padding: 15px 20px !important;
+        gap: 5px !important;
+    }
+
+    .navigasi-box ul li .navigasi-body {
+        gap: 8px !important;
+        padding: 8px 10px !important;
+    }
+
+    .navigasi-box ul li .navigasi-body .icon {
+        font-size: 28px !important;
+        min-width: 28px !important;
+    }
+
+    .navigasi-box ul li .navigasi-body .text p {
+        font-size: 10px !important;
+    }
+
+    .navigasi-box ul li .navigasi-body .text h6 {
+        font-size: 12px !important;
+    }
+}
+
+/* Mobile Styles - CRITICAL */
+@media (max-width: 768px) {
+    /* Force show all menu items */
+    .navigasi-box ul li,
+    .navigasi-box ul li a,
+    .navigasi-box .hashmb,
+    .navigasi-box .hashds {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    .navigasi-box ul {
+        padding: 15px 10px !important;
+        gap: 0 !important;
         display: flex !important;
         flex-direction: row !important;
+        flex-wrap: nowrap !important;
     }
 
     .navigasi-box ul li {
+        border-right: none !important;
+        padding: 5px !important;
+        flex: 1 1 25% !important;
+        max-width: 25% !important;
         width: 25% !important;
-        float: none !important;
-        flex: 0 0 25% !important;
+        display: flex !important;
     }
 
     .navigasi-box ul li .navigasi-body {
         flex-direction: column !important;
+        gap: 8px !important;
+        padding: 10px 5px !important;
         text-align: center !important;
+        display: flex !important;
     }
 
     .navigasi-box ul li .navigasi-body .icon {
-        font-size: 14px !important;
-        margin-right: 0 !important;
-        margin-bottom: 5px !important;
+        font-size: 24px !important;
+        min-width: auto !important;
+        margin-bottom: 4px !important;
+        display: flex !important;
     }
 
     .navigasi-box ul li .navigasi-body .text {
-        width: 100% !important;
-        min-width: 0 !important;
         text-align: center !important;
+        width: 100% !important;
+        display: block !important;
     }
 
+    /* Hide <p> tags in mobile */
     .navigasi-box ul li .navigasi-body .text p {
-        font-size: 8px !important;
-        width: 100% !important;
-        white-space: normal !important;
+        display: none !important;
+    }
+
+    .navigasi-box ul li .navigasi-body .text h6 {
+        font-size: 10px !important;
+        display: block !important;
+    }
+}
+
+/* Small Mobile Styles */
+@media (max-width: 576px) {
+    /* Force show all menu items */
+    .navigasi-box ul li,
+    .navigasi-box ul li a {
+        display: flex !important;
+        visibility: visible !important;
+    }
+
+    .navigasi-box ul {
+        padding: 12px 5px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .navigasi-box ul li {
+        flex: 0 0 25% !important;
+        max-width: 25% !important;
+        width: 25% !important;
+        display: flex !important;
+    }
+
+    .navigasi-box ul li .navigasi-body {
+        padding: 8px 3px !important;
+        gap: 6px !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .navigasi-box ul li .navigasi-body .icon {
+        font-size: 20px !important;
+        display: flex !important;
+    }
+
+    .navigasi-box ul li .navigasi-body .text {
+        display: block !important;
+    }
+
+    /* Hide <p> tags in mobile */
+    .navigasi-box ul li .navigasi-body .text p {
+        display: none !important;
     }
 
     .navigasi-box ul li .navigasi-body .text h6 {
         font-size: 9px !important;
-        width: 100% !important;
-        white-space: normal !important;
+        display: block !important;
     }
 }
 
+/* Extra Small Mobile */
 @media (max-width: 375px) {
+    .navigasi-box ul {
+        padding: 10px 3px !important;
+    }
+
+    .navigasi-box ul li {
+        flex: 0 0 25% !important;
+        max-width: 25% !important;
+    }
+
     .navigasi-box ul li .navigasi-body {
-        padding: 3px !important;
+        padding: 6px 2px !important;
+        gap: 5px !important;
     }
 
     .navigasi-box ul li .navigasi-body .icon {
-        font-size: 12px !important;
+        font-size: 18px !important;
     }
 
+    /* Hide <p> tags in mobile */
     .navigasi-box ul li .navigasi-body .text p {
-        font-size: 7px !important;
+        display: none !important;
     }
 
     .navigasi-box ul li .navigasi-body .text h6 {
         font-size: 8px !important;
     }
+}
+
+/* Clear Float */
+.clear {
+    clear: both !important;
+}
+
+/* Animation for Icons */
+.animate-icon .icon {
+    transition: all 0.3s ease !important;
+}
+
+.animate-icon:hover .icon {
+    transform: scale(1.1) !important;
 }

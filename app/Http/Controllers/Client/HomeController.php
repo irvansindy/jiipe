@@ -12,6 +12,7 @@ use App\Models\VideoTour;
 use App\Models\Review;
 use App\Models\FrequentlyAskedQuestions;
 use App\Models\News;
+use App\Models\NewsCategories;
 
 class HomeController extends Controller
 {
@@ -165,25 +166,51 @@ class HomeController extends Controller
         return $faqs->toArray();
     }
 
+    // private function fetchNews($locale)
+    // {
+    //     $news = News::with(['translations' => function($q) use ($locale) {
+    //             $q->where('locale', $locale);
+    //         }])
+    //         ->where('is_published', 1)
+    //         ->orderBy('created_at', 'desc')
+    //         ->limit(3)
+    //         ->get()
+    //         ->map(function($newsItem) {
+    //             $trans = $newsItem->translations->first();
+    //             return [
+    //                 'id' => $newsItem->id,
+    //                 'title' => $trans?->title ?? '',
+    //                 'content' => $trans?->content ?? '',
+    //                 'thumbnail' => $newsItem->thumbnail,
+    //                 'created_at' => $newsItem->created_at?->format('F d, Y'),
+    //             ];
+    //         });
+
+    //     return $news->toArray();
+    // }
+
     private function fetchNews($locale)
     {
         $news = News::with(['translations' => function($q) use ($locale) {
-                $q->where('locale', $locale);
-            }])
-            ->where('is_published', 1)
-            ->orderBy('created_at', 'desc')
-            ->limit(3)
-            ->get()
-            ->map(function($newsItem) {
-                $trans = $newsItem->translations->first();
-                return [
-                    'id' => $newsItem->id,
-                    'title' => $trans?->title ?? '',
-                    'content' => $trans?->content ?? '',
-                    'thumbnail' => $newsItem->thumbnail,
-                    'created_at' => $newsItem->created_at?->format('F d, Y'),
-                ];
-            });
+                    $q->where('locale', $locale);
+                }, 'category.translations' => function($q) use ($locale) {
+                    $q->where('locale', $locale);
+                }])
+                ->where('is_published', 1)
+                ->where('category_id', 1) // Filter hanya kategori "News"
+                ->orderBy('created_at', 'desc')
+                ->limit(3)
+                ->get()
+                ->map(function($newsItem) {
+                    $trans = $newsItem->translations->first();
+                    return [
+                        'id' => $newsItem->id,
+                        'title' => $trans?->title ?? '',
+                        'content' => $trans?->content ?? '',
+                        'thumbnail' => $newsItem->thumbnail,
+                        'created_at' => $newsItem->created_at?->format('F d, Y'),
+                    ];
+                });
 
         return $news->toArray();
     }

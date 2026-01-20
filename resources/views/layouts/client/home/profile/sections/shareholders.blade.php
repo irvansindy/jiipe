@@ -13,7 +13,10 @@
                     @foreach ($shareholders ?? [] as $index => $shareholder)
                         <div class="col-md-30">
                             <div class="items">
-                                <img style="height:77px;" src="{{ asset('storage/about_us/content_detail/' .$shareholder['icon'] ?? '') }}" alt="{{ $shareholder['translations'][0]['title'] ?? '' }}" decoding="async" loading="lazy">
+                                <img style="height:77px;"
+                                    src="{{ asset('uploads/about-us/content_detail/' . $shareholder['icon'] ?? '') }}"
+                                    alt="{{ $shareholder['translations'][0]['title'] ?? '' }}" decoding="async"
+                                    loading="lazy">
                                 <div class="judul">
                                     <p>{{ $shareholder['translations'][0]['title'] ?? '' }}</p>
                                 </div>

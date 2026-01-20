@@ -101,9 +101,9 @@
 
 
                     <div class="lihat-semua-foto mt-3">
-                        <button id="viewAllBtn" class="btn btn-danger px-4 py-2">
-                            {{ __('View All Videos') }}
-                        </button>
+                        <a id="viewAllBtn" class="text danger px-4 py-2">
+                            {{ __('See All Videos') }}
+                        </a>
                     </div>
 
 
@@ -202,16 +202,19 @@
         section.gallery-sec-1 .lihat-semua-foto a {
             display: inline-block;
             padding: 12px 30px;
-            background-color: #d22c12;
-            color: #fff;
-            font-weight: 600;
+            color: #d22c12;
+            font-weight: 400;
             border-radius: 5px;
             transition: all 0.3s ease;
+            font-size: 16px;
+            text-decoration: none; /* hilangkan underline default */
         }
 
         section.gallery-sec-1 .lihat-semua-foto a:hover {
-            background-color: #a02310;
-            text-decoration: none;
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 6px;
+            color: #a02310;
         }
 
         section.gallery-sec-1 .leftsn_menu ul li.active a {
@@ -269,7 +272,7 @@
                     error: function() {
                         alert('{{ __('Failed to load videos.') }}');
                         $('#viewAllBtn').prop('disabled', false).text(
-                            '{{ __('View All Videos') }}');
+                            '{{ __('See All Videos') }}');
                     }
                 });
 

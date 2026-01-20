@@ -1,5 +1,5 @@
 <section class="industri_jippe1-sec-4">
-    <img src="{{ asset('storage/about_us/cover/profil-sec3.jpg' ?? '') }}" decoding="async" loading="lazy"
+    <img src="{{ asset('uploads/about-us/cover/profil-sec3.jpg' ?? '') }}" decoding="async" loading="lazy"
         alt="Cover Industri" class="cover-image" />
     <div class="prelative container">
         <div class="row"></div>
@@ -21,7 +21,7 @@
                         <div class="col-md-30">
                             <div class="items">
                                 <img style="height:77px;"
-                                    src="{{ asset('storage/about_us/content_detail/' . $developer['icon'] ?? '') }}"
+                                    src="{{ asset('uploads/about-us/content_detail/' . $developer['icon'] ?? '') }}"
                                     alt="{{ $developer['translations'][0]['title'] ?? '' }}" decoding="async"
                                     loading="lazy">
 

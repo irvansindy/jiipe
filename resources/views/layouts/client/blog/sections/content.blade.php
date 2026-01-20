@@ -53,9 +53,6 @@
                         </div>
                         <div class="col-md-30">
                             <div class="artikel-berita-atas">
-                                <div class="tanggal-blog">
-                                    <p>{{ $data['latestPost']['date'] }}</p>
-                                </div>
                                 <div class="judul-blog">
                                     <a href="{{ route('blog.detail', $data['latestPost']['id']) }}">
                                         <h2>{{ $data['latestPost']['title'] }}</h2>
@@ -90,9 +87,6 @@
 
                         <div class="col-md-20">
                             <div class="items">
-                                <div class="tanggal">
-                                    <p>{{ $post['date'] }}</p>
-                                </div>
                                 <div class="gambar">
                                     <a href="{{ route('blog.detail', $post['id']) }}">
                                         <img src="{{ $post['thumbnail'] }}" alt="{{ $post['title'] }}" decoding="async" loading="lazy"
@@ -158,9 +152,6 @@
 
                             <div class="col-md-20">
                                 <div class="items">
-                                    <div class="tanggal">
-                                        <p>{{ $article['date'] }}</p>
-                                    </div>
                                     <div class="gambar">
                                         <a href="{{ route('blog.detail', $article['id']) }}">
                                             <img src="{{ $article['thumbnail'] }}" alt="{{ $article['title'] }}" decoding="async" loading="lazy" class="img-fluid">

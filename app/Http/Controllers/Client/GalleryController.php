@@ -207,7 +207,7 @@ class GalleryController extends Controller
             'image' => $gallery->image
                 ? (filter_var($gallery->image, FILTER_VALIDATE_URL)
                     ? $gallery->image
-                    : asset('storage/gallery/' . $gallery->image))
+                    : asset('uploads/gallery/' . $gallery->image))
                 : asset('asset/images/default-gallery.jpg'),
             'url_video' => $gallery->url_video,
             'date' => $gallery->date_input

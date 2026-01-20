@@ -42,10 +42,10 @@
             <div class="clear"></div>
         </div>
     </section>
-
+    
     {{-- Cover Image - Dynamic --}}
     <section class="cover-profil cover-contact lazy-bg"
-        style="background-image: url('{{ asset('uploads/contact/overview/'.$contactData->image ?? 'asset/images/static/3ec59cba31JIIPE Tower up.jpg') }}');">
+        style="background-image: url('{{ asset('uploads/contact/overview/' . $contactData->image ?? 'uploads/contact/overview/3ec59cba31JIIPE Tower up.jpg') }}');">
         <div class="prelative container">
             <div class="row"></div>
         </div>
@@ -64,7 +64,7 @@
                     <div class="judul mb-4 pb-4">
                         <h2>{{ $contactData->translation->subtitle ?? 'We are here to support you' }}</h2>
                         @if ($contactData->translation->description)
-                            {!!$contactData->translation->description !!}
+                            {!! $contactData->translation->description !!}
                         @else
                             <h5>Please contact our hotline for further information (Monday - Friday, 08.00 - 17.00 local
                                 time)</h5>

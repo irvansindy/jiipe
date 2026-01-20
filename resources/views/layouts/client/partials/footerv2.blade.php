@@ -22,7 +22,7 @@
                 <div class="col-lg-18 col-sm-60 garis-lurus-right">
                     <div class="widget">
                         <h4 class="widget-title line">SITE OFFICE</h4>
-                        <div class="widget-office">s
+                        <div class="widget-office">
                             <p class="title">PT. Berkah Kawasan Manyar Sejahtera</p>
                             <p>
                                 Jl. Raya Manyar Km. 11,<br>
@@ -88,24 +88,28 @@
 
                                     {{-- Mobile Version --}}
                                     <a href="{{ $brochureUrl }}" target="_blank"
-                                        class="hashmb {{ $isMobile ? '' : 'd-none' }} track-brochure-download" data-brochure-id="{{ $brochure->translations->first()->id }}" download>
+                                        class="hashmb {{ $isMobile ? '' : 'd-none' }} track-brochure-download"
+                                        data-brochure-id="{{ $brochure->translations->first()->id }}" download>
                                         Download Brochure
                                     </a>
 
                                     {{-- Desktop Version --}}
                                     <a href="{{ $brochureUrl }}" target="_blank"
-                                        class="hashds {{ $isMobile ? 'd-none' : '' }} track-brochure-download" data-brochure-id="{{ $brochure->translations->first()->id }}" download>
+                                        class="hashds {{ $isMobile ? 'd-none' : '' }} track-brochure-download"
+                                        data-brochure-id="{{ $brochure->translations->first()->id }}" download>
                                         Download Brochure
                                     </a>
                                 @else
                                     {{-- Fallback to static files if no active brochure --}}
                                     <a href="/asset/brochure/(Mobile Version) E-Brochure JIIPE-Ineractive.pdf"
-                                        target="_blank" class="hashmb {{ $isMobile ? '' : 'd-none' }} track-brochure-download">
+                                        target="_blank"
+                                        class="hashmb {{ $isMobile ? '' : 'd-none' }} track-brochure-download">
                                         Download Brochure
                                     </a>
 
                                     <a href="/asset/brochure/(Desktop Version) E-Brochure JIIPE-Ineractive.pdf"
-                                        target="_blank" class="hashds {{ $isMobile ? 'd-none' : '' }} track-brochure-download">
+                                        target="_blank"
+                                        class="hashds {{ $isMobile ? 'd-none' : '' }} track-brochure-download">
                                         Download Brochure
                                     </a>
                                 @endif

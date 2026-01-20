@@ -36,12 +36,9 @@
                 @endphp
 
                 {{-- Mobile Version --}}
-                <a href="{{ $brochureUrl }}"
-                   target="_blank"
-                   rel="noopener"
-                   class="hashmb {{ $isMobile ? '' : 'd-none' }} track-brochure-download"
-                   data-brochure-id="{{ $brochureId }}"
-                   download>
+                <a href="{{ $brochureUrl }}" target="_blank" rel="noopener"
+                    class="hashmb {{ $isMobile ? '' : 'd-none' }} track-brochure-download"
+                    data-brochure-id="{{ $brochureId }}" download>
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-book-open"></i></div>
                         <div class="text">
@@ -52,12 +49,9 @@
                 </a>
 
                 {{-- Desktop Version --}}
-                <a href="{{ $brochureUrl }}"
-                   target="_blank"
-                   rel="noopener"
-                   class="hashds {{ $isMobile ? 'd-none' : '' }} track-brochure-download"
-                   data-brochure-id="{{ $brochureId }}"
-                   download>
+                <a href="{{ $brochureUrl }}" target="_blank" rel="noopener"
+                    class="hashds {{ $isMobile ? 'd-none' : '' }} track-brochure-download"
+                    data-brochure-id="{{ $brochureId }}" download>
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-book-open"></i></div>
                         <div class="text">
@@ -67,24 +61,10 @@
                     </div>
                 </a>
             @else
-                {{-- Fallback to static files if no active brochure --}}
-                <a href="{{ asset('asset/brochure/(Mobile Version) E-Brochure JIIPE-Ineractive.pdf') }}"
-                   target="_blank"
-                   rel="noopener"
-                   class="hashmb {{ $isMobile ? '' : 'd-none' }} track-brochure-download">
-                    <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
-                        <div class="icon"><i class="fa fa-book-open"></i></div>
-                        <div class="text">
-                            <p>@lang('system.download')</p>
-                            <h6>@lang('system.jiipe e-brochure')</h6>
-                        </div>
-                    </div>
-                </a>
 
                 <a href="{{ asset('asset/brochure/(Desktop Version) E-Brochure JIIPE-Ineractive.pdf') }}"
-                   target="_blank"
-                   rel="noopener"
-                   class="hashds {{ $isMobile ? 'd-none' : '' }} track-brochure-download">
+                    target="_blank" rel="noopener"
+                    class="hashds {{ $isMobile ? 'd-none' : '' }} track-brochure-download">
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-book-open"></i></div>
                         <div class="text">
@@ -101,7 +81,7 @@
                     <div class="icon"><i class="fa fa-comment-alt"></i></div>
                     <div class="text">
                         <p>@lang('system.frequently')</p>
-                        <h6>@lang('system.asked questions')</h6>
+                        <h6>@lang('system.frequently asked questions')</h6>
                     </div>
                 </div>
             </a>

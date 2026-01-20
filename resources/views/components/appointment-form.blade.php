@@ -94,37 +94,37 @@
                 </div>
 
                 <!-- Success/Error Messages -->
-@if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Success!</strong> {{ session('success') }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-@endif
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
 
-@if(session('error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Error!</strong> {{ session('error') }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-@endif
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error!</strong> {{ session('error') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
 
-@if($errors->any())
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Validation Errors:</strong>
-        <ul class="mb-0">
-            @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-@endif
+                @if($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Validation Errors:</strong>
+                        <ul class="mb-0">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
 
                 <form action="{{ route('store-quick-appointment') }}" id="contactForm" method="POST">
                     @csrf
@@ -133,82 +133,76 @@
                         <div class="col-lg-60 col-sm-60 pr-lg-5 pr-sm-0">
                             <h5 class="title">@lang('system.basic information')</h5>
 
-                            <div class="row">
+                            <!-- Full Name -->
+                            <div class="row form-group">
                                 <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left"
                                     for="first_name">@lang('system.full name') *</label>
-                                <div class="col-lg-50 col-sm-60">
-                                    <div class="row">
-                                        <div class="col-lg-30 col-sm-60 form-group form-line">
-                                            <input id="first_name" name="QuickAppointment[first_name]" type="text"
-                                                placeholder="First Name" required class="form-control">
-                                        </div>
-                                        <div class="col-lg-30 col-sm-60 form-group form-line">
-                                            <input id="last_name" name="QuickAppointment[last_name]" type="text"
-                                                placeholder="Last Name" required class="form-control">
-                                        </div>
-                                    </div>
+                                <div class="col-lg-25 col-sm-60">
+                                    <input id="first_name" name="QuickAppointment[first_name]" type="text"
+                                        placeholder="First Name" required class="form-control">
+                                </div>
+                                <div class="col-lg-25 col-sm-60">
+                                    <input id="last_name" name="QuickAppointment[last_name]" type="text"
+                                        placeholder="Last Name" required class="form-control">
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <!-- Phone Number -->
+                            <div class="row form-group">
                                 <label for="phone_number"
                                     class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     @lang('system.phone number') *
                                 </label>
-                                <div class="col-lg-50 col-sm-60 form-group">
+                                <div class="col-lg-50 col-sm-60">
                                     <input id="phone_number" name="QuickAppointment[phone_number]"
                                         placeholder="(+62)xxx xxx xxx x" type="text" required class="form-control">
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <!-- Email -->
+                            <div class="row form-group">
                                 <label for="email"
                                     class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     Email *
                                 </label>
-                                <div class="col-lg-50 col-sm-60 form-group">
+                                <div class="col-lg-50 col-sm-60">
                                     <input id="email" name="QuickAppointment[email]"
                                         placeholder="yourname@mail.com" type="email" required class="form-control">
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <!-- Company Name -->
+                            <div class="row form-group">
                                 <label for="company_name"
                                     class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     @lang('system.company name') *
                                 </label>
-                                <div class="col-lg-50 col-sm-60 form-group">
+                                <div class="col-lg-50 col-sm-60">
                                     <input id="company_name" name="QuickAppointment[company_name]"
                                         placeholder="Your Company Name" type="text" required class="form-control">
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <!-- Country Origin -->
+                            <div class="row form-group">
                                 <label for="country_origin"
                                     class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     @lang('system.company origin country') *
                                 </label>
                                 <div class="col-lg-50 col-sm-60">
-                                    <div class="row mb-0">
-                                        <div class="col-lg-10 col-sm-60 form-group">
-                                            <label class="custom-control custom-radio mt-2">
-                                                <input id="country_origin_1" name="QuickAppointment[country_origin]"
-                                                    type="radio" class="custom-control-input" value="Indonesia"
-                                                    required>
-                                                <span class="custom-control-indicator"></span>
-                                                <span class="custom-control-description">Indonesia</span>
-                                            </label>
-                                        </div>
-                                        <div class="col-lg-20 col-sm-60 form-group">
-                                            <label class="custom-control custom-radio mt-2">
-                                                <input id="country_origin_2" name="QuickAppointment[country_origin]"
-                                                    type="radio" class="custom-control-input"
-                                                    value="Outside of Indonesia" required>
-                                                <span class="custom-control-indicator"></span>
-                                                <span class="custom-control-description">Outside of Indonesia</span>
-                                            </label>
-                                        </div>
-                                    </div>
+                                    <label class="custom-control custom-radio d-inline-block mr-4">
+                                        <input id="country_origin_1" name="QuickAppointment[country_origin]"
+                                            type="radio" class="custom-control-input" value="Indonesia" required>
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Indonesia</span>
+                                    </label>
+                                    <label class="custom-control custom-radio d-inline-block">
+                                        <input id="country_origin_2" name="QuickAppointment[country_origin]"
+                                            type="radio" class="custom-control-input"
+                                            value="Outside of Indonesia" required>
+                                        <span class="custom-control-indicator"></span>
+                                        <span class="custom-control-description">Outside of Indonesia</span>
+                                    </label>
                                 </div>
                             </div>
 
@@ -221,26 +215,23 @@
 
                             <h5 class="title">@lang('system.reason for considering jiipe') ? *</h5>
 
+                            <!-- Reason -->
                             <div class="row form-group">
                                 <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left"></label>
-                                <div class="col-lg-15 col-sm-60">
-                                    <label class="custom-control custom-radio">
+                                <div class="col-lg-50 col-sm-60">
+                                    <label class="custom-control custom-radio d-inline-block mr-4">
                                         <input name="QuickAppointment[reason]" id="reason_0" type="radio"
                                             class="custom-control-input" value="To Approach Market" required>
                                         <span class="custom-control-indicator"></span>
                                         <span class="custom-control-description">@lang('system.to approach market')</span>
                                     </label>
-                                </div>
-                                <div class="col-lg-15 col-sm-60">
-                                    <label class="custom-control custom-radio">
+                                    <label class="custom-control custom-radio d-inline-block mr-4">
                                         <input name="QuickAppointment[reason]" id="reason_1" type="radio"
                                             class="custom-control-input" value="Require a seaport" required>
                                         <span class="custom-control-indicator"></span>
                                         <span class="custom-control-description">@lang('system.require a seaport')</span>
                                     </label>
-                                </div>
-                                <div class="col-lg-20 col-sm-60">
-                                    <label class="custom-control custom-radio">
+                                    <label class="custom-control custom-radio d-inline-block">
                                         <input name="QuickAppointment[reason]" id="reason_2" type="radio"
                                             class="custom-control-input" value="Other" required>
                                         <span class="custom-control-indicator"></span>
@@ -249,22 +240,24 @@
                                 </div>
                             </div>
 
-                            <div id="reason_other_row" class="row d-none">
-                                <div class="col-lg-20 col-sm-60"></div>
-                                <div class="col-lg-20 col-sm-60"></div>
-                                <div class="col-lg-20 col-sm-60 form-group">
+                            <!-- Reason Other -->
+                            <div id="reason_other_row" class="row form-group d-none">
+                                <div class="col-lg-10 col-sm-60"></div>
+                                <div class="col-lg-10 col-sm-60"></div>
+                                <div class="col-lg-10 col-sm-60">
                                     <input id="reason_other" name="QuickAppointment[reason_other]"
                                         placeholder="Other" type="text" class="form-control">
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <!-- Industry -->
+                            <div class="row form-group">
                                 <label for="classification"
                                     class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     @lang('system.industry') *
                                 </label>
-                                <div class="col-lg-50 col-sm-60 form-group">
-                                    <select class="custom-select" name="QuickAppointment[classification]"
+                                <div class="col-lg-50 col-sm-60">
+                                    <select class="custom-select form-control" name="QuickAppointment[classification]"
                                         id="classification" required>
                                         <option value="" disabled selected hidden>@lang('system.select your industry')</option>
                                         <option value="Chemical">@lang('system.chemical')</option>
@@ -277,48 +270,40 @@
                                 </div>
                             </div>
 
-                            <div id="classification_other_row" class="row d-none">
+                            <!-- Classification Other -->
+                            <div id="classification_other_row" class="row form-group d-none">
                                 <div class="col-lg-10 col-sm-60"></div>
-                                <div class="col-lg-50 col-sm-60 form-group">
+                                <div class="col-lg-50 col-sm-60">
                                     <input id="classification_other" name="QuickAppointment[classification_other]"
                                         placeholder="Other" type="text" class="form-control">
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-lg-30 col-sm-60">
-                                    <div class="row">
-                                        <label for="land_plot"
-                                            class="col-lg-20 col-sm-60 col-form-label text-lg-right text-sm-left">
-                                            @lang('system.required industrial land plot') *
-                                        </label>
-                                        <div class="col-lg-40 col-sm-60 form-group">
-                                            <div class="input-group">
-                                                <input id="land_plot" name="QuickAppointment[land_plot]"
-                                                    placeholder="Number Only" type="number" required
-                                                    class="form-control">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">(Ha)</span>
-                                                </div>
-                                            </div>
+                            <!-- Land Plot & Timeline -->
+                            <div class="row form-group">
+                                <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
+                                    @lang('system.required industrial land plot') *
+                                </label>
+                                <div class="col-lg-15 col-sm-60">
+                                    <div class="input-group">
+                                        <input id="land_plot" name="QuickAppointment[land_plot]"
+                                            placeholder="Number Only" type="number" required
+                                            class="form-control">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">(Ha)</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-30 col-sm-60">
-                                    <div class="row">
-                                        <label for="timeline"
-                                            class="col-lg-20 col-sm-60 col-form-label text-lg-right text-sm-left">
-                                            @lang('system.timeline construction') *
-                                        </label>
-                                        <div class="col-lg-40 col-sm-60 form-group">
-                                            <select class="custom-select" name="QuickAppointment[timeline]" required>
-                                                <option value="" disabled selected hidden>@lang('system.select your timeline construction')
-                                                </option>
-                                                <option value="1 - 2 Years">@lang('system.1 - 2 years')</option>
-                                                <option value="More than 2 Years">@lang('system.more than 2 years')</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
+                                    @lang('system.timeline construction') *
+                                </label>
+                                <div class="col-lg-15 col-sm-60">
+                                    <select class="custom-select form-control" name="QuickAppointment[timeline]" required>
+                                        <option value="" disabled selected hidden>@lang('system.select your timeline construction')
+                                        </option>
+                                        <option value="1 - 2 Years">@lang('system.1 - 2 years')</option>
+                                        <option value="More than 2 Years">@lang('system.more than 2 years')</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -331,88 +316,71 @@
 
                             <h5 class="title">@lang('system.energy & utility needs')</h5>
 
-                            <div class="row">
-                                <div class="col-lg-30 col-sm-60">
-                                    <div class="row">
-                                        <label for="power"
-                                            class="col-lg-20 col-sm-60 col-form-label text-lg-right text-sm-left">
-                                            Total Required Power *
-                                        </label>
-                                        <div class="col-lg-40 col-sm-60 form-group">
-                                            <div class="input-group">
-                                                <input id="power" name="QuickAppointment[power]"
-                                                    placeholder="Number Only" type="number" required
-                                                    class="form-control">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">MW</span>
-                                                </div>
-                                            </div>
+                            <!-- Power & Industrial Water -->
+                            <div class="row form-group">
+                                <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
+                                    Total Required Power *
+                                </label>
+                                <div class="col-lg-15 col-sm-60">
+                                    <div class="input-group">
+                                        <input id="power" name="QuickAppointment[power]"
+                                            placeholder="Number Only" type="number" required
+                                            class="form-control">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">MW</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-30 col-sm-60">
-                                    <div class="row">
-                                        <label for="industrial_water"
-                                            class="col-lg-20 col-sm-60 col-form-label text-lg-right text-sm-left">
-                                            @lang('system.total industrial water') *
-                                        </label>
-                                        <div class="col-lg-40 col-sm-60 form-group">
-                                            <div class="input-group">
-                                                <input id="industrial_water" name="QuickAppointment[industrial_water]"
-                                                    placeholder="Number Only" type="number" required
-                                                    class="form-control">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">m³/day</span>
-                                                </div>
-                                            </div>
+                                <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
+                                    @lang('system.total industrial water') *
+                                </label>
+                                <div class="col-lg-15 col-sm-60">
+                                    <div class="input-group">
+                                        <input id="industrial_water" name="QuickAppointment[industrial_water]"
+                                            placeholder="Number Only" type="number" required
+                                            class="form-control">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">m³/day</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-lg-30 col-sm-60">
-                                    <div class="row">
-                                        <label for="natural_gas"
-                                            class="col-lg-20 col-sm-60 col-form-label text-lg-right text-sm-left">
-                                            @lang('system.total required natural gas') *
-                                        </label>
-                                        <div class="col-lg-40 col-sm-60 form-group">
-                                            <div class="input-group">
-                                                <input id="natural_gas" name="QuickAppointment[natural_gas]"
-                                                    placeholder="Number Only" type="number" required
-                                                    class="form-control">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">MMBTU/annum</span>
-                                                </div>
-                                            </div>
+                            <!-- Natural Gas & Throughput -->
+                            <div class="row form-group">
+                                <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
+                                    @lang('system.total required natural gas') *
+                                </label>
+                                <div class="col-lg-15 col-sm-60">
+                                    <div class="input-group">
+                                        <input id="natural_gas" name="QuickAppointment[natural_gas]"
+                                            placeholder="Number Only" type="number" required
+                                            class="form-control">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">MMBTU/annum</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-30 col-sm-60">
-                                    <div class="row">
-                                        <label for="throughput_via_seaport"
-                                            class="col-lg-20 col-sm-60 col-form-label text-lg-right text-sm-left">
-                                            @lang('system.est. vol. throughput via seaport') *
-                                        </label>
-                                        <div class="col-lg-40 col-sm-60 form-group">
-                                            <div class="input-group">
-                                                <input id="throughput_via_seaport"
-                                                    name="QuickAppointment[throughput_via_seaport]"
-                                                    placeholder="Number Only" type="number" required
-                                                    class="form-control">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">Tons/Year</span>
-                                                </div>
-                                            </div>
+                                <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
+                                    @lang('system.est. vol. throughput via seaport') *
+                                </label>
+                                <div class="col-lg-15 col-sm-60">
+                                    <div class="input-group">
+                                        <input id="throughput_via_seaport"
+                                            name="QuickAppointment[throughput_via_seaport]"
+                                            placeholder="Number Only" type="number" required
+                                            class="form-control">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">Tons/Year</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
+                            <!-- reCAPTCHA -->
+                            <div class="row form-group">
                                 <div class="col-lg-10 col-sm-60"></div>
-                                <div class="col-lg-50 col-sm-60 form-group">
+                                <div class="col-lg-50 col-sm-60">
                                     <div id="recaptcha-container">
                                         {!! NoCaptcha::display() !!}
                                     </div>
@@ -422,6 +390,7 @@
                                 </div>
                             </div>
 
+                            <!-- Submit Button -->
                             <div class="row px-5">
                                 <div class="col-lg-60 col-md-60 col-sm-60">
                                     <input type="hidden" name="reff" value="index">
@@ -462,20 +431,34 @@
     }
 
     .alert {
-    margin-bottom: 20px;
-    padding: 15px;
-    border-radius: 4px;
-}
-.alert-success {
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    color: #155724;
-}
-.alert-danger {
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    color: #721c24;
-}
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 4px;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+    }
+
+    /* Radio buttons inline */
+    .custom-control.d-inline-block {
+        margin-right: 1.5rem;
+    }
+
+    @media (max-width: 991px) {
+        .custom-control.d-inline-block {
+            display: block !important;
+            margin-bottom: 0.5rem;
+        }
+    }
 </style>
 
 @push('js')
