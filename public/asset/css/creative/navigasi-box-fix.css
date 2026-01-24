@@ -19,7 +19,7 @@
     display: flex !important;
     justify-content: space-evenly !important;
     align-items: stretch !important;
-    padding: 20px 40px !important;
+    padding: 0px 40px !important;
     margin: 0 !important;
     list-style: none !important;
     width: 100% !important;
@@ -55,12 +55,49 @@
 }
 
 .navigasi-box ul li a:hover {
-    color: #d32f2f !important;
+    background-color: #d32f2f !important;
+}
+
+.navigasi-box ul li a:hover .text,
+.navigasi-box ul li a:hover .text p,
+.navigasi-box ul li a:hover .text h6 {
+    color: #ffffff !important;
+}
+
+.navigasi-box ul li a:hover .icon {
+    color: #ffffff !important;
+}
+
+/* Hide border on hover */
+.navigasi-box ul li a:hover {
+    border-right: none !important;
+}
+
+.navigasi-box ul li:has(a:hover) {
+    border-right: none !important;
+}
+
+.navigasi-box ul li:has(a:hover) + li {
+    border-right: 1px solid #e0e0e0 !important;
 }
 
 .navigasi-box ul li.hover a,
 .navigasi-box ul li a.active {
-    color: #d32f2f !important;
+    background-color: #d32f2f !important;
+}
+
+.navigasi-box ul li.hover a .text,
+.navigasi-box ul li.hover a .text p,
+.navigasi-box ul li.hover a .text h6,
+.navigasi-box ul li a.active .text,
+.navigasi-box ul li a.active .text p,
+.navigasi-box ul li a.active .text h6 {
+    color: #ffffff !important;
+}
+
+.navigasi-box ul li.hover a .icon,
+.navigasi-box ul li a.active .icon {
+    color: #ffffff !important;
 }
 
 /* Navigation Body Layout */
@@ -87,11 +124,6 @@
     justify-content: center !important;
     min-width: 32px !important;
     transition: color 0.3s ease !important;
-}
-
-.navigasi-box ul li a:hover .icon,
-.navigasi-box ul li.hover .icon {
-    color: #d32f2f !important;
 }
 
 .navigasi-box ul li .navigasi-body .text {

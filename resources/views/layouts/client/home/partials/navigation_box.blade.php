@@ -1,7 +1,7 @@
 {{-- navigation_box.blade.php --}}
 <div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom" style="width:100%;">
     <ul>
-        <li class="hover">
+        <li class>
             <a href="#contact">
                 <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                     <div class="icon"><i class="fa fa-calendar-alt"></i></div>
