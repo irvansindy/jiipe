@@ -37,8 +37,7 @@
 
                 @if ($isMobile)
                     {{-- Mobile Version --}}
-                    <a href="{{ $brochureUrl }}" target="_blank" rel="noopener"
-                        class="hashmb track-brochure-download"
+                    <a href="{{ $brochureUrl }}" target="_blank" rel="noopener" class="hashmb track-brochure-download"
                         data-brochure-id="{{ $brochureId }}" download>
                         <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                             <div class="icon"><i class="fa fa-book-open"></i></div>
@@ -50,8 +49,7 @@
                     </a>
                 @else
                     {{-- Desktop Version --}}
-                    <a href="{{ $brochureUrl }}" target="_blank" rel="noopener"
-                        class="hash track-brochure-download"
+                    <a href="{{ $brochureUrl }}" target="_blank" rel="noopener" class="hash track-brochure-download"
                         data-brochure-id="{{ $brochureId }}" download>
                         <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                             <div class="icon"><i class="fa fa-book-open"></i></div>
@@ -65,8 +63,7 @@
             @else
                 {{-- Fallback ke file static --}}
                 <a href="{{ asset('asset/brochure/(Desktop Version) E-Brochure JIIPE-Ineractive.pdf') }}"
-                    target="_blank" rel="noopener"
-                    class="hash track-brochure-download">
+                    target="_blank" rel="noopener" class="hash track-brochure-download">
                     <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
                         <div class="icon"><i class="fa fa-book-open"></i></div>
                         <div class="text">

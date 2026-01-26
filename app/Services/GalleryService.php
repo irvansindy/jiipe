@@ -5,8 +5,10 @@ namespace App\Services;
 use App\Models\Gallery;
 use App\Models\GalleryTranslations;
 use App\Models\GalleryImage;
+use App\Helpers\ImageHelper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
 use Exception;
 
@@ -162,12 +164,24 @@ class GalleryService
             // Delete main image
             if ($gallery->image && Storage::disk('uploads')->exists($gallery->image)) {
                 Storage::disk('uploads')->delete($gallery->image);
+
+                // ✅ Delete WebP if exists
+                $webpPath = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $gallery->image);
+                if (Storage::disk('uploads')->exists($webpPath)) {
+                    Storage::disk('uploads')->delete($webpPath);
+                }
             }
 
             // Delete detail images
             foreach ($gallery->images as $image) {
                 if (Storage::disk('uploads')->exists($image->image)) {
                     Storage::disk('uploads')->delete($image->image);
+
+                    // ✅ Delete WebP if exists
+                    $webpPath = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $image->image);
+                    if (Storage::disk('uploads')->exists($webpPath)) {
+                        Storage::disk('uploads')->delete($webpPath);
+                    }
                 }
                 $image->delete();
             }
@@ -187,7 +201,7 @@ class GalleryService
     }
 
     /**
-     * Delete single detail image
+     * Delete single detail image (including WebP)
      */
     public function deleteDetailImage(int $imageId)
     {
@@ -199,6 +213,12 @@ class GalleryService
             // Delete file from storage
             if (Storage::disk('uploads')->exists($image->image)) {
                 Storage::disk('uploads')->delete($image->image);
+
+                // ✅ Delete WebP if exists
+                $webpPath = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $image->image);
+                if (Storage::disk('uploads')->exists($webpPath)) {
+                    Storage::disk('uploads')->delete($webpPath);
+                }
             }
 
             // Delete record
@@ -213,7 +233,7 @@ class GalleryService
     }
 
     /**
-     * Upload and process main image
+     * Upload and process main image with optimization to WebP
      */
     private function uploadMainImage($file): string
     {
@@ -229,14 +249,32 @@ class GalleryService
 
             Storage::disk('uploads')->put($path, (string) $image);
 
-            return $path;
+            // ✅ Optimize dan convert ke WebP
+            try {
+                $fullPath = Storage::disk('uploads')->path($path);
+                $relativePath = str_replace(public_path('/'), '', $fullPath);
+
+                $webpPath = ImageHelper::optimizeImage(
+                    'uploads/' . $path,
+                    1024,  // Max width
+                    85     // Quality
+                );
+
+                // Return WebP filename only
+                return basename($webpPath);
+
+            } catch (Exception $e) {
+                // Jika gagal optimize, return original filename
+                \Log::warning("Failed to optimize main image: " . $e->getMessage());
+                return $filename;
+            }
         } catch (Exception $e) {
             throw new Exception('Failed to upload main image: ' . $e->getMessage());
         }
     }
 
     /**
-     * Upload detail images
+     * Upload detail images with optimization to WebP
      */
     private function uploadDetailImages(Gallery $gallery, array $detailFiles): void
     {
@@ -253,7 +291,23 @@ class GalleryService
                 $image = $manager->read($file)->cover(450, 450)->encode();
                 Storage::disk('uploads')->put($path, (string) $image);
 
-                $gallery->images()->create(['image' => $path]);
+                // ✅ Optimize dan convert ke WebP
+                try {
+                    $webpPath = ImageHelper::optimizeImage(
+                        'uploads/' . $path,
+                        450,   // Max width
+                        85     // Quality
+                    );
+
+                    // Save WebP filename only
+                    $webpFilename = basename($webpPath);
+                    $gallery->images()->create(['image' => $webpFilename]);
+
+                } catch (Exception $e) {
+                    // Jika gagal optimize, tetap save original filename
+                    \Log::warning("Failed to optimize detail image: " . $e->getMessage());
+                    $gallery->images()->create(['image' => $filename]);
+                }
             }
         } catch (Exception $e) {
             throw new Exception('Failed to upload detail images: ' . $e->getMessage());

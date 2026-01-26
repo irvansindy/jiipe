@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Review;
+use App\Helpers\ImageHelper;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Arr;
@@ -125,7 +126,7 @@ class ReviewService
     }
 
     /**
-     * Upload file to `public/uploads/review` and return filename only
+     * Upload file to `public/uploads/review` and optimize to WebP
      *
      * @param \Illuminate\Http\UploadedFile $file
      * @return string
@@ -146,11 +147,33 @@ class ReviewService
             throw new Exception('Failed to move uploaded file');
         }
 
-        return $fileName;
+        // Path relatif dari public
+        $relativePath = 'uploads/review/' . $fileName;
+
+        // ✅ Optimize dan convert ke WebP
+        try {
+            $webpPath = ImageHelper::optimizeImage(
+                $relativePath,  // Path relatif
+                1200,          // Max width 1200px
+                85             // Quality 85%
+            );
+
+            // Extract filename dari path
+            $webpFilename = basename($webpPath);
+
+            // Return hanya filename
+            return $webpFilename;
+
+        } catch (Exception $e) {
+            // Jika gagal optimize, tetap return filename original
+            \Log::warning("Failed to optimize review photo: " . $e->getMessage());
+            return $fileName;
+        }
     }
 
     /**
      * Delete uploaded file from `public/uploads/review` by filename
+     * Also delete original JPG/PNG if WebP exists
      *
      * @param string $fileName
      * @return bool
@@ -159,12 +182,27 @@ class ReviewService
     {
         $trimmed = ltrim($fileName, '/');
         $fullPath = public_path('uploads/review/' . $trimmed);
+        $deleted = false;
 
+        // Delete WebP file
         if (File::exists($fullPath)) {
-            return File::delete($fullPath);
+            File::delete($fullPath);
+            $deleted = true;
         }
 
-        return false;
+        // ✅ Delete original JPG if exists
+        $originalPath = preg_replace('/\.webp$/i', '.jpg', $fullPath);
+        if (File::exists($originalPath)) {
+            File::delete($originalPath);
+        }
+
+        // Delete original PNG if exists
+        $originalPath = preg_replace('/\.webp$/i', '.png', $fullPath);
+        if (File::exists($originalPath)) {
+            File::delete($originalPath);
+        }
+
+        return $deleted;
     }
 
     public function toggleStatus(int $id)

@@ -42,10 +42,10 @@
             <div class="clear"></div>
         </div>
     </section>
-
+    {{-- @dd($contactData) --}}
     {{-- Cover Image - Dynamic --}}
     <section class="cover-profil cover-contact lazy-bg"
-        style="background-image: url('{{ asset('uploads/contact/overview/' . $contactData->image ?? 'uploads/contact/overview/3ec59cba31JIIPE Tower up.jpg') }}');">
+        style="background-image: url('{{ asset('uploads/contact/overview/' . $contactData->image ?? 'uploads/contact/overview/default-contact.jpg') }}');">
         <div class="prelative container">
             <div class="row"></div>
         </div>
@@ -121,6 +121,8 @@
     </section>
 
     {{-- Navigation Box & Contact Form --}}
+    <link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}">
+
     @include('layouts.client.home.partials.navigation_box')
 
 @endsection

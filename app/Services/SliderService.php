@@ -41,7 +41,7 @@ class SliderService
             ];
         }
 
-        $slider->translations = $transformedTranslations;
+        $slider->setRelation('translations', $transformedTranslations);
 
         // expose slider-level is_active for frontend
         $slider->is_active = (bool) $slider->is_active;

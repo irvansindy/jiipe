@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Tenant;
 use App\Models\TenantTranslation;
+use App\Helpers\ImageHelper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -41,7 +42,9 @@ class TenantService
             ];
         }
 
-        $tenant->translations = $transformed;
+        // $tenant->translations = $transformed;
+        $tenant->setRelation('translations', $transformed);
+
         $tenant->is_active = (bool) $tenant->is_active;
 
         return $tenant;
@@ -140,7 +143,7 @@ class TenantService
     }
 
     /**
-     * Upload logo and return stored path (uploads/tenant-logo/filename)
+     * Upload logo and optimize to WebP format
      */
     private function uploadFile($file): string
     {
@@ -154,7 +157,28 @@ class TenantService
 
         $file->move($destinationPath, $fileName);
 
-        return $fileName;
+        // Path relatif dari public
+        $relativePath = 'uploads/tenant-logo/' . $fileName;
+
+        // ✅ Optimize dan convert ke WebP
+        try {
+            $webpPath = ImageHelper::optimizeImage(
+                $relativePath,  // Path relatif
+                1200,          // Max width 1200px
+                85             // Quality 85%
+            );
+
+            // Extract filename dari path
+            $webpFilename = basename($webpPath);
+
+            // Return hanya filename
+            return $webpFilename;
+
+        } catch (Exception $e) {
+            // Jika gagal optimize, tetap return filename original
+            \Log::warning("Failed to optimize tenant logo: " . $e->getMessage());
+            return $fileName;
+        }
     }
 
     /**

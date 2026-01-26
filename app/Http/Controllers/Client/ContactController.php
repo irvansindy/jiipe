@@ -38,7 +38,7 @@ class ContactController extends Controller
     private function getDefaultContactData()
     {
         return (object) [
-            'image' => 'asset/images/static/3ec59cba31JIIPE Tower up.jpg',
+            'image' => '3ec59cba31JIIPE Tower up.jpg',
             'translation' => (object) [
                 'title' => 'Contact Us',
                 'subtitle' => 'We are here to support you',

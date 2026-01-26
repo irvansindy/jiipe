@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\ContactOverview;
 use App\Models\ContactOverviewTranslation;
+use App\Helpers\ImageHelper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Exception;
@@ -66,7 +67,12 @@ class ContactOverviewService
                 if ($oldImagePath) {
                     $this->deleteFile($oldImagePath, 'contact/overview');
                 }
-                $contact->image = $this->uploadFile($imageFile, 'contact/overview');
+
+                // Upload and get filename only (no path)
+                $uploadedFilename = $this->uploadFile($imageFile, 'contact/overview');
+
+                // Store only filename + extension, without directory path
+                $contact->image = basename($uploadedFilename);
             }
 
             $contact->save();
@@ -89,32 +95,75 @@ class ContactOverviewService
     }
 
     /**
-     * Upload file and return filename only (without path)
+     * Upload file and optimize to WebP format
      */
     private function uploadFile($file, string $folder): string
     {
         // Generate unique filename
         $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
 
-        // Store file in the specified folder
-        $file->storeAs($folder, $filename, 'uploads');
+        // Full path untuk upload
+        $uploadPath = public_path('uploads/' . $folder);
 
-        // Return only filename (without path)
-        return $filename;
+        // Buat direktori jika belum ada
+        if (!File::exists($uploadPath)) {
+            File::makeDirectory($uploadPath, 0755, true);
+        }
+
+        // Move file ke folder tujuan
+        $file->move($uploadPath, $filename);
+
+        // Path relatif dari public
+        $relativePath = 'uploads/' . $folder . '/' . $filename;
+
+        // ✅ Optimize dan convert ke WebP
+        try {
+            $webpPath = ImageHelper::optimizeImage(
+                $relativePath,  // Path relatif
+                1200,          // Max width 1200px
+                85             // Quality 85%
+            );
+
+            // Extract filename dari path
+            $webpFilename = basename($webpPath);
+
+            // Return hanya filename
+            return $webpFilename;
+
+        } catch (Exception $e) {
+            // Jika gagal optimize, tetap return filename original
+            \Log::warning("Failed to optimize contact overview image: " . $e->getMessage());
+            return $filename;
+        }
     }
 
     /**
-     * Delete file from storage
+     * Delete file from storage (including WebP and original formats)
      */
     private function deleteFile(string $filename, string $folder): bool
     {
         $fullPath = public_path('uploads/' . $folder . '/' . $filename);
+        $deleted = false;
 
+        // Delete WebP file
         if (File::exists($fullPath)) {
-            return File::delete($fullPath);
+            File::delete($fullPath);
+            $deleted = true;
         }
 
-        return false;
+        // ✅ Delete original JPG if exists
+        $originalPath = preg_replace('/\.webp$/i', '.jpg', $fullPath);
+        if (File::exists($originalPath)) {
+            File::delete($originalPath);
+        }
+
+        // Delete original PNG if exists
+        $originalPath = preg_replace('/\.webp$/i', '.png', $fullPath);
+        if (File::exists($originalPath)) {
+            File::delete($originalPath);
+        }
+
+        return $deleted;
     }
 
     /**

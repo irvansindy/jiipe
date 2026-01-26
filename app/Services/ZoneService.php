@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Zone;
 use App\Models\ZoneTranslation;
 use App\Models\ZoneClass;
+use App\Helpers\ImageHelper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Exception;
@@ -173,25 +174,75 @@ class ZoneService
     }
 
     /**
-     * Upload image and return path
+     * Upload image and optimize to WebP format
      */
     private function uploadImage($file): string
     {
-        return $file->store('zones', 'uploads');
+        // Generate unique filename
+        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+
+        // Full path untuk upload
+        $uploadPath = public_path('uploads/zones');
+
+        // Buat direktori jika belum ada
+        if (!File::exists($uploadPath)) {
+            File::makeDirectory($uploadPath, 0755, true);
+        }
+
+        // Move file ke folder tujuan
+        $file->move($uploadPath, $filename);
+
+        // Path relatif dari public
+        $relativePath = 'uploads/zones/' . $filename;
+
+        // ✅ Optimize dan convert ke WebP
+        try {
+            $webpPath = ImageHelper::optimizeImage(
+                $relativePath,  // Path relatif
+                1200,          // Max width 1200px
+                85             // Quality 85%
+            );
+
+            // Extract filename dari path
+            $webpFilename = basename($webpPath);
+
+            // Return hanya filename
+            return $webpFilename;
+
+        } catch (Exception $e) {
+            // Jika gagal optimize, tetap return filename original
+            \Log::warning("Failed to optimize zone image: " . $e->getMessage());
+            return $filename;
+        }
     }
 
     /**
-     * Delete image from storage
+     * Delete image from storage (including WebP and original formats)
      */
     private function deleteImage(string $imagePath): bool
     {
         $fullPath = public_path('uploads/' . $imagePath);
+        $deleted = false;
 
+        // Delete WebP file
         if (File::exists($fullPath)) {
-            return File::delete($fullPath);
+            File::delete($fullPath);
+            $deleted = true;
         }
 
-        return false;
+        // ✅ Delete original JPG if exists
+        $originalPath = preg_replace('/\.webp$/i', '.jpg', $fullPath);
+        if (File::exists($originalPath)) {
+            File::delete($originalPath);
+        }
+
+        // Delete original PNG if exists
+        $originalPath = preg_replace('/\.webp$/i', '.png', $fullPath);
+        if (File::exists($originalPath)) {
+            File::delete($originalPath);
+        }
+
+        return $deleted;
     }
 
     /**
