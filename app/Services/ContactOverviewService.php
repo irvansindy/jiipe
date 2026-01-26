@@ -117,24 +117,17 @@ class ContactOverviewService
         $relativePath = 'uploads/' . $folder . '/' . $filename;
 
         // ✅ Optimize dan convert ke WebP
-        try {
-            $webpPath = ImageHelper::optimizeImage(
-                $relativePath,  // Path relatif
-                1200,          // Max width 1200px
-                85             // Quality 85%
-            );
+        $webpPath = ImageHelper::optimizeImage(
+            $relativePath,  // Path relatif
+            1200,          // Max width 1200px
+            85             // Quality 85%
+        );
 
-            // Extract filename dari path
-            $webpFilename = basename($webpPath);
+        // Extract filename dari path
+        $webpFilename = basename($webpPath);
 
-            // Return hanya filename
-            return $webpFilename;
-
-        } catch (Exception $e) {
-            // Jika gagal optimize, tetap return filename original
-            \Log::warning("Failed to optimize contact overview image: " . $e->getMessage());
-            return $filename;
-        }
+        // Return hanya filename
+        return $webpFilename;
     }
 
     /**
