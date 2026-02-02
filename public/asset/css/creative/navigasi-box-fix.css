@@ -176,7 +176,7 @@
     }
 }
 
-/* Mobile Styles - CRITICAL */
+/* Mobile Styles - IMPROVED ALIGNMENT */
 @media (max-width: 768px) {
     /* Force show all menu items */
     .navigasi-box ul li,
@@ -189,41 +189,131 @@
     }
 
     .navigasi-box ul {
-        padding: 15px 10px !important;
+        padding: 20px 8px !important;
         gap: 0 !important;
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: nowrap !important;
+        align-items: stretch !important;
     }
 
     .navigasi-box ul li {
         border-right: none !important;
-        padding: 5px !important;
+        padding: 0 !important;
         flex: 1 1 25% !important;
         max-width: 25% !important;
         width: 25% !important;
         display: flex !important;
+        align-items: stretch !important;
+    }
+
+    .navigasi-box ul li a {
+        display: flex !important;
+        align-items: stretch !important;
+        width: 100% !important;
     }
 
     .navigasi-box ul li .navigasi-body {
         flex-direction: column !important;
         gap: 8px !important;
-        padding: 10px 5px !important;
+        padding: 12px 5px !important;
         text-align: center !important;
         display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+        min-height: 100px !important; /* Ensure consistent height */
     }
 
+    /* Icon Container - Fixed height untuk alignment */
     .navigasi-box ul li .navigasi-body .icon {
-        font-size: 24px !important;
+        font-size: 32px !important;
         min-width: auto !important;
-        margin-bottom: 4px !important;
+        margin: 0 !important;
         display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        height: 40px !important; /* Fixed height untuk semua icon */
+        width: 100% !important;
     }
 
+    /* Text Container - Fixed positioning */
     .navigasi-box ul li .navigasi-body .text {
         text-align: center !important;
         width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        min-height: 36px !important; /* Fixed height untuk text area */
+    }
+
+    /* Hide <p> tags in mobile */
+    .navigasi-box ul li .navigasi-body .text p {
+        display: none !important;
+    }
+
+    .navigasi-box ul li .navigasi-body .text h6 {
+        font-size: 11px !important;
         display: block !important;
+        margin: 0 !important;
+        line-height: 1.3 !important;
+        text-align: center !important;
+        word-wrap: break-word !important;
+        max-width: 100% !important;
+        padding: 0 2px !important;
+    }
+}
+
+/* Small Mobile Styles - OPTIMIZED */
+@media (max-width: 576px) {
+    /* Force show all menu items */
+    .navigasi-box ul li,
+    .navigasi-box ul li a {
+        display: flex !important;
+        visibility: visible !important;
+    }
+
+    .navigasi-box ul {
+        padding: 15px 5px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        align-items: stretch !important;
+    }
+
+    .navigasi-box ul li {
+        flex: 0 0 25% !important;
+        max-width: 25% !important;
+        width: 25% !important;
+        display: flex !important;
+        align-items: stretch !important;
+    }
+
+    .navigasi-box ul li a {
+        display: flex !important;
+        align-items: stretch !important;
+    }
+
+    .navigasi-box ul li .navigasi-body {
+        padding: 10px 3px !important;
+        gap: 6px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        min-height: 90px !important;
+    }
+
+    /* Icon - Fixed height */
+    .navigasi-box ul li .navigasi-body .icon {
+        font-size: 28px !important;
+        display: flex !important;
+        height: 36px !important;
+    }
+
+    /* Text - Fixed height */
+    .navigasi-box ul li .navigasi-body .text {
+        display: flex !important;
+        min-height: 32px !important;
     }
 
     /* Hide <p> tags in mobile */
@@ -234,46 +324,36 @@
     .navigasi-box ul li .navigasi-body .text h6 {
         font-size: 10px !important;
         display: block !important;
+        line-height: 1.2 !important;
     }
 }
 
-/* Small Mobile Styles */
-@media (max-width: 576px) {
-    /* Force show all menu items */
-    .navigasi-box ul li,
-    .navigasi-box ul li a {
-        display: flex !important;
-        visibility: visible !important;
-    }
-
+/* Extra Small Mobile - ULTRA COMPACT */
+@media (max-width: 375px) {
     .navigasi-box ul {
-        padding: 12px 5px !important;
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
+        padding: 12px 3px !important;
     }
 
     .navigasi-box ul li {
         flex: 0 0 25% !important;
         max-width: 25% !important;
-        width: 25% !important;
-        display: flex !important;
     }
 
     .navigasi-box ul li .navigasi-body {
-        padding: 8px 3px !important;
-        gap: 6px !important;
-        display: flex !important;
-        flex-direction: column !important;
+        padding: 8px 2px !important;
+        gap: 5px !important;
+        min-height: 85px !important;
     }
 
+    /* Icon - Smaller but fixed */
     .navigasi-box ul li .navigasi-body .icon {
-        font-size: 20px !important;
-        display: flex !important;
+        font-size: 24px !important;
+        height: 32px !important;
     }
 
+    /* Text - Compact */
     .navigasi-box ul li .navigasi-body .text {
-        display: block !important;
+        min-height: 30px !important;
     }
 
     /* Hide <p> tags in mobile */
@@ -283,37 +363,35 @@
 
     .navigasi-box ul li .navigasi-body .text h6 {
         font-size: 9px !important;
-        display: block !important;
+        line-height: 1.2 !important;
     }
 }
 
-/* Extra Small Mobile */
-@media (max-width: 375px) {
+/* Ultra Small Mobile (iPhone SE, etc) */
+@media (max-width: 320px) {
     .navigasi-box ul {
-        padding: 10px 3px !important;
-    }
-
-    .navigasi-box ul li {
-        flex: 0 0 25% !important;
-        max-width: 25% !important;
+        padding: 10px 2px !important;
     }
 
     .navigasi-box ul li .navigasi-body {
-        padding: 6px 2px !important;
-        gap: 5px !important;
+        padding: 6px 1px !important;
+        gap: 4px !important;
+        min-height: 80px !important;
     }
 
     .navigasi-box ul li .navigasi-body .icon {
-        font-size: 18px !important;
+        font-size: 22px !important;
+        height: 28px !important;
     }
 
-    /* Hide <p> tags in mobile */
-    .navigasi-box ul li .navigasi-body .text p {
-        display: none !important;
+    .navigasi-box ul li .navigasi-body .text {
+        min-height: 28px !important;
     }
 
     .navigasi-box ul li .navigasi-body .text h6 {
         font-size: 8px !important;
+        line-height: 1.1 !important;
+        padding: 0 1px !important;
     }
 }
 
@@ -330,3 +408,24 @@
 .animate-icon:hover .icon {
     transform: scale(1.1) !important;
 }
+
+/* Debug Helper - Uncomment untuk melihat border saat development */
+/*
+@media (max-width: 768px) {
+    .navigasi-box ul li {
+        border: 1px solid red !important;
+    }
+
+    .navigasi-box ul li .navigasi-body {
+        border: 1px solid blue !important;
+    }
+
+    .navigasi-box ul li .navigasi-body .icon {
+        border: 1px solid green !important;
+    }
+
+    .navigasi-box ul li .navigasi-body .text {
+        border: 1px solid orange !important;
+    }
+}
+*/
