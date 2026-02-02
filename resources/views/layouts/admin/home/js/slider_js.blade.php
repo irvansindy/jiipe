@@ -100,7 +100,7 @@
                         if (fullUrl.match(/\.(mp4|webm|ogg)$/i)) {
                             return `
                                 <video src="${fullUrl}"
-                                    preload="metadata"
+                                    preload="none"
                                     style="max-width:80px;max-height:60px;"
                                     muted>
                                 </video>`;
@@ -237,7 +237,7 @@
                             if (fullUrl.match(/\.(mp4|webm|ogg)$/i)) {
                                 $('#current_video').html(
                                     '<video src="' + fullUrl +
-                                    '" preload="metadata" controls style="max-width:100%;max-height:200px;"></video>' +
+                                    '" preload="none" controls style="max-width:100%;max-height:200px;"></video>' +
                                     '<p class="text-muted small mt-1">Current video (upload new to replace)</p>'
                                 );
                             } else if (fullUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
