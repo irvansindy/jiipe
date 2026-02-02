@@ -151,11 +151,11 @@
 <section class="video-jiipe" id="videojiipe">
     <div class="embed-responsive embed-responsive-21by9">
         @if(app()->getLocale() == 'cn')
-            <video class="embed-responsive-item" controls preload="none">
+            <video class="embed-responsive-item" controls preload="metadata">
                 <source src="{{ asset('Video_jiipe/Company Profile JIIPE CINA - SUB English.mp4') }}" type="video/mp4">
             </video>
         @else
-            <video class="embed-responsive-item" controls preload="none">
+            <video class="embed-responsive-item" controls preload="metadata">
                 <source src="{{ asset('Video_jiipe/section2_home_creative_video_profile') }}" type="video/mp4">
             </video>
         @endif

@@ -87,10 +87,13 @@
 
 <section class="video-jiipe" id="videojiipe">
     <div class="embed-responsive embed-responsive-21by9">
-        {{-- ⚡ Video dengan lazy loading --}}
+        {{-- ⚡ Video dengan lazy loading dan autoplay attributes --}}
         <video class="embed-responsive-item"
-               controls
-               preload="none"
+               id="jiipeVideo"
+               loop
+               muted
+               playsinline
+               preload="auto"
                poster="{{ asset('asset/images/video-placeholder.jpg') }}">
             @if (app()->getLocale() == 'zh')
                 <source src="https://jiipe.com//Video_jiipe/Company%20Profile%20JIIPE%20CINA%20-%20SUB%20English.mp4" type="video/mp4">
@@ -150,26 +153,128 @@
             }
         });
     }
+})();
+</script>
+@endpush
 
-    // ⚡ Lazy load video when in viewport
+@push('js')
+<script>
+$(document).ready(function() {
+    // ⚡ Video Autoplay Handler - FIXED VERSION
+    var isVideoPlaying = false;
+    var playAttempted = false;
+
+    // Function play video dengan aman dan proper error handling
+    function playVideo(video) {
+        if (!video || playAttempted) return;
+
+        // Pastikan video dalam kondisi siap
+        video.muted = true;
+        video.currentTime = 0;
+
+        playAttempted = true;
+
+        // Play dengan promise handling yang proper
+        var playPromise = video.play();
+
+        if (playPromise !== undefined) {
+            playPromise
+                .then(function() {
+                    isVideoPlaying = true;
+                    console.log('✅ Video autoplay berhasil');
+                })
+                .catch(function(err) {
+                    console.log('⚠️ Autoplay diblokir browser:', err.name);
+
+                    // Tampilkan controls sebagai fallback
+                    video.controls = true;
+
+                    // Reset flag untuk retry
+                    playAttempted = false;
+                });
+        }
+    }
+
+    // Function untuk pause video
+    function pauseVideo(video) {
+        if (!video || !isVideoPlaying) return;
+
+        video.pause();
+        isVideoPlaying = false;
+    }
+
+    // ⚡ Inisialisasi video dengan IntersectionObserver
     if ('IntersectionObserver' in window) {
-        const videoObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+        var videoObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                var video = entry.target.querySelector('video');
+
                 if (entry.isIntersecting) {
-                    const video = entry.target;
-                    video.preload = 'metadata';
-                    videoObserver.unobserve(video);
+                    // Section masuk viewport - play video
+                    if (video && !isVideoPlaying) {
+                        setTimeout(function() {
+                            playVideo(video);
+                        }, 300); // Delay untuk memastikan section sudah visible
+                    }
+                } else {
+                    // Section keluar viewport - pause video
+                    if (video && isVideoPlaying) {
+                        pauseVideo(video);
+                        playAttempted = false; // Reset untuk bisa play lagi nanti
+                    }
                 }
             });
         }, {
-            rootMargin: '200px 0px'
+            threshold: 0.25, // Play saat 25% section terlihat
+            rootMargin: '0px'
         });
 
-        const video = document.querySelector('#videojiipe video');
-        if (video) {
-            videoObserver.observe(video);
+        var videoSection = document.querySelector('#videojiipe');
+        if (videoSection) {
+            videoObserver.observe(videoSection);
         }
+    } else {
+        // Fallback untuk browser tanpa IntersectionObserver
+        setTimeout(function() {
+            var video = document.querySelector('#jiipeVideo');
+            if (video) {
+                playVideo(video);
+            }
+        }, 800);
     }
-})();
+
+    // ⚡ Handle visibility change (tab switching)
+    document.addEventListener('visibilitychange', function() {
+        var video = document.querySelector('#jiipeVideo');
+        if (!video) return;
+
+        if (document.hidden) {
+            pauseVideo(video);
+        } else {
+            // Check jika video section visible
+            var videoSection = document.querySelector('#videojiipe');
+            if (videoSection) {
+                var rect = videoSection.getBoundingClientRect();
+                var isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+                if (isVisible && !isVideoPlaying) {
+                    playAttempted = false; // Reset flag
+                    setTimeout(function() {
+                        playVideo(video);
+                    }, 300);
+                }
+            }
+        }
+    });
+
+    // ⚡ User interaction fallback - play saat user klik/touch di section
+    $('#videojiipe').one('click touchstart', function() {
+        var video = document.querySelector('#jiipeVideo');
+        if (video && !isVideoPlaying) {
+            playAttempted = false;
+            playVideo(video);
+        }
+    });
+});
 </script>
 @endpush

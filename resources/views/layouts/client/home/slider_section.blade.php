@@ -6,7 +6,7 @@
             @foreach ($sliders as $slider)
                 <div class="item">
                     <div class="embed-responsive embed-responsive-21by9">
-                        <video class="embed-responsive-item" muted playsinline webkit-playsinline preload="none">
+                        <video class="embed-responsive-item" muted playsinline webkit-playsinline preload="metadata">
                             <source src="{{ asset('uploads/home-slider/' . $slider['file']) }}" type="video/mp4">
                         </video>
                         <div class="home-container">
