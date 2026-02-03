@@ -45,24 +45,40 @@
                 </div>
                 <div class="branding3 d-none">
                     <div class="language-dropdown-wrapper">
-                        <label for="language-select">Choose Language : </label>
-                        <select id="language-select" class="language-select-dropdown"
-                            onchange="window.location.href = this.value">
-                            @foreach (Mcamara\LaravelLocalization\Facades\LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                                <option
-                                    value="{{ Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
-                                    {{ $localeCode === Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale() ? 'selected' : '' }}>
-                                    {{ strtoupper($localeCode) }}
-                                </option>
-                            @endforeach
-                        </select>
+                        <label for="language-select">@lang('system.choose language') : </label>
+                        <div class="custom-select-wrapper">
+                            <button type="button" class="custom-select-trigger" id="languageSelectTrigger">
+                                <span class="selected-language">
+                                    @php
+                                        $currentLocale = Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
+                                        $currentLocaleData = Mcamara\LaravelLocalization\Facades\LaravelLocalization::getSupportedLocales()[$currentLocale] ?? null;
+                                    @endphp
+                                    {{ strtoupper($currentLocale) }}
+                                </span>
+                                <i class="fa fa-chevron-down dropdown-icon"></i>
+                            </button>
+                            <div class="custom-select-dropdown" id="languageDropdown">
+                                <ul class="language-options">
+                                    @foreach (Mcamara\LaravelLocalization\Facades\LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                        <li>
+                                            <a href="{{ Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"
+                                               class="language-option {{ $localeCode === $currentLocale ? 'active' : '' }}"
+                                               data-locale="{{ $localeCode }}">
+                                                <span class="locale-code">{{ strtoupper($localeCode) }}</span>
+                                                {{-- <span class="locale-name">{{ $properties['native'] }}</span> --}}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="header-navigation header-navigation-noshadow">
+    <div class="header-navigation header-navigation-noshadow" style="padding-bottom: 6px !important;">
         <div class="prelative container">
             <div class="header-utama">
                 <div class="second-main">
@@ -140,10 +156,9 @@
         background-color: #ffffff;
         width: 100%;
         transition: none;
-        /* Hapus transition di state normal */
     }
 
-    /* Header Sticky State - hanya apply styling saat ada class body.has-scrolled */
+    /* Header Sticky State */
     body.has-scrolled .header-navigation.sticky {
         position: fixed;
         top: 0;
@@ -157,27 +172,26 @@
         transition: transform 0.3s ease-in-out;
     }
 
-    /* Sticky header muncul */
     body.has-scrolled .header-navigation.sticky.show {
         transform: translateY(0);
     }
 
-    /* Logo sticky - tampilkan hanya saat sticky aktif DAN show */
     body.has-scrolled .header-navigation.sticky.show .sticky-logo-branding .sticky-main {
         display: inline-block !important;
     }
 
-    /* Sembunyikan logo sticky di state lain */
     .sticky-logo-branding .sticky-main {
         display: none !important;
     }
 
-    /* Language Dropdown */
+    /* ========================================
+       CUSTOM LANGUAGE DROPDOWN - STYLED
+    ======================================== */
     .branding3 .language-dropdown-wrapper {
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 10px 0;
+        padding: 5px 0;
     }
 
     .branding3 .language-dropdown-wrapper label {
@@ -185,34 +199,164 @@
         font-size: 14px;
         color: #333;
         white-space: nowrap;
+        font-weight: 500;
     }
 
-    .branding3 .language-select-dropdown {
-        padding: 6px 30px 6px 12px;
-        border: 1px solid #ccc;
+    /* Custom Select Wrapper */
+    .custom-select-wrapper {
+        position: relative;
+        min-width: 70px;
+    }
+
+    /* Select Trigger Button */
+    .custom-select-trigger {
+        width: 100%;
+        padding: 8px 35px 8px 12px;
+        border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+         /* reset default browser style */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+
+        background-color: transparent;
         border-radius: 4px;
-        background-color: #fff;
         font-size: 14px;
+        font-weight: 500;
         color: #333;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: all 0.2s ease;
+        text-align: left;
         outline: none;
-        appearance: none;
-        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-        background-repeat: no-repeat;
-        background-position: right 8px center;
-        background-size: 16px;
-        min-width: 100px;
     }
 
-    .branding3 .language-select-dropdown:hover {
+    .custom-select-trigger:hover {
         border-color: #999;
+        background: #fafafa;
     }
 
-    .branding3 .language-select-dropdown:focus {
+    .custom-select-trigger:focus,
+    .custom-select-trigger.active {
         border-color: #d32f2f;
-        box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.1);
+        box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
     }
 
+    .custom-select-trigger .dropdown-icon {
+        position: absolute;
+        right: 12px;
+        font-size: 12px;
+        color: #666;
+        transition: transform 0.2s ease;
+        pointer-events: none;
+    }
+
+    .custom-select-trigger.active .dropdown-icon {
+        transform: rotate(180deg);
+    }
+
+    /* Dropdown Menu */
+    .custom-select-dropdown {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        background: #ffffff;
+        border: 1px solid #d0d0d0;
+        border-radius: 4px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.2s ease;
+        max-height: 280px;
+        overflow-y: auto;
+    }
+
+    .custom-select-dropdown.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .custom-select-dropdown ul {
+        list-style: none;
+        margin: 0;
+        padding: 4px 0;
+    }
+
+    .custom-select-dropdown ul li {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Language Option Item */
+    .language-option {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        color: #333;
+        text-decoration: none;
+        transition: all 0.15s ease;
+        cursor: pointer;
+        border-left: 3px solid transparent;
+    }
+
+    .language-option:hover {
+        background: #f5f5f5;
+        border-left-color: #d32f2f;
+    }
+
+    .language-option.active {
+        background: #fff5f5;
+        border-left-color: #d32f2f;
+        font-weight: 600;
+    }
+
+    .language-option .locale-code {
+        font-size: 13px;
+        font-weight: 600;
+        color: #d32f2f;
+        min-width: 32px;
+        text-align: center;
+    }
+
+    .language-option .locale-name {
+        font-size: 13px;
+        color: #555;
+        flex: 1;
+    }
+
+    .language-option.active .locale-name {
+        color: #d32f2f;
+        font-weight: 500;
+    }
+
+    /* Scrollbar Styling */
+    .custom-select-dropdown::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .custom-select-dropdown::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .custom-select-dropdown::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 4px;
+    }
+
+    .custom-select-dropdown::-webkit-scrollbar-thumb:hover {
+        background: #999;
+    }
+
+    /* Mobile Specific Styles */
     @media screen and (max-width: 1024px) {
         .branding3 {
             display: block !important;
@@ -220,7 +364,29 @@
 
         .branding3 .language-dropdown-wrapper {
             justify-content: flex-end;
-            padding: 15px 20px;
+            padding: 8px 0;
+        }
+
+        .custom-select-wrapper {
+            min-width: 90px;
+        }
+
+        .custom-select-trigger {
+            padding: 10px 35px 10px 14px;
+            font-size: 15px;
+        }
+
+        .language-option {
+            padding: 12px 16px;
+        }
+
+        .language-option .locale-code {
+            font-size: 14px;
+            min-width: 36px;
+        }
+
+        .language-option .locale-name {
+            font-size: 14px;
         }
     }
 
@@ -340,18 +506,18 @@
         }
     }
 </style>
+
 <script>
     (function() {
         'use strict';
 
-        // SOLUSI BARU: Sticky Header dengan state management yang lebih baik
+        // Sticky Header
         function initStickyHeader() {
             const headerNavigation = document.querySelector('.header-navigation');
             const headerTopLogo = document.querySelector('.header-top-logo');
 
             if (!headerNavigation || !headerTopLogo) return;
 
-            // Hitung posisi threshold untuk sticky
             const getThreshold = () => {
                 return headerTopLogo.offsetHeight;
             };
@@ -364,34 +530,26 @@
                 const scrollY = window.pageYOffset || document.documentElement.scrollTop;
 
                 if (scrollY > threshold) {
-                    // User sudah scroll melewati threshold
                     document.body.classList.add('has-scrolled');
 
-                    // Tambahkan class sticky jika belum ada
                     if (!headerNavigation.classList.contains('sticky')) {
                         headerNavigation.classList.add('sticky');
-                        // Trigger reflow untuk memastikan transition bekerja
                         void headerNavigation.offsetWidth;
-                        // Tambahkan show untuk animasi masuk
                         requestAnimationFrame(() => {
                             headerNavigation.classList.add('show');
                         });
                     }
                 } else {
-                    // User di posisi atas (belum melewati threshold)
                     if (headerNavigation.classList.contains('sticky')) {
-                        // Hilangkan show dulu (animasi keluar)
                         headerNavigation.classList.remove('show');
 
-                        // Setelah animasi selesai, hapus sticky dan has-scrolled
                         setTimeout(() => {
-                            // Double check masih di posisi atas
                             const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
                             if (currentScroll <= threshold) {
                                 headerNavigation.classList.remove('sticky');
                                 document.body.classList.remove('has-scrolled');
                             }
-                        }, 300); // Match dengan durasi transition CSS
+                        }, 300);
                     }
                 }
 
@@ -406,7 +564,6 @@
                 }
             }
 
-            // Recalculate threshold on resize
             let resizeTimer;
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimer);
@@ -420,11 +577,61 @@
                 passive: true
             });
 
-            // Initial check
             updateStickyState();
         }
 
-        // Mobile menu - tidak ada perubahan
+        // ========================================
+        // CUSTOM LANGUAGE DROPDOWN FUNCTIONALITY
+        // ========================================
+        function initLanguageDropdown() {
+            const trigger = document.getElementById('languageSelectTrigger');
+            const dropdown = document.getElementById('languageDropdown');
+
+            if (!trigger || !dropdown) return;
+
+            // Toggle dropdown
+            trigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isOpen = dropdown.classList.contains('show');
+
+                if (isOpen) {
+                    closeDropdown();
+                } else {
+                    openDropdown();
+                }
+            });
+
+            function openDropdown() {
+                dropdown.classList.add('show');
+                trigger.classList.add('active');
+            }
+
+            function closeDropdown() {
+                dropdown.classList.remove('show');
+                trigger.classList.remove('active');
+            }
+
+            // Close when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!trigger.contains(e.target) && !dropdown.contains(e.target)) {
+                    closeDropdown();
+                }
+            });
+
+            // Close on ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && dropdown.classList.contains('show')) {
+                    closeDropdown();
+                }
+            });
+
+            // Prevent dropdown from closing when clicking inside
+            dropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+
+        // Mobile menu
         function initMobileMenu() {
             const toggleBtn = document.querySelector('.navbar-toggle-btn');
             const navMenu = document.querySelector('.nav-menu');
@@ -534,13 +741,16 @@
             });
         }
 
+        // Initialize all functions
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => {
                 initStickyHeader();
+                initLanguageDropdown();
                 initMobileMenu();
             });
         } else {
             initStickyHeader();
+            initLanguageDropdown();
             initMobileMenu();
         }
     })();
