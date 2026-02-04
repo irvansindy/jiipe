@@ -199,115 +199,142 @@
 </section>
 @push('css')
     <style>
+        /* =========================================
+   FIX untuk artikel-berita-atas overflow
+   ========================================= */
+
+/* Pastikan row artikel-atas menggunakan flexbox dengan proper alignment */
+.row.artikel-atas {
+    display: flex;
+    align-items: stretch;
+    gap: 20px;
+}
+
+/* Pastikan kolom gambar dan konten memiliki lebar yang konsisten */
+.row.artikel-atas > [class*="col-"] {
+    flex: 0 0 auto;
+}
+
+/* Container untuk artikel berita atas - tambahkan padding dan pastikan tidak overflow */
+.artikel-berita-atas {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0 15px; /* Tambahkan padding kiri-kanan */
+    box-sizing: border-box; /* Pastikan padding dihitung dalam width */
+}
+
+/* Judul blog - batasi width dan tambahkan word wrap */
+.artikel-berita-atas .judul-blog {
+    margin-bottom: 12px;
+}
+
+.artikel-berita-atas .judul-blog h2 {
+    font-size: 24px;
+    line-height: 1.3;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Content blog - batasi height dan tambahkan ellipsis jika terlalu panjang */
+.artikel-berita-atas .content-blog {
+    margin-bottom: 16px;
+    flex-grow: 1;
+}
+
+.artikel-berita-atas .content-blog p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #666;
+    margin: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Read More link - pastikan selalu di bawah */
+.artikel-berita-atas .lebih {
+    margin-top: auto;
+    padding-top: 12px;
+}
+
+.artikel-berita-atas .lebih a {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
+    color: #c7332a;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.artikel-berita-atas .lebih a:hover {
+    color: #9a2821;
+    text-decoration: none;
+}
+
+.artikel-berita-atas .lebih span {
+    display: inline-flex;
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+}
+
+.artikel-berita-atas .lebih a:hover span {
+    transform: translateX(4px);
+}
+
+/* Gambar di bagian artikel atas */
+.row.artikel-atas .col-md-30:first-child img {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .row.artikel-atas {
+        flex-direction: column;
+    }
+
+    .row.artikel-atas > [class*="col-"] {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .artikel-berita-atas {
+        padding: 20px 15px;
+    }
+
+    .artikel-berita-atas .judul-blog h2 {
+        font-size: 20px;
+    }
+
+    .row.artikel-atas .col-md-30:first-child img {
+        max-height: 300px;
+    }
+}
+
+@media (max-width: 767px) {
+    .artikel-berita-atas .judul-blog h2 {
+        font-size: 18px;
+    }
+
+    .artikel-berita-atas .content-blog p {
+        font-size: 14px;
+    }
+}
+
+/* Override jika ada style lama yang konflik */
+.row.artikel-atas .col-md-30 {
+    overflow: hidden; /* Mencegah content keluar dari container */
+}
         /* =========================
-           ARTIKEL ATAS LAYOUT FIX
-        ========================= */
-        .row.artikel-atas {
-            display: flex;
-            align-items: stretch;
-            flex-wrap: wrap;
-            margin: 20px 0;
-        }
-
-        .row.artikel-atas > [class*="col-"] {
-            padding: 0 15px;
-        }
-
-        /* Gambar container */
-        .row.artikel-atas .col-md-30:first-child {
-            overflow: hidden;
-        }
-
-        .row.artikel-atas .col-md-30:first-child img {
-            width: 100%;
-            height: auto;
-            max-height: 400px;
-            object-fit: cover;
-            display: block;
-        }
-
-        /* Container artikel berita atas - PERBAIKAN UTAMA */
-        .artikel-berita-atas {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            max-width: 100%;
-            overflow: hidden; /* Mencegah overflow */
-            box-sizing: border-box;
-        }
-
-        /* Judul */
-        .artikel-berita-atas .judul-blog {
-            margin-bottom: 16px;
-        }
-
-        .artikel-berita-atas .judul-blog h2 {
-            font-size: 24px;
-            line-height: 1.4;
-            font-weight: 700;
-            margin: 0;
-            color: #333;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-
-        .artikel-berita-atas .judul-blog a {
-            color: #333;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .artikel-berita-atas .judul-blog a:hover {
-            color: #c7332a;
-        }
-
-        /* Content */
-        .artikel-berita-atas .content-blog {
-            flex-grow: 1;
-            margin-bottom: 16px;
-        }
-
-        .artikel-berita-atas .content-blog p {
-            font-size: 15px;
-            line-height: 1.7;
-            color: #666;
-            margin: 0;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
-
-        /* Read More */
-        .artikel-berita-atas .lebih {
-            margin-top: auto;
-        }
-
-        .artikel-berita-atas .lebih a p {
-            display: inline-flex;
-            align-items: center;
-            margin: 0;
-            font-weight: 600;
-            color: #c7332a;
-            font-size: 14px;
-        }
-
-        .artikel-berita-atas .lebih a p span {
-            display: inline-flex;
-            margin-left: 8px;
-            transition: transform 0.3s ease;
-        }
-
-        .artikel-berita-atas .lebih a:hover p {
-            color: #9a2821;
-        }
-
-        .artikel-berita-atas .lebih a:hover p span {
-            transform: translateX(5px);
-        }
-
-        /* =========================
-           GRID & CARD NORMALIZATION
-        ========================= */
-        .artikel.lists_news_blog > [class*="col-"] {
+       GRID & CARD NORMALIZATION
+    ========================= */
+        .artikel.lists_news_blog>[class*="col-"] {
             display: flex;
         }
 
@@ -321,8 +348,8 @@
         }
 
         /* =========================
-           IMAGE
-        ========================= */
+       IMAGE
+    ========================= */
         .items .gambar {
             overflow: hidden;
         }
@@ -335,8 +362,8 @@
         }
 
         /* =========================
-           CONTENT
-        ========================= */
+       CONTENT
+    ========================= */
         .items .judul h2 {
             font-size: 18px;
             line-height: 1.4;
@@ -351,10 +378,11 @@
         }
 
         /* =========================
-           READ MORE (KEY PART)
-        ========================= */
+       READ MORE (KEY PART)
+    ========================= */
         .items .lebih {
             margin-top: auto;
+            /* 🔑 selalu di bawah */
         }
 
         .items .lebih a {
@@ -374,8 +402,8 @@
         }
 
         /* =========================
-           HOVER EFFECTS
-        ========================= */
+       HOVER EFFECTS
+    ========================= */
         .items:hover {
             transform: translateY(-6px);
         }
@@ -393,61 +421,20 @@
         }
 
         /* =========================
-           RESPONSIVE - TABLET
-        ========================= */
-        @media (max-width: 991px) {
-            .row.artikel-atas {
-                flex-direction: column;
-            }
-
-            .row.artikel-atas > [class*="col-"] {
-                width: 100%;
-                max-width: 100%;
-            }
-
-            .artikel-berita-atas {
-                padding-top: 20px;
-            }
-
-            .row.artikel-atas .col-md-30:first-child img {
-                max-height: 350px;
-            }
-        }
-
-        /* =========================
-           RESPONSIVE - MOBILE
-        ========================= */
+       MOBILE ADJUSTMENT
+    ========================= */
         @media (max-width: 768px) {
             .items .gambar img {
                 height: 180px;
             }
-
-            .artikel-berita-atas .judul-blog h2 {
-                font-size: 20px;
-            }
-
-            .artikel-berita-atas .content-blog p {
-                font-size: 14px;
-            }
-
-            .row.artikel-atas .col-md-30:first-child img {
-                max-height: 250px;
-            }
         }
 
-        /* =========================
-           ARROW IMAGE FIX
-        ========================= */
         section.blog-sec-1 .prelative.container .row.artikel-atas .artikel-berita-atas .lebih a p img {
             top: 0px !important;
-            position: relative;
-            vertical-align: middle;
         }
 
         section.blog-sec-1 .prelative.container .row.artikel .lebih a p img {
             top: 0px !important;
-            position: relative;
-            vertical-align: middle;
         }
 
         section.blog-sec-1 .prelative.container .row.utama img {
