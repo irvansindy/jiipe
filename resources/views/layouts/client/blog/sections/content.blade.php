@@ -294,6 +294,13 @@
     }
 }
 
+section.blog-sec-1 .prelative.container .row.artikel .lebih a p img {
+    top: 0px !important;
+}
+section.blog-sec-1 .prelative.container .row.utama img {
+    margin-top: 0px !important;
+}
+
 </style>
 @endpush
 @push('js')
