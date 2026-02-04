@@ -73,7 +73,7 @@
                                     </a>
                                 </div> --}}
                                 <div class="lebih">
-                                    <a href="{{ route('blog.detail', $post['id']) }}">
+                                    <a href="{{ route('blog.detail', $data['latestPost']['id']) }}">
                                         <span class="text">{{ __('Read More') }}</span>
                                         <span class="icon">
                                             <img src="{{ asset('asset/images/arrow.png') }}" decoding="async"
