@@ -3,7 +3,7 @@
         <div class="row utama">
             {{-- Sidebar Navigation --}}
             <div class="col-md-15">
-                <img src="{{ asset('asset/images/beijing-red.png') }}" alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+                <img src="{{ asset('asset/images/beijing-red.png') }}" alt="@lang('system.Jiipe industrial estate gresik')">
                 <h2 class="info">
                     {{ __('Articles & News About the Industrial Zone JIIPE in Gresik') }}
                 </h2>
@@ -17,9 +17,10 @@
                             <li class="{{ ($data['activeFilter'] ?? '') === 'all' ? 'active' : '' }}">
                                 <a href="{{ route('blog.index') }}">{{ __('All') }}</a>
                             </li>
-                            @if(!empty($data['categories']))
+                            @if (!empty($data['categories']))
                                 @foreach ($data['categories'] as $category)
-                                    <li class="{{ ($data['activeFilter'] ?? '') === ($category['type'] ?? '') ? 'active' : '' }}">
+                                    <li
+                                        class="{{ ($data['activeFilter'] ?? '') === ($category['type'] ?? '') ? 'active' : '' }}">
                                         <a href="{{ route('blog.type', ['type' => $category['type']]) }}">
                                             {{ $category['name'] }}
                                         </a>
@@ -61,16 +62,26 @@
                                 <div class="content-blog">
                                     <p>{{ $data['latestPost']['excerpt'] }}</p>
                                 </div>
-                                <div class="lebih">
+                                {{-- <div class="lebih">
                                     <a href="{{ route('blog.detail', $data['latestPost']['id']) }}">
                                         <p>{{ __('Read More') }}
                                             <span>
                                                 <img src="{{ asset('asset/images/arrow.png') }}"
-                                                    alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+                                                    alt="@lang('system.Jiipe industrial estate gresik')">
                                             </span>
                                         </p>
                                     </a>
+                                </div> --}}
+                                <div class="lebih">
+                                    <a href="{{ route('blog.detail', $post['id']) }}">
+                                        <span class="text">{{ __('Read More') }}</span>
+                                        <span class="icon">
+                                            <img src="{{ asset('asset/images/arrow.png') }}" decoding="async"
+                                                loading="lazy" alt="@lang('system.Jiipe industrial estate gresik')">
+                                        </span>
+                                    </a>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -89,8 +100,8 @@
                             <div class="items">
                                 <div class="gambar">
                                     <a href="{{ route('blog.detail', $post['id']) }}">
-                                        <img src="{{ $post['thumbnail'] }}" alt="{{ $post['title'] }}" decoding="async" loading="lazy"
-                                            class="img-fluid">
+                                        <img src="{{ $post['thumbnail'] }}" alt="{{ $post['title'] }}"
+                                            decoding="async" loading="lazy" class="img-fluid">
                                     </a>
                                 </div>
                                 <div class="judul">
@@ -101,16 +112,26 @@
                                 <div class="content">
                                     <p>{{ $post['excerpt'] }}</p>
                                 </div>
-                                <div class="lebih">
+                                {{-- <div class="lebih">
                                     <a href="{{ route('blog.detail', $post['id']) }}">
                                         <p>{{ __('Read More') }}
                                             <span>
                                                 <img src="{{ asset('asset/images/arrow.png') }}" decoding="async"
-                                                    loading="lazy" alt="{{ __('JIIPE Industrial Estate Gresik') }}">
+                                                    loading="lazy" alt="@lang('system.Jiipe industrial estate gresik')">
                                             </span>
                                         </p>
                                     </a>
+                                </div> --}}
+                                <div class="lebih">
+                                    <a href="{{ route('blog.detail', $post['id']) }}">
+                                        <span class="text">{{ __('Read More') }}</span>
+                                        <span class="icon">
+                                            <img src="{{ asset('asset/images/arrow.png') }}" decoding="async"
+                                                loading="lazy" alt="@lang('system.Jiipe industrial estate gresik')">
+                                        </span>
+                                    </a>
                                 </div>
+
                             </div>
                         </div>
                     @empty
@@ -154,7 +175,8 @@
                                 <div class="items">
                                     <div class="gambar">
                                         <a href="{{ route('blog.detail', $article['id']) }}">
-                                            <img src="{{ $article['thumbnail'] }}" alt="{{ $article['title'] }}" decoding="async" loading="lazy" class="img-fluid">
+                                            <img src="{{ $article['thumbnail'] }}" alt="{{ $article['title'] }}"
+                                                decoding="async" loading="lazy" class="img-fluid">
                                         </a>
                                     </div>
                                     <div class="judul">
@@ -165,7 +187,7 @@
                                     <div class="content">
                                         <p>{{ $article['excerpt'] }}</p>
                                     </div>
-                                    <div class="lebih">
+                                    {{-- <div class="lebih">
                                         <a href="{{ route('blog.detail', $article['id']) }}">
                                             <p>{{ __('Read More') }}
                                                 <span>
@@ -174,7 +196,17 @@
                                                 </span>
                                             </p>
                                         </a>
+                                    </div> --}}
+                                    <div class="lebih">
+                                        <a href="{{ route('blog.detail', $post['id']) }}">
+                                            <span class="text">{{ __('Read More') }}</span>
+                                            <span class="icon">
+                                                <img src="{{ asset('asset/images/arrow.png') }}" decoding="async"
+                                                    loading="lazy" alt="@lang('system.Jiipe industrial estate gresik')">
+                                            </span>
+                                        </a>
                                     </div>
+
                                 </div>
                             </div>
                         @endforeach
@@ -196,143 +228,172 @@
     </div>
 </section>
 @push('css')
-<style>
-/* =========================
-   GRID & CARD NORMALIZATION
-========================= */
-.artikel.lists_news_blog > [class*="col-"] {
-    display: flex;
-}
+    <style>
+        /* =========================
+           GRID & CARD NORMALIZATION
+        ========================= */
+        .artikel.lists_news_blog>[class*="col-"] {
+            display: flex;
+        }
 
-.artikel.lists_news_blog .items {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    background: #fff;
-    transition: transform .35s ease, box-shadow .35s ease;
-}
+        .artikel.lists_news_blog .items {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            transition: transform .35s ease, box-shadow .35s ease;
+        }
 
-/* =========================
-   IMAGE
-========================= */
-.items .gambar {
-    overflow: hidden;
-}
+        /* =========================
+           IMAGE
+        ========================= */
+        .items .gambar {
+            overflow: hidden;
+        }
 
-.items .gambar img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    transition: transform .6s ease;
-}
+        .items .gambar img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform .6s ease;
+        }
 
-/* =========================
-   CONTENT
-========================= */
-.items .judul h2 {
-    font-size: 18px;
-    line-height: 1.4;
-    margin: 16px 0 8px;
-}
+        /* =========================
+           CONTENT
+        ========================= */
+        .items .judul h2 {
+            font-size: 18px;
+            line-height: 1.4;
+            margin: 16px 0 8px;
+        }
 
-.items .content {
-    font-size: 14px;
-    line-height: 1.6;
-    color: #666;
-    margin-bottom: 16px;
-}
+        .items .content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 16px;
+        }
 
-/* =========================
-   READ MORE (KEY PART)
-========================= */
-.items .lebih {
-    margin-top: auto; /* 🔑 selalu di bawah */
-}
+        /* =========================
+           READ MORE (KEY PART)
+        ========================= */
+        .items .lebih {
+            margin-top: auto;
+            /* 🔑 selalu di bawah */
+        }
 
-.items .lebih a {
-    display: inline-flex;
-    align-items: center;
-    font-weight: 500;
-    color: #111;
-    text-decoration: none;
-    position: relative;
-    transition: color .3s ease;
-}
+        .items .lebih a {
+            display: inline-flex;
+            align-items: center;
+            font-weight: 500;
+            color: #111;
+            text-decoration: none;
+            position: relative;
+            transition: color .3s ease;
+        }
 
-.items .lebih span {
-    display: inline-flex;
-    margin-left: 8px;
-    transition: transform .3s ease;
-}
+        /* =========================
+           HOVER EFFECTS
+        ========================= */
+        .items:hover {
+            transform: translateY(-6px);
+        }
 
-/* =========================
-   HOVER EFFECTS
-========================= */
-.items:hover {
-    transform: translateY(-6px);
-}
+        .items:hover .gambar img {
+            transform: scale(1.08);
+        }
 
-.items:hover .gambar img {
-    transform: scale(1.08);
-}
+        .items:hover .lebih a {
+            color: #c7332a;
+        }
 
-.items:hover .lebih a {
-    color: #c7332a;
-}
+        .items:hover .lebih .icon {
+            transform: translateX(6px);
+        }
 
-.items:hover .lebih span {
-    transform: translateX(6px);
-}
+        /* =========================
+       READ MORE (FIXED & SAFE)
+    ========================= */
+        .items .lebih {
+            margin-top: auto;
+        }
 
-/* =========================
-   MOBILE ADJUSTMENT
-========================= */
-@media (max-width: 768px) {
-    .items .gambar img {
-        height: 180px;
-    }
-}
+        .items .lebih a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            /* ✅ pengganti margin-left */
+            font-weight: 500;
+            color: #111;
+            text-decoration: none;
+            transition: color .3s ease;
+        }
 
-</style>
+        /* icon tidak memengaruhi layout */
+        .items .lebih .icon {
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform .3s ease;
+        }
+
+        .items .lebih .icon img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+
+        /* =========================
+           MOBILE ADJUSTMENT
+        ========================= */
+        @media (max-width: 768px) {
+            .items .gambar img {
+                height: 180px;
+            }
+        }
+    </style>
 @endpush
 @push('js')
-<script type="text/javascript">
-    $(document).ready(function() {
-        // Add Bootstrap pagination classes
-        $('.pagination li').addClass('page-item');
-        $('.pagination li a').addClass('page-link');
-        $('.pagination li.selected, .pagination li.active').addClass('active');
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Add Bootstrap pagination classes
+            $('.pagination li').addClass('page-item');
+            $('.pagination li a').addClass('page-link');
+            $('.pagination li.selected, .pagination li.active').addClass('active');
 
-        // Mobile select menu
-        if ($(window).width() < 767) {
-            var myform = document.getElementById('mytoSelect'),
-                items = document.getElementById('lists_leftmenuKawasan').getElementsByTagName('li'),
-                select = document.createElement('select'),
-                len = items.length;
+            // Mobile select menu
+            if ($(window).width() < 767) {
+                var myform = document.getElementById('mytoSelect'),
+                    items = document.getElementById('lists_leftmenuKawasan').getElementsByTagName('li'),
+                    select = document.createElement('select'),
+                    len = items.length;
 
-            for (var i = 0; i < len; i++) {
-                var option = document.createElement('option');
-                var label = items[i].textContent.replace(/\s\s+/g, " ").trim(),
-                    link = items[i].getElementsByTagName('a')[0].href,
-                    isActive = items[i].classList.contains('active');
+                for (var i = 0; i < len; i++) {
+                    var option = document.createElement('option');
+                    var label = items[i].textContent.replace(/\s\s+/g, " ").trim(),
+                        link = items[i].getElementsByTagName('a')[0].href,
+                        isActive = items[i].classList.contains('active');
 
-                option.textContent = label;
-                option.value = link;
-                if (isActive) option.selected = true;
+                    option.textContent = label;
+                    option.value = link;
+                    if (isActive) option.selected = true;
 
-                select.appendChild(option);
+                    select.appendChild(option);
+                }
+
+                myform.appendChild(select);
+
+                $(select).addClass('form-control');
+                $(select).change(function(e) {
+                    var selectedLink = $(this).val();
+                    window.location.href = selectedLink;
+                    e.preventDefault();
+                });
             }
-
-            myform.appendChild(select);
-
-            $(select).addClass('form-control');
-            $(select).change(function(e) {
-                var selectedLink = $(this).val();
-                window.location.href = selectedLink;
-                e.preventDefault();
-            });
-        }
-    });
-</script>
+        });
+    </script>
 @endpush
