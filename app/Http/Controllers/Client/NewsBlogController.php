@@ -105,6 +105,7 @@ class NewsBlogController extends Controller
             'articlesPagination' => null,
         ];
 
+        dd($data);
         return view('layouts.client.blog.index', compact('data'));
     }
 
@@ -253,7 +254,6 @@ class NewsBlogController extends Controller
             'latestArticles' => $latestArticles,
             'articlesPagination' => null,
         ];
-
         return view('layouts.client.blog.index', compact('data'));
     }
 

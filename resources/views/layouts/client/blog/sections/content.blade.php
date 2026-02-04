@@ -195,7 +195,6 @@
         </div>
     </div>
 </section>
-
 @push('js')
 <script type="text/javascript">
     $(document).ready(function() {
