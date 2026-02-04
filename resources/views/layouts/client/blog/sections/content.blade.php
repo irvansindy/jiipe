@@ -197,28 +197,103 @@
 </section>
 @push('css')
 <style>
-.lebih p {
-    display: inline-flex !important;
-    align-items: center !important;
-    margin: 0 !important;
-    vertical-align: middle !important;
+/* =========================
+   GRID & CARD NORMALIZATION
+========================= */
+.artikel.lists_news_blog > [class*="col-"] {
+    display: flex;
 }
 
-.lebih p span {
-    display: inline-flex !important;
-    align-items: center !important;
+.artikel.lists_news_blog .items {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transition: transform .35s ease, box-shadow .35s ease;
+}
+
+/* =========================
+   IMAGE
+========================= */
+.items .gambar {
+    overflow: hidden;
+}
+
+.items .gambar img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    transition: transform .6s ease;
+}
+
+/* =========================
+   CONTENT
+========================= */
+.items .judul h2 {
+    font-size: 18px;
+    line-height: 1.4;
+    margin: 16px 0 8px;
+}
+
+.items .content {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+/* =========================
+   READ MORE (KEY PART)
+========================= */
+.items .lebih {
+    margin-top: auto; /* 🔑 selalu di bawah */
+}
+
+.items .lebih a {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 500;
+    color: #111;
+    text-decoration: none;
+    position: relative;
+    transition: color .3s ease;
+}
+
+.items .lebih span {
+    display: inline-flex;
     margin-left: 8px;
-    line-height: 1 !important;
-    vertical-align: middle !important;
+    transition: transform .3s ease;
 }
 
-.lebih p span img {
-    display: block !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    vertical-align: middle !important;
-    max-height: 1em;
+/* =========================
+   HOVER EFFECTS
+========================= */
+.items:hover {
+    transform: translateY(-6px);
 }
+
+.items:hover .gambar img {
+    transform: scale(1.08);
+}
+
+.items:hover .lebih a {
+    color: #c7332a;
+}
+
+.items:hover .lebih span {
+    transform: translateX(6px);
+}
+
+/* =========================
+   MOBILE ADJUSTMENT
+========================= */
+@media (max-width: 768px) {
+    .items .gambar img {
+        height: 180px;
+    }
+}
+
 </style>
 @endpush
 @push('js')
