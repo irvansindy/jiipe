@@ -40,7 +40,22 @@ class NewsBlogController extends Controller
             return !empty($cat['name']);
         });
 
-        // Get all published news
+        // Get latest post for featured section (ambil terpisah)
+        $latestNews = News::with([
+            'translations' => function($query) use ($locale) {
+                $query->where('locale', $locale);
+            },
+            'category.translations' => function($query) use ($locale) {
+                $query->where('locale', $locale);
+            }
+        ])
+        ->where('is_published', 1)
+        ->orderBy('created_at', 'desc')
+        ->first();
+
+        $latestPost = $latestNews ? $this->formatNewsPost($latestNews, $locale) : null;
+
+        // Get all published news KECUALI latest post
         $newsQuery = News::with([
             'translations' => function($query) use ($locale) {
                 $query->where('locale', $locale);
@@ -50,6 +65,9 @@ class NewsBlogController extends Controller
             }
         ])
         ->where('is_published', 1)
+        ->when($latestNews, function($query) use ($latestNews) {
+            $query->where('id', '!=', $latestNews->id);
+        })
         ->orderBy('created_at', 'desc');
 
         $newsPaginated = $newsQuery->paginate($perPage);
@@ -60,9 +78,6 @@ class NewsBlogController extends Controller
         })->filter();
 
         $newsPaginated->setCollection($formattedPosts);
-
-        // Get latest post for featured section
-        $latestPost = $formattedPosts->first();
 
         // Get latest articles
         $articleCategory = NewsCategories::with(['translations' => function($query) use ($locale) {
@@ -196,7 +211,23 @@ class NewsBlogController extends Controller
             return redirect()->route('blog.index');
         }
 
-        // Get news by category
+        // Get latest post for featured section (ambil terpisah)
+        $latestNews = News::with([
+            'translations' => function($query) use ($locale) {
+                $query->where('locale', $locale);
+            },
+            'category.translations' => function($query) use ($locale) {
+                $query->where('locale', $locale);
+            }
+        ])
+        ->where('category_id', $category->id)
+        ->where('is_published', 1)
+        ->orderBy('created_at', 'desc')
+        ->first();
+
+        $latestPost = $latestNews ? $this->formatNewsPost($latestNews, $locale) : null;
+
+        // Get news by category KECUALI latest post
         $newsQuery = News::with([
             'translations' => function($query) use ($locale) {
                 $query->where('locale', $locale);
@@ -207,6 +238,9 @@ class NewsBlogController extends Controller
         ])
         ->where('category_id', $category->id)
         ->where('is_published', 1)
+        ->when($latestNews, function($query) use ($latestNews) {
+            $query->where('id', '!=', $latestNews->id);
+        })
         ->orderBy('created_at', 'desc');
 
         $newsPaginated = $newsQuery->paginate($perPage);
@@ -217,9 +251,6 @@ class NewsBlogController extends Controller
         })->filter();
 
         $newsPaginated->setCollection($formattedPosts);
-
-        // Get latest post
-        $latestPost = $formattedPosts->first();
 
         // Get latest articles if viewing news category
         $latestArticles = collect([]);
@@ -309,7 +340,23 @@ class NewsBlogController extends Controller
             return !empty($cat['name']);
         });
 
-        // Get news by category
+        // Get latest post for featured section (ambil terpisah)
+        $latestNews = News::with([
+            'translations' => function($query) use ($locale) {
+                $query->where('locale', $locale);
+            },
+            'category.translations' => function($query) use ($locale) {
+                $query->where('locale', $locale);
+            }
+        ])
+        ->where('category_id', $category->id)
+        ->where('is_published', 1)
+        ->orderBy('created_at', 'desc')
+        ->first();
+
+        $latestPost = $latestNews ? $this->formatNewsPost($latestNews, $locale) : null;
+
+        // Get news by category KECUALI latest post
         $newsQuery = News::with([
             'translations' => function($query) use ($locale) {
                 $query->where('locale', $locale);
@@ -320,6 +367,9 @@ class NewsBlogController extends Controller
         ])
         ->where('category_id', $category->id)
         ->where('is_published', 1)
+        ->when($latestNews, function($query) use ($latestNews) {
+            $query->where('id', '!=', $latestNews->id);
+        })
         ->orderBy('created_at', 'desc');
 
         $newsPaginated = $newsQuery->paginate($perPage);
@@ -329,8 +379,6 @@ class NewsBlogController extends Controller
         })->filter();
 
         $newsPaginated->setCollection($formattedPosts);
-
-        $latestPost = $formattedPosts->first();
 
         $latestArticles = collect([]);
         $isNewsCategory = $category->id == 1;
@@ -367,6 +415,7 @@ class NewsBlogController extends Controller
 
         return view('layouts.client.blog.index', compact('data'));
     }
+
     public function detail($id)
     {
         $locale = app()->getLocale();
