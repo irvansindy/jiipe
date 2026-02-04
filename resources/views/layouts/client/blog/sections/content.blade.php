@@ -61,26 +61,16 @@
                                 <div class="content-blog">
                                     <p>{{ $data['latestPost']['excerpt'] }}</p>
                                 </div>
-                                {{-- <div class="lebih">
+                                <div class="lebih">
                                     <a href="{{ route('blog.detail', $data['latestPost']['id']) }}">
                                         <p>{{ __('Read More') }}
                                             <span>
                                                 <img src="{{ asset('asset/images/arrow.png') }}"
-                                                    alt="@lang('system.Jiipe industrial estate gresik')">
+                                                    alt="{{ __('JIIPE Industrial Estate Gresik') }}">
                                             </span>
                                         </p>
                                     </a>
-                                </div> --}}
-                                <div class="lebih">
-    <a href="{{ route('blog.detail', $data['latestPost']['id']) }}">
-        <span class="text">{{ __('Read More') }}</span>
-        <span class="icon">
-            <img src="{{ asset('asset/images/arrow.png') }}" decoding="async" loading="lazy"
-                alt="{{ __('JIIPE Industrial Estate Gresik') }}">
-        </span>
-    </a>
-</div>
-
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -111,26 +101,16 @@
                                 <div class="content">
                                     <p>{{ $post['excerpt'] }}</p>
                                 </div>
-                                {{-- <div class="lebih">
+                                <div class="lebih">
                                     <a href="{{ route('blog.detail', $post['id']) }}">
                                         <p>{{ __('Read More') }}
                                             <span>
                                                 <img src="{{ asset('asset/images/arrow.png') }}" decoding="async"
-                                                    loading="lazy" alt="@lang('system.Jiipe industrial estate gresik')">
+                                                    loading="lazy" alt="{{ __('JIIPE Industrial Estate Gresik') }}">
                                             </span>
                                         </p>
                                     </a>
-                                </div> --}}
-                                <div class="lebih">
-                                    <a href="{{ route('blog.detail', $post['id']) }}">
-                                        <span class="text">{{ __('Read More') }}</span>
-                                        <span class="icon">
-                                            <img src="{{ asset('asset/images/arrow.png') }}" decoding="async" loading="lazy"
-                                                alt="{{ __('JIIPE Industrial Estate Gresik') }}">
-                                        </span>
-                                    </a>
                                 </div>
-
                             </div>
                         </div>
                     @empty
@@ -185,7 +165,7 @@
                                     <div class="content">
                                         <p>{{ $article['excerpt'] }}</p>
                                     </div>
-                                    {{-- <div class="lebih">
+                                    <div class="lebih">
                                         <a href="{{ route('blog.detail', $article['id']) }}">
                                             <p>{{ __('Read More') }}
                                                 <span>
@@ -194,17 +174,7 @@
                                                 </span>
                                             </p>
                                         </a>
-                                    </div> --}}
-                                    <div class="lebih">
-    <a href="{{ route('blog.detail', $post['id']) }}">
-        <span class="text">{{ __('Read More') }}</span>
-        <span class="icon">
-            <img src="{{ asset('asset/images/arrow.png') }}" decoding="async" loading="lazy"
-                alt="{{ __('JIIPE Industrial Estate Gresik') }}">
-        </span>
-    </a>
-</div>
-
+                                    </div>
                                 </div>
                             </div>
                         @endforeach
