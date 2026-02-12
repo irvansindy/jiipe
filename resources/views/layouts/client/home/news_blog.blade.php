@@ -13,7 +13,7 @@
                             <a href="{{ route('blog.detail', $item['id']) }}">
                                 <img src="{{ asset('uploads/blog/'.$item['thumbnail']) }}"
                                     alt="{{ $item['title'] }}"
-                                    class="img-fluid">
+                                    class="img-fluid" loading="lazy" decoding="async">
                             </a>
                         </div>
                         <div class="judul mt-3">

@@ -73,7 +73,7 @@
                 {{-- Featured Image --}}
                 <div style="max-width: 865px; margin-bottom: 1.2rem;">
                     <img class="artikel img img-fluid"
-                        src="{{ $data['news']->thumbnail ? (filter_var($data['news']->thumbnail, FILTER_VALIDATE_URL) ? $data['news']->thumbnail : asset('uploads/blog/' . $data['news']->thumbnail)) : asset('asset/images/default-blog.jpg') }}" alt="{{ $data['translation']->title ?? '' }}">
+                        src="{{ $data['news']->thumbnail ? (filter_var($data['news']->thumbnail, FILTER_VALIDATE_URL) ? $data['news']->thumbnail : asset('uploads/blog/' . $data['news']->thumbnail)) : asset('asset/images/default-blog.jpg') }}" alt="{{ $data['translation']->title ?? '' }}" loading="lazy" decoding="async">
                 </div>
 
                 {{-- Content --}}
