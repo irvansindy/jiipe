@@ -2,7 +2,7 @@
     <div class="navbar-wrapper">
         <div class="m-header">
             <a href="#" class="b-brand text-primary">
-                <img src="{{ asset('asset/images/logo/JIIPE_SEZ_Logo.png') }}" class="img-fluid logo-lg" alt="logo">
+                <img src="{{ asset('asset/images/logo/JIIPE_SEZ_Logo.png') }}" class="img-fluid logo-lg" alt="logo" loading="lazy" decoding="async">
             </a>
         </div>
         <div class="navbar-content">

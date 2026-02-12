@@ -6,7 +6,7 @@
         <div class="in">
             <div class="loginpanelinner">
                 <div class="logo">
-                    <img src="{{ asset('asset/images/logo/JIIPE_SEZ_Logo.png') }}" alt="Cms Markdesign"
+                    <img src="{{ asset('asset/images/logo/JIIPE_SEZ_Logo.png') }}" alt="Cms Markdesign" loading="lazy" decoding="async"
                         class="img-responsive" />
                 </div>
 

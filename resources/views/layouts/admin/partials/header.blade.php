@@ -1,6 +1,6 @@
 <div class="logo">
     <a href="#">
-        <img src="{{ asset('asset/images/logo/JIIPE_SEZ_Logo.png') }}" alt="Cms" />
+        <img src="{{ asset('asset/images/logo/JIIPE_SEZ_Logo.png') }}" alt="Cms" loading="lazy" decoding="async"/>
     </a>
 </div>
 <div class="headerinner">

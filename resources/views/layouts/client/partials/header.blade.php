@@ -9,7 +9,7 @@
                                 $logoPath = public_path('asset/images/logo/JIIPE_SEZ_Logo.png');
                             @endphp
                             <img src="{{ file_exists($logoPath) ? asset('asset/images/logo/JIIPE_SEZ_Logo.png') : asset('logo/default.png') }}"
-                                alt="kawasan industri gresik jiipe" class="img-fluid img">
+                                alt="kawasan industri gresik jiipe" class="img-fluid img" loading="lazy" decoding="async">
                         </a>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                         <div class="sticky-main d-none">
                             <a href="{{ route('home') }}" class="sticky-brand-new">
                                 <img src="{{ asset('asset/images/logo/JIIPE_SEZ_Logo.png') }}"
-                                    alt="kawasan industri gresik jiipe" class="img-fluid img">
+                                    alt="kawasan industri gresik jiipe" class="img-fluid img" loading="lazy" decoding="async">
                             </a>
                         </div>
                     </div>

@@ -109,7 +109,7 @@
     </script>
 
     <!-- ⚡ Baidu Tongji - Deferred -->
-    <script>
+    {{-- <script>
         window.addEventListener('load', function() {
             var _hmt = _hmt || [];
             var hm = document.createElement("script");
@@ -117,7 +117,7 @@
             hm.async = true;
             document.getElementsByTagName("head")[0].appendChild(hm);
         });
-    </script>
+    </script> --}}
 
     {!! $google_tools_webmaster ?? '' !!}
     {!! $google_tools_analytic ?? '' !!}
