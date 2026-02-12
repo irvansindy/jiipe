@@ -51,14 +51,25 @@ class ContactController extends Controller
     public function storeContactOverview(ContactOverviewRequest $request)
     {
         try {
+
+            $data = $request->validated();
+
+            // Decode description semua locale
+            if (isset($data['description']) && is_array($data['description'])) {
+                foreach ($data['description'] as $locale => $value) {
+                    $data['description'][$locale] = base64_decode($value);
+                }
+            }
+
             $imageFile = $request->hasFile('image') ? $request->file('image') : null;
 
             $contact = $this->contactService->saveContactOverview(
-                $request->validated(),
+                $data,
                 $imageFile
             );
 
             return FormatResponseJson::success($contact, 'Contact overview saved successfully');
+
         } catch (Exception $e) {
             return FormatResponseJson::error(null, $e->getMessage(), 500);
         }

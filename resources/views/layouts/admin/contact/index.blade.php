@@ -87,64 +87,72 @@
                                                 </label>
                                                 <input type="text" class="form-control" id="title_{{ $locale }}"
                                                     name="title[{{ $locale }}]" placeholder="Enter title">
-                                                <small class="text-danger" id="error_contact_title_{{ $locale }}"></small>
+                                                <small class="text-danger"
+                                                    id="error_contact_title_{{ $locale }}"></small>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label for="subtitle_{{ $locale }}" class="form-label">
                                                     Subtitle ({{ $properties['native'] }})
                                                 </label>
-                                                <input type="text" class="form-control" id="subtitle_{{ $locale }}"
-                                                    name="subtitle[{{ $locale }}]" placeholder="Enter subtitle">
-                                                <small class="text-danger" id="error_contact_subtitle_{{ $locale }}"></small>
+                                                <input type="text" class="form-control"
+                                                    id="subtitle_{{ $locale }}" name="subtitle[{{ $locale }}]"
+                                                    placeholder="Enter subtitle">
+                                                <small class="text-danger"
+                                                    id="error_contact_subtitle_{{ $locale }}"></small>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label for="description_{{ $locale }}" class="form-label">
                                                     Description ({{ $properties['native'] }})
                                                 </label>
-                                                <textarea class="form-control summernote-contact"
-                                                    id="description_{{ $locale }}" name="description[{{ $locale }}]"
-                                                    rows="4"></textarea>
-                                                <small class="text-danger" id="error_contact_description_{{ $locale }}"></small>
+                                                <textarea class="form-control summernote-contact" id="description_{{ $locale }}"
+                                                    name="description[{{ $locale }}]" rows="4"></textarea>
+                                                <small class="text-danger"
+                                                    id="error_contact_description_{{ $locale }}"></small>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label for="office_name_{{ $locale }}" class="form-label">
                                                     Office Name ({{ $properties['native'] }})
                                                 </label>
-                                                <input type="text" class="form-control" id="office_name_{{ $locale }}"
-                                                    name="office_name[{{ $locale }}]" placeholder="Enter office name">
-                                                <small class="text-danger" id="error_contact_office_name_{{ $locale }}"></small>
+                                                <input type="text" class="form-control"
+                                                    id="office_name_{{ $locale }}"
+                                                    name="office_name[{{ $locale }}]"
+                                                    placeholder="Enter office name">
+                                                <small class="text-danger"
+                                                    id="error_contact_office_name_{{ $locale }}"></small>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label for="phone_{{ $locale }}" class="form-label">
                                                     Phone ({{ $properties['native'] }})
                                                 </label>
-                                                <input type="text" class="form-control" id="phone_{{ $locale }}"
-                                                    name="phone[{{ $locale }}]" placeholder="Enter phone number">
-                                                <small class="text-danger" id="error_contact_phone_{{ $locale }}"></small>
+                                                <input type="text" class="form-control"
+                                                    id="phone_{{ $locale }}" name="phone[{{ $locale }}]"
+                                                    placeholder="Enter phone number">
+                                                <small class="text-danger"
+                                                    id="error_contact_phone_{{ $locale }}"></small>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label for="address_{{ $locale }}" class="form-label">
                                                     Address ({{ $properties['native'] }})
                                                 </label>
-                                                <textarea class="form-control" id="address_{{ $locale }}"
-                                                    name="address[{{ $locale }}]" rows="3"
+                                                <textarea class="form-control" id="address_{{ $locale }}" name="address[{{ $locale }}]" rows="3"
                                                     placeholder="Enter address"></textarea>
-                                                <small class="text-danger" id="error_contact_address_{{ $locale }}"></small>
+                                                <small class="text-danger"
+                                                    id="error_contact_address_{{ $locale }}"></small>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label for="map_link_{{ $locale }}" class="form-label">
                                                     Map Link ({{ $properties['native'] }})
                                                 </label>
-                                                <textarea class="form-control" id="map_link_{{ $locale }}"
-                                                    name="map_link[{{ $locale }}]" rows="3"
-                                                    placeholder="Google Maps iframe embed code"></textarea>
-                                                <small class="text-danger" id="error_contact_map_link_{{ $locale }}"></small>
+                                                <textarea class="form-control" id="map_link_{{ $locale }}" name="map_link[{{ $locale }}]"
+                                                    rows="3" placeholder="Google Maps iframe embed code"></textarea>
+                                                <small class="text-danger"
+                                                    id="error_contact_map_link_{{ $locale }}"></small>
                                             </div>
                                         </div>
                                     @endforeach

@@ -347,12 +347,6 @@ Route::group([
         Route::post('update-article-and-news', [NewsAndArticleController::class, 'updateNews'])->name('update-article-and-news');
         Route::post('update-article-and-news-category', [NewsAndArticleController::class, 'updateCategories'])->name('update-article-and-news-category');
 
-
-        // Route::get('gallery', [GalleryController::class,'index'])->name('gallery');
-        // Route::get('fetch-gallery-id', [GalleryController::class,'fetchById'])->name('fetch-gallery-id');
-        // Route::post('store-gallery', [GalleryController::class,'store'])->name('store-gallery');
-        // Route::post('update-gallery', [GalleryController::class,'update'])->name('update-gallery');
-
         // Gallery routes:
         Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
         Route::get('/gallery/fetch', [GalleryController::class, 'fetchById'])->name('fetch-gallery-id');
@@ -361,13 +355,10 @@ Route::group([
         Route::post('/gallery/delete', [GalleryController::class, 'destroy'])->name('delete-gallery');
         Route::post('/gallery/delete-image', [GalleryController::class, 'deleteDetailImage'])->name('delete-gallery-image');
 
-        Route::get('brochures', [BrochureController::class,'index'])->name('brochures');
-        // Route::get('fetch-brochures', [BrochureController::class,'fetch'])->name('fetch-brochures');
-        // Route::get('fetch-brochures-id', [BrochureController::class,'fetchById'])->name('fetch-brochures-id');
-        // Route::post('store-brochures', [BrochureController::class,'store'])->name('store-brochures');
         /**
          * Brochure Routes
-         */
+        */
+        Route::get('brochures', [BrochureController::class,'index'])->name('brochures');
         Route::prefix('admin/brochure')->middleware(['auth'])->group(function () {
             // Index page
             // Route::get('/', [BrochureController::class, 'index'])->name('brochure-index');
