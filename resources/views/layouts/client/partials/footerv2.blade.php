@@ -125,15 +125,35 @@
                                 Form more insight
                             </p>
                             <ul class="social-link">
-                                <li><a target="_blank" href="https://www.instagram.com/jiipe.official/"><i
-                                            class="fab fa-instagram text-white"></i></a></li>
-                                <li><a target="_blank" href="https://www.linkedin.com/company/jiipe/"><i
-                                            class="fab fa-linkedin text-white"></i></a></li>
-                                <li><a target="_blank" href="https://www.facebook.com/jiipe.gresik/"><i
-                                            class="fab fa-facebook text-white"></i></a></li>
-                                <li><a target="_blank" href="http://www.youtube.com/c/jiipeofficial"><i
-                                            class="fab fa-youtube text-white"></i></a></li>
+                                <li>
+                                    <a target="_blank" rel="noopener noreferrer" aria-label="Instagram JIIPE"
+                                        href="https://www.instagram.com/jiipe.official/">
+                                        <i class="fab fa-instagram text-white"></i>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a target="_blank" rel="noopener noreferrer" aria-label="LinkedIn JIIPE"
+                                        href="https://www.linkedin.com/company/jiipe/">
+                                        <i class="fab fa-linkedin text-white"></i>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a target="_blank" rel="noopener noreferrer" aria-label="Facebook JIIPE"
+                                        href="https://www.facebook.com/jiipe.gresik/">
+                                        <i class="fab fa-facebook text-white"></i>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a target="_blank" rel="noopener noreferrer" aria-label="YouTube JIIPE"
+                                        href="https://www.youtube.com/c/jiipeofficial">
+                                        <i class="fab fa-youtube text-white"></i>
+                                    </a>
+                                </li>
                             </ul>
+
                         </div>
                     </div>
                 </div>
