@@ -205,7 +205,7 @@ Route::group([
         Route::prefix('admin')->middleware(['auth'])->group(function () {
             // Zone routes
             Route::get('/zone', [ZoneController::class, 'index'])->name('zone.index');
-            Route::get('/zone/fetch', [ZoneController::class, 'fetchZone'])->name('fetch-zone');
+            Route::get('/zone/fetch', [ZoneController::class, 'fetchZone'])->name('fetch-zone-data');
             Route::get('/zone/fetch-special', [ZoneController::class, 'fetchSpecialZone'])->name('fetch-special-zone');
             Route::get('/zone/fetch-class', [ZoneController::class, 'fetchZoneClass'])->name('fetch-zone-class');
             Route::post('/zone/store', [ZoneController::class, 'storeZone'])->name('store-zone');

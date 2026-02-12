@@ -3,7 +3,7 @@ $(document).ready(function(){
     var table = $('#table_zone_showcase').DataTable({
         processing: true,
         // serverSide: true,
-        ajax: '{{ route('fetch-zone') }}',
+        ajax: '{{ route('fetch-zone-data') }}',
         columns: [
             {
                 data: 'translations[0].name',

@@ -176,7 +176,7 @@
             processing: true,
             serverSide: false,
             ajax: {
-                url: "{{ route('fetch-zone') }}",
+                url: "{{ route('fetch-zone-data') }}",
                 type: 'GET',
                 dataSrc: function(json) {
                     if (json.meta && json.meta.status === 'success') {
