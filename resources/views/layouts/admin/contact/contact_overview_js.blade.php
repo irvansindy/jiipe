@@ -151,14 +151,18 @@
 
             // Get summernote content for all locales
             @foreach (config('laravellocalization.supportedLocales') as $locale => $properties)
-                let rawContent_{{ $locale }} = $('#description_{{ $locale }}').summernote('code');
 
-                // Encode ke base64 untuk bypass WAF
-                let encodedContent_{{ $locale }} = btoa(unescape(encodeURIComponent(rawContent_{{ $locale }})));
+                // Encode description (sudah kamu lakukan)
+                let rawDesc_{{ $locale }} = $('#description_{{ $locale }}').summernote('code');
+                let encodedDesc_{{ $locale }} = btoa(unescape(encodeURIComponent(rawDesc_{{ $locale }})));
+                formData.set('description[{{ $locale }}]', encodedDesc_{{ $locale }});
 
-                formData.set('description[{{ $locale }}]', encodedContent_{{ $locale }});
+                // 🔥 Encode map_link juga
+                let rawMap_{{ $locale }} = $(`[name="map_link[{{ $locale }}]"]`).val();
+                let encodedMap_{{ $locale }} = btoa(unescape(encodeURIComponent(rawMap_{{ $locale }})));
+                formData.set('map_link[{{ $locale }}]', encodedMap_{{ $locale }});
+
             @endforeach
-
 
             // Clear previous errors
             $('[id^="error_contact_"]').text('');

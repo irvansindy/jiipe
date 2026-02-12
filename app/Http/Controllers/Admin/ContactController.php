@@ -54,14 +54,21 @@ class ContactController extends Controller
 
             $data = $request->validated();
 
-            // Decode description semua locale
-            if (isset($data['description']) && is_array($data['description'])) {
+            // Decode description
+            if (isset($data['description'])) {
                 foreach ($data['description'] as $locale => $value) {
                     $data['description'][$locale] = base64_decode($value);
                 }
             }
 
-            $imageFile = $request->hasFile('image') ? $request->file('image') : null;
+            // 🔥 Decode map_link
+            if (isset($data['map_link'])) {
+                foreach ($data['map_link'] as $locale => $value) {
+                    $data['map_link'][$locale] = base64_decode($value);
+                }
+            }
+
+            $imageFile = $request->file('image');
 
             $contact = $this->contactService->saveContactOverview(
                 $data,
