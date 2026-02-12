@@ -94,7 +94,7 @@
                 </div>
 
                 <!-- Success/Error Messages -->
-                @if(session('success'))
+                @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <strong>Success!</strong> {{ session('success') }}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -103,7 +103,7 @@
                     </div>
                 @endif
 
-                @if(session('error'))
+                @if (session('error'))
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>Error!</strong> {{ session('error') }}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -112,11 +112,11 @@
                     </div>
                 @endif
 
-                @if($errors->any())
+                @if ($errors->any())
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>Validation Errors:</strong>
                         <ul class="mb-0">
-                            @foreach($errors->all() as $error)
+                            @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
@@ -136,70 +136,70 @@
                             <!-- Full Name -->
                             <div class="row form-group">
                                 <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left"
-                                    for="first_name">@lang('system.full name') *</label>
+                                    for="qa_first_name">@lang('system.full name') *</label>
                                 <div class="col-lg-25 col-sm-60">
-                                    <input id="first_name" name="QuickAppointment[first_name]" type="text"
+                                    <input id="qa_first_name" name="QuickAppointment[first_name]" type="text"
                                         placeholder="First Name" required class="form-control">
                                 </div>
                                 <div class="col-lg-25 col-sm-60">
-                                    <input id="last_name" name="QuickAppointment[last_name]" type="text"
+                                    <input id="qa_last_name" name="QuickAppointment[last_name]" type="text"
                                         placeholder="Last Name" required class="form-control">
                                 </div>
                             </div>
 
                             <!-- Phone Number -->
                             <div class="row form-group">
-                                <label for="phone_number"
+                                <label for="qa_phone_number"
                                     class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     @lang('system.phone number') *
                                 </label>
                                 <div class="col-lg-50 col-sm-60">
-                                    <input id="phone_number" name="QuickAppointment[phone_number]"
+                                    <input id="qa_phone_number" name="QuickAppointment[phone_number]"
                                         placeholder="(+62)xxx xxx xxx x" type="text" required class="form-control">
                                 </div>
                             </div>
 
                             <!-- Email -->
                             <div class="row form-group">
-                                <label for="email"
+                                <label for="qa_email"
                                     class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     Email *
                                 </label>
                                 <div class="col-lg-50 col-sm-60">
-                                    <input id="email" name="QuickAppointment[email]"
-                                        placeholder="yourname@mail.com" type="email" required class="form-control">
+                                    <input id="qa_email" name="QuickAppointment[email]" placeholder="yourname@mail.com"
+                                        type="email" required class="form-control">
                                 </div>
                             </div>
 
                             <!-- Company Name -->
                             <div class="row form-group">
-                                <label for="company_name"
+                                <label for="qa_company_name"
                                     class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     @lang('system.company name') *
                                 </label>
                                 <div class="col-lg-50 col-sm-60">
-                                    <input id="company_name" name="QuickAppointment[company_name]"
+                                    <input id="qa_company_name" name="QuickAppointment[company_name]"
                                         placeholder="Your Company Name" type="text" required class="form-control">
                                 </div>
                             </div>
 
                             <!-- Country Origin -->
                             <div class="row form-group">
-                                <label for="country_origin"
-                                    class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
+                                <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     @lang('system.company origin country') *
                                 </label>
                                 <div class="col-lg-50 col-sm-60">
-                                    <label class="custom-control custom-radio d-inline-block mr-4">
-                                        <input id="country_origin_1" name="QuickAppointment[country_origin]"
+                                    <label for="qa_country_origin_1"
+                                        class="custom-control custom-radio d-inline-block mr-4">
+                                        <input id="qa_country_origin_1" name="QuickAppointment[country_origin]"
                                             type="radio" class="custom-control-input" value="Indonesia" required>
                                         <span class="custom-control-indicator"></span>
                                         <span class="custom-control-description">Indonesia</span>
                                     </label>
-                                    <label class="custom-control custom-radio d-inline-block">
-                                        <input id="country_origin_2" name="QuickAppointment[country_origin]"
-                                            type="radio" class="custom-control-input"
-                                            value="Outside of Indonesia" required>
+                                    <label for="qa_country_origin_2" class="custom-control custom-radio d-inline-block">
+                                        <input id="qa_country_origin_2" name="QuickAppointment[country_origin]"
+                                            type="radio" class="custom-control-input" value="Outside of Indonesia"
+                                            required>
                                         <span class="custom-control-indicator"></span>
                                         <span class="custom-control-description">Outside of Indonesia</span>
                                     </label>
@@ -219,20 +219,20 @@
                             <div class="row form-group">
                                 <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left"></label>
                                 <div class="col-lg-50 col-sm-60">
-                                    <label class="custom-control custom-radio d-inline-block mr-4">
-                                        <input name="QuickAppointment[reason]" id="reason_0" type="radio"
+                                    <label for="qa_reason_0" class="custom-control custom-radio d-inline-block mr-4">
+                                        <input name="QuickAppointment[reason]" id="qa_reason_0" type="radio"
                                             class="custom-control-input" value="To Approach Market" required>
                                         <span class="custom-control-indicator"></span>
                                         <span class="custom-control-description">@lang('system.to approach market')</span>
                                     </label>
-                                    <label class="custom-control custom-radio d-inline-block mr-4">
-                                        <input name="QuickAppointment[reason]" id="reason_1" type="radio"
+                                    <label for="qa_reason_1" class="custom-control custom-radio d-inline-block mr-4">
+                                        <input name="QuickAppointment[reason]" id="qa_reason_1" type="radio"
                                             class="custom-control-input" value="Require a seaport" required>
                                         <span class="custom-control-indicator"></span>
                                         <span class="custom-control-description">@lang('system.require a seaport')</span>
                                     </label>
-                                    <label class="custom-control custom-radio d-inline-block">
-                                        <input name="QuickAppointment[reason]" id="reason_2" type="radio"
+                                    <label for="qa_reason_2" class="custom-control custom-radio d-inline-block">
+                                        <input name="QuickAppointment[reason]" id="qa_reason_2" type="radio"
                                             class="custom-control-input" value="Other" required>
                                         <span class="custom-control-indicator"></span>
                                         <span class="custom-control-description">@lang('system.other')</span>
@@ -241,24 +241,24 @@
                             </div>
 
                             <!-- Reason Other -->
-                            <div id="reason_other_row" class="row form-group d-none">
+                            <div id="qa_reason_other_row" class="row form-group d-none">
                                 <div class="col-lg-10 col-sm-60"></div>
                                 <div class="col-lg-10 col-sm-60"></div>
                                 <div class="col-lg-10 col-sm-60">
-                                    <input id="reason_other" name="QuickAppointment[reason_other]"
+                                    <input id="qa_reason_other" name="QuickAppointment[reason_other]"
                                         placeholder="Other" type="text" class="form-control">
                                 </div>
                             </div>
 
                             <!-- Industry -->
                             <div class="row form-group">
-                                <label for="classification"
+                                <label for="qa_classification"
                                     class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     @lang('system.industry') *
                                 </label>
                                 <div class="col-lg-50 col-sm-60">
                                     <select class="custom-select form-control" name="QuickAppointment[classification]"
-                                        id="classification" required>
+                                        id="qa_classification" required>
                                         <option value="" disabled selected hidden>@lang('system.select your industry')</option>
                                         <option value="Chemical">@lang('system.chemical')</option>
                                         <option value="Energy">@lang('system.energy')</option>
@@ -271,34 +271,36 @@
                             </div>
 
                             <!-- Classification Other -->
-                            <div id="classification_other_row" class="row form-group d-none">
+                            <div id="qa_classification_other_row" class="row form-group d-none">
                                 <div class="col-lg-10 col-sm-60"></div>
                                 <div class="col-lg-50 col-sm-60">
-                                    <input id="classification_other" name="QuickAppointment[classification_other]"
+                                    <input id="qa_classification_other" name="QuickAppointment[classification_other]"
                                         placeholder="Other" type="text" class="form-control">
                                 </div>
                             </div>
 
                             <!-- Land Plot & Timeline -->
                             <div class="row form-group">
-                                <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
+                                <label for="qa_land_plot"
+                                    class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     @lang('system.required industrial land plot') *
                                 </label>
                                 <div class="col-lg-15 col-sm-60">
                                     <div class="input-group">
-                                        <input id="land_plot" name="QuickAppointment[land_plot]"
-                                            placeholder="Number Only" type="number" required
-                                            class="form-control">
+                                        <input id="qa_land_plot" name="QuickAppointment[land_plot]"
+                                            placeholder="Number Only" type="number" required class="form-control">
                                         <div class="input-group-append">
                                             <span class="input-group-text">(Ha)</span>
                                         </div>
                                     </div>
                                 </div>
-                                <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
+                                <label for="qa_timeline"
+                                    class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     @lang('system.timeline construction') *
                                 </label>
                                 <div class="col-lg-15 col-sm-60">
-                                    <select class="custom-select form-control" name="QuickAppointment[timeline]" required>
+                                    <select class="custom-select form-control" name="QuickAppointment[timeline]"
+                                        id="qa_timeline" required>
                                         <option value="" disabled selected hidden>@lang('system.select your timeline construction')
                                         </option>
                                         <option value="1 - 2 Years">@lang('system.1 - 2 years')</option>
@@ -318,27 +320,27 @@
 
                             <!-- Power & Industrial Water -->
                             <div class="row form-group">
-                                <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
+                                <label for="qa_power"
+                                    class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     Total Required Power *
                                 </label>
                                 <div class="col-lg-15 col-sm-60">
                                     <div class="input-group">
-                                        <input id="power" name="QuickAppointment[power]"
-                                            placeholder="Number Only" type="number" required
-                                            class="form-control">
+                                        <input id="qa_power" name="QuickAppointment[power]"
+                                            placeholder="Number Only" type="number" required class="form-control">
                                         <div class="input-group-append">
                                             <span class="input-group-text">MW</span>
                                         </div>
                                     </div>
                                 </div>
-                                <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
+                                <label for="qa_industrial_water"
+                                    class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     @lang('system.total industrial water') *
                                 </label>
                                 <div class="col-lg-15 col-sm-60">
                                     <div class="input-group">
-                                        <input id="industrial_water" name="QuickAppointment[industrial_water]"
-                                            placeholder="Number Only" type="number" required
-                                            class="form-control">
+                                        <input id="qa_industrial_water" name="QuickAppointment[industrial_water]"
+                                            placeholder="Number Only" type="number" required class="form-control">
                                         <div class="input-group-append">
                                             <span class="input-group-text">m³/day</span>
                                         </div>
@@ -348,28 +350,28 @@
 
                             <!-- Natural Gas & Throughput -->
                             <div class="row form-group">
-                                <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
+                                <label for="qa_natural_gas"
+                                    class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     @lang('system.total required natural gas') *
                                 </label>
                                 <div class="col-lg-15 col-sm-60">
                                     <div class="input-group">
-                                        <input id="natural_gas" name="QuickAppointment[natural_gas]"
-                                            placeholder="Number Only" type="number" required
-                                            class="form-control">
+                                        <input id="qa_natural_gas" name="QuickAppointment[natural_gas]"
+                                            placeholder="Number Only" type="number" required class="form-control">
                                         <div class="input-group-append">
                                             <span class="input-group-text">MMBTU/annum</span>
                                         </div>
                                     </div>
                                 </div>
-                                <label class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
+                                <label for="qa_throughput_via_seaport"
+                                    class="col-lg-10 col-sm-60 col-form-label text-lg-right text-sm-left">
                                     @lang('system.est. vol. throughput via seaport') *
                                 </label>
                                 <div class="col-lg-15 col-sm-60">
                                     <div class="input-group">
-                                        <input id="throughput_via_seaport"
-                                            name="QuickAppointment[throughput_via_seaport]"
-                                            placeholder="Number Only" type="number" required
-                                            class="form-control">
+                                        <input id="qa_throughput_via_seaport"
+                                            name="QuickAppointment[throughput_via_seaport]" placeholder="Number Only"
+                                            type="number" required class="form-control">
                                         <div class="input-group-append">
                                             <span class="input-group-text">Tons/Year</span>
                                         </div>
@@ -472,8 +474,8 @@
              * 1. Handle "Other" for Reason (Radio Button)
              * -------------------------------------------*/
             var reasonRadios = document.querySelectorAll('input[name="QuickAppointment[reason]"]');
-            var reasonOtherRow = document.getElementById('reason_other_row');
-            var reasonOtherInput = document.getElementById('reason_other');
+            var reasonOtherRow = document.getElementById('qa_reason_other_row');
+            var reasonOtherInput = document.getElementById('qa_reason_other');
 
             function toggleReasonOther() {
                 var checked = document.querySelector('input[name="QuickAppointment[reason]"]:checked');
@@ -500,9 +502,9 @@
             /* ---------------------------------------------
              * 2. Handle "Other" for Classification (Select)
              * -------------------------------------------*/
-            var classificationSelect = document.getElementById('classification');
-            var classificationOtherRow = document.getElementById('classification_other_row');
-            var classificationOtherInput = document.getElementById('classification_other');
+            var classificationSelect = document.getElementById('qa_classification');
+            var classificationOtherRow = document.getElementById('qa_classification_other_row');
+            var classificationOtherInput = document.getElementById('qa_classification_other');
 
             function toggleClassificationOther() {
                 if (classificationSelect.value == 'Other') {
