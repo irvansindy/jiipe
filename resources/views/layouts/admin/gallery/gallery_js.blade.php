@@ -221,7 +221,7 @@
                             $('#gallery_main_image').after(`
                                 <div id="currentMainImage" class="mt-2">
                                     <p class="small text-muted">Current Image:</p>
-                                    <img src="${imageUrl}" class="img-thumbnail" style="max-height: 150px;">
+                                    <img src="${imageUrl}" class="img-thumbnail" style="max-height: 150px;" loading="lazy" decoding="async">
                                 </div>
                             `);
                             $('#gallery_main_image').removeAttr('required');
@@ -235,7 +235,7 @@
                                 imagesHtml += `
                                     <div class="col-4" id="img-${img.id}">
                                         <div class="position-relative">
-                                            <img src="${imgUrl}" class="img-thumbnail" style="height: 100px; width: 100%; object-fit: cover;">
+                                            <img src="${imgUrl}" class="img-thumbnail" style="height: 100px; width: 100%; object-fit: cover;" loading="lazy" decoding="async">
                                             <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 delete-detail-image" data-image-id="${img.id}">
                                                 <i class="ti ti-x"></i>
                                             </button>

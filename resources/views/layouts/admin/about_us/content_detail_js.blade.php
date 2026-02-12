@@ -43,7 +43,7 @@
                     render: function(data, type, row) {
                         if (!data) return '-';
                         const iconUrl = `{{ asset('uploads/about-us/content_detail/') }}/${data}`;
-                        return `<img src="${iconUrl}" alt="Icon" style="max-height: 40px;" class="img-thumbnail">`;
+                        return `<img src="${iconUrl}" alt="Icon" style="max-height: 40px;" class="img-thumbnail" loading="lazy" decoding="async">`;
                     }
                 },
                 {

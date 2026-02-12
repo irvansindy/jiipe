@@ -89,7 +89,7 @@
 
                         {{-- Preview current image --}}
                         <div id="current_image_preview" class="mt-2" style="display: none;">
-                            <img id="current_image" src="" alt="Current Icon" class="img-thumbnail" style="max-width: 150px;">
+                            <img id="current_image" src="" alt="Current Icon" class="img-thumbnail" style="max-width: 150px;" loading="lazy" decoding="async">
                         </div>
                     </div>
 

@@ -326,7 +326,7 @@
 
                             $('#current_zone_image').html(
                                 '<img src="' + imageUrl +
-                                '" class="img-thumbnail" style="max-width:100%;max-height:200px;">' +
+                                '" class="img-thumbnail" style="max-width:100%;max-height:200px;" loading="lazy" decoding="async">' +
                                 '<p class="text-muted small mt-1">Current image (upload new to replace)</p>'
                             );
                         }

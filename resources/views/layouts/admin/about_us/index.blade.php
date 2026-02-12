@@ -79,7 +79,7 @@
                                     @if ($aboutUsHeader && $aboutUsHeader->image)
                                         <div class="mb-2">
                                             <img src="{{ asset('uploads/about-us/header/' . $aboutUsHeader->image) }}" alt="Current Cover"
-                                                class="img-thumbnail" style="max-height: 150px;">
+                                                class="img-thumbnail" style="max-height: 150px;" loading="lazy" decoding="async">
                                             <p class="small text-muted mt-1">Current image (upload new to replace)</p>
                                         </div>
                                     @endif
@@ -187,7 +187,7 @@
                                                 <div class="mb-2">
                                                     <img src="{{ asset('uploads/about-us/content/' . $aboutUsContent->image) }}"
                                                         alt="Current Content" class="img-thumbnail"
-                                                        style="max-height: 150px;">
+                                                        style="max-height: 150px;" loading="lazy" decoding="async">
                                                     <p class="small text-muted mt-1">Current image (upload new to replace)
                                                     </p>
                                                 </div>

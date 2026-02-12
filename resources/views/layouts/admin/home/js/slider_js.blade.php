@@ -243,7 +243,7 @@
                             } else if (fullUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
                                 $('#current_image').html(
                                     '<img src="' + fullUrl +
-                                    '" class="img-thumbnail" style="max-width:100%;max-height:200px;">' +
+                                    '" class="img-thumbnail" style="max-width:100%;max-height:200px;" loading="lazy" decoding="async">' +
                                     '<p class="text-muted small mt-1">Current image (upload new to replace)</p>'
                                 );
                             }

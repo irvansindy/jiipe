@@ -35,7 +35,7 @@ $(document).ready(function() {
             const reader = new FileReader();
             reader.onload = function(e) {
                 previewElement.html(`
-                    <img src="${e.target.result}" class="img-thumbnail" style="max-width:200px;max-height:200px;">
+                    <img src="${e.target.result}" class="img-thumbnail" style="max-width:200px;max-height:200px;" loading="lazy" decoding="async">
                     <p class="text-muted small mt-1">New ${previewElementId.includes('image') ? 'image' : 'icon'} selected</p>
                 `);
             };
@@ -110,7 +110,7 @@ $(document).ready(function() {
                     render: function(data) {
                         if (data) {
                             let imageUrl = data.startsWith('http') ? data : '{{ url('/uploads/zones/feature') }}/' + data;
-                            return `<img src="${imageUrl}" class="img-thumbnail" style="max-width:60px;max-height:60px;">`;
+                            return `<img src="${imageUrl}" class="img-thumbnail" style="max-width:60px;max-height:60px;" loading="lazy" decoding="async">`;
                         }
                         return '<span class="text-muted">No image</span>';
                     }
@@ -120,7 +120,7 @@ $(document).ready(function() {
                     render: function(data) {
                         if (data) {
                             let iconUrl = data.startsWith('http') ? data : '{{ url('/uploads/zones/feature') }}/' + data;
-                            return `<img src="${iconUrl}" class="img-thumbnail" style="max-width:40px;max-height:40px;">`;
+                            return `<img src="${iconUrl}" class="img-thumbnail" style="max-width:40px;max-height:40px;" loading="lazy" decoding="async">`;
                         }
                         return '<span class="text-muted">No icon</span>';
                     }
@@ -239,7 +239,7 @@ $(document).ready(function() {
                         if (data.image) {
                             let imageUrl = data.image.startsWith('http') ? data.image : '{{ url('/uploads/zones/feature') }}/' + data.image;
                             $('#preview_advantage_image').html(`
-                                <img src="${imageUrl}" class="img-thumbnail" style="max-width:200px;max-height:200px;">
+                                <img src="${imageUrl}" class="img-thumbnail" style="max-width:200px;max-height:200px;" loading="lazy" decoding="async">
                                 <p class="text-muted small mt-1">Current image (upload new to replace)</p>
                             `);
                         }
@@ -247,7 +247,7 @@ $(document).ready(function() {
                         if (data.icon) {
                             let iconUrl = data.icon.startsWith('http') ? data.icon : '{{ url('/uploads/zones/feature') }}/' + data.icon;
                             $('#preview_advantage_icon').html(`
-                                <img src="${iconUrl}" class="img-thumbnail" style="max-width:150px;max-height:150px;">
+                                <img src="${iconUrl}" class="img-thumbnail" style="max-width:150px;max-height:150px;" loading="lazy" decoding="async">
                                 <p class="text-muted small mt-1">Current icon (upload new to replace)</p>
                             `);
                         }

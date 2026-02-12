@@ -44,7 +44,7 @@ $(document).ready(function() {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     previewElement.html(`
-                        <img src="${e.target.result}" class="img-thumbnail" style="max-width:300px;max-height:300px;">
+                        <img src="${e.target.result}" class="img-thumbnail" style="max-width:300px;max-height:300px;" loading="lazy" decoding="async">
                         <p class="text-muted small mt-1">New image selected</p>
                     `);
                 };
@@ -90,7 +90,7 @@ $(document).ready(function() {
                         if (data.image) {
                             let imageUrl = '{{ url('/uploads') }}/' + data.image;
                             $('#preview_contact_image').html(`
-                                <img src="${imageUrl}" class="img-thumbnail" style="max-width:300px;max-height:300px;">
+                                <img src="${imageUrl}" class="img-thumbnail" style="max-width:300px;max-height:300px;" loading="lazy" decoding="async">
                                 <p class="text-muted small mt-1">Current image (upload new to replace)</p>
                             `);
                         }

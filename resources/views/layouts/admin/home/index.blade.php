@@ -195,7 +195,7 @@
                                         @if ($video && $video->thumbnail)
                                             <div class="mb-2">
                                                 <img src="{{ asset($video->thumbnail) }}" alt="Current thumbnail"
-                                                    class="img-thumbnail" style="max-height: 150px;">
+                                                    class="img-thumbnail" style="max-height: 150px;" loading="lazy" decoding="async">
                                                 <p class="small text-muted mt-1">Current image (upload new to replace)</p>
                                             </div>
                                         @endif
@@ -440,7 +440,7 @@
                             // Create new image display
                             var imageHtml = '<div class="mb-2">' +
                                 '<img src="' + res.data.image_url +
-                                '" alt="Current Cover" class="img-thumbnail" style="max-height: 150px;">' +
+                                '" alt="Current Cover" class="img-thumbnail" style="max-height: 150px;" loading="lazy" decoding="async">' +
                                 '<p class="small text-muted mt-1">Current image (upload new to replace)</p>' +
                                 '</div>';
                             $form.find('label[for="cover_image"]').after(imageHtml);

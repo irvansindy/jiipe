@@ -38,7 +38,7 @@
                         </div>
                         <small class="text-danger" id="error-photo"></small>
                         <div id="photo-preview" class="mt-2" style="display: none;">
-                            <img src="" alt="Preview" class="img-thumbnail" style="max-width: 150px;">
+                            <img src="" alt="Preview" class="img-thumbnail" style="max-width: 150px;" loading="lazy" decoding="async">
                         </div>
                     </div>
 
