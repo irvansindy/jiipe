@@ -66,7 +66,7 @@
         // Load Zone Classes for dropdown
         function loadZoneClasses() {
             $.ajax({
-                url: "{{ route('fetch-zone-class') }}",
+                url: "{{ route('fetch-zone-class-data') }}",
                 method: 'GET',
                 success: function(res) {
                     if (res.meta && res.meta.status === 'success') {
@@ -371,7 +371,7 @@
             var zoneId = $('#zone_id').val();
             var url = zoneId ?
                 "{{ url('admin/zone') }}/" + zoneId + "/update" :
-                "{{ route('store-zone') }}";
+                "{{ route('store-zone-data') }}";
 
             // Clear previous errors
             $('[id^="message_"]').text('');

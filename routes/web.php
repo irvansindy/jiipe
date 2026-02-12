@@ -207,8 +207,8 @@ Route::group([
             Route::get('/zone', [ZoneController::class, 'index'])->name('zone.index');
             Route::get('/zone/fetch', [ZoneController::class, 'fetchZone'])->name('fetch-zone-data');
             Route::get('/zone/fetch-special', [ZoneController::class, 'fetchSpecialZone'])->name('fetch-special-zone-data');
-            Route::get('/zone/fetch-class', [ZoneController::class, 'fetchZoneClass'])->name('fetch-zone-class');
-            Route::post('/zone/store', [ZoneController::class, 'storeZone'])->name('store-zone');
+            Route::get('/zone/fetch-class', [ZoneController::class, 'fetchZoneClass'])->name('fetch-zone-class-data');
+            Route::post('/zone/store', [ZoneController::class, 'storeZone'])->name('store-zone-data');
             Route::get('/zone/{id}/detail', [ZoneController::class, 'getZoneDetail']);
             Route::post('/zone/{id}/update', [ZoneController::class, 'updateZone']);
             Route::delete('/zone/{id}/delete', [ZoneController::class, 'deleteZone']);
