@@ -133,17 +133,9 @@
     @include('layouts.client.partials.header')
     @yield('content')
     @include('layouts.client.partials.footerv2')
-
-    <!-- ⚡ JavaScript - BALANCED APPROACH -->
-    <!-- Critical scripts untuk slider - Load SYNC -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js" crossorigin="anonymous"></script>
-
-    <!-- Plugin scripts - Load dengan defer (tidak mengganggu slider) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" defer crossorigin="anonymous"></script>
-    <script src="{{ asset('asset/js/slick/slick.min.js') }}" defer></script>
-    <script src="{{ asset('asset/js/cdn/swiper.js') }}" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- ⚡ VITE JS BUNDLE -->
+    @vite('resources/js/app.js')
 
     @stack('js')
 </body>

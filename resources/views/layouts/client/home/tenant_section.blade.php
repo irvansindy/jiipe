@@ -20,18 +20,14 @@
                     @forelse($tenants as $index => $tenant)
                         <div class="swiper-slide">
                             {{-- ⚡ HANYA TAMBAH LAZY LOADING - TAMPILAN TETAP SAMA --}}
-                            @if($index < 6)
+                            @if ($index < 6)
                                 {{-- First 6 logos load immediately --}}
-                                <img class="img-thumbnail"
-                                     src="{{ asset('uploads/tenant-logo/' . $tenant['logo']) }}"
-                                     alt="{{ $tenant['name'] }}"
-                                     loading="{{ $index < 3 ? 'eager' : 'lazy' }}">
+                                <img class="img-thumbnail" src="{{ asset('uploads/tenant-logo/' . $tenant['logo']) }}"
+                                    alt="{{ $tenant['name'] }}" loading="{{ $index < 3 ? 'eager' : 'lazy' }}">
                             @else
                                 {{-- Rest lazy load --}}
-                                <img class="img-thumbnail"
-                                     src="{{ asset('uploads/tenant-logo/' . $tenant['logo']) }}"
-                                     alt="{{ $tenant['name'] }}"
-                                     loading="lazy">
+                                <img class="img-thumbnail" src="{{ asset('uploads/tenant-logo/' . $tenant['logo']) }}"
+                                    alt="{{ $tenant['name'] }}" loading="lazy">
                             @endif
                         </div>
                     @empty
@@ -95,14 +91,14 @@
 
     #tenants .swiper-slide img:hover {
         transform: scale(1.05);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     /* Navigation Buttons (if enabled) */
     #tenants .swiper-button-next,
     #tenants .swiper-button-prev {
         color: #e31e24;
-        background: rgba(255,255,255,0.9);
+        background: rgba(255, 255, 255, 0.9);
         width: 40px;
         height: 40px;
         border-radius: 50%;
@@ -135,19 +131,12 @@
                 spaceBetween: 20,
                 loop: true,
                 centeredSlides: false,
+                speed: 800,
+                watchSlidesProgress: true,
                 autoplay: {
                     delay: 2500,
                     disableOnInteraction: false,
                 },
-                // Uncomment if you want navigation
-                // navigation: {
-                //     nextEl: ".swiper-button-next",
-                //     prevEl: ".swiper-button-prev",
-                // },
-                // pagination: {
-                //     el: ".swiper-pagination",
-                //     clickable: true,
-                // },
                 breakpoints: {
                     320: {
                         slidesPerView: 2,
@@ -167,11 +156,6 @@
                     }
                 }
             });
-
-            // Force update after initialization
-            setTimeout(function() {
-                swiper.update();
-            }, 500);
         }
 
         initTenantSwiper();
