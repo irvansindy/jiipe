@@ -1,5 +1,5 @@
 {{-- filepath: resources/views/layouts/client/home/tenant_section.blade.php --}}
-{{-- Tenants Section - TAMPILAN TETAP SEPERTI ASLI, HANYA TAMBAH LAZY LOADING --}}
+{{-- Tenants Section - FIXED VERSION (No syntax error) --}}
 <section class="video-jiipe" id="tenants">
     <div class="prelative container my-5">
         <div class="row">
@@ -11,23 +11,59 @@
 
     <div class="prelative container">
         <div class="patner-slider">
-            @php
-                $tenants = app(\App\Http\Controllers\Client\HomeController::class)->getTenants();
-            @endphp
             <!-- Swiper -->
             <div class="swiper mySwiper">
                 <div class="swiper-wrapper">
                     @forelse($tenants as $index => $tenant)
                         <div class="swiper-slide">
-                            {{-- ⚡ HANYA TAMBAH LAZY LOADING - TAMPILAN TETAP SAMA --}}
-                            @if ($index < 6)
-                                {{-- First 6 logos load immediately --}}
-                                <img class="img-thumbnail" src="{{ asset('uploads/tenant-logo/' . $tenant['logo']) }}"
-                                    alt="{{ $tenant['name'] }}" loading="{{ $index < 3 ? 'eager' : 'lazy' }}">
+                            @php
+                                // ⚡ NO USE STATEMENT - Langsung pakai full namespace
+                                $logoPath = 'uploads/tenant-logo/' . $tenant['logo'];
+                                $optimizedLogo = \App\Helpers\ImageOptimizer::optimizeTenantLogo($logoPath, 'thumbnail');
+
+                                // Check if WebP version exists
+                                $isWebP = pathinfo($optimizedLogo, PATHINFO_EXTENSION) === 'webp';
+
+                                // Loading strategy: eager untuk 3 pertama, lazy sisanya
+                                $loading = $index < 3 ? 'eager' : 'lazy';
+                                $fetchpriority = $index < 3 ? 'high' : 'auto';
+                            @endphp
+
+                            @if($isWebP)
+                                {{-- Jika sudah WebP, langsung pakai --}}
+                                <img
+                                    class="img-thumbnail"
+                                    src="{{ asset($optimizedLogo) }}"
+                                    alt="{{ $tenant['name'] }}"
+                                    loading="{{ $loading }}"
+                                    fetchpriority="{{ $fetchpriority }}"
+                                    width="200"
+                                    height="150"
+                                >
                             @else
-                                {{-- Rest lazy load --}}
-                                <img class="img-thumbnail" src="{{ asset('uploads/tenant-logo/' . $tenant['logo']) }}"
-                                    alt="{{ $tenant['name'] }}" loading="lazy">
+                                {{-- WebP dengan fallback untuk browser lama --}}
+                                <picture>
+                                    @php
+                                        // Try to get WebP version
+                                        $webpPath = \App\Helpers\ImageOptimizer::generateWebP($logoPath);
+                                    @endphp
+
+                                    @if($webpPath)
+                                        <source srcset="{{ asset($webpPath) }}" type="image/webp">
+                                    @endif
+
+                                    <source srcset="{{ asset($optimizedLogo) }}" type="image/{{ pathinfo($optimizedLogo, PATHINFO_EXTENSION) === 'png' ? 'png' : 'jpeg' }}">
+
+                                    <img
+                                        class="img-thumbnail"
+                                        src="{{ asset($optimizedLogo) }}"
+                                        alt="{{ $tenant['name'] }}"
+                                        loading="{{ $loading }}"
+                                        fetchpriority="{{ $fetchpriority }}"
+                                        width="200"
+                                        height="150"
+                                    >
+                                </picture>
                             @endif
                         </div>
                     @empty
@@ -50,7 +86,7 @@
 <style>
     /* Tenant Section Fixes */
     #tenants {
-        padding: 40px 0;
+        padding: 30px 0;
         background: #f8f9fa;
     }
 
@@ -77,21 +113,40 @@
         min-height: 120px;
     }
 
-    #tenants .swiper-slide img {
+    #tenants .swiper-slide img,
+    #tenants .swiper-slide picture {
         width: auto;
         max-width: 100%;
+    }
+
+    #tenants .swiper-slide img {
         height: 80px;
         object-fit: contain;
         transition: all 0.3s ease;
-        border: 1px solid #e0e0e0;
+        /* border: 1px solid #e0e0e0; */
         border-radius: 8px;
         padding: 10px;
         background: #fff;
+
+        /* ⚡ Prevent layout shift */
+        aspect-ratio: 4/3;
     }
 
     #tenants .swiper-slide img:hover {
         transform: scale(1.05);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ⚡ Lazy loading placeholder */
+    #tenants .swiper-slide img[loading="lazy"] {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
     }
 
     /* Navigation Buttons (if enabled) */
@@ -133,6 +188,17 @@
                 centeredSlides: false,
                 speed: 800,
                 watchSlidesProgress: true,
+
+                // ⚡ Lazy loading configuration
+                lazy: {
+                    loadPrevNext: true,
+                    loadPrevNextAmount: 2,
+                },
+
+                // ⚡ Preload images only when needed
+                preloadImages: false,
+                watchSlidesVisibility: true,
+
                 autoplay: {
                     delay: 2500,
                     disableOnInteraction: false,

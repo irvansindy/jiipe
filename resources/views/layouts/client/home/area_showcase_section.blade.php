@@ -91,7 +91,6 @@
         <video class="embed-responsive-item"
                id="jiipeVideo"
                loop
-               muted
                playsinline
                preload="auto"
                poster="{{ asset('asset/images/video-placeholder.jpg') }}">
