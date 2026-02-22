@@ -33,6 +33,41 @@
             $('[id^="message_"]').text('');
             $('#script').val('Latn'); // Reset to Latin
             $('#locale').prop('readonly', false); // Enable locale input
+            $('#flag_preview_container').hide();
+            $('#flag_preview_img').attr('src', '');
+        }
+
+        function validateFlagFile(file) {
+            if (!file) {
+                return true; // Flag is optional
+            }
+
+            const maxSize = 2 * 1024 * 1024; // 2MB
+            const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+
+            if (file.size > maxSize) {
+                return 'Flag file size must be less than 2MB';
+            }
+
+            if (!allowedMimes.includes(file.type)) {
+                return 'Only image files are allowed (JPG, PNG, GIF, WebP, SVG)';
+            }
+
+            return true;
+        }
+
+        function displayFlagPreview(file) {
+            if (!file) {
+                $('#flag_preview_container').hide();
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#flag_preview_img').attr('src', e.target.result);
+                $('#flag_preview_container').show();
+            };
+            reader.readAsDataURL(file);
         }
 
         // ============================================
@@ -60,8 +95,7 @@
                     });
                 }
             },
-            columns: [
-                {
+            columns: [{
                     data: 'locale',
                     title: 'Locale',
                     render: function(data) {
@@ -83,7 +117,8 @@
                     data: 'regional',
                     title: 'Regional',
                     render: function(data) {
-                        return data ? '<code class="bg-light px-2 py-1 rounded">' + data + '</code>' : '<span class="text-muted">-</span>';
+                        return data ? '<code class="bg-light px-2 py-1 rounded">' + data +
+                            '</code>' : '<span class="text-muted">-</span>';
                     }
                 },
                 {
@@ -91,6 +126,17 @@
                     title: 'Script',
                     render: function(data) {
                         return '<span class="badge bg-secondary">' + data + '</span>';
+                    }
+                },
+                {
+                    data: 'flag',
+                    title: 'Flag',
+                    render: function(data) {
+                        if (data) {
+                            let baseUrl = @json(asset('storage/flags'));
+                            return '<img src="' + baseUrl + '/' + data + '" alt="Flag" style="width: 32px; height: 32px; border: 1px solid #ddd; border-radius: 4px;">';
+                        }
+                        return '<span class="text-muted">-</span>';
                     }
                 },
                 {
@@ -109,7 +155,8 @@
                         var isDefault = item.locale === 'id';
                         var deleteBtn = isDefault ?
                             '<button type="button" class="btn btn-outline-secondary btn-sm" disabled title="Cannot delete default language"><i class="ti ti-lock"></i></button>' :
-                            '<button type="button" data-id="' + item.id + '" class="btn btn-outline-danger btn-sm btn-delete-language" title="Delete"><i class="ti ti-trash"></i></button>';
+                            '<button type="button" data-id="' + item.id +
+                            '" class="btn btn-outline-danger btn-sm btn-delete-language" title="Delete"><i class="ti ti-trash"></i></button>';
 
                         return `
                             <div class="btn-group" role="group">
@@ -125,7 +172,9 @@
                     }
                 }
             ],
-            order: [[0, 'asc']], // Order by locale ascending
+            order: [
+                [0, 'asc']
+            ], // Order by locale ascending
             language: {
                 processing: "Loading...",
                 emptyTable: "No languages found"
@@ -174,7 +223,8 @@
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Synced!',
-                                    text: res.meta.message || 'Languages synced successfully',
+                                    text: res.meta.message ||
+                                        'Languages synced successfully',
                                     timer: 2000,
                                     showConfirmButton: false
                                 });
@@ -186,7 +236,8 @@
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error!',
-                                text: xhr.responseJSON?.meta?.message || 'Failed to sync languages'
+                                text: xhr.responseJSON?.meta?.message ||
+                                    'Failed to sync languages'
                             });
                         }
                     });
@@ -215,7 +266,9 @@
             $.ajax({
                 url: "{{ route('fetch-language-id') }}",
                 type: 'GET',
-                data: { id: id },
+                data: {
+                    id: id
+                },
                 success: function(res) {
                     hideLoading();
 
@@ -227,6 +280,15 @@
                         $('#native').val(language.native);
                         $('#regional').val(language.regional || '');
                         $('#script').val(language.script || 'Latn');
+
+                        // Show existing flag preview if available
+                        if (language.flag) {
+                            let baseUrl = @json(asset('storage/flags'));
+                            $('#flag_preview_img').attr('src', baseUrl + '/' + language.flag);
+                            $('#flag_preview_container').show();
+                        } else {
+                            $('#flag_preview_container').hide();
+                        }
 
                         // Disable locale edit for default language
                         if (language.locale === 'id') {
@@ -251,7 +313,8 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: xhr.responseJSON?.meta?.message || 'Failed to load language data'
+                        text: xhr.responseJSON?.meta?.message ||
+                            'Failed to load language data'
                     });
                 }
             });
@@ -264,17 +327,34 @@
             var form = this;
             var id = $('#language_id').val();
             var url = id ? '{{ route('update-language') }}' : '{{ route('store-language') }}';
-            var formData = $(form).serialize();
 
             // Clear previous errors
             $('[id^="message_"]').text('');
 
+            // Validate flag file
+            var flagFile = document.getElementById('flag').files[0];
+            var flagValidation = validateFlagFile(flagFile);
+            if (flagValidation !== true) {
+                $('#message_flag').text(flagValidation);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error!',
+                    text: flagValidation
+                });
+                return;
+            }
+
             showLoading();
+
+            // Use FormData to handle file uploads
+            var formData = new FormData(form);
 
             $.ajax({
                 url: url,
                 type: 'POST',
                 data: formData,
+                processData: false, // Don't process data
+                contentType: false, // Don't set content type
                 dataType: 'json',
                 success: function(res) {
                     hideLoading();
@@ -299,7 +379,8 @@
 
                     if (xhr.status === 422 && errors) {
                         $.each(errors, function(key, messages) {
-                            var message = messages && messages.length ? messages[0] : 'Invalid input';
+                            var message = messages && messages.length ? messages[
+                                0] : 'Invalid input';
                             var selector = '#message_' + key;
 
                             if ($(selector).length) {
@@ -316,7 +397,8 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'Error!',
-                            text: xhr.responseJSON?.meta?.message || 'Server error occurred'
+                            text: xhr.responseJSON?.meta?.message ||
+                                'Server error occurred'
                         });
                     }
                 }
@@ -342,7 +424,9 @@
                     $.ajax({
                         url: '{{ route('delete-language', ':id') }}'.replace(':id', id),
                         type: 'POST',
-                        data: { _method: 'DELETE' },
+                        data: {
+                            _method: 'DELETE'
+                        },
                         dataType: 'json',
                         success: function(res) {
                             hideLoading();
@@ -365,12 +449,28 @@
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error!',
-                                text: xhr.responseJSON?.meta?.message || 'Failed to delete language'
+                                text: xhr.responseJSON?.meta?.message ||
+                                    'Failed to delete language'
                             });
                         }
                     });
                 }
             });
+        });
+
+        // Handle flag file input change
+        $('#flag').on('change', function() {
+            var file = this.files[0];
+            displayFlagPreview(file);
+        });
+
+        // Handle remove flag button
+        $('#btn_remove_flag').on('click', function(e) {
+            e.preventDefault();
+            $('#flag').val(''); // Clear file input
+            $('#flag_preview_container').hide();
+            $('#flag_preview_img').attr('src', '');
+            $('<input type="hidden" name="remove_flag" value="1">').appendTo('#language_form');
         });
     });
 </script>

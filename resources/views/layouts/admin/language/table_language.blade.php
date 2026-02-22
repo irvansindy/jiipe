@@ -8,6 +8,7 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -15,6 +16,7 @@
         </tbody>
         <tfoot class="thead-dark">
             <tr>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>

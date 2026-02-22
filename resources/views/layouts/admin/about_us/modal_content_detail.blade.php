@@ -13,7 +13,9 @@
                     <input type="hidden" id="content_id" name="id">
 
                     @php
-                        $locales = config('laravellocalization.supportedLocales');
+                        $supportedLocales = array_keys(config('laravellocalization.supportedLocales'));
+
+                        $locales = \App\Models\Language::whereIn('locale', $supportedLocales)->get()->keyBy('locale');
                     @endphp
 
                     {{-- Tabs for Locales --}}
@@ -22,12 +24,9 @@
                             @foreach ($locales as $locale => $properties)
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link {{ $loop->first ? 'active' : '' }}"
-                                        id="content-detail-{{ $locale }}-tab"
-                                        data-bs-toggle="tab"
-                                        data-bs-target="#content-detail-{{ $locale }}"
-                                        type="button"
-                                        role="tab"
-                                        aria-controls="content-detail-{{ $locale }}"
+                                        id="content-detail-{{ $locale }}-tab" data-bs-toggle="tab"
+                                        data-bs-target="#content-detail-{{ $locale }}" type="button"
+                                        role="tab" aria-controls="content-detail-{{ $locale }}"
                                         aria-selected="{{ $loop->first ? 'true' : 'false' }}">
                                         {{ $properties['native'] }}
                                     </button>
@@ -39,8 +38,7 @@
                         <div class="tab-content">
                             @foreach ($locales as $locale => $properties)
                                 <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
-                                    id="content-detail-{{ $locale }}"
-                                    role="tabpanel"
+                                    id="content-detail-{{ $locale }}" role="tabpanel"
                                     aria-labelledby="content-detail-{{ $locale }}-tab">
 
                                     {{-- Title --}}
@@ -49,12 +47,12 @@
                                             Title ({{ $properties['native'] }})
                                             <span class="text-danger">*</span>
                                         </label>
-                                        <input type="text"
-                                            class="form-control"
+                                        <input type="text" class="form-control"
                                             id="content_detail_title_{{ $locale }}"
                                             name="content_detail_title[{{ $locale }}]"
                                             placeholder="Enter title in {{ $properties['native'] }}">
-                                        <div class="text-danger small" id="message_content_detail_title_{{ $locale }}"></div>
+                                        <div class="text-danger small"
+                                            id="message_content_detail_title_{{ $locale }}"></div>
                                     </div>
 
                                     {{-- Description --}}
@@ -62,10 +60,10 @@
                                         <label for="content_detail_sub_content_{{ $locale }}" class="form-label">
                                             Description ({{ $properties['native'] }})
                                         </label>
-                                        <textarea class="form-control summernote"
-                                            name="content_detail_sub_content[{{ $locale }}]"
+                                        <textarea class="form-control summernote" name="content_detail_sub_content[{{ $locale }}]"
                                             id="content_detail_sub_content_{{ $locale }}"></textarea>
-                                        <div class="text-danger small" id="message_content_detail_sub_content_{{ $locale }}"></div>
+                                        <div class="text-danger small"
+                                            id="message_content_detail_sub_content_{{ $locale }}"></div>
                                     </div>
                                 </div>
                             @endforeach
@@ -77,10 +75,7 @@
                         <label for="content_detail_image" class="form-label">
                             Icon/Image
                         </label>
-                        <input type="file"
-                            class="form-control"
-                            id="content_detail_image"
-                            name="content_detail_image"
+                        <input type="file" class="form-control" id="content_detail_image" name="content_detail_image"
                             accept="image/*">
                         <small class="text-muted">
                             Recommended format: WebP, PNG, JPG. Max size: 2MB
@@ -89,17 +84,15 @@
 
                         {{-- Preview current image --}}
                         <div id="current_image_preview" class="mt-2" style="display: none;">
-                            <img id="current_image" src="" alt="Current Icon" class="img-thumbnail" style="max-width: 150px;" loading="lazy" decoding="async">
+                            <img id="current_image" src="" alt="Current Icon" class="img-thumbnail"
+                                style="max-width: 150px;" loading="lazy" decoding="async">
                         </div>
                     </div>
 
                     {{-- Category (Optional) --}}
                     <div class="mb-3">
                         <label for="category_id" class="form-label">Category (Optional)</label>
-                        <input type="number"
-                            class="form-control"
-                            id="category_id"
-                            name="category_id"
+                        <input type="number" class="form-control" id="category_id" name="category_id"
                             placeholder="Enter category ID (leave empty for none)">
                         <div class="text-danger small" id="message_category_id"></div>
                     </div>

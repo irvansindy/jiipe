@@ -7,7 +7,7 @@ return [
     // Regional languages are sorted by their base language, so "British English" sorts as "English, British"
     'supportedLocales' => [
         'en' => ['name' => 'English', 'script' => 'Latn', 'native' => 'English', 'regional' => 'en_GB'],
-        'id' => ['name' => 'Indonesian', 'script' => 'Latn', 'native' => 'Indonesia', 'regional' => 'id_ID'],
+        'id' => ['name' => 'Indonesian', 'script' => 'Latn', 'native' => 'Bahasa Indonesia', 'regional' => 'id_ID'],
         'ja' => ['name' => 'Japanese', 'script' => 'Jpan', 'native' => '日本語', 'regional' => 'ja_JP'],
         'ko' => ['name' => 'Korean', 'script' => 'Hang', 'native' => '한국어', 'regional' => 'ko_KR'],
         'tw' => ['name' => 'Taiwanese', 'script' => 'Hant', 'native' => '繁體中文', 'regional' => 'zh_TW'],

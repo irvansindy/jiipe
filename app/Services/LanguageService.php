@@ -50,6 +50,7 @@ class LanguageService
                 'native' => $data['native'],
                 'regional' => $data['regional'] ?? '',
                 'script' => $data['script'] ?? 'Latn',
+                'flag' => $data['flag'] ?? null,
             ]);
 
             // Update config file
@@ -74,13 +75,20 @@ class LanguageService
         try {
             $language = Language::findOrFail($id);
 
-            $language->update([
+            $updateData = [
                 'locale' => $data['locale'],
                 'name' => $data['name'],
                 'native' => $data['native'],
                 'regional' => $data['regional'] ?? '',
                 'script' => $data['script'] ?? 'Latn',
-            ]);
+            ];
+
+            // Only update flag if provided or if explicitly removed
+            if (isset($data['flag'])) {
+                $updateData['flag'] = $data['flag'];
+            }
+
+            $language->update($updateData);
 
             // Update config file
             $this->updateConfigFile();

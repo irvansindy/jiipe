@@ -4,7 +4,8 @@
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h1 class="modal-title fs-5" id="modalGalleryLabel"></h1>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             @php
                 $locale = app()->getLocale();
@@ -17,10 +18,10 @@
                         <select name="gallery_topic" id="gallery_topic" class="form-select" required>
                             <option value="">-- Select Topic --</option>
                             @foreach (\App\Models\Topic::with([
-                                'translations' => function ($query) use ($locale) {
-                                    $query->where('locale', $locale);
-                                },
-                            ])->get() as $item)
+        'translations' => function ($query) use ($locale) {
+            $query->where('locale', $locale);
+        },
+    ])->get() as $item)
                                 <option value="{{ $item->id }}">
                                     {{ $item->translations->first()->name ?? 'No Translation' }}
                                 </option>
@@ -37,7 +38,8 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="gallery_main_image" class="form-label">Main Image <span class="text-danger">*</span></label>
+                        <label for="gallery_main_image" class="form-label">Main Image <span
+                                class="text-danger">*</span></label>
                         <input type="file" class="form-control" name="gallery_main_image" id="gallery_main_image"
                             accept="image/*" required>
                         <small class="text-muted">Recommended size: 1024 x 618 px. Max 2MB</small>
@@ -61,7 +63,9 @@
                     </div>
 
                     @php
-                        $locales = config('laravellocalization.supportedLocales');
+                        $supportedLocales = array_keys(config('laravellocalization.supportedLocales'));
+
+                        $locales = \App\Models\Language::whereIn('locale', $supportedLocales)->get()->keyBy('locale');
                     @endphp
                     <div class="mb-3">
                         <label class="form-label">Translations <span class="text-danger">*</span></label>
@@ -73,7 +77,7 @@
                                         data-bs-target="#gallery-{{ $locale }}" type="button" role="tab"
                                         aria-controls="gallery-{{ $locale }}"
                                         aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                        {{ strtoupper($locale) }}
+                                        <img src="{{ asset('storage/flags/' . $properties['flag']) }}" alt="{{ $locale }}" style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
                                     </button>
                                 </li>
                             @endforeach
@@ -92,7 +96,8 @@
                                             name="news_title[{{ $locale }}]"
                                             id="news_title_{{ $locale }}"
                                             placeholder="Gallery title in {{ strtoupper($locale) }}">
-                                        <span class="text-danger small" id="message_news_title_{{ $locale }}"></span>
+                                        <span class="text-danger small"
+                                            id="message_news_title_{{ $locale }}"></span>
                                     </div>
                                 </div>
                             @endforeach
@@ -101,7 +106,8 @@
 
                     <div class="mb-3">
                         <div class="card border-primary">
-                            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                            <div
+                                class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                                 <span><i class="ti ti-photo"></i> Additional Images</span>
                                 <button type="button" id="addImage" class="btn btn-light btn-sm">
                                     <i class="ti ti-plus"></i> Add Image
@@ -116,7 +122,8 @@
                                 <div id="imageFields" class="row g-3">
                                     <div class="col-12 col-md-6 image-item">
                                         <div class="input-group">
-                                            <input type="file" name="gallery_image_detail[]" class="form-control" accept="image/*">
+                                            <input type="file" name="gallery_image_detail[]" class="form-control"
+                                                accept="image/*">
                                             <button class="btn btn-outline-danger remove-field" type="button">
                                                 <i class="ti ti-x"></i>
                                             </button>
@@ -139,7 +146,8 @@
 </div>
 
 <!-- Loading Overlay -->
-<div id="modalLoader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; display: none;">
+<div id="modalLoader"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; display: none;">
     <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
         <div class="spinner-border text-light" style="width: 3rem; height: 3rem;" role="status">
             <span class="visually-hidden">Loading...</span>

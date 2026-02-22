@@ -14,7 +14,9 @@
                     @csrf
 
                     @php
-                        $locales = config('laravellocalization.supportedLocales');
+                        $supportedLocales = array_keys(config('laravellocalization.supportedLocales'));
+
+                        $locales = \App\Models\Language::whereIn('locale', $supportedLocales)->get()->keyBy('locale');
                     @endphp
 
                     <input type="hidden" name="id" id="zone_id" value="">
@@ -148,7 +150,8 @@
                     </button>
                     <button type="submit" id="action_zone" class="btn btn-primary">
                         <span class="btn-text"><i class="ti ti-device-floppy me-1"></i> Save</span>
-                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status"
+                            aria-hidden="true"></span>
                     </button>
                 </div>
             </form>
@@ -162,30 +165,35 @@
 </div>
 
 <style>
-#loadingOverlayZone {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    #loadingOverlayZone {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-#loadingOverlayZone .spinner {
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid #3498db;
-    width: 60px;
-    height: 60px;
-    animation: spinZone 1s linear infinite;
-}
+    #loadingOverlayZone .spinner {
+        border: 5px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 5px solid #3498db;
+        width: 60px;
+        height: 60px;
+        animation: spinZone 1s linear infinite;
+    }
 
-@keyframes spinZone {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+    @keyframes spinZone {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 </style>

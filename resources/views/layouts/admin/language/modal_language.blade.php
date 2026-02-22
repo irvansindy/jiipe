@@ -1,10 +1,12 @@
 <!-- Modal: Create / Edit Language -->
-<div class="modal fade" id="ModalLanguage" data-bs-backdrop="static" tabindex="-1" aria-labelledby="ModalLanguageLabel" aria-hidden="true">
+<div class="modal fade" id="ModalLanguage" data-bs-backdrop="static" tabindex="-1" aria-labelledby="ModalLanguageLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="ModalLanguageLabel">Language</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
 
             <form method="post" id="language_form">
@@ -91,11 +93,44 @@
                                 <span class="text-danger" id="message_script"></span>
                             </div>
                         </div>
+
+                        <!-- Flag Image -->
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="flag" class="form-label">
+                                    Flag <span class="text-muted">(optional)</span>
+                                </label>
+                                <div class="input-group">
+                                    <input type="file" class="form-control" id="flag" name="flag"
+                                        accept="image/*">
+                                    <small class="text-muted d-block mt-2">
+                                        Accepted formats: JPG, PNG, GIF, WebP, SVG. Max size: 2MB
+                                        <br>
+                                        Image will be resized to 32×32px and converted to WebP format.
+                                    </small>
+                                </div>
+
+                                <!-- Preview existing flag -->
+                                <div id="flag_preview_container" style="display: none; margin-top: 10px;">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <label class="text-muted">Current flag:</label>
+                                        <img id="flag_preview_img" src="" alt="Flag preview"
+                                            style="width: 32px; height: 32px; border: 1px solid #ddd; border-radius: 4px;">
+                                        <button type="button" class="btn btn-sm btn-danger" id="btn_remove_flag">
+                                            <i class="ti ti-trash"></i> Remove
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <span class="text-danger" id="message_flag"></span>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="alert alert-info">
                         <i class="ti ti-info-circle"></i>
-                        <strong>Note:</strong> After adding/updating a language, the system will automatically update the
+                        <strong>Note:</strong> After adding/updating a language, the system will automatically update
+                        the
                         <code>config/laravellocalization.php</code> file and clear the config cache.
                     </div>
                 </div>
@@ -106,7 +141,8 @@
                     </button>
                     <button type="submit" id="action_language" class="btn btn-primary">
                         <span class="btn-text"><i class="ti ti-device-floppy me-1"></i> Save</span>
-                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status"
+                            aria-hidden="true"></span>
                     </button>
                 </div>
             </form>

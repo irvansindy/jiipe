@@ -33,7 +33,9 @@
                     </div>
 
                     @php
-                        $locales = config('laravellocalization.supportedLocales');
+                        $supportedLocales = array_keys(config('laravellocalization.supportedLocales'));
+
+                        $locales = \App\Models\Language::whereIn('locale', $supportedLocales)->get()->keyBy('locale');
                     @endphp
                     <div class="mb-3">
                         <ul class="nav nav-tabs" id="formNewsTab" role="tablist">
@@ -57,7 +59,8 @@
 
                                     <div class="mb-3">
                                         <label for="news_title_{{ $locale }}">News Name
-                                            ({{ strtoupper($locale) }})</label>
+                                            ({{ strtoupper($locale) }})
+                                        </label>
                                         <input type="text" class="form-control"
                                             name="news_title[{{ $locale }}]" id="news_title_{{ $locale }}"
                                             placeholder="News Name ({{ strtoupper($locale) }})">
