@@ -133,7 +133,7 @@
                     title: 'Flag',
                     render: function(data) {
                         if (data) {
-                            let baseUrl = @json(asset('storage/flags'));
+                            let baseUrl = @json(asset('uploads/flags'));
                             return '<img src="' + baseUrl + '/' + data + '" alt="Flag" style="width: 32px; height: 32px; border: 1px solid #ddd; border-radius: 4px;">';
                         }
                         return '<span class="text-muted">-</span>';
@@ -283,7 +283,7 @@
 
                         // Show existing flag preview if available
                         if (language.flag) {
-                            let baseUrl = @json(asset('storage/flags'));
+                            let baseUrl = @json(asset('uploads/flags'));
                             $('#flag_preview_img').attr('src', baseUrl + '/' + language.flag);
                             $('#flag_preview_container').show();
                         } else {
