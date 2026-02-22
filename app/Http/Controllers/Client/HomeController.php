@@ -94,10 +94,20 @@ class HomeController extends Controller
             ->orderBy('id', 'asc')
             ->get()
             ->map(function($tenant) {
+                $logoPath = 'uploads/tenant-logo/' . $tenant->logo;
+
+                // ⚡ Proses gambar di sini, bukan di blade
+                $optimizedLogo = \App\Helpers\ImageOptimizer::optimizeTenantLogo($logoPath, 'thumbnail');
+                $isWebP = pathinfo($optimizedLogo, PATHINFO_EXTENSION) === 'webp';
+                $webpPath = !$isWebP ? \App\Helpers\ImageOptimizer::generateWebP($logoPath) : null;
+
                 $trans = $tenant->translations->first();
                 return [
                     'logo' => $tenant->logo,
                     'name' => $trans?->name ?? '',
+                    'optimized_logo' => $optimizedLogo,   // ⚡ Sudah diproses
+                    'webp_path' => $webpPath,              // ⚡ Sudah diproses
+                    'is_webp' => $isWebP,
                 ];
             });
 

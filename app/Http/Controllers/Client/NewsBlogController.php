@@ -41,48 +41,43 @@ class NewsBlogController extends Controller
         });
 
         // Get latest post for featured section (ambil terpisah)
-        $latestNews = News::with([
-            'translations' => function($query) use ($locale) {
-                $query->where('locale', $locale);
-            },
-            'category.translations' => function($query) use ($locale) {
-                $query->where('locale', $locale);
-            }
-        ])
-        ->where('is_published', 1)
-        ->orderBy('created_at', 'desc')
+        // LOAD ALL translations, jangan filter di query (untuk avoid eager loading issues)
+        $latestNews = News::with(['translations', 'category.translations'])
+        ->join('news_translations', 'news.id', '=', 'news_translations.news_id')
+        ->where('news.is_published', 1)
+        ->orderBy('news.created_at', 'desc')
+        ->select('news.*')
+        ->distinct()
         ->first();
 
         $latestPost = $latestNews ? $this->formatNewsPost($latestNews, $locale) : null;
 
         // Get all published news KECUALI latest post
-        $newsQuery = News::with([
-            'translations' => function($query) use ($locale) {
-                $query->where('locale', $locale);
-            },
-            'category.translations' => function($query) use ($locale) {
-                $query->where('locale', $locale);
-            }
-        ])
-        ->where('is_published', 1)
+        // LOAD ALL translations, jangan filter di query (untuk avoid eager loading issues saat pagination)
+        // PENTING: Join dengan news_translations untuk ensure relasi bekerja dengan baik
+        $newsQuery = News::with(['translations', 'category.translations'])
+        ->join('news_translations', 'news.id', '=', 'news_translations.news_id')
+        ->where('news.is_published', 1)
         ->when($latestNews, function($query) use ($latestNews) {
-            $query->where('id', '!=', $latestNews->id);
+            $query->where('news.id', '!=', $latestNews->id);
         })
-        ->orderBy('created_at', 'desc');
+        ->orderBy('news.created_at', 'desc')
+        ->select('news.*');
 
         $newsPaginated = $newsQuery->paginate($perPage);
 
         // Format posts
         $formattedPosts = $newsPaginated->getCollection()->map(function($news) use ($locale) {
             return $this->formatNewsPost($news, $locale);
-        })->filter();
+        })->filter(function($item) {
+            return $item !== null;
+        })->values();
 
         $newsPaginated->setCollection($formattedPosts);
 
         // Get latest articles
-        $articleCategory = NewsCategories::with(['translations' => function($query) use ($locale) {
-            $query->where('locale', $locale);
-        }])
+        // LOAD ALL translations, jangan filter di query
+        $articleCategory = NewsCategories::with(['translations'])
         ->whereHas('translations', function($query) use ($locale) {
             $query->where('locale', $locale)
                   ->where('name', 'like', '%article%');
@@ -91,20 +86,21 @@ class NewsBlogController extends Controller
 
         $latestArticles = collect([]);
         if ($articleCategory) {
-            $latestArticles = News::with([
-                'translations' => function($query) use ($locale) {
-                    $query->where('locale', $locale);
-                }
-            ])
-            ->where('category_id', $articleCategory->id)
-            ->where('is_published', 1)
-            ->orderBy('created_at', 'desc')
+            $latestArticles = News::with(['translations', 'category.translations'])
+            ->join('news_translations', 'news.id', '=', 'news_translations.news_id')
+            ->where('news.category_id', $articleCategory->id)
+            ->where('news.is_published', 1)
+            ->orderBy('news.created_at', 'desc')
+            ->select('news.*')
+            ->distinct()
             ->take(9)
             ->get()
             ->map(function($news) use ($locale) {
                 return $this->formatNewsPost($news, $locale);
             })
-            ->filter();
+            ->filter(function($item) {
+                return $item !== null;
+            });
         }
 
         $data = [
@@ -120,7 +116,6 @@ class NewsBlogController extends Controller
             'articlesPagination' => null,
         ];
 
-        dd($data);
         return view('layouts.client.blog.index', compact('data'));
     }
 
@@ -212,43 +207,37 @@ class NewsBlogController extends Controller
         }
 
         // Get latest post for featured section (ambil terpisah)
-        $latestNews = News::with([
-            'translations' => function($query) use ($locale) {
-                $query->where('locale', $locale);
-            },
-            'category.translations' => function($query) use ($locale) {
-                $query->where('locale', $locale);
-            }
-        ])
-        ->where('category_id', $category->id)
-        ->where('is_published', 1)
-        ->orderBy('created_at', 'desc')
+        $latestNews = News::with(['translations', 'category.translations'])
+        ->join('news_translations', 'news.id', '=', 'news_translations.news_id')
+        ->where('news.category_id', $category->id)
+        ->where('news.is_published', 1)
+        ->orderBy('news.created_at', 'desc')
+        ->select('news.*')
+        ->distinct()
         ->first();
 
         $latestPost = $latestNews ? $this->formatNewsPost($latestNews, $locale) : null;
 
         // Get news by category KECUALI latest post
-        $newsQuery = News::with([
-            'translations' => function($query) use ($locale) {
-                $query->where('locale', $locale);
-            },
-            'category.translations' => function($query) use ($locale) {
-                $query->where('locale', $locale);
-            }
-        ])
-        ->where('category_id', $category->id)
-        ->where('is_published', 1)
+        $newsQuery = News::with(['translations', 'category.translations'])
+        ->join('news_translations', 'news.id', '=', 'news_translations.news_id')
+        ->where('news.category_id', $category->id)
+        ->where('news.is_published', 1)
         ->when($latestNews, function($query) use ($latestNews) {
-            $query->where('id', '!=', $latestNews->id);
+            $query->where('news.id', '!=', $latestNews->id);
         })
-        ->orderBy('created_at', 'desc');
+        ->orderBy('news.created_at', 'desc')
+        ->select('news.*')
+        ->distinct();
 
         $newsPaginated = $newsQuery->paginate($perPage);
 
         // Format posts
         $formattedPosts = $newsPaginated->getCollection()->map(function($news) use ($locale) {
             return $this->formatNewsPost($news, $locale);
-        })->filter();
+        })->filter(function($item) {
+            return $item !== null;
+        })->values();
 
         $newsPaginated->setCollection($formattedPosts);
 
@@ -257,20 +246,21 @@ class NewsBlogController extends Controller
         $isNewsCategory = $category->id == 1; // ID 1 untuk News category
 
         if ($isNewsCategory) {
-            $latestArticles = News::with([
-                'translations' => function($query) use ($locale) {
-                    $query->where('locale', $locale);
-                }
-            ])
-            ->where('category_id', 4) // ID 4 untuk Articles category
-            ->where('is_published', 1)
-            ->orderBy('created_at', 'desc')
+            $latestArticles = News::with(['translations', 'category.translations'])
+            ->join('news_translations', 'news.id', '=', 'news_translations.news_id')
+            ->where('news.category_id', 4) // ID 4 untuk Articles category
+            ->where('news.is_published', 1)
+            ->orderBy('news.created_at', 'desc')
+            ->select('news.*')
+            ->distinct()
             ->take(9)
             ->get()
             ->map(function($news) use ($locale) {
                 return $this->formatNewsPost($news, $locale);
             })
-            ->filter();
+            ->filter(function($item) {
+                return $item !== null;
+            });
         }
 
         $data = [
@@ -341,42 +331,36 @@ class NewsBlogController extends Controller
         });
 
         // Get latest post for featured section (ambil terpisah)
-        $latestNews = News::with([
-            'translations' => function($query) use ($locale) {
-                $query->where('locale', $locale);
-            },
-            'category.translations' => function($query) use ($locale) {
-                $query->where('locale', $locale);
-            }
-        ])
-        ->where('category_id', $category->id)
-        ->where('is_published', 1)
-        ->orderBy('created_at', 'desc')
+        $latestNews = News::with(['translations', 'category.translations'])
+        ->join('news_translations', 'news.id', '=', 'news_translations.news_id')
+        ->where('news.category_id', $category->id)
+        ->where('news.is_published', 1)
+        ->orderBy('news.created_at', 'desc')
+        ->select('news.*')
+        ->distinct()
         ->first();
 
         $latestPost = $latestNews ? $this->formatNewsPost($latestNews, $locale) : null;
 
         // Get news by category KECUALI latest post
-        $newsQuery = News::with([
-            'translations' => function($query) use ($locale) {
-                $query->where('locale', $locale);
-            },
-            'category.translations' => function($query) use ($locale) {
-                $query->where('locale', $locale);
-            }
-        ])
-        ->where('category_id', $category->id)
-        ->where('is_published', 1)
+        $newsQuery = News::with(['translations', 'category.translations'])
+        ->join('news_translations', 'news.id', '=', 'news_translations.news_id')
+        ->where('news.category_id', $category->id)
+        ->where('news.is_published', 1)
         ->when($latestNews, function($query) use ($latestNews) {
-            $query->where('id', '!=', $latestNews->id);
+            $query->where('news.id', '!=', $latestNews->id);
         })
-        ->orderBy('created_at', 'desc');
+        ->orderBy('news.created_at', 'desc')
+        ->select('news.*')
+        ->distinct();
 
         $newsPaginated = $newsQuery->paginate($perPage);
 
         $formattedPosts = $newsPaginated->getCollection()->map(function($news) use ($locale) {
             return $this->formatNewsPost($news, $locale);
-        })->filter();
+        })->filter(function($item) {
+            return $item !== null;
+        })->values();
 
         $newsPaginated->setCollection($formattedPosts);
 
@@ -384,20 +368,21 @@ class NewsBlogController extends Controller
         $isNewsCategory = $category->id == 1;
 
         if ($isNewsCategory) {
-            $latestArticles = News::with([
-                'translations' => function($query) use ($locale) {
-                    $query->where('locale', $locale);
-                }
-            ])
-            ->where('category_id', 4)
-            ->where('is_published', 1)
-            ->orderBy('created_at', 'desc')
+            $latestArticles = News::with(['translations', 'category.translations'])
+            ->join('news_translations', 'news.id', '=', 'news_translations.news_id')
+            ->where('news.category_id', 4)
+            ->where('news.is_published', 1)
+            ->orderBy('news.created_at', 'desc')
+            ->select('news.*')
+            ->distinct()
             ->take(9)
             ->get()
             ->map(function($news) use ($locale) {
                 return $this->formatNewsPost($news, $locale);
             })
-            ->filter();
+            ->filter(function($item) {
+                return $item !== null;
+            });
         }
 
         $data = [
@@ -481,6 +466,11 @@ class NewsBlogController extends Controller
     {
         $translation = $news->translations->firstWhere('locale', $locale);
 
+        // Fallback ke translation pertama jika tidak ada untuk locale saat ini
+        if (!$translation) {
+            $translation = $news->translations->first();
+        }
+
         if (!$translation) {
             return null;
         }
@@ -488,6 +478,11 @@ class NewsBlogController extends Controller
         $categoryTranslation = $news->category && $news->category->translations
             ? $news->category->translations->firstWhere('locale', $locale)
             : null;
+
+        // Fallback category translation ke translation pertama
+        if (!$categoryTranslation && $news->category && $news->category->translations) {
+            $categoryTranslation = $news->category->translations->first();
+        }
 
         return [
             'id' => $news->id,

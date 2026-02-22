@@ -403,3 +403,28 @@ Route::group([
         Route::post('store-contact-overview', [ContactController::class,'storeContactOverview'])->name('store-contact-overview');
     });
 });
+
+// TEST ROUTE
+Route::get('test/query', function() {
+    // Test the new join approach
+    $newsWithJoin = \App\Models\News::with(['translations'])
+        ->join('news_translations', 'news.id', '=', 'news_translations.news_id')
+        ->where('news.is_published', 1)
+        ->select('news.*')
+        ->distinct()
+        ->first();
+
+    $newsCountWithJoin = \App\Models\News::with(['translations'])
+        ->join('news_translations', 'news.id', '=', 'news_translations.news_id')
+        ->where('news.is_published', 1)
+        ->select('news.*')
+        ->distinct()
+        ->count();
+
+    return response()->json([
+        'total_with_translations' => $newsCountWithJoin,
+        'first_news_id' => $newsWithJoin?->id,
+        'first_news_translations' => $newsWithJoin?->translations->count(),
+        'has_data' => $newsWithJoin ? true : false,
+    ]);
+});

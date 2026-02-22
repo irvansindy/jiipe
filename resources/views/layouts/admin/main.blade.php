@@ -65,7 +65,7 @@
     @include('layouts.admin.partials.footer_mantis')
 
     <!-- Floating Language Button -->
-    <div class="floating-language">
+    {{-- <div class="floating-language">
         <div class="dropdown">
             <button class="btn btn-primary dropdown-toggle rounded-full shadow-lg px-4 py-3" type="button"
                 id="languageMenu" data-bs-toggle="dropdown" aria-expanded="false">
@@ -82,7 +82,7 @@
                 @endforeach
             </ul>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Tambahkan CSS -->
     <style>

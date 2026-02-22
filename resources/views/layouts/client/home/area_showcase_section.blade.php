@@ -89,11 +89,12 @@
     <div class="embed-responsive embed-responsive-21by9">
         {{-- ⚡ Video dengan lazy loading dan autoplay attributes --}}
         <video class="embed-responsive-item"
-               id="jiipeVideo"
-               loop
-               playsinline
-               preload="auto"
-               poster="{{ asset('asset/images/video-placeholder.jpg') }}">
+                id="jiipeVideo"
+                loop
+                playsinline
+                controls
+                preload="auto"
+                poster="{{ asset('asset/images/video-placeholder.jpg') }}">
             @if (app()->getLocale() == 'zh')
                 <source src="https://jiipe.com//Video_jiipe/Company%20Profile%20JIIPE%20CINA%20-%20SUB%20English.mp4" type="video/mp4">
             @else

@@ -27,12 +27,34 @@ class ImageHelper
                 File::makeDirectory($directory, 0755, true);
             }
 
-            // ✅ Try with Intervention\Image first
+            // ✅ Priority 1: Native PHP GD (paling hemat memory)
+            if (extension_loaded('gd')) {
+                try {
+                    return self::convertToWebpNative($fullPath, $fullWebpPath, $width, $quality, $webpPath);
+                } catch (\Exception $gdError) {
+                    \Log::warning("Native GD failed: " . $gdError->getMessage());
+                }
+            }
+
+            // ✅ Priority 2: ImageMagick CLI
+            if (self::hasImageMagick()) {
+                try {
+                    return self::convertToWebpImageMagick($fullPath, $fullWebpPath, $width, $quality, $webpPath);
+                } catch (\Exception $magickError) {
+                    \Log::warning("ImageMagick failed: " . $magickError->getMessage());
+                }
+            }
+
+            // ✅ Priority 3: Intervention Image (last resort, boros memory, max 5MB)
             try {
+                $fileSize = filesize($fullPath);
+                if ($fileSize > 5 * 1024 * 1024) {
+                    throw new \Exception("File too large for Intervention: " . round($fileSize / 1024 / 1024, 2) . "MB");
+                }
+
                 $manager = new ImageManager(new Driver());
                 $image = $manager->read($fullPath);
 
-                // Scale if needed
                 if ($width && $image->width() > $width) {
                     $image->scale(width: $width);
                 }
@@ -43,21 +65,11 @@ class ImageHelper
 
             } catch (\Exception $interventionError) {
                 \Log::warning("Intervention Image failed: " . $interventionError->getMessage());
-
-                // ✅ Try native PHP GD
-                if (extension_loaded('gd')) {
-                    return self::convertToWebpNative($fullPath, $fullWebpPath, $width, $quality, $webpPath);
-                }
-
-                // ✅ Try ImageMagick/convert command
-                if (self::hasImageMagick()) {
-                    return self::convertToWebpImageMagick($fullPath, $fullWebpPath, $width, $quality, $webpPath);
-                }
-
-                // ✅ Fallback: Just copy to webp (already optimized original)
-                \Log::warning("No image conversion tool available, copying original file");
-                return self::copyAsWebp($fullPath, $fullWebpPath, $imagePath, $webpPath);
             }
+
+            // ✅ Fallback: Copy original as WebP
+            \Log::warning("No image conversion tool available, copying original file");
+            return self::copyAsWebp($fullPath, $fullWebpPath, $imagePath, $webpPath);
 
         } catch (\Exception $e) {
             \Log::error('Image optimization error: ' . $e->getMessage());
@@ -72,7 +84,7 @@ class ImageHelper
     {
         $output = null;
         $retval = null;
-@exec('convert -version', $output, $retval);
+        @exec('convert -version', $output, $retval);
         return $retval === 0;
     }
 
@@ -82,23 +94,19 @@ class ImageHelper
     private static function convertToWebpImageMagick($fullPath, $fullWebpPath, $width, $quality, $webpPath)
     {
         $command = "convert ";
-
-        // Add quality parameter
         $command .= "-quality {$quality} ";
 
-        // Add resize parameter if needed
         if ($width) {
             $command .= "-resize {$width}x ";
         }
 
-        // Input and output
         $command .= escapeshellarg($fullPath) . " " . escapeshellarg($fullWebpPath);
 
         \Log::info("Converting with ImageMagick: {$command}");
 
         $output = null;
         $retval = null;
-@exec($command, $output, $retval);
+        @exec($command, $output, $retval);
 
         if ($retval === 0 && File::exists($fullWebpPath)) {
             \Log::info("Image optimized with ImageMagick: {$webpPath}");
@@ -112,65 +120,73 @@ class ImageHelper
      * Convert image to WebP using native PHP GD functions (no library needed)
      */
     private static function convertToWebpNative($fullPath, $fullWebpPath, $width, $quality, $webpPath)
-    {
-        $imageInfo = getimagesize($fullPath);
-        if (!$imageInfo) {
-            throw new \Exception("Cannot read image: {$fullPath}");
-        }
-
-        $mimeType = $imageInfo['mime'];
-
-        // Load image based on type
-        switch ($mimeType) {
-            case 'image/jpeg':
-                $source = imagecreatefromjpeg($fullPath);
-                break;
-            case 'image/png':
-                $source = imagecreatefrompng($fullPath);
-                break;
-            case 'image/gif':
-                $source = imagecreatefromgif($fullPath);
-                break;
-            default:
-                throw new \Exception("Unsupported image type: {$mimeType}");
-        }
-
-        if (!$source) {
-            throw new \Exception("Failed to load image: {$fullPath}");
-        }
-
-        // Scale if needed
-        $srcWidth = imagesx($source);
-        $srcHeight = imagesy($source);
-
-        if ($width && $srcWidth > $width) {
-            $ratio = $width / $srcWidth;
-            $newHeight = (int)($srcHeight * $ratio);
-
-            $dest = imagecreatetruecolor($width, $newHeight);
-            imagecopyresampled($dest, $source, 0, 0, 0, 0, $width, $newHeight, $srcWidth, $srcHeight);
-            imagedestroy($source);
-            $source = $dest;
-        }
-
-        // Convert to WebP
-        $success = imagewebp($source, $fullWebpPath, $quality);
-        imagedestroy($source);
-
-        if (!$success) {
-            throw new \Exception("Failed to convert image to WebP: {$fullWebpPath}");
-        }
-
-        \Log::info("Image optimized with native PHP GD: {$webpPath}");
-        return $webpPath;
+{
+    $imageInfo = @getimagesize($fullPath);
+    if (!$imageInfo) {
+        throw new \Exception("Cannot read image: {$fullPath}");
     }
 
+    [$srcWidth, $srcHeight, $imageType] = $imageInfo;
+
+    // Hitung memory yang BENAR-BENAR dibutuhkan
+    // PNG butuh lebih banyak karena ada alpha channel
+    $channels = ($imageType === IMAGETYPE_PNG) ? 4 : 3;
+    $memoryNeededBytes = $srcWidth * $srcHeight * $channels * 2; // x2 untuk src + dst
+    $memoryNeededMB = (int)ceil($memoryNeededBytes / 1024 / 1024) + 64;
+
+    // Hard limit: tolak gambar yang butuh > 800MB
+    if ($memoryNeededMB > 800) {
+        throw new \Exception("Image too large to process safely: needs ~{$memoryNeededMB}MB RAM ({$srcWidth}x{$srcHeight}px)");
+    }
+
+    ini_set('memory_limit', "{$memoryNeededMB}M");
+    \Log::info("Set memory to {$memoryNeededMB}M for {$srcWidth}x{$srcHeight} image");
+
+    $source = match ($imageType) {
+        IMAGETYPE_JPEG => @imagecreatefromjpeg($fullPath),
+        IMAGETYPE_PNG  => @imagecreatefrompng($fullPath),
+        IMAGETYPE_GIF  => @imagecreatefromgif($fullPath),
+        IMAGETYPE_WEBP => @imagecreatefromwebp($fullPath),
+        default        => throw new \Exception("Unsupported image type: {$imageType}"),
+    };
+
+    if (!$source) {
+        throw new \Exception("Failed to load image: {$fullPath}");
+    }
+
+    // Tentukan dimensi output
+    $targetWidth  = ($width && $srcWidth > $width) ? $width : $srcWidth;
+    $targetHeight = (int)($srcHeight * ($targetWidth / $srcWidth));
+
+    $dest = imagecreatetruecolor($targetWidth, $targetHeight);
+
+    if ($imageType === IMAGETYPE_PNG) {
+        imagealphablending($dest, false);
+        imagesavealpha($dest, true);
+        $transparent = imagecolorallocatealpha($dest, 255, 255, 255, 127);
+        imagefilledrectangle($dest, 0, 0, $targetWidth, $targetHeight, $transparent);
+    }
+
+    imagecopyresampled($dest, $source, 0, 0, 0, 0, $targetWidth, $targetHeight, $srcWidth, $srcHeight);
+    imagedestroy($source); // Bebaskan source segera
+
+    $success = @imagewebp($dest, $fullWebpPath, $quality);
+    imagedestroy($dest);
+    gc_collect_cycles();
+
+    if (!$success) {
+        throw new \Exception("Failed to save WebP: {$fullWebpPath}");
+    }
+
+    \Log::info("✓ Native GD success: {$webpPath}");
+    return $webpPath;
+}
+
     /**
-     * Fallback: Copy original file as WebP (binary copy, still saves space with .webp extension)
+     * Fallback: Copy original file as WebP (binary copy)
      */
     private static function copyAsWebp($fullPath, $fullWebpPath, $originalPath, $webpPath)
     {
-        // Just copy the file with new extension
         if (File::copy($fullPath, $fullWebpPath)) {
             \Log::info("File copied as WebP (no conversion): {$webpPath}");
             return $webpPath;
@@ -179,10 +195,13 @@ class ImageHelper
         throw new \Exception("Failed to copy file as WebP");
     }
 
+    /**
+     * Upload file dan langsung optimize
+     */
     public static function uploadAndOptimize($uploadedFile, $directory = 'images', $width = null)
     {
         $filename = time() . '_' . uniqid() . '.' . $uploadedFile->getClientOriginalExtension();
-        $path = $directory . '/' . $filename;
+        $path     = $directory . '/' . $filename;
 
         $uploadedFile->move(public_path($directory), $filename);
 

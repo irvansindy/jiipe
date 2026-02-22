@@ -153,7 +153,6 @@
                     console.log('Active items:', event.item.count);
                 },
                 onTranslated: function(event) {
-                    console.log('Slide changed');
                 }
             });
         });
