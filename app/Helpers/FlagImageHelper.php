@@ -100,6 +100,6 @@ class FlagImageHelper
             return '';
         }
 
-        return asset('storage/flags/' . $filename);
+        return asset('uploads/flags/' . $filename);
     }
 }

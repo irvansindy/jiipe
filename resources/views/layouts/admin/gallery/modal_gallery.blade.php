@@ -77,7 +77,9 @@
                                         data-bs-target="#gallery-{{ $locale }}" type="button" role="tab"
                                         aria-controls="gallery-{{ $locale }}"
                                         aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                        <img src="{{ asset('storage/flags/' . $properties['flag']) }}" alt="{{ $locale }}" style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
+                                        <img src="{{ asset('uploads/flags/' . $properties['flag']) }}"
+                                            alt="{{ $locale }}"
+                                            style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
                                     </button>
                                 </li>
                             @endforeach

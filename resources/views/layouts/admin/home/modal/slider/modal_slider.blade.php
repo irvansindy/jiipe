@@ -16,9 +16,7 @@
                     @php
                         $supportedLocales = array_keys(config('laravellocalization.supportedLocales'));
 
-                        $locales = \App\Models\Language::whereIn('locale', $supportedLocales)
-                            ->get()
-                            ->keyBy('locale');
+                        $locales = \App\Models\Language::whereIn('locale', $supportedLocales)->get()->keyBy('locale');
                     @endphp
 
                     <input type="hidden" name="id" id="slider_id" value="">
@@ -65,7 +63,9 @@
                                             data-bs-target="#slider-{{ $locale }}" type="button" role="tab"
                                             aria-controls="slider-{{ $locale }}"
                                             aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                            <img src="{{ asset('storage/flags/' . $properties['flag']) }}" alt="{{ $locale }}" style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
+                                            <img src="{{ asset('uploads/flags/' . $properties['flag']) }}"
+                                                alt="{{ $locale }}"
+                                                style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
                                         </button>
                                     </li>
                                 @endforeach
