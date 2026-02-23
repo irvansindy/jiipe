@@ -131,6 +131,7 @@ Route::group([
         ->name('dashboard.clear-cache');
     Route::get('/news-blog', [NewsAndArticleController::class, 'index'])->name('news-blog');
     Route::post('/appointment/store', [AppointmentClient::class, 'storeQuickAppointment'])->name('store-quick-appointment');
+    Route::get('/appointment', [AppointmentClient::class, 'pageSuccess'])->name('appointment');
 
     Route::group(['middleware' => ['auth']], function () {
         Route::get('home-page', [HomeController::class,'index'])->name('home-page');

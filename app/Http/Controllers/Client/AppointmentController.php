@@ -74,7 +74,8 @@ class AppointmentController extends Controller
                 $message .= ' Note: Confirmation email could not be sent, but your appointment has been recorded.';
             }
 
-            return redirect()->back()->with('success', $message);
+            // return redirect()->back()->with('success', $message);
+            return redirect()->route('appointment');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Validation errors
@@ -94,5 +95,9 @@ class AppointmentController extends Controller
                 ->with('error', 'An error occurred while submitting your appointment. Please try again.')
                 ->withInput();
         }
+    }
+    public function pageSuccess()
+    {
+        return view('client.appointment-success');
     }
 }
