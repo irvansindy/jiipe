@@ -35,7 +35,25 @@ class AppointmentRequest extends FormRequest
             'QuickAppointment.first_name' => 'required|string|max:255',
             'QuickAppointment.last_name' => 'required|string|max:255',
             'QuickAppointment.phone_number' => 'required|string|max:20',
-            'QuickAppointment.email' => 'required|email|max:255',
+            'QuickAppointment.email' => [
+                'required',
+                'email',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    $blocked = [
+                        'gmail.com',
+                        'yahoo.com',
+                        'hotmail.com',
+                        'outlook.com'
+                    ];
+
+                    $domain = substr(strrchr($value, "@"), 1);
+
+                    if (in_array(strtolower($domain), $blocked)) {
+                        $fail('Gunakan email perusahaan, email publik tidak diperbolehkan.');
+                    }
+                },
+            ],
             'QuickAppointment.company_name' => 'required|string|max:255',
             'QuickAppointment.country_origin' => 'required|in:Indonesia,Outside of Indonesia',
             'QuickAppointment.reason' => 'required|string',
