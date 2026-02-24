@@ -139,10 +139,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12 col-xl-12 col-sm-6">
+                <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <h5 class="mb-0">List Appointment</h5>
-
+                        {{-- Export Excel Button --}}
+                        <button type="button" class="btn btn-success" id="exportExcelBtn">
+                            <i class="ti ti-file-spreadsheet me-1"></i> Export Excel
+                        </button>
                     </div>
                     <div class="card tbl-card">
                         <div class="card-body">
@@ -198,7 +201,8 @@
     @include('layouts.admin.form_appointment.appointment_js')
     <script>
         (function() {
-            const fetchUrl = "{{ route('fetch-appointment') }}";
+            const fetchUrl  = "{{ route('fetch-appointment') }}";
+            const exportUrl = "{{ route('export-appointment') }}";
 
             function buildParams() {
                 const form = document.getElementById('filterAppointmentForm');
@@ -254,8 +258,22 @@
                 }
             }
 
+            function exportExcel() {
+                const params = buildParams();
+                const url = Object.keys(params).length
+                    ? exportUrl + '?' + new URLSearchParams(params).toString()
+                    : exportUrl;
+
+                // Trigger file download
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = '';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+
             document.addEventListener('DOMContentLoaded', function() {
-                // initial load
                 fetchAppointments();
 
                 const form = document.getElementById('filterAppointmentForm');
@@ -267,6 +285,10 @@
                 document.getElementById('resetFilters').addEventListener('click', function() {
                     form.reset();
                     fetchAppointments();
+                });
+
+                document.getElementById('exportExcelBtn').addEventListener('click', function() {
+                    exportExcel();
                 });
             });
         })();

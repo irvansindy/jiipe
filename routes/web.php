@@ -177,7 +177,8 @@ Route::group([
         // Route::post('/store-quick-appointment', [FormAppointment::class, 'store'])->name('store-quick-appointment');
         Route::post('/store-basic-information', [FormAppointment::class, 'storeBasicInformation'])->name('store-basic-information');
         Route::post('/store-reason', [FormAppointment::class, 'storeReason'])->name('store-reason');
-
+        Route::get('/form-appointment/export', [FormAppointment::class, 'exportExcel'])->name('export-appointment');
+        
         Route::get('/about-us', [AboutUsController::class, 'index'])->name('about-us');
         Route::get('/about-us-fetch-content-detail', [AboutUsController::class, 'fetchContentDetail'])->name('about-us-fetch-content-detail');
         Route::post('/store-about-us-header', [AboutUsController::class, 'storeHeader'])->name('store-about-us-header');
