@@ -53,7 +53,7 @@
 
 <style>
     #tenants {
-        padding: 30px 0;
+        padding: 10px 0;
         background: #fff;
     }
 
@@ -82,9 +82,9 @@
 
     /* ⚡ HAPUS box/border, biarkan logo natural */
     #tenants .swiper-slide img {
-        height: 70px;
+        height: 100px;
         width: auto;
-        max-width: 160px;
+        max-width: 190px;
         object-fit: contain;
         transition: all 0.3s ease;
 
