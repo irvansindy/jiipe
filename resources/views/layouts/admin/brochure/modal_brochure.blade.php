@@ -6,7 +6,11 @@
         <span class="visually-hidden">Loading...</span>
     </div>
 </div>
+@php
+    $supportedLocales = array_keys(config('laravellocalization.supportedLocales'));
 
+    $locales = \App\Models\Language::whereIn('locale', $supportedLocales)->get()->keyBy('locale');
+@endphp
 {{-- Modal Brochure --}}
 <div class="modal fade" id="modalBrochure" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalBrochureLabel"
     aria-hidden="true">
@@ -60,7 +64,7 @@
                                     id="brochure-tab-{{ $locale }}" data-bs-toggle="tab"
                                     data-bs-target="#brochure-content-{{ $locale }}" type="button" role="tab"
                                     aria-controls="brochure-content-{{ $locale }}">
-                                    {{ $properties['native'] }}
+                                    <img src="{{ asset('uploads/flags/' . $properties['flag']) }}" alt="{{ $locale }}" style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
                                 </button>
                             </li>
                         @endforeach
