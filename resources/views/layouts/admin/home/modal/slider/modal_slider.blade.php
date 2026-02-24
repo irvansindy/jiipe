@@ -64,8 +64,7 @@
                                             aria-controls="slider-{{ $locale }}"
                                             aria-selected="{{ $loop->first ? 'true' : 'false' }}">
                                             <img src="{{ asset('uploads/flags/' . $properties['flag']) }}"
-                                                alt="{{ $locale }}"
-                                                style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
+                                                alt="{{ $locale }}" style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
                                         </button>
                                     </li>
                                 @endforeach

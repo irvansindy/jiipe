@@ -9,16 +9,8 @@ use App\Models\MasterJobLevel;
 use App\Models\MasterCompany;
 use Illuminate\Http\Request;
 use App\Models\CareerHeader;
-use App\Models\CareerHeaderTranslation;
 use App\Models\CareerSection;
-use App\Models\CareerSectionTranslation;
-use App\Models\Career;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Storage;
 use App\Helpers\FormatResponseJson;
-use App\Models\CareerEmail;
 use App\Services\CareerService;
 use App\Services\CareerEmailService;
 use App\Http\Requests\CareerRequest;
@@ -81,7 +73,9 @@ class CareerController extends Controller
 
     public function static()
     {
-        $locales = config('laravellocalization.supportedLocales');
+        // $locales = config('laravellocalization.supportedLocales');
+        $supportedLocales = array_keys(config('laravellocalization.supportedLocales'));
+        $locales = \App\Models\Language::whereIn('locale', $supportedLocales)->get()->keyBy('locale');
         $career_header = CareerHeader::with('translations')->first();
         $career_section = CareerSection::with('translations')->first();
         // dd($career_header, $career_section);

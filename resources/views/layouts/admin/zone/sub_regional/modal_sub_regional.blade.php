@@ -38,7 +38,11 @@
         </div>
     </div>
 </div>
+@php
+    $supportedLocales = array_keys(config('laravellocalization.supportedLocales'));
 
+    $locales = \App\Models\Language::whereIn('locale', $supportedLocales)->get()->keyBy('locale');
+@endphp
 {{-- Modal Regional Advantage Form (Add/Edit) --}}
 <div class="modal fade" id="modalRegionalAdvantage" tabindex="-1" aria-labelledby="modalRegionalAdvantageLabel"
     aria-hidden="true" data-bs-backdrop="static">
@@ -95,20 +99,20 @@
 
                     {{-- Translation Tabs --}}
                     <ul class="nav nav-tabs mb-3" id="advantageTransTab" role="tablist">
-                        @foreach (config('laravellocalization.supportedLocales') as $locale => $properties)
+                        @foreach ($locales as $locale => $properties)
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link {{ $loop->first ? 'active' : '' }}"
                                     id="advantage-tab-{{ $locale }}" data-bs-toggle="tab"
                                     data-bs-target="#advantage-content-{{ $locale }}" type="button" role="tab"
                                     aria-controls="advantage-content-{{ $locale }}">
-                                    {{ $properties['native'] }}
+                                    <img src="{{ asset('uploads/flags/' . $properties['flag']) }}" alt="{{ $locale }}" style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
                                 </button>
                             </li>
                         @endforeach
                     </ul>
 
                     <div class="tab-content">
-                        @foreach (config('laravellocalization.supportedLocales') as $locale => $properties)
+                        @foreach ($locales as $locale => $properties)
                             <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
                                 id="advantage-content-{{ $locale }}" role="tabpanel"
                                 aria-labelledby="advantage-tab-{{ $locale }}">

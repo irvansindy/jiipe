@@ -35,7 +35,11 @@
         </div>
     </div>
 </div>
+@php
+    $supportedLocales = array_keys(config('laravellocalization.supportedLocales'));
 
+    $locales = \App\Models\Language::whereIn('locale', $supportedLocales)->get()->keyBy('locale');
+@endphp
 {{-- Modal Zone Cluster Form (Add/Edit) --}}
 <div class="modal fade" id="modalZoneCluster" tabindex="-1" aria-labelledby="modalZoneClusterLabel"
     aria-hidden="true" data-bs-backdrop="static">
@@ -50,20 +54,20 @@
                 <input type="hidden" id="cluster_zone_id" name="zone_id">
                 <div class="modal-body">
                     <ul class="nav nav-tabs mb-3" id="clusterTransTab" role="tablist">
-                        @foreach (config('laravellocalization.supportedLocales') as $locale => $properties)
+                        @foreach ($locales as $locale => $properties)
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link {{ $loop->first ? 'active' : '' }}"
                                     id="cluster-tab-{{ $locale }}" data-bs-toggle="tab"
                                     data-bs-target="#cluster-content-{{ $locale }}" type="button" role="tab"
                                     aria-controls="cluster-content-{{ $locale }}">
-                                    {{ $properties['native'] }}
+                                    <img src="{{ asset('uploads/flags/' . $properties['flag']) }}" alt="{{ $locale }}" style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
                                 </button>
                             </li>
                         @endforeach
                     </ul>
 
                     <div class="tab-content">
-                        @foreach (config('laravellocalization.supportedLocales') as $locale => $properties)
+                        @foreach ($locales as $locale => $properties)
                             <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
                                 id="cluster-content-{{ $locale }}" role="tabpanel"
                                 aria-labelledby="cluster-tab-{{ $locale }}">

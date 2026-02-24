@@ -237,7 +237,7 @@
                 try {
                     const params = buildParams();
                     const url = Object.keys(params).length ? fetchUrl + '?' + new URLSearchParams(params)
-                    .toString() : fetchUrl;
+                        .toString() : fetchUrl;
                     const res = await fetch(url, {
                         method: 'GET',
                         headers: {

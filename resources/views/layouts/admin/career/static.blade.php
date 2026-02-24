@@ -28,25 +28,25 @@
                         </div>
                         <div class="card-body">
                             {{-- PERBAIKAN: Alert khusus untuk Cover --}}
-                            @if(session('cover_success'))
+                            @if (session('cover_success'))
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                                     <strong>Success!</strong> {{ session('cover_success') }}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                 </div>
                             @endif
 
-                            @if(session('cover_error'))
+                            @if (session('cover_error'))
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <strong>Error!</strong> {{ session('cover_error') }}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                 </div>
                             @endif
 
-                            @if($errors->any() && (session('cover_error') || old('cover_title')))
+                            @if ($errors->any() && (session('cover_error') || old('cover_title')))
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <strong>Validation Errors:</strong>
                                     <ul class="mb-0">
-                                        @foreach($errors->all() as $error)
+                                        @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
                                         @endforeach
                                     </ul>
@@ -72,7 +72,7 @@
                                                     data-bs-target="#cover-{{ $locale }}" type="button"
                                                     role="tab" aria-controls="cover-{{ $locale }}"
                                                     aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                                    {{ $properties['native'] }}
+                                                    <img src="{{ asset('uploads/flags/' . $properties['flag']) }}" alt="{{ $locale }}" style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
                                                 </button>
                                             </li>
                                         @endforeach
@@ -114,7 +114,8 @@
                                     @if ($career_header && $career_header->image)
                                         <div class="mb-2">
                                             <img src="{{ asset('uploads/career/header/' . $career_header->image) }}"
-                                                alt="Current Cover" class="img-thumbnail" style="max-height: 150px;" loading="lazy" decoding="async">
+                                                alt="Current Cover" class="img-thumbnail" style="max-height: 150px;"
+                                                loading="lazy" decoding="async">
                                             <p class="small text-muted mt-1">Current image (upload new to replace)</p>
                                         </div>
                                     @endif
@@ -152,25 +153,25 @@
                         </div>
                         <div class="card-body">
                             {{-- PERBAIKAN: Alert khusus untuk Section 1 --}}
-                            @if(session('section1_success'))
+                            @if (session('section1_success'))
                                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                                     <strong>Success!</strong> {{ session('section1_success') }}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                 </div>
                             @endif
 
-                            @if(session('section1_error'))
+                            @if (session('section1_error'))
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <strong>Error!</strong> {{ session('section1_error') }}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                 </div>
                             @endif
 
-                            @if($errors->any() && (session('section1_error') || old('section1_title')))
+                            @if ($errors->any() && (session('section1_error') || old('section1_title')))
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <strong>Validation Errors:</strong>
                                     <ul class="mb-0">
-                                        @foreach($errors->all() as $error)
+                                        @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>
                                         @endforeach
                                     </ul>
@@ -195,7 +196,7 @@
                                                 data-bs-target="#section1-{{ $locale }}" type="button"
                                                 role="tab" aria-controls="section1-{{ $locale }}"
                                                 aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                                {{ $properties['native'] }}
+                                                <img src="{{ asset('uploads/flags/' . $properties['flag']) }}" alt="{{ $locale }}" style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
                                             </button>
                                         </li>
                                     @endforeach

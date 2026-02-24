@@ -35,7 +35,11 @@
         </div>
     </div>
 </div>
+@php
+    $supportedLocales = array_keys(config('laravellocalization.supportedLocales'));
 
+    $locales = \App\Models\Language::whereIn('locale', $supportedLocales)->get()->keyBy('locale');
+@endphp
 {{-- Modal Sub Development Form (Add/Edit) --}}
 <div class="modal fade" id="modalSubDevelopment" tabindex="-1" aria-labelledby="modalSubDevelopmentLabel"
     aria-hidden="true" data-bs-backdrop="static">
@@ -50,20 +54,20 @@
                 <input type="hidden" id="development_zone_id" name="zone_id">
                 <div class="modal-body">
                     <ul class="nav nav-tabs mb-3" id="developmentTransTab" role="tablist">
-                        @foreach (config('laravellocalization.supportedLocales') as $locale => $properties)
+                        @foreach ($locales as $locale => $properties)
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link {{ $loop->first ? 'active' : '' }}"
                                     id="development-tab-{{ $locale }}" data-bs-toggle="tab"
-                                    data-bs-target="#development-content-{{ $locale }}" type="button" role="tab"
-                                    aria-controls="development-content-{{ $locale }}">
-                                    {{ $properties['native'] }}
+                                    data-bs-target="#development-content-{{ $locale }}" type="button"
+                                    role="tab" aria-controls="development-content-{{ $locale }}">
+                                    <img src="{{ asset('uploads/flags/' . $properties['flag']) }}" alt="{{ $locale }}" style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
                                 </button>
                             </li>
                         @endforeach
                     </ul>
 
                     <div class="tab-content">
-                        @foreach (config('laravellocalization.supportedLocales') as $locale => $properties)
+                        @foreach ($locales as $locale => $properties)
                             <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
                                 id="development-content-{{ $locale }}" role="tabpanel"
                                 aria-labelledby="development-tab-{{ $locale }}">
@@ -72,8 +76,9 @@
                                     <label for="development_name_{{ $locale }}" class="form-label">
                                         Name ({{ $properties['native'] }}) <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" id="development_name_{{ $locale }}"
-                                        name="name[{{ $locale }}]" placeholder="Enter development name" required>
+                                    <input type="text" class="form-control"
+                                        id="development_name_{{ $locale }}" name="name[{{ $locale }}]"
+                                        placeholder="Enter development name" required>
                                     <small class="text-danger" id="error_development_name_{{ $locale }}"></small>
                                 </div>
 
@@ -81,10 +86,10 @@
                                     <label for="development_description_{{ $locale }}" class="form-label">
                                         Description ({{ $properties['native'] }})
                                     </label>
-                                    <textarea class="form-control summernote-development"
-                                        id="development_description_{{ $locale }}" name="description[{{ $locale }}]"
-                                        rows="4" placeholder="Enter development description"></textarea>
-                                    <small class="text-danger" id="error_development_description_{{ $locale }}"></small>
+                                    <textarea class="form-control summernote-development" id="development_description_{{ $locale }}"
+                                        name="description[{{ $locale }}]" rows="4" placeholder="Enter development description"></textarea>
+                                    <small class="text-danger"
+                                        id="error_development_description_{{ $locale }}"></small>
                                 </div>
                             </div>
                         @endforeach

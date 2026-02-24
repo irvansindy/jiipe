@@ -13,8 +13,6 @@ use App\Models\ReasonTranslation;
 use App\Models\PageAppointment;
 use App\Helpers\FormatResponseJson;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\DB;
 class FormAppointment extends Controller
 {
     public function index()
