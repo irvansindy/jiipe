@@ -58,7 +58,7 @@
 
                     {{-- Translation Tabs --}}
                     <ul class="nav nav-tabs mb-3" id="brochureTransTab" role="tablist">
-                        @foreach (config('laravellocalization.supportedLocales') as $locale => $properties)
+                        @foreach ($locales as $locale => $properties)
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link {{ $loop->first ? 'active' : '' }}"
                                     id="brochure-tab-{{ $locale }}" data-bs-toggle="tab"
@@ -71,7 +71,7 @@
                     </ul>
 
                     <div class="tab-content">
-                        @foreach (config('laravellocalization.supportedLocales') as $locale => $properties)
+                        @foreach ($locales as $locale => $properties)
                             <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}"
                                 id="brochure-content-{{ $locale }}" role="tabpanel"
                                 aria-labelledby="brochure-tab-{{ $locale }}">
