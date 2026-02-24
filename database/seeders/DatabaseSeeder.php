@@ -1,7 +1,6 @@
 <?php
 
 namespace Database\Seeders;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,12 +22,11 @@ class DatabaseSeeder extends Seeder
             MasterCompanySeeder::class,
             MasterEducationSeeder::class,
             MasterJobLevelSeeder::class,
-            TopicSeeder::class,
             TenantSeeder::class,
             HomeSliderSeeder::class,
-            CareerSeeder::class,
             AreaShowCaseSeeder::class,
             ZoneSeeder::class,
+            IndustrialEstateSeeder::class,
             VideoTourSeeder::class,
             ReviewSeeder::class,
             FrequentlyAskedQuestionsSeeder::class,

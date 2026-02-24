@@ -6,13 +6,12 @@
             </div>
         </div>
         <div class="row">
-            @foreach($news as $key => $item)
+            @foreach ($news as $key => $item)
                 <div class="col-lg-{{ $key == 0 ? '30' : '15' }} col-sm-60">
                     <div class="items {{ $key == 0 ? 'active' : '' }} pb-lg-4 pb-sm-1">
                         <div class="gambar">
                             <a href="{{ route('blog.detail', $item['id']) }}">
-                                <img src="{{ asset('uploads/blog/'.$item['thumbnail']) }}"
-                                    alt="{{ $item['title'] }}"
+                                <img src="{{ asset('uploads/blog/' . $item['thumbnail']) }}" alt="{{ $item['title'] }}"
                                     class="img-fluid" loading="lazy" decoding="async">
                             </a>
                         </div>
@@ -39,3 +38,17 @@
     <div class="clear"></div>
 
 </section>
+<style>
+    .jiipe-blog .items:not(.active) .gambar {
+    width: 100%;
+    aspect-ratio: 16 / 9; /* atau 4/3 sesuai selera */
+    overflow: hidden;
+}
+
+.jiipe-blog .items:not(.active) .gambar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+</style>

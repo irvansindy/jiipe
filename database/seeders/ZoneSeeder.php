@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Zone;
 use App\Models\ZoneTranslation;
@@ -10,6 +9,8 @@ class ZoneSeeder extends Seeder
 {
     public function run()
     {
+        ZoneTranslation::truncate();
+        Zone::truncate();
         // Define zones with translations
         $zones = [
             [
