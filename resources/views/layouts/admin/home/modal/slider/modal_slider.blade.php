@@ -63,8 +63,7 @@
                                             data-bs-target="#slider-{{ $locale }}" type="button" role="tab"
                                             aria-controls="slider-{{ $locale }}"
                                             aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                            <img src="{{ asset('uploads/flags/' . $properties['flag']) }}"
-                                                alt="{{ $locale }}" style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
+                                            <img src="{{ asset('uploads/flags/' . $properties['flag']) }}" alt="{{ $locale }}" style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
                                         </button>
                                     </li>
                                 @endforeach

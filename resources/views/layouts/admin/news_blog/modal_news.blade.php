@@ -46,7 +46,7 @@
                                         data-bs-target="#form-news-{{ $locale }}" type="button" role="tab"
                                         aria-controls="form-news-{{ $locale }}"
                                         aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                        {{ strtoupper($properties['native'] . ' - ' . $locale) }}
+                                        <img src="{{ asset('uploads/flags/' . $properties['flag']) }}" alt="{{ $locale }}" style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
                                     </button>
                                 </li>
                             @endforeach
