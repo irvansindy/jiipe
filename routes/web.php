@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\MenuPermissionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\FormAppointment;
 use App\Http\Controllers\Admin\AboutUsController;
+use App\Http\Controllers\Admin\AreaShowCaseController;
 use App\Http\Controllers\Admin\ZoneController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\BrochureController;
@@ -38,6 +39,7 @@ use App\Http\Controllers\Admin\SubDevelopmentController;
 use App\Http\Controllers\Admin\SubRegionalAdvantagesController;
 use App\Http\Controllers\Admin\ZoneClusterController;
 use App\Http\Controllers\Admin\SubResourceEnergyController;
+
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
     'middleware' => [
@@ -85,13 +87,7 @@ Route::group([
     Route::get('/news', [NewsBlogController::class, 'index'])->name('blog.index');
     Route::get('/news/type/{type}', [NewsBlogController::class, 'type'])->name('blog.type');
 
-    // Blog by category
-    // Di dalam group localization, tambahkan ini:
-    // Route::get('/blog/category/id/{categoryId}', [NewsBlogController::class, 'categoryById'])->name('blog.category.id');
-    // Route::get('/blog/category/{categorySlug}', [NewsBlogController::class, 'category'])->name('blog.category');
-
     // Blog detail
-    // Route::get('/blog/{id}', [NewsBlogController::class, 'detail'])->name('blog.detail');
     Route::get('/blog/{id}', [NewsBlogController::class, 'detail'])->name('blog.detail');
 
     // Gallery routes
@@ -120,10 +116,6 @@ Route::group([
 
     });
 
-    // Route::get('/dashboard', function () {
-    //     return view('layouts.admin.dashboard.index');
-    // })->name('dashboard');
-    // Dashboard routes
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/visitor-chart', [DashboardController::class, 'getVisitorChartData'])->name('dashboard.visitor-chart');
     Route::post('/dashboard/clear-cache', [DashboardController::class, 'clearCache'])
@@ -142,7 +134,6 @@ Route::group([
         Route::delete('delete-home-slider/{id}', [SliderController::class,'destroy'])->name('delete-home-slider');
 
         Route::get('/menu-permission', [MenuPermissionController::class, 'index'])->name('menu-permission');
-        // Tambahkan route ini di web.php atau routes admin Anda
         Route::prefix('admin/menu-permission')->middleware(['auth'])->group(function () {
             Route::get('/', [MenuPermissionController::class, 'index'])->name('menu-permission.index');
             Route::get('/fetch', [MenuPermissionController::class, 'fetchMenu'])->name('fetch-menu-permission-v2');
@@ -153,14 +144,6 @@ Route::group([
             Route::get('/child-menus', [MenuPermissionController::class, 'getChildMenus'])->name('fetch-child-menu');
             Route::post('/toggle-status', [MenuPermissionController::class, 'toggleStatus'])->name('toggle-menu-status');
         });
-
-        // Route::get('/fetch-menu-permission', [MenuPermissionController::class, 'fetchData'])->name('fetch-menu-permission');
-        // Route::get('/fetch-menu-permission-v2', [MenuPermissionController::class, 'fetchMenu'])->name('fetch-menu-permission-v2');
-        // Route::get('/fetch-detail-menu', [MenuPermissionController::class, 'showData'])->name('fetch-detail-menu');
-        // Route::get('/fetch-child-menu', [MenuPermissionController::class, 'getChildMenus'])->name('fetch-child-menu');
-        // Route::get('/fetch-parent-menu', [MenuPermissionController::class, 'getChildMenus'])->name('fetch-parent-menu');
-        // Route::post('/store-menu-permission', [MenuPermissionController::class, 'storeData'])->name('store-menu-permission');
-        // Route::post('/update-menu-permission', [MenuPermissionController::class, 'updateData'])->name('update-menu-permission');
 
         Route::get('users', [UserController::class,'index'])->name('users');
         Route::get('fetch-users', [UserController::class,'fetchUser'])->name('fetch-users');
@@ -178,7 +161,7 @@ Route::group([
         Route::post('/store-basic-information', [FormAppointment::class, 'storeBasicInformation'])->name('store-basic-information');
         Route::post('/store-reason', [FormAppointment::class, 'storeReason'])->name('store-reason');
         Route::get('/form-appointment/export', [FormAppointment::class, 'exportExcel'])->name('export-appointment');
-        
+
         Route::get('/about-us', [AboutUsController::class, 'index'])->name('about-us');
         Route::get('/about-us-fetch-content-detail', [AboutUsController::class, 'fetchContentDetail'])->name('about-us-fetch-content-detail');
         Route::post('/store-about-us-header', [AboutUsController::class, 'storeHeader'])->name('store-about-us-header');
@@ -195,6 +178,12 @@ Route::group([
         Route::get('zone/{id}/detail', [ZoneController::class, 'getZoneDetail'])->name('zone-detail');
         Route::post('store-zone', [ZoneController::class, 'storeZone'])->name('store-zone');
         Route::post('zone/{id}/update', [ZoneController::class, 'updateZone'])->name('zone-update');
+
+        Route::get('/fetch-area-show-case', [AreaShowCaseController::class, 'fetch'])->name('fetch-area-show-case');
+        Route::get('/fetch-area-show-case-id', [AreaShowCaseController::class, 'fetchById'])->name('fetch-area-show-case-id');
+        Route::post('/store-area-show-case', [AreaShowCaseController::class,'store'])->name('store-area-show-case');
+        Route::post('/update-area-show-case', [AreaShowCaseController::class,'update'])->name('update-area-show-case');
+        Route::post('/delete-area-show-case', [AreaShowCaseController::class,'destroy'])->name('delete-area-show-case');
 
         Route::get('/language', [LanguageController::class, 'index'])->name('language');
         Route::get('/fetch-language', [LanguageController::class, 'fetch'])->name('fetch-language');

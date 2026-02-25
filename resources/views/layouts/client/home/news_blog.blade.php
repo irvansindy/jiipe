@@ -40,15 +40,15 @@
 </section>
 <style>
     .jiipe-blog .items:not(.active) .gambar {
-    width: 100%;
-    aspect-ratio: 16 / 9; /* atau 4/3 sesuai selera */
-    overflow: hidden;
-}
+        width: 100%;
+        aspect-ratio: 16 / 9; /* atau 4/3 sesuai selera */
+        overflow: hidden;
+    }
 
-.jiipe-blog .items:not(.active) .gambar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-}
+    .jiipe-blog .items:not(.active) .gambar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
 </style>

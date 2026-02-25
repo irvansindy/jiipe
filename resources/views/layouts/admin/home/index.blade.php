@@ -45,6 +45,32 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-12 col-lg-12 cl-sm-12">
+                    <div class="card">
+                        <div class="card-header bg-primary">
+                            <h4 class="text-white m-0">Area Show Case</h4>
+                        </div>
+                        <div class="card-body">
+                            <ul class="nav nav-pills justify-content-end mb-2" id="chart-tab-tab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="btn btn-outline-dark me-1" id="refresh_table_showcase" type="button"
+                                        title="Refresh Table">
+                                        <i class="ti ti-refresh"></i>
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="btn btn-outline-primary" id="create_showcase" type="button"
+                                        data-bs-toggle="modal" data-bs-target="#ModalAreaShowCase" title="Create Showcase">
+                                        <i class="ti ti-pencil"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                            @include('layouts.admin.home.table_showcase')
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-12 col-lg-12 col-sm-12">
                     <div class="card">
                         <div class="card-header bg-primary">
@@ -195,7 +221,8 @@
                                         @if ($video && $video->thumbnail)
                                             <div class="mb-2">
                                                 <img src="{{ asset($video->thumbnail) }}" alt="Current thumbnail"
-                                                    class="img-thumbnail" style="max-height: 150px;" loading="lazy" decoding="async">
+                                                    class="img-thumbnail" style="max-height: 150px;" loading="lazy"
+                                                    decoding="async">
                                                 <p class="small text-muted mt-1">Current image (upload new to replace)</p>
                                             </div>
                                         @endif
@@ -274,6 +301,7 @@
     </div>
 @endsection
 @include('layouts.admin.home.modal.slider.modal_slider')
+@include('layouts.admin.home.modal.showcase.modal_showcase')
 @include('layouts.admin.home.modal.tenant.modal_tenant')
 @include('layouts.admin.home.modal.review.modal_review')
 @include('layouts.admin.home.modal.faq.modal_faq')
