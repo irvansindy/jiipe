@@ -7,18 +7,40 @@
         <div class="carousel-inner">
             @foreach ($showcases as $i => $showcase)
                 <div class="carousel-item {{ $i == 0 ? 'active' : '' }}">
-                    {{-- ⚡ First image eager, rest lazy loaded --}}
-                    @if ($i === 0)
-                        <img src="{{ asset('uploads/showcase/' . $showcase['image']) }}" class="d-block w-100"
-                            alt="{{ $showcase['title'] }}" fetchpriority="high">
-                    @else
-                        <img data-src="{{ asset('uploads/showcase/' . $showcase['image']) }}" class="d-block w-100 lazy"
-                            alt="{{ $showcase['title'] }}" loading="lazy">
-                    @endif
+                    <picture>
+                        @if (!empty($showcase['image_mobile']))
+                            @if ($i === 0)
+                                <source
+                                    media="(max-width: 767px)"
+                                    srcset="{{ asset('uploads/showcase/' . $showcase['image_mobile']) }}">
+                            @else
+                                <source
+                                    media="(max-width: 767px)"
+                                    data-srcset="{{ asset('uploads/showcase/' . $showcase['image_mobile']) }}"
+                                    class="lazy-source">
+                            @endif
+                        @endif
+
+                        {{-- Desktop image (fallback) --}}
+                        @if ($i === 0)
+                            <img
+                                src="{{ asset('uploads/showcase/' . $showcase['image']) }}"
+                                class="d-block w-100"
+                                alt="{{ $showcase['title'] }}"
+                                fetchpriority="high">
+                        @else
+                            <img
+                                data-src="{{ asset('uploads/showcase/' . $showcase['image']) }}"
+                                class="d-block w-100 lazy"
+                                alt="{{ $showcase['title'] }}"
+                                loading="lazy">
+                        @endif
+                    </picture>
                 </div>
             @endforeach
         </div>
     </div>
+
     <ol class="carousel-indicators">
         @foreach ($showcases as $i => $showcase)
             <li data-target="#kawasan_wrapper_one" data-slide-to="{{ $i }}" data-attr="{{ $i }}"
@@ -37,7 +59,6 @@
         <div class="row">
             <div class="col-lg-30 col-sm-60">
                 <div class="jiipe-images">
-                    {{-- ⚡ Lazy load dengan proper encoding --}}
                     <img data-src="{{ asset('uploads/blog/' . rawurlencode('ab135-JIIPE INVESTOR UPDATE (website).jpg')) }}"
                         class="img-fluid lazy" alt="JIIPE Profile" loading="lazy"
                         onerror="this.onerror=null; this.src='{{ asset('uploads/blog/ab135-JIIPE INVESTOR UPDATE (website).jpg') }}';">
@@ -80,7 +101,6 @@
 
 <section class="video-jiipe" id="videojiipe">
     <div class="embed-responsive embed-responsive-21by9">
-        {{-- ⚡ Video dengan lazy loading dan autoplay attributes --}}
         <video class="embed-responsive-item" id="jiipeVideo" loop playsinline controls preload="auto"
             poster="{{ asset('asset/images/video-placeholder.jpg') }}">
             @if (app()->getLocale() == 'zh')
@@ -95,7 +115,6 @@
 
 @push('js')
     <script>
-        // ⚡ Lazy load images
         (function() {
             'use strict';
 
@@ -113,32 +132,49 @@
                         }
                     });
                 }, {
-                    rootMargin: '50px 0px', // Start loading 50px before entering viewport
+                    rootMargin: '50px 0px',
                     threshold: 0.01
                 });
 
-                // Observe all lazy images
                 document.querySelectorAll('img.lazy').forEach(img => {
                     imageObserver.observe(img);
                 });
 
-                // ⚡ Lazy load carousel images on slide change
+                // Lazy load carousel images (desktop) + source mobile on slide change
                 $('#kawasan_wrapper_one').on('slide.bs.carousel', function(e) {
                     const $nextSlide = $(e.relatedTarget);
-                    const $img = $nextSlide.find('img.lazy');
 
+                    // Load lazy <source> untuk mobile
+                    $nextSlide.find('source.lazy-source').each(function() {
+                        const $source = $(this);
+                        if ($source.data('srcset')) {
+                            $source.attr('srcset', $source.data('srcset'));
+                            $source.removeAttr('data-srcset');
+                            $source.removeClass('lazy-source');
+                        }
+                    });
+
+                    // Load lazy <img> untuk desktop
+                    const $img = $nextSlide.find('img.lazy');
                     if ($img.length && $img.data('src')) {
                         $img.attr('src', $img.data('src'));
                         $img.removeAttr('data-src');
                         $img.removeClass('lazy');
                     }
                 });
+
             } else {
-                // Fallback for browsers without IntersectionObserver
+                // Fallback: load semua sekaligus
                 document.querySelectorAll('img.lazy').forEach(img => {
                     if (img.dataset.src) {
                         img.src = img.dataset.src;
                         img.removeAttribute('data-src');
+                    }
+                });
+                document.querySelectorAll('source.lazy-source').forEach(source => {
+                    if (source.dataset.srcset) {
+                        source.srcset = source.dataset.srcset;
+                        source.removeAttribute('data-srcset');
                     }
                 });
             }
@@ -149,90 +185,63 @@
 @push('js')
     <script>
         $(document).ready(function() {
-            // ⚡ Video Autoplay Handler - FIXED VERSION
             var isVideoPlaying = false;
             var playAttempted = false;
 
-            // Function play video dengan aman dan proper error handling
             function playVideo(video) {
                 if (!video || playAttempted) return;
 
-                // Pastikan video dalam kondisi siap
                 video.muted = true;
                 video.currentTime = 0;
-
                 playAttempted = true;
 
-                // Play dengan promise handling yang proper
                 var playPromise = video.play();
 
                 if (playPromise !== undefined) {
                     playPromise
                         .then(function() {
                             isVideoPlaying = true;
-                            console.log('✅ Video autoplay berhasil');
                         })
                         .catch(function(err) {
-                            console.log('⚠️ Autoplay diblokir browser:', err.name);
-
-                            // Tampilkan controls sebagai fallback
                             video.controls = true;
-
-                            // Reset flag untuk retry
                             playAttempted = false;
                         });
                 }
             }
 
-            // Function untuk pause video
             function pauseVideo(video) {
                 if (!video || !isVideoPlaying) return;
-
                 video.pause();
                 isVideoPlaying = false;
             }
 
-            // ⚡ Inisialisasi video dengan IntersectionObserver
             if ('IntersectionObserver' in window) {
                 var videoObserver = new IntersectionObserver(function(entries) {
                     entries.forEach(function(entry) {
                         var video = entry.target.querySelector('video');
 
                         if (entry.isIntersecting) {
-                            // Section masuk viewport - play video
                             if (video && !isVideoPlaying) {
-                                setTimeout(function() {
-                                    playVideo(video);
-                                }, 300); // Delay untuk memastikan section sudah visible
+                                setTimeout(function() { playVideo(video); }, 300);
                             }
                         } else {
-                            // Section keluar viewport - pause video
                             if (video && isVideoPlaying) {
                                 pauseVideo(video);
-                                playAttempted = false; // Reset untuk bisa play lagi nanti
+                                playAttempted = false;
                             }
                         }
                     });
-                }, {
-                    threshold: 0.25, // Play saat 25% section terlihat
-                    rootMargin: '0px'
-                });
+                }, { threshold: 0.25, rootMargin: '0px' });
 
                 var videoSection = document.querySelector('#videojiipe');
-                if (videoSection) {
-                    videoObserver.observe(videoSection);
-                }
+                if (videoSection) videoObserver.observe(videoSection);
             } else {
-                // Fallback untuk browser tanpa IntersectionObserver
                 setTimeout(function() {
                     var video = document.querySelector('#jiipeVideo');
-                    if (video) {
-                        playVideo(video);
-                    }
+                    if (video) playVideo(video);
                 }, 800);
             }
 
-            // ⚡ Handle visibility change (tab switching)
             document.addEventListener('visibilitychange', function() {
                 var video = document.querySelector('#jiipeVideo');
                 if (!video) return;
@@ -240,23 +249,17 @@
                 if (document.hidden) {
                     pauseVideo(video);
                 } else {
-                    // Check jika video section visible
                     var videoSection = document.querySelector('#videojiipe');
                     if (videoSection) {
                         var rect = videoSection.getBoundingClientRect();
-                        var isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-
-                        if (isVisible && !isVideoPlaying) {
-                            playAttempted = false; // Reset flag
-                            setTimeout(function() {
-                                playVideo(video);
-                            }, 300);
+                        if (rect.top < window.innerHeight && rect.bottom > 0 && !isVideoPlaying) {
+                            playAttempted = false;
+                            setTimeout(function() { playVideo(video); }, 300);
                         }
                     }
                 }
             });
 
-            // ⚡ User interaction fallback - play saat user klik/touch di section
             $('#videojiipe').one('click touchstart', function() {
                 var video = document.querySelector('#jiipeVideo');
                 if (video && !isVideoPlaying) {

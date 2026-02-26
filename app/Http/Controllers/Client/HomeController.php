@@ -75,6 +75,7 @@ class HomeController extends Controller
                 $trans = $showcase->translations->first();
                 return [
                     'image' => $showcase->image,
+                    'image_mobile' => $showcase->image_mobile ?? $showcase->image,
                     'title' => $trans?->title ?? '',
                     'description' => $trans?->description ?? '',
                 ];

@@ -10,7 +10,7 @@ class AreaShowCase extends Model
         'title',
         'description',
         'image',
-        'image_mobile ',
+        'image_mobile',
         'is_active',
         'position',
     ];
