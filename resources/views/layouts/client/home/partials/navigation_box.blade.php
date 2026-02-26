@@ -1,5 +1,5 @@
 {{-- navigation_box.blade.php --}}
-<div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom" style="width:100%;">
+<div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom mt-2" style="width:100%;">
     <ul>
         <li class>
             <a href="#contact">
