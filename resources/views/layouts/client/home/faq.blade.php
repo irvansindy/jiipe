@@ -1,5 +1,5 @@
 @php
-    $faqs = app()->make('App\Http\Controllers\Client\HomeController')->getFaqs();
+    // $faqs = app()->make('App\Http\Controllers\Client\HomeController')->getFaqs();
 
     // Convert collection → array
     $faqs = is_array($faqs) ? $faqs : $faqs->toArray();

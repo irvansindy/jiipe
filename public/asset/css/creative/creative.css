@@ -1010,7 +1010,8 @@ Start Header css
     font-family: 'Font Awesome 5 Pro';
     font-weight: 600;
     display: inline-block;
-    color: #162542;
+    /* color: #162542; */
+    color: #fff;
     font-size: 14px;
     margin-left: 5px;
     float: right;
@@ -1018,7 +1019,7 @@ Start Header css
 .header-navigation .main-menu ul li.active > a,
 .header-navigation .main-menu ul li:focus > a,
 .header-navigation .main-menu ul li:hover > a {
-    color: #d22c12 !important;
+    /* color: #d22c12 !important; */
     text-decoration-color: #d22c12;
     text-decoration-thickness: 2px;
     text-underline-offset: 10px;
@@ -1109,7 +1110,7 @@ Start Header css
     font-family: 'Font Awesome 5 Pro';
     font-weight: 600;
     display: inline-block;
-    color: #fff;
+    color: #fff !important;
     font-size: 14px;
     margin-left: 5px;
     float: right;
@@ -1133,7 +1134,7 @@ Start Header css
     font-family: 'Font Awesome 5 Pro';
     font-weight: 600;
     display: inline-block;
-    color: #fff;
+    color: #fff !important;
     font-size: 14px;
     margin-left: 5px;
     float: right;
@@ -1202,7 +1203,8 @@ Start Header css
     text-align: center;
     line-height: 45px;
     cursor: pointer;
-    color: #162542;
+    /* color: #162542; */
+    color: #fff;
     font-size: 20px;
 }
 .header-navigation .header-right-nav {
@@ -2233,7 +2235,7 @@ FAQ css
 .faq-jippe .faq-accordian .card .card-header a[aria-expanded]:after {
     position: absolute;
     top: 0;
-    right: 0;
+    right: -16px;
     display: flex;
     align-items: center;
     justify-content: center;

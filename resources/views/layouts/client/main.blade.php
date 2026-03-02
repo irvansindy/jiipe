@@ -1,4 +1,3 @@
-{{-- filepath: resources/views/layouts/main.blade.php - BALANCED VERSION --}}
 <!DOCTYPE html>
 <html lang="id">
 
@@ -44,28 +43,24 @@
     <link rel="stylesheet" href="{{ asset('asset/js/bootstrap-4.0.0/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('asset/backend/css/style.default.css') }}">
 
-    <!-- ⚡ Font Awesome - OPTIMIZED (Hemat 1.5MB!) -->
-    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/fontawesome.min.css">
-    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/solid.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/fontawesome.min.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/solid.min.css" media="print" onload="this.media='all'">
-    <!-- Uncomment jika pakai brand icons (Facebook, Instagram, Twitter): -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/brands.min.css" media="print" onload="this.media='all'"> -->
-
+    <!-- ⚡ Font Awesome - OPTIMIZED -->
+    <!-- NOTE: 'fontawesome.min.css' butuh base file juga: 'all.min.css' (atau 'fontawesome + solid + brands + regular').
+         Versi paling aman + biasanya lebih kecil/lebih cacheable: pakai 'all.min.css' saja. -->
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
     <noscript>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/fontawesome.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/solid.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     </noscript>
 
     <!-- ⚡ Non-Critical CSS - Defer loading -->
-    <link rel="stylesheet" href="{{ asset('asset/css/styles.css') }}" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="{{ asset('asset/css/media.styles.css') }}" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="{{ asset('asset/css/animate.css') }}" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="{{ asset('asset/css/creative/creative.css') }}?ver=1.0.32" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="{{ asset('asset/css/creative/creativeresponsive.css') }}?ver=1.0.25" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="{{ asset('asset/css/cdn/swiper.css') }}" media="print" onload="this.media='all'">
+    <link rel="preload" as="style" href="{{ asset('asset/css/styles.css') }}" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="{{ asset('asset/css/media.styles.css') }}" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="{{ asset('asset/css/animate.css') }}" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="{{ asset('asset/css/creative/creative.css') }}?ver=1.0.32" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="{{ asset('asset/css/creative/creativeresponsive.css') }}?ver=1.0.25" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" as="style" href="{{ asset('asset/css/cdn/swiper.css') }}" onload="this.onload=null;this.rel='stylesheet'">
 
     <noscript>
         <link rel="stylesheet" href="{{ asset('asset/css/styles.css') }}">
@@ -133,8 +128,10 @@
     @include('layouts.client.partials.header')
     @yield('content')
     @include('layouts.client.partials.footerv2')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<!-- ⚡ VITE JS BUNDLE -->
+    <!-- jQuery dari CDN: tambah defer agar tidak blocking -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- ⚡ VITE JS BUNDLE -->
     @vite('resources/js/app.js')
 
     @stack('js')

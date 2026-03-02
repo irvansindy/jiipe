@@ -6,8 +6,18 @@
             @foreach ($sliders as $slider)
                 <div class="item">
                     <div class="embed-responsive embed-responsive-21by9">
-                        <video class="embed-responsive-item" muted playsinline webkit-playsinline preload="metadata">
-                            <source src="{{ asset('uploads/home-slider/' . $slider['file']) }}" type="video/mp4">
+                        <video
+                            class="embed-responsive-item"
+                            muted
+                            playsinline
+                            webkit-playsinline
+                            preload="{{ $loop->first ? 'metadata' : 'none' }}"
+                        >
+                            <source
+                                src="{{ asset('uploads/home-slider/' . $slider['file']) }}"
+                                type="video/mp4"
+                                @if($loop->first) fetchpriority="high" @else fetchpriority="low" @endif
+                            >
                         </video>
                         <div class="home-container">
                             <div class="home-caption">
@@ -39,9 +49,13 @@
 </section>
 
 @push('js')
+    {{-- ⚡ Preload video slide pertama saja (yang above-the-fold) --}}
+    @if(!empty($sliders) && count($sliders) > 0)
+        <link rel="preload" as="video" href="{{ asset('uploads/home-slider/' . $sliders[0]['file']) }}" type="video/mp4" fetchpriority="high">
+    @endif
+
     <script>
         $(document).ready(function() {
-            // ⚡ OPTIMIZED: Check if already initialized
             var $homeBox = $('.home-box');
 
             // Destroy existing owl carousel if any
@@ -50,7 +64,6 @@
                 $homeBox.removeClass('owl-loaded owl-drag');
             }
 
-            // Initialize Owl Carousel
             var homeSlider = $homeBox.owlCarousel({
                 items: 1,
                 loop: true,
@@ -64,17 +77,12 @@
                 animateIn: 'fadeIn',
                 smartSpeed: 1000,
                 responsive: {
-                    0: {
-                        items: 1
-                    },
-                    768: {
-                        items: 1
-                    },
-                    1024: {
-                        items: 1
-                    }
+                    0: { items: 1 },
+                    768: { items: 1 },
+                    1024: { items: 1 }
                 },
                 onInitialized: function(event) {
+                    prepareVideos();
                     playCurrentVideo(event);
                 },
                 onTranslated: function(event) {
@@ -86,10 +94,24 @@
                 }
             });
 
-            // ⚡ Video control functions
+            function prepareVideos() {
+                // Pastikan semua video muted & playsinline
+                $('.home-box video').each(function() {
+                    this.muted = true;
+                    this.setAttribute('playsinline', '');
+                    this.setAttribute('webkit-playsinline', '');
+                });
+            }
+
             function playCurrentVideo(event) {
-                var activeItem = $('.home-box .owl-item.active');
-                var video = activeItem.find('video').get(0);
+                var $activeItem = $('.home-box .owl-item.active');
+                var video = $activeItem.find('video').get(0);
+
+                // Saat slide aktif, set preload metadata agar cepat play
+                if (video && video.getAttribute('preload') === 'none') {
+                    video.setAttribute('preload', 'metadata');
+                }
+
                 if (video) {
                     video.currentTime = 0;
                     video.play().catch(function(error) {
@@ -102,10 +124,15 @@
                 $('.home-box video').each(function() {
                     this.pause();
                     this.currentTime = 0;
+
+                    // ⚡ Kembalikan ke preload none untuk menghemat bandwidth
+                    if (this.closest('.owl-item') && !this.closest('.owl-item').classList.contains('active')) {
+                        this.setAttribute('preload', 'none');
+                    }
                 });
             }
 
-            // ⚡ Navigation controls
+            // Navigation controls
             $('.owl-prev').on('click', function(e) {
                 e.preventDefault();
                 homeSlider.trigger('prev.owl.carousel');
@@ -116,24 +143,13 @@
                 homeSlider.trigger('next.owl.carousel');
             });
 
-            // ⚡ Keyboard navigation
+            // Keyboard navigation
             $(document).on('keydown', function(e) {
-                if (e.keyCode == 37) { // Left arrow
-                    homeSlider.trigger('prev.owl.carousel');
-                }
-                if (e.keyCode == 39) { // Right arrow
-                    homeSlider.trigger('next.owl.carousel');
-                }
+                if (e.keyCode == 37) homeSlider.trigger('prev.owl.carousel');
+                if (e.keyCode == 39) homeSlider.trigger('next.owl.carousel');
             });
 
-            // ⚡ Ensure videos are muted and have playsinline
-            $('.home-box video').each(function() {
-                this.muted = true;
-                this.setAttribute('playsinline', '');
-                this.setAttribute('webkit-playsinline', '');
-            });
-
-            // ⚡ Auto advance on video end
+            // Auto advance on video end
             $('.home-box video').on('ended', function() {
                 homeSlider.trigger('next.owl.carousel');
             });

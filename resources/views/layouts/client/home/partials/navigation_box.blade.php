@@ -1,9 +1,9 @@
 {{-- navigation_box.blade.php --}}
-<div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom mt-2" style="width:100%;">
+<div class="navigasi-box navigasi-box-shadow navigasi-box-border-bottom" style="width:100%;">
     <ul>
         <li class>
             <a href="#contact">
-                <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
+                <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex mt-3">
                     <div class="icon"><i class="fa fa-calendar-alt"></i></div>
                     <div class="text">
                         <p>@lang('system.quick appointment')</p>
@@ -14,7 +14,7 @@
         </li>
         <li>
             <a href="#videotour">
-                <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
+                <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex mt-3">
                     <div class="icon"><i class="fa fa-map-marked-alt"></i></div>
                     <div class="text">
                         <p>@lang('system.watch')</p>
@@ -39,7 +39,7 @@
                     {{-- Mobile Version --}}
                     <a href="{{ $brochureUrl }}" target="_blank" rel="noopener" class="hashmb track-brochure-download"
                         data-brochure-id="{{ $brochureId }}" download>
-                        <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
+                        <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex mt-3">
                             <div class="icon"><i class="fa fa-book-open"></i></div>
                             <div class="text">
                                 <p>@lang('system.download')</p>
@@ -51,7 +51,7 @@
                     {{-- Desktop Version --}}
                     <a href="{{ $brochureUrl }}" target="_blank" rel="noopener" class="hash track-brochure-download"
                         data-brochure-id="{{ $brochureId }}" download>
-                        <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
+                        <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex mt-3">
                             <div class="icon"><i class="fa fa-book-open"></i></div>
                             <div class="text">
                                 <p>@lang('system.download')</p>
@@ -64,7 +64,7 @@
                 {{-- Fallback ke file static --}}
                 <a href="{{ asset('asset/brochure/(Desktop Version) E-Brochure JIIPE-Ineractive.pdf') }}"
                     target="_blank" rel="noopener" class="hash track-brochure-download">
-                    <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
+                    <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex mt-3">
                         <div class="icon"><i class="fa fa-book-open"></i></div>
                         <div class="text">
                             <p>@lang('system.download')</p>
@@ -76,7 +76,7 @@
         </li>
         <li>
             <a href="#faq">
-                <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex">
+                <div class="navigasi-body animate-icon d-lg-flex d-sm-inline-flex mt-3">
                     <div class="icon"><i class="fa fa-comment-alt"></i></div>
                     <div class="text">
                         <p>@lang('system.frequently')</p>
