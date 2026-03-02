@@ -496,10 +496,10 @@
             transition: opacity 0.28s ease, visibility 0.28s ease;
         }
 
-        .nav-menu-overlay.active {
+        /* .nav-menu-overlay.active {
             opacity: 1;
             visibility: visible;
-        }
+        } */
 
         body.menu-open {
             overflow: hidden !important;
