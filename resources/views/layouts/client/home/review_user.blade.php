@@ -82,8 +82,8 @@
         }
 
         .comment-jiipe .testimonial-list .owl-item .card-body .description {
-            /* color: #ffffff !important;
-            opacity: 1 !important;
+            color: #ffffff !important;
+            /* opacity: 1 !important;
             font-size: 12px !important;
             line-height: 1.6 !important;
             margin-bottom: 0 !important;
@@ -94,7 +94,7 @@
             font-size: 12px !important;
             line-height: 26px !important;
             text-align: center !important;
-            color: #53565a !important;
+            /* color: #53565a !important; */
         }
 
         .comment-jiipe .testimonial-list .owl-item .card-footer {
