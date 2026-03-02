@@ -41,7 +41,7 @@
     </div>
 </section>
 
-<style>
+{{-- <style>
     /* ⚡ KEEP ORIGINAL STYLING - NO BLUR ON MOBILE */
     @media (max-width: 991px) {
         .comment-jiipe .testimonial-list .owl-item {
@@ -120,7 +120,7 @@
             background: #53565a !important;
         }
     }
-</style>
+</style> --}}
 
 <script>
     // ⚡ Wait for jQuery and OwlCarousel to load
