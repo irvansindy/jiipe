@@ -129,7 +129,7 @@
     @yield('content')
     @include('layouts.client.partials.footerv2')
     <!-- jQuery dari CDN: tambah defer agar tidak blocking -->
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <!-- ⚡ VITE JS BUNDLE -->
     @vite('resources/js/app.js')
