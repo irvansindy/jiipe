@@ -5,13 +5,9 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\News;
-use App\Models\NewsTranslation;
 use App\Models\NewsCategories;
-use App\Models\NewsCategoriesTranslation;
-use App\Models\Gallery;
-use App\Models\GalleryTranslations;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Helpers\ShareLinkHelper;
 
 class NewsBlogController extends Controller
 {
@@ -400,7 +396,6 @@ class NewsBlogController extends Controller
 
         return view('layouts.client.blog.index', compact('data'));
     }
-
     public function detail($id)
     {
         $locale = app()->getLocale();
@@ -416,6 +411,12 @@ class NewsBlogController extends Controller
         ->where('id', $id)
         ->where('is_published', 1)
         ->firstOrFail();
+
+        // Generate short code jika belum ada
+        if (empty($news->short_code)) {
+            $news->short_code = ShareLinkHelper::generateShortCode();
+            $news->save();
+        }
 
         $translation = $news->translations->firstWhere('locale', $locale);
 
@@ -446,6 +447,24 @@ class NewsBlogController extends Controller
         })->filter(function($cat) {
             return !empty($cat['name']);
         });
+
+        // Generate thumbnail URL - FULLY QUALIFIED untuk OG meta
+        $thumbnailUrl = $news->thumbnail
+            ? (filter_var($news->thumbnail, FILTER_VALIDATE_URL)
+                ? $news->thumbnail
+                : url('uploads/blog/' . $news->thumbnail))
+            : url('asset/images/default-blog.jpg');
+
+        // Generate share data dengan OG meta
+        $shareData = ShareLinkHelper::generateShareData([
+            'id' => $news->id,
+            'short_code' => $news->short_code,
+            'url' => route('blog.detail', ['id' => $news->id]),
+            'title' => $translation->title ?? 'News Detail',
+            'description' => Str::limit(strip_tags($translation->content ?? ''), 160),
+            'image' => $thumbnailUrl,
+        ]);
+
         $data = [
             'title' => ($translation->title ?? 'News Detail') . ' - JIIPE',
             'metaKey' => $translation->title ?? '',
@@ -457,6 +476,8 @@ class NewsBlogController extends Controller
             'translation' => $translation,
             'category' => $news->category,
             'categoryName' => $categoryTranslation ? $categoryTranslation->name : '',
+            'ogMeta' => $shareData['og_meta'],
+            'shareData' => $shareData,
         ];
 
         return view('layouts.client.blog.detail', compact('data'));
@@ -498,5 +519,18 @@ class NewsBlogController extends Controller
             'categorySlug' => $categoryTranslation ? Str::slug($categoryTranslation->name) : '',
             'quote' => $translation->quote ?? '',
         ];
+    }
+
+    /**
+     * Handle short link redirect
+     * Mengubah short code menjadi full detail URL
+     */
+    public function shortLinkRedirect($shortCode)
+    {
+        $news = News::where('short_code', $shortCode)
+            ->where('is_published', 1)
+            ->firstOrFail();
+
+        return redirect()->route('blog.detail', ['id' => $news->id], 301);
     }
 }

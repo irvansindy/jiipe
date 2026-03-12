@@ -17,9 +17,9 @@
                             <li class="{{ ($data['activeFilter'] ?? '') === 'all' ? 'active' : '' }}">
                                 <a href="{{ route('blog.index') }}">{{ __('All') }}</a>
                             </li>
-                            @if(!empty($data['categories']))
-                                @foreach($data['categories'] as $category)
-                                {{-- @dd($category) --}}
+                            @if (!empty($data['categories']))
+                                @foreach ($data['categories'] as $category)
+                                    {{-- @dd($category) --}}
                                     @php
                                         // Cek active berdasarkan category ID
                                         $isActive = ($category['id'] ?? '') == ($data['news']->category_id ?? '');
@@ -57,7 +57,7 @@
                             <p>
                                 <span>
                                     <img class="back-img" src="{{ asset('asset/images/arrow-back.png') }}"
-                                         alt="@lang('system.Jiipe industrial estate gresik')">&nbsp;
+                                        alt="@lang('system.Jiipe industrial estate gresik')">&nbsp;
                                 </span>&nbsp;
                                 <a href="{{ route('blog.index') }}">{{ __('Return to Index') }}</a>
                             </p>
@@ -73,13 +73,17 @@
                 {{-- Featured Image --}}
                 <div style="max-width: 865px; margin-bottom: 1.2rem;">
                     <img class="artikel img img-fluid"
-                        src="{{ $data['news']->thumbnail ? (filter_var($data['news']->thumbnail, FILTER_VALIDATE_URL) ? $data['news']->thumbnail : asset('uploads/blog/' . $data['news']->thumbnail)) : asset('asset/images/default-blog.jpg') }}" alt="{{ $data['translation']->title ?? '' }}" loading="lazy" decoding="async">
+                        src="{{ $data['news']->thumbnail ? (filter_var($data['news']->thumbnail, FILTER_VALIDATE_URL) ? $data['news']->thumbnail : asset('uploads/blog/' . $data['news']->thumbnail)) : asset('asset/images/default-blog.jpg') }}"
+                        alt="{{ $data['translation']->title ?? '' }}" loading="lazy" decoding="async">
                 </div>
 
                 {{-- Content --}}
                 <div class="content">
                     {!! $data['translation']->content ?? '' !!}
                 </div>
+
+                {{-- ✅ SOCIAL SHARING COMPONENT --}}
+                @include('components.social-sharing')
 
                 {{-- Link to Other Articles --}}
                 <div class="lihat-artikel">
@@ -94,43 +98,47 @@
                 @php
                     $locale = app()->getLocale();
                     $relatedNews = \App\Models\News::with([
-                        'translations' => function($query) use ($locale) {
+                        'translations' => function ($query) use ($locale) {
                             $query->where('locale', $locale);
                         },
-                        'category.translations' => function($query) use ($locale) {
+                        'category.translations' => function ($query) use ($locale) {
                             $query->where('locale', $locale);
-                        }
+                        },
                     ])
-                    ->where('category_id', $data['news']->category_id)
-                    ->where('id', '!=', $data['news']->id)
-                    ->where('is_published', 1)
-                    ->orderBy('created_at', 'desc')
-                    ->take(2)
-                    ->get()
-                    ->map(function($news) use ($locale) {
-                        $translation = $news->translations->firstWhere('locale', $locale);
-                        if (!$translation) return null;
+                        ->where('category_id', $data['news']->category_id)
+                        ->where('id', '!=', $data['news']->id)
+                        ->where('is_published', 1)
+                        ->orderBy('created_at', 'desc')
+                        ->take(2)
+                        ->get()
+                        ->map(function ($news) use ($locale) {
+                            $translation = $news->translations->firstWhere('locale', $locale);
+                            if (!$translation) {
+                                return null;
+                            }
 
-                        return [
-                            'id' => $news->id,
-                            'title' => $translation->title,
-                            'excerpt' => Str::limit(strip_tags($translation->content), 150),
-                            'thumbnail' => $news->thumbnail
-                                ? (filter_var($news->thumbnail, FILTER_VALIDATE_URL)
-                                    ? $news->thumbnail
-                                    : asset('uploads/blog/' . $news->thumbnail))
-                                : asset('asset/images/default-blog.jpg'),
-                            'date' => $news->created_at ? $news->created_at->format('M d, Y') : '',
-                        ];
-                    })
-                    ->filter();
+                            return [
+                                'id' => $news->id,
+                                'title' => $translation->title,
+                                'excerpt' => Str::limit(strip_tags($translation->content), 150),
+                                'thumbnail' => $news->thumbnail
+                                    ? (filter_var($news->thumbnail, FILTER_VALIDATE_URL)
+                                        ? $news->thumbnail
+                                        : asset('uploads/blog/' . $news->thumbnail))
+                                    : asset('asset/images/default-blog.jpg'),
+                                'date' => $news->created_at ? $news->created_at->format('M d, Y') : '',
+                            ];
+                        })
+                        ->filter();
                 @endphp
 
-                @if($relatedNews->count() > 0)
+                @if ($relatedNews->count() > 0)
                     <div class="row artikel-bawah lists_news_blog">
-                        <div class="col-md-60"><hr class="artikel-brosur"></div>
+                        <div class="col-md-60">
+                            <hr class="artikel-brosur">
+                        </div>
 
-                        @foreach($relatedNews as $related)
+                        @foreach ($relatedNews as $related)
                             <div class="col-md-20">
                                 <div class="items">
                                     <div class="tanggal">
@@ -138,7 +146,8 @@
                                     </div>
                                     <div class="gambar">
                                         <a href="{{ route('blog.detail', $related['id']) }}">
-                                            <img src="{{ $related['thumbnail'] }}" alt="{{ $related['title'] }}" class="img-fluid" decoding="async" loading="lazy">
+                                            <img src="{{ $related['thumbnail'] }}" alt="{{ $related['title'] }}"
+                                                class="img-fluid" decoding="async" loading="lazy">
                                         </a>
                                     </div>
                                     <div class="judul">
@@ -152,7 +161,7 @@
                                             <p>{{ __('Read More') }}
                                                 <span>
                                                     <img src="{{ asset('asset/images/arrow.png') }}"
-                                                         alt="@lang('system.Jiipe industrial estate gresik')">
+                                                        alt="@lang('system.Jiipe industrial estate gresik')">
                                                 </span>
                                             </p>
                                         </a>
@@ -161,7 +170,9 @@
                             </div>
                         @endforeach
 
-                        <div class="col-md-60"><hr class="artikel-brosur"></div>
+                        <div class="col-md-60">
+                            <hr class="artikel-brosur">
+                        </div>
                     </div>
                 @endif
             </div>
@@ -170,90 +181,101 @@
 </section>
 
 @push('css')
-<style>
-    section.artikel-sec-1 .prelative.container .row .content {
-        padding-top: 5px;
-    }
-    section.artikel-sec-1 .prelative.container .row .content p {
-        margin-bottom: 15px;
-        line-height: 1.6;
-    }
-    section.artikel-sec-1 .prelative.container .row .judul h1 {
-        color: #d22c12;
-        font-size: 35px;
-        font-family: Montserrat, sans-serif;
-        font-weight: 700;
-        margin-bottom: 20px;
-    }
-    .lists_news_blog .col-md-20 .items {
-        padding-bottom: 0;
-    }
-    section.artikel-sec-1 .back {
-        text-align: right;
-    }
-    section.artikel-sec-1 .back a {
-        color: #d22c12;
-        font-weight: 600;
-    }
-    section.artikel-sec-1 .back a:hover {
-        text-decoration: underline;
-    }
-    section.artikel-sec-1 .lihat-artikel {
-        margin: 30px 0;
-        padding: 20px;
-        background-color: #f5f5f5;
-        border-left: 4px solid #d22c12;
-    }
-    section.artikel-sec-1 .lihat-artikel a {
-        color: #d22c12;
-        font-weight: 600;
-        font-size: 16px;
-    }
-    section.artikel-sec-1 .lihat-artikel a:hover {
-        text-decoration: underline;
-    }
-    section.artikel-sec-1 .leftsn_menu ul li a {
-        color: #333;
-    }
-    section.artikel-sec-1 .leftsn_menu ul li.active a {
-        color: #d22c12;
-        font-weight: 700;
-    }
-</style>
+    <style>
+        section.artikel-sec-1 .prelative.container .row .content {
+            padding-top: 5px;
+        }
+
+        section.artikel-sec-1 .prelative.container .row .content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        section.artikel-sec-1 .prelative.container .row .judul h1 {
+            color: #d22c12;
+            font-size: 35px;
+            font-family: Montserrat, sans-serif;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .lists_news_blog .col-md-20 .items {
+            padding-bottom: 0;
+        }
+
+        section.artikel-sec-1 .back {
+            text-align: right;
+        }
+
+        section.artikel-sec-1 .back a {
+            color: #d22c12;
+            font-weight: 600;
+        }
+
+        section.artikel-sec-1 .back a:hover {
+            text-decoration: underline;
+        }
+
+        section.artikel-sec-1 .lihat-artikel {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-left: 4px solid #d22c12;
+        }
+
+        section.artikel-sec-1 .lihat-artikel a {
+            color: #d22c12;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        section.artikel-sec-1 .lihat-artikel a:hover {
+            text-decoration: underline;
+        }
+
+        section.artikel-sec-1 .leftsn_menu ul li a {
+            color: #333;
+        }
+
+        section.artikel-sec-1 .leftsn_menu ul li.active a {
+            color: #d22c12;
+            font-weight: 700;
+        }
+    </style>
 @endpush
 
 @push('js')
-<script type="text/javascript">
-    $(document).ready(function(){
-        // Mobile select menu - AKAN OTOMATIS AMBIL HREF YANG SUDAH BENAR
-        if ($(window).width() < 767) {
-            var myform = document.getElementById('mytoSelect'),
-                items = document.getElementById('lists_leftmenuKawasan').getElementsByTagName('li'),
-                select = document.createElement('select'),
-                len = items.length;
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Mobile select menu - AKAN OTOMATIS AMBIL HREF YANG SUDAH BENAR
+            if ($(window).width() < 767) {
+                var myform = document.getElementById('mytoSelect'),
+                    items = document.getElementById('lists_leftmenuKawasan').getElementsByTagName('li'),
+                    select = document.createElement('select'),
+                    len = items.length;
 
-            for(var i = 0; i < len; i++) {
-                var option = document.createElement('option');
-                var label = items[i].textContent.replace(/\s\s+/g, " ").trim(),
-                    link = items[i].getElementsByTagName('a')[0].href,
-                    isActive = items[i].classList.contains('active');
+                for (var i = 0; i < len; i++) {
+                    var option = document.createElement('option');
+                    var label = items[i].textContent.replace(/\s\s+/g, " ").trim(),
+                        link = items[i].getElementsByTagName('a')[0].href,
+                        isActive = items[i].classList.contains('active');
 
-                option.textContent = label;
-                option.value = link;
-                if(isActive) option.selected = true;
+                    option.textContent = label;
+                    option.value = link;
+                    if (isActive) option.selected = true;
 
-                select.appendChild(option);
+                    select.appendChild(option);
+                }
+
+                myform.appendChild(select);
+
+                $(select).addClass('form-control');
+                $(select).change(function(e) {
+                    var selectedLink = $(this).val();
+                    window.location.href = selectedLink;
+                    e.preventDefault();
+                });
             }
-
-            myform.appendChild(select);
-
-            $(select).addClass('form-control');
-            $(select).change(function(e){
-                var selectedLink = $(this).val();
-                window.location.href = selectedLink;
-                e.preventDefault();
-            });
-        }
-    });
-</script>
+        });
+    </script>
 @endpush

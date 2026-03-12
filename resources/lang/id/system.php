@@ -92,4 +92,11 @@ return [
     'independent integrated industrial estate in gresik, indonesia - strategic and profitable' => 'Kawasan Industri Terintegrasi Mandiri di Gresik, Indonesia - Strategis dan Menguntungkan',
     'Jiipe industrial estate featured features in gresik' => 'Fitur Unggulan Kawasan Industri JIIPE di Gresik',
     'energy sources and advanced processing facilities in jiipe industrial estates' => 'Sumber Energi dan Fasilitas Pengolahan Canggih di Kawasan Industri JIIPE',
+
+    // ✅ Social Sharing
+    'share_this' => 'Bagikan Artikel Ini',
+    'short_link' => 'Tautan Pendek',
+    'copy_link' => 'Salin Tautan',
+    'copied' => 'Disalin!',
+    'share_on' => 'Bagikan di',
 ];

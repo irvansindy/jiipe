@@ -90,6 +90,9 @@ Route::group([
     // Blog detail
     Route::get('/blog/{id}', [NewsBlogController::class, 'detail'])->name('blog.detail');
 
+    // ✅ Short link redirect for social sharing
+    Route::get('/s/{shortCode}', [NewsBlogController::class, 'shortLinkRedirect'])->name('short-link');
+
     // Gallery routes
     Route::get('/galleries', [GalleryClient::class, 'index'])->name('gallery.index');
     Route::get('/gallery/video', [GalleryClient::class, 'video'])->name('gallery.video');

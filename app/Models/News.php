@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class News extends Model
 {
-    protected $fillable = ['category_id', 'thumbnail', 'is_published'];
+    protected $fillable = ['category_id', 'thumbnail', 'is_published', 'short_code'];
 
     public function translations()
     {

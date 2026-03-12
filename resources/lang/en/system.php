@@ -92,4 +92,11 @@ return [
     'independent integrated industrial estate in gresik, indonesia - strategic and profitable' => 'Independent Integrated Industrial Estate in Gresik, Indonesia - Strategic and Profitable',
     'Jiipe industrial estate featured features in gresik' => 'JIIPE Industrial Estate\'s Featured Features in Gresik',
     'energy sources and advanced processing facilities in jiipe industrial estates' => 'Energy Sources and Advanced Processing Facilities in JIIPE Industrial Estates',
+
+    // ✅ Social Sharing
+    'share_this' => 'Share This Article',
+    'short_link' => 'Short Link',
+    'copy_link' => 'Copy Link',
+    'copied' => 'Copied!',
+    'share_on' => 'Share on',
 ];
