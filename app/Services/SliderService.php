@@ -30,21 +30,23 @@ class SliderService
     public function getSliderById(int $id)
     {
         $slider = HomeSlider::with('translations')->findOrFail($id);
-
+        // dd($slider);
         // Transform translations to be keyed by locale
-        $transformedTranslations = [];
-        foreach ($slider->translations as $translation) {
-            $transformedTranslations[$translation->locale] = [
-                'locale' => $translation->locale,
-                'title' => $translation->title,
-                'description' => $translation->description,
-            ];
-        }
+        // $transformedTranslations = [];
+        // foreach ($slider->translations as $translation) {
+        //     $transformedTranslations[$translation->locale] = [
+        //         'locale' => $translation->locale,
+        //         'title' => $translation->title,
+        //         'description' => $translation->description,
+        //     ];
+        // }
 
-        $slider->setRelation('translations', $transformedTranslations);
+        // dd($transformedTranslations);
+
+        // $slider->setRelation('translations', $transformedTranslations);
 
         // expose slider-level is_active for frontend
-        $slider->is_active = (bool) $slider->is_active;
+        // $slider->is_active = (bool) $slider->is_active;
 
         return $slider;
     }

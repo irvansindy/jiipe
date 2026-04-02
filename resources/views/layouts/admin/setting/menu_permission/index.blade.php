@@ -8,7 +8,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10 text-primary">General Settings</h5>
+                                <h5 class="m-b-10 text-danger">General Settings</h5>
                             </div>
                             <br>
                             <ul class="breadcrumb">
@@ -27,12 +27,14 @@
                         <h5 class="mb-0">List Menu Permission</h5>
                         <ul class="nav nav-pills justify-content-end mb-0" id="chart-tab-tab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="btn btn-outline-dark me-1" id="refresh_table_menu_permission" type="button" title="Refresh Table">
+                                <button class="btn btn-outline-dark me-1" id="refresh_table_menu_permission" type="button"
+                                    title="Refresh Table">
                                     <i class="ti ti-refresh"></i>
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="btn btn-outline-primary" id="create_menu_permission" type="button" data-bs-toggle="modal" data-bs-target="#modalMenuPermission" title="Create Menu">
+                                <button class="btn btn-outline-primary" id="create_menu_permission" type="button"
+                                    data-bs-toggle="modal" data-bs-target="#modalMenuPermission" title="Create Menu">
                                     <i class="ti ti-pencil"></i> Create Menu
                                 </button>
                             </li>
@@ -43,7 +45,8 @@
                     <div class="card tbl-card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover table-borderless mb-0" id="table_menu_permission" width="100%">
+                                <table class="table table-hover table-borderless mb-0" id="table_menu_permission"
+                                    width="100%">
                                     <thead>
                                         <tr>
                                             <th>NO</th>
@@ -132,7 +135,8 @@
 @endpush
 
 @push('js')
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/2.3.3/js/dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/2.3.3/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>

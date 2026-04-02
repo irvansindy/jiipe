@@ -7,7 +7,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10 text-primary">Form Appointment</h5>
+                                <h5 class="m-b-10 text-danger">Form Appointment</h5>
                             </div>
                             <br>
                             <ul class="breadcrumb">
@@ -201,7 +201,7 @@
     @include('layouts.admin.form_appointment.appointment_js')
     <script>
         (function() {
-            const fetchUrl  = "{{ route('fetch-appointment') }}";
+            const fetchUrl = "{{ route('fetch-appointment') }}";
             const exportUrl = "{{ route('export-appointment') }}";
 
             function buildParams() {
@@ -260,9 +260,9 @@
 
             function exportExcel() {
                 const params = buildParams();
-                const url = Object.keys(params).length
-                    ? exportUrl + '?' + new URLSearchParams(params).toString()
-                    : exportUrl;
+                const url = Object.keys(params).length ?
+                    exportUrl + '?' + new URLSearchParams(params).toString() :
+                    exportUrl;
 
                 // Trigger file download
                 const a = document.createElement('a');

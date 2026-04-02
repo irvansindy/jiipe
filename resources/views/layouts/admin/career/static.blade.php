@@ -7,7 +7,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10 text-primary">Career</h5>
+                                <h5 class="m-b-10 text-danger">Career</h5>
                             </div>
                             <br>
                             <ul class="breadcrumb">
@@ -23,7 +23,7 @@
             <div class="row">
                 <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-danger">
                             <h4 class="text-white m-0">Cover</h4>
                         </div>
                         <div class="card-body">
@@ -72,7 +72,9 @@
                                                     data-bs-target="#cover-{{ $locale }}" type="button"
                                                     role="tab" aria-controls="cover-{{ $locale }}"
                                                     aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                                    <img src="{{ asset('uploads/flags/' . $properties['flag']) }}" alt="{{ $locale }}" style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
+                                                    <img src="{{ asset('uploads/flags/' . $properties['flag']) }}"
+                                                        alt="{{ $locale }}"
+                                                        style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
                                                 </button>
                                             </li>
                                         @endforeach
@@ -148,7 +150,7 @@
             <div class="row">
                 <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-danger">
                             <h4 class="text-white m-0">Section 1</h4>
                         </div>
                         <div class="card-body">
@@ -196,7 +198,9 @@
                                                 data-bs-target="#section1-{{ $locale }}" type="button"
                                                 role="tab" aria-controls="section1-{{ $locale }}"
                                                 aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                                <img src="{{ asset('uploads/flags/' . $properties['flag']) }}" alt="{{ $locale }}" style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
+                                                <img src="{{ asset('uploads/flags/' . $properties['flag']) }}"
+                                                    alt="{{ $locale }}"
+                                                    style="width: 24px; height: 24px; border: 1px solid #ddd; border-radius: 4px;">
                                             </button>
                                         </li>
                                     @endforeach

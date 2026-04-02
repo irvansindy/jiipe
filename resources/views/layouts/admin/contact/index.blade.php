@@ -16,7 +16,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10 text-primary">Contact Settings</h5>
+                                <h5 class="m-b-10 text-danger">Contact Settings</h5>
                             </div>
                             <br>
                             <ul class="breadcrumb">

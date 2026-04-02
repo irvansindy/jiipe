@@ -16,7 +16,7 @@ class AreaShowCaseController extends Controller
     public function __construct(AreaShowCaseService $areaShowCaseService)
     {
         $this->areaShowCaseService = $areaShowCaseService;
-    }
+}
 
     /**
      * Fetch all area showcases (AJAX)

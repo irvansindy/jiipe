@@ -7,7 +7,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10 text-primary">Form Appointment</h5>
+                                <h5 class="m-b-10 text-danger">Form Appointment</h5>
                             </div>
                             <br>
                             <ul class="breadcrumb">
@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-danger">
                             <h4 class="text-white m-0">Section Quick Appointment</h4>
                         </div>
                         <div class="card-body">
@@ -88,7 +88,7 @@
             <div class="row">
                 <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-danger">
                             <h4 class="text-white m-0">Basic Information</h4>
                         </div>
                         <div class="card-body">
@@ -224,7 +224,7 @@
             <div class="row">
                 <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-danger">
                             <h4 class="text-white m-0">The reason for considering JIIPE</h4>
                         </div>
                         <div class="card-body">

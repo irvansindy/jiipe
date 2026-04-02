@@ -33,19 +33,19 @@ class TenantService
     {
         $tenant = Tenant::with('translations')->findOrFail($id);
 
-        $transformed = [];
-        foreach ($tenant->translations as $translation) {
-            $transformed[$translation->locale] = [
-                'locale' => $translation->locale,
-                'name' => $translation->name,
-                'description' => $translation->description ?? '',
-            ];
-        }
+        // $transformed = [];
+        // foreach ($tenant->translations as $translation) {
+        //     $transformed[$translation->locale] = [
+        //         'locale' => $translation->locale,
+        //         'name' => $translation->name,
+        //         'description' => $translation->description ?? '',
+        //     ];
+        // }
 
         // $tenant->translations = $transformed;
-        $tenant->setRelation('translations', $transformed);
+        // $tenant->setRelation('translations', $transformed);
 
-        $tenant->is_active = (bool) $tenant->is_active;
+        // $tenant->is_active = (bool) $tenant->is_active;
 
         return $tenant;
     }

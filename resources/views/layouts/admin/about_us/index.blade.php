@@ -7,7 +7,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10 text-primary">General Settings</h5>
+                                <h5 class="m-b-10 text-danger">General Settings</h5>
                             </div>
                             <br>
                             <ul class="breadcrumb">
@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-danger">
                             <h4 class="text-white m-0">Cover</h4>
                         </div>
                         <div class="card-body">
@@ -78,8 +78,9 @@
                                     <label for="cover_image" class="form-label">Cover Image</label>
                                     @if ($aboutUsHeader && $aboutUsHeader->image)
                                         <div class="mb-2">
-                                            <img src="{{ asset('uploads/about-us/header/' . $aboutUsHeader->image) }}" alt="Current Cover"
-                                                class="img-thumbnail" style="max-height: 150px;" loading="lazy" decoding="async">
+                                            <img src="{{ asset('uploads/about-us/header/' . $aboutUsHeader->image) }}"
+                                                alt="Current Cover" class="img-thumbnail" style="max-height: 150px;"
+                                                loading="lazy" decoding="async">
                                             <p class="small text-muted mt-1">Current image (upload new to replace)</p>
                                         </div>
                                     @endif
@@ -111,7 +112,7 @@
             <div class="row">
                 <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-danger">
                             <h4 class="text-white m-0">Content</h4>
                         </div>
                         <div class="card-body">
@@ -233,7 +234,7 @@
             <div class="row">
                 <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-danger">
                             <h4 class="text-white m-0">Visi Misi</h4>
                         </div>
                         <div class="card-body">
@@ -319,7 +320,7 @@
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary d-flex justify-content-between align-items-center">
+                        <div class="card-header bg-danger d-flex justify-content-between align-items-center">
                             <h4 class="text-white m-0">Content Detail</h4>
                             <button class="btn btn-light btn-sm float-end" id="create_content_detail"
                                 data-bs-toggle="modal" data-bs-target="#modalContentDetail">
@@ -373,6 +374,7 @@
         .form-with-overlay {
             position: relative;
         }
+
         /* FIX: Pastikan SweetAlert selalu di atas modal Bootstrap */
         .swal2-container {
             z-index: 9999 !important;
@@ -458,7 +460,8 @@
                                 if ($form.find('input[name="id"]').length) {
                                     $form.find('input[name="id"]').val(id);
                                 } else {
-                                    $form.prepend('<input type="hidden" name="id" value="' + id + '">');
+                                    $form.prepend('<input type="hidden" name="id" value="' + id +
+                                        '">');
                                 }
                             }
                         },
@@ -471,18 +474,22 @@
                                     var name = key;
                                     if (name.indexOf('.') !== -1) {
                                         var parts = name.split('.');
-                                        name = parts[0] + '[' + parts.slice(1).join('][') + ']';
+                                        name = parts[0] + '[' + parts.slice(1).join('][') +
+                                            ']';
                                     }
                                     var $field = $form.find('[name="' + name + '"]');
                                     var cleanMsgs = msgs.map(function(m) {
                                         return (m || '').replace(/[_\.]/g, ' ');
                                     });
-                                    var $err = $('<div class="text-danger small ajax-error">' + cleanMsgs.join('<br>') + '</div>');
+                                    var $err = $(
+                                        '<div class="text-danger small ajax-error">' +
+                                        cleanMsgs.join('<br>') + '</div>');
                                     if ($field.length) {
                                         $field.addClass('is-invalid');
                                         $field.after($err);
                                     } else {
-                                        var idKey = 'message_' + key.replace(/[^a-zA-Z0-9_]/g, '_');
+                                        var idKey = 'message_' + key.replace(
+                                            /[^a-zA-Z0-9_]/g, '_');
                                         var $msgHolder = $('#' + idKey);
                                         if ($msgHolder.length) {
                                             $msgHolder.text(cleanMsgs[0]);
@@ -492,7 +499,8 @@
                                     }
                                 });
                             } else {
-                                var msg = (xhr.responseJSON && xhr.responseJSON.message) ? xhr.responseJSON.message : 'Server error';
+                                var msg = (xhr.responseJSON && xhr.responseJSON.message) ? xhr
+                                    .responseJSON.message : 'Server error';
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Error',

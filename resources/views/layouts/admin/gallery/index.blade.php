@@ -7,7 +7,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10 text-primary">Gallery Management</h5>
+                                <h5 class="m-b-10 text-danger">Gallery Management</h5>
                             </div>
                             <br>
                             <ul class="breadcrumb">
@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary d-flex align-items-center justify-content-between">
+                        <div class="card-header bg-danger d-flex align-items-center justify-content-between">
                             <h4 class="text-white m-0"><i class="ti ti-photo me-2"></i>Gallery List</h4>
                             <button class="btn btn-light" id="create_gallery" type="button" title="Create Gallery"
                                 data-bs-toggle="modal" data-bs-target="#modalGallery">
@@ -36,14 +36,13 @@
                                         <div class="card h-100 shadow-sm">
                                             <div class="position-relative" style="height: 200px; overflow: hidden;">
                                                 <img src="{{ $gallery->image ? asset('uploads/gallery/' . $gallery->image) : 'https://via.placeholder.com/400x300/e9ecef/6c757d?text=No+Image' }}"
-                                                    class="card-img-top w-100 h-100"
-                                                    style="object-fit: cover;"
+                                                    class="card-img-top w-100 h-100" style="object-fit: cover;"
                                                     alt="{{ $gallery->translations->first()->title ?? 'Gallery Image' }}"
                                                     loading="lazy">
 
                                                 <!-- Status Badge -->
                                                 <span class="position-absolute top-0 start-0 m-2">
-                                                    @if($gallery->is_active)
+                                                    @if ($gallery->is_active)
                                                         <span class="badge bg-success">Active</span>
                                                     @else
                                                         <span class="badge bg-secondary">Inactive</span>
@@ -52,7 +51,8 @@
                                             </div>
 
                                             <div class="card-body">
-                                                <h6 class="card-title text-truncate" title="{{ $gallery->translations->first()->title ?? 'No Title' }}">
+                                                <h6 class="card-title text-truncate"
+                                                    title="{{ $gallery->translations->first()->title ?? 'No Title' }}">
                                                     {{ $gallery->translations->first()->title ?? 'No Title' }}
                                                 </h6>
 
@@ -61,7 +61,7 @@
                                                     {{ $gallery->created_at->format('d M Y') }}
                                                 </div>
 
-                                                @if($gallery->images->count() > 0)
+                                                @if ($gallery->images->count() > 0)
                                                     <div class="d-flex align-items-center text-muted small">
                                                         <i class="ti ti-photo me-1"></i>
                                                         {{ $gallery->images->count() }} additional images
@@ -73,16 +73,13 @@
                                                 <div class="d-flex gap-2 justify-content-end">
                                                     <button type="button"
                                                         class="btn btn-sm btn-outline-primary action_edit_gallery"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modalGallery"
-                                                        data-gallery_id="{{ $gallery->id }}"
-                                                        title="Edit Gallery">
+                                                        data-bs-toggle="modal" data-bs-target="#modalGallery"
+                                                        data-gallery_id="{{ $gallery->id }}" title="Edit Gallery">
                                                         <i class="ti ti-pencil"></i>
                                                     </button>
                                                     <button type="button"
                                                         class="btn btn-sm btn-outline-danger action_delete_gallery"
-                                                        data-gallery_id="{{ $gallery->id }}"
-                                                        title="Delete Gallery">
+                                                        data-gallery_id="{{ $gallery->id }}" title="Delete Gallery">
                                                         <i class="ti ti-trash"></i>
                                                     </button>
                                                 </div>
@@ -115,24 +112,24 @@
 @endsection
 
 @push('css')
-<style>
-    .card {
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
+    <style>
+        .card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
 
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
-    }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+        }
 
-    .card-img-top {
-        transition: transform 0.3s ease;
-    }
+        .card-img-top {
+            transition: transform 0.3s ease;
+        }
 
-    .card:hover .card-img-top {
-        transform: scale(1.05);
-    }
-</style>
+        .card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+    </style>
 @endpush
 
 @push('js')

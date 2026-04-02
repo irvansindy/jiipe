@@ -20,7 +20,7 @@ class TrackVisitor
         if ($request->isMethod('get')) {
             // Exclude admin routes and API routes
             $excludedPaths = [
-                'section-admin',
+                'admin/home',
                 'admin',
                 'api',
                 'fetch-',

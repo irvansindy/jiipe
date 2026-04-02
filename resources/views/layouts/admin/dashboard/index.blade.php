@@ -8,7 +8,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10 text-primary">Dashboard</h5>
+                                <h5 class="m-b-10 text-danger">Dashboard</h5>
                             </div>
                             <br>
                             <ul class="breadcrumb">
@@ -130,7 +130,8 @@
                                             <h6 class="mb-1 text-truncate" title="{{ $page['url'] }}">
                                                 {{ Str::limit($page['url'], 30) }}
                                             </h6>
-                                            <p class="mb-0 text-muted text-sm">{{ number_format($page['visits']) }} visits</p>
+                                            <p class="mb-0 text-muted text-sm">{{ number_format($page['visits']) }} visits
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -148,87 +149,87 @@
 @endsection
 
 @push('js')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Weekly Visitors Chart Data
-        const weeklyData = @json($stats['visitors']['weekly']);
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Weekly Visitors Chart Data
+            const weeklyData = @json($stats['visitors']['weekly']);
 
-        // Monthly Visitors Chart Data
-        const monthlyData = @json($stats['visitors']['monthly']);
+            // Monthly Visitors Chart Data
+            const monthlyData = @json($stats['visitors']['monthly']);
 
-        // Initialize Weekly Chart
-        if (document.querySelector("#visitor-chart-week")) {
-            var weekOptions = {
-                chart: {
-                    type: 'line',
-                    height: 350,
-                    toolbar: {
-                        show: false
+            // Initialize Weekly Chart
+            if (document.querySelector("#visitor-chart-week")) {
+                var weekOptions = {
+                    chart: {
+                        type: 'line',
+                        height: 350,
+                        toolbar: {
+                            show: false
+                        }
+                    },
+                    series: [{
+                        name: 'Total Visits',
+                        data: weeklyData.totals
+                    }, {
+                        name: 'Unique Visitors',
+                        data: weeklyData.uniques
+                    }],
+                    xaxis: {
+                        categories: weeklyData.labels
+                    },
+                    colors: ['#4680FF', '#2CA87F'],
+                    stroke: {
+                        curve: 'smooth',
+                        width: 2
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    legend: {
+                        position: 'top'
                     }
-                },
-                series: [{
-                    name: 'Total Visits',
-                    data: weeklyData.totals
-                }, {
-                    name: 'Unique Visitors',
-                    data: weeklyData.uniques
-                }],
-                xaxis: {
-                    categories: weeklyData.labels
-                },
-                colors: ['#4680FF', '#2CA87F'],
-                stroke: {
-                    curve: 'smooth',
-                    width: 2
-                },
-                dataLabels: {
-                    enabled: false
-                },
-                legend: {
-                    position: 'top'
-                }
-            };
+                };
 
-            var weekChart = new ApexCharts(document.querySelector("#visitor-chart-week"), weekOptions);
-            weekChart.render();
-        }
+                var weekChart = new ApexCharts(document.querySelector("#visitor-chart-week"), weekOptions);
+                weekChart.render();
+            }
 
-        // Initialize Monthly Chart
-        if (document.querySelector("#visitor-chart-month")) {
-            var monthOptions = {
-                chart: {
-                    type: 'line',
-                    height: 350,
-                    toolbar: {
-                        show: false
+            // Initialize Monthly Chart
+            if (document.querySelector("#visitor-chart-month")) {
+                var monthOptions = {
+                    chart: {
+                        type: 'line',
+                        height: 350,
+                        toolbar: {
+                            show: false
+                        }
+                    },
+                    series: [{
+                        name: 'Total Visits',
+                        data: monthlyData.totals
+                    }, {
+                        name: 'Unique Visitors',
+                        data: monthlyData.uniques
+                    }],
+                    xaxis: {
+                        categories: monthlyData.labels
+                    },
+                    colors: ['#4680FF', '#2CA87F'],
+                    stroke: {
+                        curve: 'smooth',
+                        width: 2
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    legend: {
+                        position: 'top'
                     }
-                },
-                series: [{
-                    name: 'Total Visits',
-                    data: monthlyData.totals
-                }, {
-                    name: 'Unique Visitors',
-                    data: monthlyData.uniques
-                }],
-                xaxis: {
-                    categories: monthlyData.labels
-                },
-                colors: ['#4680FF', '#2CA87F'],
-                stroke: {
-                    curve: 'smooth',
-                    width: 2
-                },
-                dataLabels: {
-                    enabled: false
-                },
-                legend: {
-                    position: 'top'
-                }
-            };
+                };
 
-            var monthChart = new ApexCharts(document.querySelector("#visitor-chart-month"), monthOptions);
-            monthChart.render();
-        }
-    });
-</script>
+                var monthChart = new ApexCharts(document.querySelector("#visitor-chart-month"), monthOptions);
+                monthChart.render();
+            }
+        });
+    </script>
 @endpush

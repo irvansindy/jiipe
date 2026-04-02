@@ -7,7 +7,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10 text-primary">General Settings</h5>
+                                <h5 class="m-b-10 text-danger">General Settings</h5>
                             </div>
                             <br>
                             <ul class="breadcrumb">
@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="col-md-12 col-xl-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-danger">
                             <h4 class="text-white m-0">Slider</h4>
                         </div>
                         <div class="card-body">
@@ -47,7 +47,7 @@
             <div class="row">
                 <div class="col-md-12 col-lg-12 cl-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-danger">
                             <h4 class="text-white m-0">Area Show Case</h4>
                         </div>
                         <div class="card-body">
@@ -73,7 +73,7 @@
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-danger">
                             <h4 class="text-white m-0">Zone/Show Case</h4>
                         </div>
                         <div class="card-body">
@@ -115,8 +115,8 @@
                                                 </li>
                                             </ul>
                                             <div class="tab-content border border-top-0 p-3">
-                                                <div class="tab-pane fade show active" id="tab-special-zone" role="tabpanel"
-                                                    aria-labelledby="special-zone">
+                                                <div class="tab-pane fade show active" id="tab-special-zone"
+                                                    role="tabpanel" aria-labelledby="special-zone">
                                                     @include('layouts.admin.zone.special_zone')
                                                 </div>
                                                 <div class="tab-pane fade" id="tab-zone" role="tabpanel"
@@ -136,7 +136,7 @@
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-danger">
                             <h4 class="text-white m-0">Tenant</h4>
                         </div>
                         <div class="card-body">
@@ -162,7 +162,7 @@
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-danger">
                             <h4 class="text-white m-0"> Tour</h4>
                         </div>
                         <div class="card-body">
@@ -255,7 +255,7 @@
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-danger">
                             <h4 class="text-white m-0">Users Review</h4>
                         </div>
                         <div class="card-body">
@@ -267,7 +267,7 @@
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-sm-12">
                     <div class="card">
-                        <div class="card-header bg-primary">
+                        <div class="card-header bg-danger">
                             <h4 class="text-white m-0">Frequently Asked Questions (FAQ)</h4>
                         </div>
                         <div class="card-body">

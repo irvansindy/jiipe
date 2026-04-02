@@ -7,7 +7,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h5 class="m-b-10 text-primary">Career</h5>
+                                <h5 class="m-b-10 text-danger">Career</h5>
                             </div>
                             <br>
                             <ul class="breadcrumb">
