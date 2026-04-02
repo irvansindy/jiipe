@@ -33,12 +33,14 @@
             {{-- Main Content --}}
             <div class="col-md-45">
                 <div class="title">
-                    @lang('system.independent integrated industrial estate in gresik, indonesia - strategic and profitable')
+                    <p>
+                        @lang('system.independent integrated industrial estate in gresik, indonesia - strategic and profitable')
                     </p>
                 </div>
 
                 <div class="content">
-                    {!! $pageDescription ?? '' !!}
+                    {{-- {!! $pageDescription ?? '' !!} --}}
+                    @lang('system.industrial_jiipe_desc')
                 </div>
 
                 {{-- Area Carousel Component --}}

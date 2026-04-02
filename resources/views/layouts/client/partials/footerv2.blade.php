@@ -70,7 +70,7 @@
 
                         <ul class="widget-menu">
                             <li><a href="{{ route('home') }}">Profil</a></li>
-                            <li><a href="{{ route('profile') }}">Company Profile Video</a></li>
+                            <li><a href="{{ route('profil') }}">Company Profile Video</a></li>
 
                             {{-- Dynamic Brochure Link Based on Active Locale --}}
                             <li>

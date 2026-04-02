@@ -90,6 +90,7 @@ return [
     'Jiipe industrial estate' => 'JIIPE 工业区',
     'select region' => '-- 选择地区 --',
     'independent integrated industrial estate in gresik, indonesia - strategic and profitable' => '印度尼西亚 Gresik 独立综合工业区 - 战略性且盈利',
+    'industrial_jiipe_desc' => '吉配經濟特區的主要目标是为物流效率提供积极的贡献。园区结合了完善基础设施，包括通往国内和国际市场分销渠道的深海港口、陆港及高速公路。',
     'Jiipe industrial estate featured features in gresik' => 'Gresik JIIPE 工业区的特色功能',
     'energy sources and advanced processing facilities in jiipe industrial estates' => 'JIIPE 工业区的能源来源和先进加工设施',
 ];

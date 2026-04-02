@@ -90,6 +90,7 @@ return [
     'Jiipe industrial estate' => 'Kawasan Industri JIIPE',
     'select region' => '-- Pilih Wilayah --',
     'independent integrated industrial estate in gresik, indonesia - strategic and profitable' => 'Kawasan Industri Terintegrasi Mandiri di Gresik, Indonesia - Strategis dan Menguntungkan',
+    'industrial_jiipe_desc' => 'Tujuan utama JIIPE adalah berkontribusi secara positif terhadap penekanan pada efisiensi biaya logistik. Area JIPE menggabungkan infrastruktur lengkap yang mencakup pelabuhan dalam, pelabuhan kering dan akses tol langsung ke berbagai saluran distribusi pasar domestik dan internasional.',
     'Jiipe industrial estate featured features in gresik' => 'Fitur Unggulan Kawasan Industri JIIPE di Gresik',
     'energy sources and advanced processing facilities in jiipe industrial estates' => 'Sumber Energi dan Fasilitas Pengolahan Canggih di Kawasan Industri JIIPE',
 

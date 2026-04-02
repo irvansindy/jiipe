@@ -90,6 +90,7 @@ return [
     'Jiipe industrial estate' => 'JIIPE 산업단지',
     'select region' => '-- 지역 선택 --',
     'independent integrated industrial estate in gresik, indonesia - strategic and profitable' => '인도네시아 그레식의 독립 통합 산업단지 - 전략적이고 수익성 높은',
+    'industrial_jiipe_desc' => 'JIIPE의 주요 목표는 물류 비용 효율성에 대한 강조에 긍정적으로 기여하는 것입니다. JIPE 지역은 완벽한 인프라를 결합하여 심해 항구, 드라이 포트 및 다양한 국내 및 국제 시장 유통 채널에 대한 직접적인 톨 액세스를 포함합니다.',
     'Jiipe industrial estate featured features in gresik' => '그레식 JIIPE 산업단지의 주요 특징',
     'energy sources and advanced processing facilities in jiipe industrial estates' => 'JIIPE 산업단지의 에너지원과 첨단 처리 시설',
 ];

@@ -6,7 +6,7 @@
                     <a href="{{ route('home') }}">@lang('system.home')</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    <a href="{{ route('industrial-estate') }}">
+                    <a href="{{ route('industri_jiipe') }}">
                         @lang('system.Jiipe industrial estate')
                     </a>
                 </li>

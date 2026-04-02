@@ -114,7 +114,7 @@
                                         class="dd-trigger">@lang('system.about us')</a>
                                     <ul class="sub-menu">
                                         <li>
-                                            <a href="{{ route('profile') }}">@lang('system.profile')</a>
+                                            <a href="{{ route('profil') }}">@lang('system.profile')</a>
                                         </li>
                                         <li><a
                                                 href="{{ route('blog.type', ['type' => 'news']) }}">{{ __('system.news') }}</a>
@@ -125,7 +125,7 @@
                                         <li><a href="{{ route('contact') }}">@lang('system.contacts')</a></li>
                                     </ul>
                                 </li>
-                                <li class="menu-item"><a href="{{ route('industrial-estate') }}">@lang('system.industrial estate')</a>
+                                <li class="menu-item"><a href="{{ route('industri_jiipe') }}">@lang('system.industrial estate')</a>
                                 </li>
                                 <li class="menu-item"><a href="{{ route('economic-zone') }}">@lang('system.special economic zone')</a>
                                 </li>

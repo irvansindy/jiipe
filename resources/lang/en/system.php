@@ -90,6 +90,7 @@ return [
     'Jiipe industrial estate' => 'JIIPE Industrial Estate',
     'select region' => '-- Select Region --',
     'independent integrated industrial estate in gresik, indonesia - strategic and profitable' => 'Independent Integrated Industrial Estate in Gresik, Indonesia - Strategic and Profitable',
+    'industrial_jiipe_desc' => 'The main objective of JIIPE is to contribute positively to the emphasis on logistics cost efficiency. The JIPE area combines a complete infrastructure that includes deep seaports, dry ports and direct toll access to various domestic and international market distribution channels.',
     'Jiipe industrial estate featured features in gresik' => 'JIIPE Industrial Estate\'s Featured Features in Gresik',
     'energy sources and advanced processing facilities in jiipe industrial estates' => 'Energy Sources and Advanced Processing Facilities in JIIPE Industrial Estates',
 

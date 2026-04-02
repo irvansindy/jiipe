@@ -90,6 +90,7 @@ return [
     'Jiipe industrial estate' => 'JIIPE 工業団地',
     'select region' => '-- 地域を選択 --',
     'independent integrated industrial estate in gresik, indonesia - strategic and profitable' => 'インドネシア・グレシックの独立統合工業団地 - 戦略的で収益性の高い',
+    'industrial_jiipe_desc' => 'JIIPEの主な目的は、物流コスト効率の向上に積極的に貢献することです。 JIPE地域は、高港湾、ドライポート、国内および国際市場のさまざまな流通経路への直接アクセスを含む、完全なインフラストラクチャを組み合わせています。',
     'Jiipe industrial estate featured features in gresik' => 'グレシックの JIIPE 工業団地の主な特徴',
     'energy sources and advanced processing facilities in jiipe industrial estates' => 'JIIPE 工業団地のエネルギー源と先進的な処理施設',
 ];
