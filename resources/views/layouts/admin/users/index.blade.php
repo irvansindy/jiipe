@@ -30,7 +30,7 @@
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="btn btn-outline-primary" id="create_users" type="button"
+                                <button class="btn btn-outline-danger" id="create_users" type="button"
                                     data-bs-toggle="modal" data-bs-target="#ModalUsers" title="Create User">
                                     <i class="ti ti-pencil"></i>
                                 </button>
@@ -73,7 +73,7 @@
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="btn btn-outline-primary" id="create_roles" type="button"
+                                <button class="btn btn-outline-danger" id="create_roles" type="button"
                                     data-bs-toggle="modal" data-bs-target="#ModalRoles" title="Create Menu">
                                     <i class="ti ti-pencil"></i>
                                 </button>

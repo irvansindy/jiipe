@@ -30,7 +30,7 @@
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="btn btn-outline-primary" id="create_zone" type="button"
+                                <button class="btn btn-outline-danger" id="create_zone" type="button"
                                     data-bs-toggle="modal" data-bs-target="#modalZone" title="Create Zone">
                                     <i class="ti ti-pencil"></i>
                                 </button>

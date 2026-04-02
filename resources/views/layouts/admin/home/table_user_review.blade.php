@@ -6,7 +6,7 @@
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="btn btn-outline-primary" id="btnAdd" type="button" data-bs-toggle="modal"
+            <button class="btn btn-outline-danger" id="btnAdd" type="button" data-bs-toggle="modal"
                 data-bs-target="#reviewModal" title="Create Review">
                 <i class="ti ti-pencil"></i>
             </button>

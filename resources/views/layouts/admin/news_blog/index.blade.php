@@ -52,7 +52,7 @@
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="btn btn-outline-primary" id="create_news" type="button"
+                                            <button class="btn btn-outline-danger" id="create_news" type="button"
                                                 data-bs-toggle="modal" data-bs-target="#modalNews" title="Create Menu">
                                                 <i class="ti ti-pencil"></i>
                                             </button>
@@ -70,7 +70,7 @@
                                             </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="btn btn-outline-primary" id="create_news_categories"
+                                            <button class="btn btn-outline-danger" id="create_news_categories"
                                                 type="button" data-bs-toggle="modal" data-bs-target="#modalNewsCategories"
                                                 title="Create Menu">
                                                 <i class="ti ti-pencil"></i>

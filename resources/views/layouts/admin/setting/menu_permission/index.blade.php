@@ -33,7 +33,7 @@
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="btn btn-outline-primary" id="create_menu_permission" type="button"
+                                <button class="btn btn-outline-danger" id="create_menu_permission" type="button"
                                     data-bs-toggle="modal" data-bs-target="#modalMenuPermission" title="Create Menu">
                                     <i class="ti ti-pencil"></i> Create Menu
                                 </button>

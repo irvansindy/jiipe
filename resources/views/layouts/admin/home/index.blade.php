@@ -33,7 +33,7 @@
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="btn btn-outline-primary" id="create_slider" type="button"
+                                    <button class="btn btn-outline-danger" id="create_slider" type="button"
                                         data-bs-toggle="modal" data-bs-target="#ModalSlider" title="Create Slider">
                                         <i class="ti ti-pencil"></i>
                                     </button>
@@ -59,7 +59,7 @@
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="btn btn-outline-primary" id="create_showcase" type="button"
+                                    <button class="btn btn-outline-danger" id="create_showcase" type="button"
                                         data-bs-toggle="modal" data-bs-target="#ModalAreaShowCase" title="Create Showcase">
                                         <i class="ti ti-pencil"></i>
                                     </button>
@@ -89,7 +89,7 @@
                                                 </button>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <button class="btn btn-outline-primary" id="create_zone" type="button"
+                                                <button class="btn btn-outline-danger" id="create_zone" type="button"
                                                     data-bs-toggle="modal" data-bs-target="#modalZone" title="Create Zone">
                                                     <i class="ti ti-pencil"></i>
                                                 </button>
@@ -148,7 +148,7 @@
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="btn btn-outline-primary" id="create_tenant" type="button"
+                                    <button class="btn btn-outline-danger" id="create_tenant" type="button"
                                         data-bs-toggle="modal" data-bs-target="#ModalTenant" title="Create Tenant">
                                         <i class="ti ti-pencil"></i>
                                     </button>
@@ -286,7 +286,7 @@
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="btn btn-outline-primary" id="btnAddFaq" type="button"
+                                    <button class="btn btn-outline-danger" id="btnAddFaq" type="button"
                                         data-bs-toggle="modal" data-bs-target="#faqModal" title="Create FAQ">
                                         <i class="ti ti-pencil"></i>
                                     </button>
