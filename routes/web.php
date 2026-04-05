@@ -371,7 +371,7 @@ Route::group([
     Route::get('industri_jiipe', [IndustrialEstateController::class,'index'])->name('industri_jiipe');
     Route::get('/industri_jiipe/id/{id}', [IndustrialEstateController::class, 'zoneDetail'])->name('area.detail');
 
-    Route::get('economic-zone', [SezController::class,'index'])->name('economic-zone');
+    Route::get('kawasanekonomi', [SezController::class,'index'])->name('kawasanekonomi');
     Route::get('economic-zone/{id}', [SezController::class,'detail'])->name('economic-zone-detail');
 
     Route::get('/news', [NewsBlogController::class, 'index'])->name('blog.index');

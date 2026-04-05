@@ -127,7 +127,7 @@
                                 </li>
                                 <li class="menu-item"><a href="{{ route('industri_jiipe') }}">@lang('system.industrial estate')</a>
                                 </li>
-                                <li class="menu-item"><a href="{{ route('economic-zone') }}">@lang('system.special economic zone')</a>
+                                <li class="menu-item"><a href="{{ route('kawasanekonomi') }}">@lang('system.special economic zone')</a>
                                 </li>
                                 <li class="menu-item"><a href="{{ route('blog.index') }}">@lang('system.news') &amp;
                                         @lang('system.articles')</a></li>
