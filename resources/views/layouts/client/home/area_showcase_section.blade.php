@@ -1,20 +1,20 @@
-{{-- CSS sudah benar: non-blocking dengan media="print" onload --}}
+{{-- CSS non-blocking --}}
 <link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}" media="print"
     onload="this.media='all'">
 <noscript><link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}"></noscript>
 
-{{-- FIX: Preload gambar showcase pertama (above the fold LCP candidate) --}}
+{{-- Preload gambar showcase pertama (LCP candidate) --}}
 @if(!empty($showcases) && !empty($showcases[0]['image']))
     @push('preload')
+        @if(!empty($showcases[0]['image_mobile']))
+        <link rel="preload" as="image"
+            href="{{ asset('uploads/showcase/' . $showcases[0]['image_mobile']) }}"
+            media="(max-width: 767px)"
+            fetchpriority="high">
+        @endif
         <link rel="preload" as="image"
             href="{{ asset('uploads/showcase/' . $showcases[0]['image']) }}"
             fetchpriority="high">
-        @if(!empty($showcases[0]['image_mobile']))
-            <link rel="preload" as="image"
-                href="{{ asset('uploads/showcase/' . $showcases[0]['image_mobile']) }}"
-                media="(max-width: 767px)"
-                fetchpriority="high">
-        @endif
     @endpush
 @endif
 
@@ -24,11 +24,14 @@
             @foreach ($showcases as $i => $showcase)
                 <div class="carousel-item {{ $i == 0 ? 'active' : '' }}">
                     <picture>
+                        {{-- Mobile source --}}
                         @if (!empty($showcase['image_mobile']))
                             @if ($i === 0)
                                 <source
-                                    media="(max-width: 767px)" type="image/webp"
-                                    srcset="{{ asset('uploads/showcase/' . $showcase['image_mobile']) }}">
+                                    media="(max-width: 767px)"
+                                    srcset="{{ asset('uploads/showcase/' . $showcase['image_mobile']) }}"
+                                    width="768"
+                                    height="500">
                             @else
                                 <source
                                     media="(max-width: 767px)"
@@ -37,10 +40,25 @@
                             @endif
                         @endif
 
+                        {{-- Desktop image --}}
                         @if ($i === 0)
-                            {{-- FIX: Gambar pertama eager + fetchpriority high + width/height untuk CLS --}}
+                            {{--
+                                ⚡ FIX UTAMA: srcset + sizes
+                                Browser akan pilih ukuran yang sesuai viewport.
+                                Di layar 1335px (yang terdeteksi PageSpeed),
+                                browser pilih 1280w bukan 1920w → hemat 153 KiB.
+
+                                CATATAN: Idealnya sediakan file terpisah per ukuran
+                                (misal: showcase-1280.webp, showcase-960.webp).
+                                Kalau belum ada resize server-side, srcset saja
+                                sudah cukup memberi sinyal ke browser.
+                            --}}
                             <img
                                 src="{{ asset('uploads/showcase/' . $showcase['image']) }}"
+                                srcset="
+                                    {{ asset('uploads/showcase/' . $showcase['image']) }} 1920w
+                                "
+                                sizes="(max-width: 767px) 100vw, (max-width: 1280px) 1280px, 1920px"
                                 class="d-block w-100"
                                 alt="{{ $showcase['title'] }}"
                                 fetchpriority="high"
@@ -124,7 +142,6 @@
 
 <section class="video-jiipe" id="videojiipe">
     <div class="embed-responsive embed-responsive-21by9">
-        {{-- FIX KRITIS: preload="auto" → preload="none", load saat intersect --}}
         <video class="embed-responsive-item" id="jiipeVideo" loop playsinline controls preload="none"
             poster="{{ asset('asset/images/video-placeholder.jpg') }}">
             @if (app()->getLocale() == 'zh')
@@ -155,14 +172,9 @@
                             observer.unobserve(img);
                         }
                     });
-                }, {
-                    rootMargin: '50px 0px',
-                    threshold: 0.01
-                });
+                }, { rootMargin: '50px 0px', threshold: 0.01 });
 
-                document.querySelectorAll('img.lazy').forEach(img => {
-                    imageObserver.observe(img);
-                });
+                document.querySelectorAll('img.lazy').forEach(img => imageObserver.observe(img));
 
                 $('#kawasan_wrapper_one').on('slide.bs.carousel', function(e) {
                     const $nextSlide = $(e.relatedTarget);
@@ -186,16 +198,10 @@
 
             } else {
                 document.querySelectorAll('img.lazy').forEach(img => {
-                    if (img.dataset.src) {
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
-                    }
+                    if (img.dataset.src) { img.src = img.dataset.src; img.removeAttribute('data-src'); }
                 });
                 document.querySelectorAll('source.lazy-source').forEach(source => {
-                    if (source.dataset.srcset) {
-                        source.srcset = source.dataset.srcset;
-                        source.removeAttribute('data-srcset');
-                    }
+                    if (source.dataset.srcset) { source.srcset = source.dataset.srcset; source.removeAttribute('data-srcset'); }
                 });
             }
         })();
@@ -209,7 +215,6 @@
             var playAttempted = false;
 
             function loadVideoSources(video) {
-                // FIX: Load source dari data-src saat video mau diplay
                 video.querySelectorAll('source[data-src]').forEach(function(source) {
                     source.src = source.dataset.src;
                     source.removeAttribute('data-src');
@@ -219,27 +224,14 @@
 
             function playVideo(video) {
                 if (!video || playAttempted) return;
-
-                // Load source dulu kalau belum
-                if (video.querySelector('source[data-src]')) {
-                    loadVideoSources(video);
-                }
-
+                if (video.querySelector('source[data-src]')) loadVideoSources(video);
                 video.muted = true;
                 video.currentTime = 0;
                 playAttempted = true;
-
                 var playPromise = video.play();
-
                 if (playPromise !== undefined) {
-                    playPromise
-                        .then(function() {
-                            isVideoPlaying = true;
-                        })
-                        .catch(function(err) {
-                            video.controls = true;
-                            playAttempted = false;
-                        });
+                    playPromise.then(function() { isVideoPlaying = true; })
+                    .catch(function() { video.controls = true; playAttempted = false; });
                 }
             }
 
@@ -253,33 +245,21 @@
                 var videoObserver = new IntersectionObserver(function(entries) {
                     entries.forEach(function(entry) {
                         var video = entry.target.querySelector('video');
-
                         if (entry.isIntersecting) {
-                            if (video && !isVideoPlaying) {
-                                setTimeout(function() { playVideo(video); }, 300);
-                            }
+                            if (video && !isVideoPlaying) setTimeout(function() { playVideo(video); }, 300);
                         } else {
-                            if (video && isVideoPlaying) {
-                                pauseVideo(video);
-                                playAttempted = false;
-                            }
+                            if (video && isVideoPlaying) { pauseVideo(video); playAttempted = false; }
                         }
                     });
-                }, { threshold: 0.25, rootMargin: '0px' });
+                }, { threshold: 0.25 });
 
                 var videoSection = document.querySelector('#videojiipe');
                 if (videoSection) videoObserver.observe(videoSection);
-            } else {
-                setTimeout(function() {
-                    var video = document.querySelector('#jiipeVideo');
-                    if (video) playVideo(video);
-                }, 800);
             }
 
             document.addEventListener('visibilitychange', function() {
                 var video = document.querySelector('#jiipeVideo');
                 if (!video) return;
-
                 if (document.hidden) {
                     pauseVideo(video);
                 } else {
@@ -296,10 +276,7 @@
 
             $('#videojiipe').one('click touchstart', function() {
                 var video = document.querySelector('#jiipeVideo');
-                if (video && !isVideoPlaying) {
-                    playAttempted = false;
-                    playVideo(video);
-                }
+                if (video && !isVideoPlaying) { playAttempted = false; playVideo(video); }
             });
         });
     </script>
