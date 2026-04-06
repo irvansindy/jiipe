@@ -57,8 +57,31 @@
         .carousel-item.active { display: block; }
         img, video { max-width: 100%; height: auto; display: block; }
         .home-box .item { background: #111; }
+        
+        @font-face {
+            font-family: "Font Awesome 6 Free";
+            font-style: normal;
+            font-weight: 900;
+            font-display: swap;
+            src: url("{{ asset('asset/fonts/fontawesome/webfonts/fa-solid-900.woff2') }}") format("woff2");
+        }
+        @font-face {
+            font-family: "Font Awesome 6 Brands";
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url("{{ asset('asset/fonts/fontawesome/webfonts/fa-brands-400.woff2') }}") format("woff2");
+        }
+        @font-face {
+            font-family: "Font Awesome 6 Free";
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url("{{ asset('asset/fonts/fontawesome/webfonts/fa-regular-400.woff2') }}") format("woff2");
+        }
     </style>
 
+@stack('css')
     {{-- ⚡ 4. CRITICAL CSS - Blocking (layout utama) --}}
     <link rel="stylesheet" href="{{ asset('asset/js/bootstrap-4.0.0/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('asset/backend/css/style.default.css') }}">
