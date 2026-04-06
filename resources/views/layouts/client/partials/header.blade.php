@@ -6,10 +6,27 @@
                     <div class="logo">
                         <a href="{{ route('home') }}" class="brand-new">
                             @php
-                                $logoPath = public_path('asset/images/logo/JIIPE_SEZ_Logo.png');
+                                $logo1x = public_path('asset/images/logo/JIIPE_SEZ_Logo-390.webp');
+                                $logo2x = public_path('asset/images/logo/JIIPE_SEZ_Logo-780.webp');
+
+                                $logo1xUrl = file_exists($logo1x)
+                                    ? asset('asset/images/logo/JIIPE_SEZ_Logo-390.webp')
+                                    : asset('logo/default.png');
+
+                                $logo2xUrl = file_exists($logo2x)
+                                    ? asset('asset/images/logo/JIIPE_SEZ_Logo-780.webp')
+                                    : $logo1xUrl;
                             @endphp
-                            <img src="{{ file_exists($logoPath) ? asset('asset/images/logo/JIIPE_SEZ_Logo.png') : asset('logo/default.png') }}"
-                                alt="kawasan industri gresik jiipe" class="img-fluid img" loading="lazy" decoding="async">
+
+                            <img
+                                src="{{ $logo1xUrl }}"
+                                srcset="{{ $logo1xUrl }} 1x, {{ $logo2xUrl }} 2x"
+                                width="390"
+                                height="90"
+                                alt="kawasan industri gresik jiipe"
+                                class="img-fluid img"
+                                loading="lazy"
+                                decoding="async">
                         </a>
                     </div>
                 </div>

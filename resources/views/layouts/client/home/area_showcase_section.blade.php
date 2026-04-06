@@ -27,7 +27,7 @@
                         @if (!empty($showcase['image_mobile']))
                             @if ($i === 0)
                                 <source
-                                    media="(max-width: 767px)"
+                                    media="(max-width: 767px)" type="image/webp"
                                     srcset="{{ asset('uploads/showcase/' . $showcase['image_mobile']) }}">
                             @else
                                 <source
