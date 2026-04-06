@@ -1,7 +1,10 @@
-<link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}">
+{{-- FIX 1: CSS non-blocking (sama seperti area_showcase_section) --}}
+<link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}" media="print"
+    onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}"></noscript>
+
 <section class="home-slider creative">
     <div class="homewrapper">
-        {{-- ⚡ FIXED: Hapus class owl-loaded dan markup owl yang sudah di-generate --}}
         <div class="home-box owl-carousel owl-theme">
             @foreach ($sliders as $slider)
                 <div class="item">
@@ -12,6 +15,8 @@
                             playsinline
                             webkit-playsinline
                             preload="{{ $loop->first ? 'metadata' : 'none' }}"
+                            {{-- FIX 2: WAJIB ada poster — mencegah layar hitam & bantu LCP --}}
+                            poster="{{ asset('asset/images/slider-poster-' . $loop->index . '.jpg') }}"
                         >
                             <source
                                 src="{{ asset('uploads/home-slider/' . $slider['file']) }}"
@@ -49,7 +54,7 @@
 </section>
 
 @push('js')
-    {{-- ⚡ Preload video slide pertama saja (yang above-the-fold) --}}
+    {{-- FIX 3: Preload video pertama SAJA (bukan semua) --}}
     @if(!empty($sliders) && count($sliders) > 0)
         <link rel="preload" as="video" href="{{ asset('uploads/home-slider/' . $sliders[0]['file']) }}" type="video/mp4" fetchpriority="high">
     @endif
@@ -58,7 +63,6 @@
         $(document).ready(function() {
             var $homeBox = $('.home-box');
 
-            // Destroy existing owl carousel if any
             if ($homeBox.hasClass('owl-loaded')) {
                 $homeBox.trigger('destroy.owl.carousel');
                 $homeBox.removeClass('owl-loaded owl-drag');
@@ -76,6 +80,7 @@
                 animateOut: 'fadeOut',
                 animateIn: 'fadeIn',
                 smartSpeed: 1000,
+                lazyLoad: false,
                 responsive: {
                     0: { items: 1 },
                     768: { items: 1 },
@@ -95,7 +100,6 @@
             });
 
             function prepareVideos() {
-                // Pastikan semua video muted & playsinline
                 $('.home-box video').each(function() {
                     this.muted = true;
                     this.setAttribute('playsinline', '');
@@ -107,7 +111,6 @@
                 var $activeItem = $('.home-box .owl-item.active');
                 var video = $activeItem.find('video').get(0);
 
-                // Saat slide aktif, set preload metadata agar cepat play
                 if (video && video.getAttribute('preload') === 'none') {
                     video.setAttribute('preload', 'metadata');
                 }
@@ -124,15 +127,12 @@
                 $('.home-box video').each(function() {
                     this.pause();
                     this.currentTime = 0;
-
-                    // ⚡ Kembalikan ke preload none untuk menghemat bandwidth
                     if (this.closest('.owl-item') && !this.closest('.owl-item').classList.contains('active')) {
                         this.setAttribute('preload', 'none');
                     }
                 });
             }
 
-            // Navigation controls
             $('.owl-prev').on('click', function(e) {
                 e.preventDefault();
                 homeSlider.trigger('prev.owl.carousel');
@@ -143,13 +143,11 @@
                 homeSlider.trigger('next.owl.carousel');
             });
 
-            // Keyboard navigation
             $(document).on('keydown', function(e) {
                 if (e.keyCode == 37) homeSlider.trigger('prev.owl.carousel');
                 if (e.keyCode == 39) homeSlider.trigger('next.owl.carousel');
             });
 
-            // Auto advance on video end
             $('.home-box video').on('ended', function() {
                 homeSlider.trigger('next.owl.carousel');
             });

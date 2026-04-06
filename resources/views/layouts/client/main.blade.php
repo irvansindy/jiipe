@@ -2,6 +2,9 @@
 <html lang="id">
 
 <head>
+    {{-- ⚡ 1. PRELOAD HINTS PERTAMA --}}
+    @stack('preload')
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +13,7 @@
     <meta name="keywords" content="{{ $metaKey ?? '' }}">
     <meta name="description" content="{{ $metaDesc ?? '' }}">
 
-    <!-- OPENNGRAPH META TAGS FOR SOCIAL SHARING -->
+    <!-- OPENGRAPH META TAGS FOR SOCIAL SHARING -->
     <meta property="og:title" content="{{ $data['ogMeta']['title'] ?? ($title ?? config('app.name')) }}" />
     <meta property="og:description" content="{{ $data['ogMeta']['description'] ?? ($metaDesc ?? '') }}" />
     <meta property="og:image" content="{{ $data['ogMeta']['image'] ?? url('asset/images/favicon.png') }}" />
@@ -29,14 +32,14 @@
 
     <title>{{ $title ?? config('app.name') }}</title>
 
-    <!-- Preconnect to external domains -->
+    {{-- ⚡ 2. RESOURCE HINTS --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="https://hm.baidu.com">
 
-    <!-- CRITICAL CSS Inline (above-the-fold) -->
+    {{-- ⚡ 3. CRITICAL CSS INLINE --}}
     <style>
         body {
             margin: 0;
@@ -46,35 +49,17 @@
         .home-slider {
             min-height: 100vh;
             position: relative;
-            background: transparent;
+            background: #000;
         }
-        .kawasan-slider {
-            position: relative;
-        }
-        .carousel-inner {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-        }
-        .carousel-item {
-            position: relative;
-            display: none;
-            width: 100%;
-        }
-        .carousel-item.active {
-            display: block;
-        }
-        img, video {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
+        .kawasan-slider { position: relative; }
+        .carousel-inner { position: relative; width: 100%; overflow: hidden; }
+        .carousel-item { position: relative; display: none; width: 100%; }
+        .carousel-item.active { display: block; }
+        img, video { max-width: 100%; height: auto; display: block; }
+        .home-box .item { background: #111; }
     </style>
 
-    <!-- ======================================================= -->
-    <!-- CRITICAL CSS - Load synchronously (blocking)            -->
-    <!-- Semua yang mempengaruhi tampilan awal/layout utama      -->
-    <!-- ======================================================= -->
+    {{-- ⚡ 4. CRITICAL CSS - Blocking (layout utama) --}}
     <link rel="stylesheet" href="{{ asset('asset/js/bootstrap-4.0.0/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('asset/backend/css/style.default.css') }}">
     <link rel="stylesheet" href="{{ asset('asset/css/styles.css') }}">
@@ -82,9 +67,7 @@
     <link rel="stylesheet" href="{{ asset('asset/css/creative/creative.css') }}?ver=1.0.32">
     <link rel="stylesheet" href="{{ asset('asset/css/creative/creativeresponsive.css') }}?ver=1.0.25">
 
-    <!-- ======================================================= -->
-    <!-- NON-CRITICAL CSS - Defer (tidak mempengaruhi layout awal) -->
-    <!-- ======================================================= -->
+    {{-- ⚡ 5. NON-CRITICAL CSS - Non-blocking --}}
 
     <!-- Google Fonts -->
     <link rel="preload" as="style"
@@ -96,27 +79,27 @@
     </noscript>
 
     <!-- Font Awesome -->
-    <link rel="preload" as="style"
+    <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        onload="this.onload=null;this.rel='stylesheet'">
+        media="print" onload="this.media='all'">
     <noscript>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     </noscript>
 
-    <!-- Animate.css (hanya untuk animasi, bukan layout) -->
-    <link rel="preload" as="style" href="{{ asset('asset/css/animate.css') }}"
-        onload="this.onload=null;this.rel='stylesheet'">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="{{ asset('asset/css/animate.css') }}"
+        media="print" onload="this.media='all'">
     <noscript>
         <link rel="stylesheet" href="{{ asset('asset/css/animate.css') }}">
     </noscript>
 
-    <!-- Owl Carousel CSS (hanya aktif saat slider digunakan) -->
-    <link rel="preload" as="style"
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
-        onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" as="style"
+        media="print" onload="this.media='all'">
+    <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
-        onload="this.onload=null;this.rel='stylesheet'">
+        media="print" onload="this.media='all'">
     <noscript>
         <link rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
@@ -125,15 +108,15 @@
     </noscript>
 
     <!-- Swiper CSS -->
-    <link rel="preload" as="style" href="{{ asset('asset/css/cdn/swiper.css') }}"
-        onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="{{ asset('asset/css/cdn/swiper.css') }}"
+        media="print" onload="this.media='all'">
     <noscript>
         <link rel="stylesheet" href="{{ asset('asset/css/cdn/swiper.css') }}">
     </noscript>
 
     @stack('css')
 
-    <!-- Google Tag Manager -->
+    {{-- ⚡ 6. GOOGLE TAG MANAGER --}}
     <script>
         (function(w, d, s, l, i) {
             w[l] = w[l] || [];
@@ -186,11 +169,27 @@
     @yield('content')
     @include('layouts.client.partials.footerv2')
 
+    {{--
+        ⚡ STRATEGI LOADING SCRIPT:
+
+        ✅ jQuery       → Di bawah body, TANPA defer
+                          Alasan: semua inline script pakai $(),
+                          harus sudah tersedia saat @stack('js') dieksekusi.
+                          Gain tetap ada karena posisinya di BAWAH body
+                          (HTML sudah selesai di-parse duluan).
+
+        ✅ Vite app.js  → Dihandle otomatis oleh Laravel Vite.
+
+        ✅ @stack('js') → Inline script dari blade views,
+                          diletakkan SETELAH jQuery sudah load.
+    --}}
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     @vite('resources/js/app.js')
 
     @stack('js')
+
 </body>
 
 </html>

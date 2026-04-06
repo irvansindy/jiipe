@@ -1,6 +1,22 @@
-{{-- filepath: resources/views/layouts/client/home/area_showcase_section.blade.php --}}
+{{-- CSS sudah benar: non-blocking dengan media="print" onload --}}
 <link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}" media="print"
     onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ asset('asset/css/creative/navigasi-box-fix.css') }}"></noscript>
+
+{{-- FIX: Preload gambar showcase pertama (above the fold LCP candidate) --}}
+@if(!empty($showcases) && !empty($showcases[0]['image']))
+    @push('preload')
+        <link rel="preload" as="image"
+            href="{{ asset('uploads/showcase/' . $showcases[0]['image']) }}"
+            fetchpriority="high">
+        @if(!empty($showcases[0]['image_mobile']))
+            <link rel="preload" as="image"
+                href="{{ asset('uploads/showcase/' . $showcases[0]['image_mobile']) }}"
+                media="(max-width: 767px)"
+                fetchpriority="high">
+        @endif
+    @endpush
+@endif
 
 <section class="kawasan-slider">
     <div id="kawasan_wrapper_one" class="kawasan-slider-one carousel slide" data-ride="carousel" data-interval="6000">
@@ -21,19 +37,25 @@
                             @endif
                         @endif
 
-                        {{-- Desktop image (fallback) --}}
                         @if ($i === 0)
+                            {{-- FIX: Gambar pertama eager + fetchpriority high + width/height untuk CLS --}}
                             <img
                                 src="{{ asset('uploads/showcase/' . $showcase['image']) }}"
                                 class="d-block w-100"
                                 alt="{{ $showcase['title'] }}"
-                                fetchpriority="high">
+                                fetchpriority="high"
+                                width="1920"
+                                height="900"
+                                decoding="sync">
                         @else
                             <img
                                 data-src="{{ asset('uploads/showcase/' . $showcase['image']) }}"
                                 class="d-block w-100 lazy"
                                 alt="{{ $showcase['title'] }}"
-                                loading="lazy">
+                                loading="lazy"
+                                width="1920"
+                                height="900"
+                                decoding="async">
                         @endif
                     </picture>
                 </div>
@@ -61,6 +83,7 @@
                 <div class="jiipe-images">
                     <img data-src="{{ asset('uploads/blog/' . rawurlencode('ab135-JIIPE INVESTOR UPDATE (website).jpg')) }}"
                         class="img-fluid lazy" alt="JIIPE Profile" loading="lazy"
+                        width="600" height="400"
                         onerror="this.onerror=null; this.src='{{ asset('uploads/blog/ab135-JIIPE INVESTOR UPDATE (website).jpg') }}';">
                 </div>
             </div>
@@ -101,13 +124,14 @@
 
 <section class="video-jiipe" id="videojiipe">
     <div class="embed-responsive embed-responsive-21by9">
-        <video class="embed-responsive-item" id="jiipeVideo" loop playsinline controls preload="auto"
+        {{-- FIX KRITIS: preload="auto" → preload="none", load saat intersect --}}
+        <video class="embed-responsive-item" id="jiipeVideo" loop playsinline controls preload="none"
             poster="{{ asset('asset/images/video-placeholder.jpg') }}">
             @if (app()->getLocale() == 'zh')
-                <source src="https://jiipe.com//Video_jiipe/Company%20Profile%20JIIPE%20CINA%20-%20SUB%20English.mp4"
+                <source data-src="https://jiipe.com//Video_jiipe/Company%20Profile%20JIIPE%20CINA%20-%20SUB%20English.mp4"
                     type="video/mp4">
             @else
-                <source src="{{ asset('asset/video/62e1d25a28720.mp4') }}" type="video/mp4">
+                <source data-src="{{ asset('asset/video/62e1d25a28720.mp4') }}" type="video/mp4">
             @endif
         </video>
     </div>
@@ -140,11 +164,9 @@
                     imageObserver.observe(img);
                 });
 
-                // Lazy load carousel images (desktop) + source mobile on slide change
                 $('#kawasan_wrapper_one').on('slide.bs.carousel', function(e) {
                     const $nextSlide = $(e.relatedTarget);
 
-                    // Load lazy <source> untuk mobile
                     $nextSlide.find('source.lazy-source').each(function() {
                         const $source = $(this);
                         if ($source.data('srcset')) {
@@ -154,7 +176,6 @@
                         }
                     });
 
-                    // Load lazy <img> untuk desktop
                     const $img = $nextSlide.find('img.lazy');
                     if ($img.length && $img.data('src')) {
                         $img.attr('src', $img.data('src'));
@@ -164,7 +185,6 @@
                 });
 
             } else {
-                // Fallback: load semua sekaligus
                 document.querySelectorAll('img.lazy').forEach(img => {
                     if (img.dataset.src) {
                         img.src = img.dataset.src;
@@ -188,8 +208,22 @@
             var isVideoPlaying = false;
             var playAttempted = false;
 
+            function loadVideoSources(video) {
+                // FIX: Load source dari data-src saat video mau diplay
+                video.querySelectorAll('source[data-src]').forEach(function(source) {
+                    source.src = source.dataset.src;
+                    source.removeAttribute('data-src');
+                });
+                video.load();
+            }
+
             function playVideo(video) {
                 if (!video || playAttempted) return;
+
+                // Load source dulu kalau belum
+                if (video.querySelector('source[data-src]')) {
+                    loadVideoSources(video);
+                }
 
                 video.muted = true;
                 video.currentTime = 0;

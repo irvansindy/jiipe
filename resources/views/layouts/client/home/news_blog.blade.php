@@ -11,8 +11,14 @@
                     <div class="items {{ $key == 0 ? 'active' : '' }} pb-lg-4 pb-sm-1">
                         <div class="gambar">
                             <a href="{{ route('blog.detail', $item['id']) }}">
-                                <img src="{{ asset('uploads/blog/' . $item['thumbnail']) }}" alt="{{ $item['title'] }}"
-                                    class="img-fluid" loading="lazy" decoding="async">
+                                {{-- FIX: Tambah width, height, dan decoding untuk mencegah CLS --}}
+                                <img src="{{ asset('uploads/blog/' . $item['thumbnail']) }}"
+                                    alt="{{ $item['title'] }}"
+                                    class="img-fluid"
+                                    loading="lazy"
+                                    decoding="async"
+                                    width="{{ $key == 0 ? '800' : '400' }}"
+                                    height="{{ $key == 0 ? '450' : '225' }}">
                             </a>
                         </div>
                         <div class="judul mt-3">
@@ -32,16 +38,14 @@
                 </div>
             @endforeach
         </div>
-
     </div>
-
     <div class="clear"></div>
-
 </section>
+
 <style>
     .jiipe-blog .items:not(.active) .gambar {
         width: 100%;
-        aspect-ratio: 16 / 9; /* atau 4/3 sesuai selera */
+        aspect-ratio: 16 / 9;
         overflow: hidden;
     }
 
@@ -50,5 +54,11 @@
         height: 100%;
         object-fit: cover;
         object-position: center;
+    }
+
+    {{-- FIX: Mencegah CLS dengan placeholder sebelum gambar load --}}
+    .jiipe-blog .gambar {
+        background-color: #f0f0f0;
+        min-height: 10px;
     }
 </style>
