@@ -16,7 +16,7 @@
                             webkit-playsinline
                             preload="{{ $loop->first ? 'metadata' : 'none' }}"
                             {{-- FIX 2: WAJIB ada poster — mencegah layar hitam & bantu LCP --}}
-                            poster="{{ asset('asset/images/slider-poster-' . $loop->index . '.jpg') }}"
+                            poster="{{ asset('asset/images/slider-poster-' . $loop->index . '.webp') }}"
                         >
                             <source
                                 src="{{ asset('uploads/home-slider/' . $slider['file']) }}"
