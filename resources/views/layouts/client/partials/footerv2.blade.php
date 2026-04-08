@@ -34,7 +34,7 @@
                             <div class="widget-map-box">
                                 <iframe
                                     src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d4708.47778390834!2d112.60630531539316!3d-7.086283609900546!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e77fd91cbf94199%3A0x420bcb75aab89777!2sKawasan%20Industri%20JIIPE%20Gresik!5e0!3m2!1sid!2sid!4v1649750031552!5m2!1sid!2sid"
-                                    data-gtm-yt-inspected-19="true" data-gtm-yt-inspected-25="true"></iframe>
+                                    data-gtm-yt-inspected-19="true" data-gtm-yt-inspected-25="true" title="Map location of PT. Berkah Kawasan Manyar Sejahtera - Gresik"></iframe>
                             </div>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                             <div class="widget-map-box">
                                 <iframe
                                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.5448257707244!2d106.76599011476897!3d-6.191604495517592!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x2efcdf447f96386a!2sAKR%20Corporindo%2C%20Tbk.!5e0!3m2!1sid!2sid!4v1648286533422!5m2!1sid!2sid"
-                                    data-gtm-yt-inspected-19="true" data-gtm-yt-inspected-25="true"></iframe>
+                                    data-gtm-yt-inspected-19="true" data-gtm-yt-inspected-25="true" title="Map location of PT. Berkah Kawasan Manyar Sejahtera - Gresik"></iframe>
                             </div>
                         </div>
                     </div>
