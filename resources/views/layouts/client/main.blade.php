@@ -46,11 +46,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             line-height: 1.6;
         }
-        .home-slider {
-            min-height: 100vh;
-            position: relative;
-            background: #000;
-        }
+        .home-slider { min-height: 100vh; position: relative; background: #000; }
         .kawasan-slider { position: relative; }
         .carousel-inner { position: relative; width: 100%; overflow: hidden; }
         .carousel-item { position: relative; display: none; width: 100%; }
@@ -59,18 +55,41 @@
         .home-box .item { background: #111; }
     </style>
 
-@stack('css')
-    {{-- ⚡ 4. CRITICAL CSS - Blocking (layout utama) --}}
+    {{--
+        ⚡ 4. CRITICAL CSS - Hanya CSS frontend yang benar-benar dibutuhkan.
+
+        SENGAJA DIHAPUS (penyebab blocking terbesar):
+        ❌ backend/css/style.default.css   → CSS backend/admin, TIDAK boleh di frontend
+        ❌ css/all.css                     → DUPLIKAT Font Awesome (ada 3 versi, cukup 1)
+        ❌ css/font-awesome.min.css        → DUPLIKAT Font Awesome versi lama (v4)
+        ❌ css/fullcalendar.css            → komponen admin/backend
+        ❌ css/colorbox.css                → komponen admin/backend
+        ❌ css/colorpicker.css             → komponen admin/backend
+        ❌ css/jquery.jgrowl.css           → komponen admin/backend
+        ❌ css/jquery.alerts.css           → komponen admin/backend
+        ❌ css/jquery.ui.css               → komponen admin/backend
+        ❌ css/jquery.chosen.css           → komponen admin/backend
+        ❌ css/jquery.tagsinput.css        → komponen admin/backend
+        ❌ css/ui.spinner.css              → komponen admin/backend
+        ❌ css/uniform.tp.css              → komponen admin/backend
+        ❌ css/isotope.css                 → komponen admin/backend
+        ❌ css/roboto.css                  → sudah digantikan Google Fonts di bawah
+        ❌ css/lato.css                    → sudah digantikan Google Fonts di bawah
+
+        PENTING: CSS backend di atas kemungkinan besar masuk dari
+        layouts/client/partials/header.blade.php atau footerv2.blade.php.
+        Cari dan hapus baris link CSS tersebut dari file header/footer!
+        (Cari keyword: style.default, colorbox, fullcalendar, isotope, jgrowl)
+    --}}
     <link rel="stylesheet" href="{{ asset('asset/js/bootstrap-4.0.0/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('asset/backend/css/style.default.css') }}">
     <link rel="stylesheet" href="{{ asset('asset/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('asset/css/media.styles.css') }}">
     <link rel="stylesheet" href="{{ asset('asset/css/creative/creative.css') }}?ver=1.0.32">
     <link rel="stylesheet" href="{{ asset('asset/css/creative/creativeresponsive.css') }}?ver=1.0.25">
 
-    {{-- ⚡ 5. NON-CRITICAL CSS - Non-blocking --}}
+    {{-- ⚡ 5. NON-CRITICAL CSS - Semua non-blocking --}}
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts (menggantikan roboto.css & lato.css lokal) -->
     <link rel="preload" as="style"
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;700&display=swap"
         onload="this.onload=null;this.rel='stylesheet'">
@@ -79,7 +98,8 @@
             href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;700&display=swap">
     </noscript>
 
-    <!-- Font Awesome -->
+    <!-- Font Awesome — HANYA SATU SUMBER (CDN Cloudflare) -->
+    <!-- File lokal all.min.css & all.css & font-awesome.min.css JANGAN di-load lagi -->
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         media="print" onload="this.media='all'">
@@ -114,6 +134,22 @@
     <noscript>
         <link rel="stylesheet" href="{{ asset('asset/css/cdn/swiper.css') }}">
     </noscript>
+
+    <!-- Slick CSS -->
+    <link rel="stylesheet" href="{{ asset('asset/css/slick/slick.css') }}"
+        media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="{{ asset('asset/css/slick/slick.css') }}">
+    </noscript>
+
+    <!-- Flaticon -->
+    <link rel="stylesheet" href="{{ asset('asset/fonts/flaticon/flaticon.css') }}"
+        media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="{{ asset('asset/fonts/flaticon/flaticon.css') }}">
+    </noscript>
+
+    <!-- font-display: swap untuk Font Awesome lokal -->
     <style>
         @font-face {
             font-family: "Font Awesome 6 Free";
@@ -137,6 +173,7 @@
             src: url("{{ asset('asset/fonts/fontawesome/webfonts/fa-regular-400.woff2') }}") format("woff2");
         }
     </style>
+
     @stack('css')
 
     {{-- ⚡ 6. GOOGLE TAG MANAGER --}}
@@ -191,21 +228,6 @@
     @include('layouts.client.partials.header')
     @yield('content')
     @include('layouts.client.partials.footerv2')
-
-    {{--
-        ⚡ STRATEGI LOADING SCRIPT:
-
-        ✅ jQuery       → Di bawah body, TANPA defer
-                          Alasan: semua inline script pakai $(),
-                          harus sudah tersedia saat @stack('js') dieksekusi.
-                          Gain tetap ada karena posisinya di BAWAH body
-                          (HTML sudah selesai di-parse duluan).
-
-        ✅ Vite app.js  → Dihandle otomatis oleh Laravel Vite.
-
-        ✅ @stack('js') → Inline script dari blade views,
-                          diletakkan SETELAH jQuery sudah load.
-    --}}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 

@@ -9,22 +9,34 @@ use Illuminate\Support\Facades\DB;
 
 class ContactOverviewSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         ContactOverviewTranslation::truncate();
         ContactOverview::truncate();
+
         DB::beginTransaction();
 
         try {
-            // Create contact overview
+            // Base iframe generator (biar gak duplikat)
+            $mapIframe = function ($title) {
+                return '<iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.234!2d112.6046212!3d-7.0856958!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xaee7dea2e8cb80a3!2sJIIPE+Office!5e0!3m2!1sen!2sid!4v1234567890"
+                    width="600"
+                    height="450"
+                    style="border:0;"
+                    loading="lazy"
+                    allowfullscreen
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="'.$title.'">
+                </iframe>';
+            };
+
+            // Create main contact
             $contact = ContactOverview::create([
-                'image' => 'default-contact.jpg', // Placeholder image
+                'image' => 'default-contact.jpg',
             ]);
 
-            // Translation data for each locale
+            // Translation data
             $translations = [
                 'id' => [
                     'title' => 'Hubungi Kami',
@@ -33,7 +45,7 @@ class ContactOverviewSeeder extends Seeder
                     'office_name' => 'PT. Berkah Kawasan Manyar Sejahtera',
                     'phone' => '+62 31 985 409 99',
                     'address' => 'Jl. Raya Manyar Km. 11, Manyar-Gresik, East Java 61151',
-                    'map_link' => '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.234!2d112.6046212!3d-7.0856958!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xaee7dea2e8cb80a3!2sJIIPE+Office!5e0!3m2!1sen!2sid!4v1234567890" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>',
+                    'map_link' => $mapIframe('Peta lokasi PT. Berkah Kawasan Manyar Sejahtera - Gresik'),
                 ],
                 'en' => [
                     'title' => 'Contact Us',
@@ -42,7 +54,7 @@ class ContactOverviewSeeder extends Seeder
                     'office_name' => 'PT. Berkah Kawasan Manyar Sejahtera',
                     'phone' => '+62 31 985 409 99',
                     'address' => 'Jl. Raya Manyar Km. 11, Manyar-Gresik, East Java 61151',
-                    'map_link' => '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.234!2d112.6046212!3d-7.0856958!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xaee7dea2e8cb80a3!2sJIIPE+Office!5e0!3m2!1sen!2sid!4v1234567890" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>',
+                    'map_link' => $mapIframe('Map location of PT. Berkah Kawasan Manyar Sejahtera - Gresik'),
                 ],
                 'zh' => [
                     'title' => '联系我们',
@@ -51,7 +63,7 @@ class ContactOverviewSeeder extends Seeder
                     'office_name' => 'PT. Berkah Kawasan Manyar Sejahtera',
                     'phone' => '+62 31 985 409 99',
                     'address' => 'Jl. Raya Manyar Km. 11, Manyar-Gresik, East Java 61151',
-                    'map_link' => '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.234!2d112.6046212!3d-7.0856958!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xaee7dea2e8cb80a3!2sJIIPE+Office!5e0!3m2!1sen!2sid!4v1234567890" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>',
+                    'map_link' => $mapIframe('PT. Berkah Kawasan Manyar Sejahtera 地图位置 - Gresik'),
                 ],
                 'ja' => [
                     'title' => 'お問い合わせ',
@@ -60,7 +72,7 @@ class ContactOverviewSeeder extends Seeder
                     'office_name' => 'PT. Berkah Kawasan Manyar Sejahtera',
                     'phone' => '+62 31 985 409 99',
                     'address' => 'Jl. Raya Manyar Km. 11, Manyar-Gresik, East Java 61151',
-                    'map_link' => '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.234!2d112.6046212!3d-7.0856958!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xaee7dea2e8cb80a3!2sJIIPE+Office!5e0!3m2!1sen!2sid!4v1234567890" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>',
+                    'map_link' => $mapIframe('PT. Berkah Kawasan Manyar Sejahtera の地図位置 - グレシック'),
                 ],
                 'ko' => [
                     'title' => '문의하기',
@@ -69,7 +81,7 @@ class ContactOverviewSeeder extends Seeder
                     'office_name' => 'PT. Berkah Kawasan Manyar Sejahtera',
                     'phone' => '+62 31 985 409 99',
                     'address' => 'Jl. Raya Manyar Km. 11, Manyar-Gresik, East Java 61151',
-                    'map_link' => '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.234!2d112.6046212!3d-7.0856958!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xaee7dea2e8cb80a3!2sJIIPE+Office!5e0!3m2!1sen!2sid!4v1234567890" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>',
+                    'map_link' => $mapIframe('PT. Berkah Kawasan Manyar Sejahtera 지도 위치 - Gresik'),
                 ],
                 'tw' => [
                     'title' => '聯絡我們',
@@ -78,11 +90,10 @@ class ContactOverviewSeeder extends Seeder
                     'office_name' => 'PT. Berkah Kawasan Manyar Sejahtera',
                     'phone' => '+62 31 985 409 99',
                     'address' => 'Jl. Raya Manyar Km. 11, Manyar-Gresik, East Java 61151',
-                    'map_link' => '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.234!2d112.6046212!3d-7.0856958!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xaee7dea2e8cb80a3!2sJIIPE+Office!5e0!3m2!1sen!2sid!4v1234567890" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>',
+                    'map_link' => $mapIframe('PT. Berkah Kawasan Manyar Sejahtera 地圖位置 - Gresik'),
                 ],
             ];
 
-            // Insert translations
             foreach ($translations as $locale => $data) {
                 ContactOverviewTranslation::create([
                     'contact_overviews_id' => $contact->id,
