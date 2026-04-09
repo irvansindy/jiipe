@@ -1,40 +1,26 @@
-// import $ from "jquery";
-// window.$ = window.jQuery = $;
-
 // Popper (Bootstrap 4)
 import "popper.js";
 
 // Bootstrap 4
 import "bootstrap";
 
-// Owl Carousel
-import "owl.carousel";
-
-// Slick
-import "slick-carousel";
-
 // Swiper
 import Swiper from "swiper";
 import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/autoplay";
 
 window.Swiper = Swiper;
 
 /*
 |--------------------------------------------------------------------------
-| Optional: Initialize plugins safely
+| Swiper Initialization (Standardized)
 |--------------------------------------------------------------------------
 */
 
 document.addEventListener("DOMContentLoaded", function () {
-
-    // Owl
-    if ($(".owl-carousel").length) {
-        $(".owl-carousel").owlCarousel();
-    }
-
-    // Slick
-    if ($(".slick-slider").length) {
-        $(".slick-slider").slick();
-    }
-
+    // Note: Individual components will initialize Swiper as needed
+    // to avoid selector conflicts.
 });
+

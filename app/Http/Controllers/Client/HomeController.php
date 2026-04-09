@@ -51,9 +51,23 @@ class HomeController extends Controller
             ->orderBy('id', 'asc')
             ->get()
             ->map(function($slider) {
+                // ⚡ Optimize image slides only
+                $isImage = in_array(pathinfo($slider->file, PATHINFO_EXTENSION), ['jpg', 'jpeg', 'png', 'webp']);
+                $optimizedFile = $slider->file;
+                $webpPath = null;
+
+                if ($isImage) {
+                    $imagePath = 'uploads/home-slider/' . $slider->file;
+                    $optimizedFile = \App\Helpers\ImageOptimizer::optimizeImage($imagePath, 'hero', 'home-slider');
+                    $webpPath = \App\Helpers\ImageOptimizer::generateWebP($imagePath);
+                }
+
                 $trans = $slider->translations->first();
                 return [
                     'file' => $slider->file,
+                    'is_image' => $isImage,
+                    'optimized_file' => $optimizedFile,
+                    'webp_path' => $webpPath,
                     'title' => $trans?->title ?? '',
                     'description' => $trans?->description ?? '',
                 ];
@@ -72,10 +86,20 @@ class HomeController extends Controller
             ->orderBy('position', 'asc')
             ->get()
             ->map(function($showcase) {
+                $imagePath = 'uploads/showcase/' . $showcase->image;
+                $mobilePath = 'uploads/showcase/' . ($showcase->image_mobile ?? $showcase->image);
+
+                $optimizedImage = \App\Helpers\ImageOptimizer::optimizeImage($imagePath, 'showcase', 'showcase');
+                $optimizedMobile = \App\Helpers\ImageOptimizer::optimizeImage($mobilePath, 'medium', 'showcase');
+
                 $trans = $showcase->translations->first();
                 return [
                     'image' => $showcase->image,
                     'image_mobile' => $showcase->image_mobile ?? $showcase->image,
+                    'optimized_image' => $optimizedImage,
+                    'optimized_mobile' => $optimizedMobile,
+                    'webp_image' => \App\Helpers\ImageOptimizer::generateWebP($imagePath),
+                    'webp_mobile' => \App\Helpers\ImageOptimizer::generateWebP($mobilePath),
                     'title' => $trans?->title ?? '',
                     'description' => $trans?->description ?? '',
                 ];
@@ -188,12 +212,17 @@ class HomeController extends Controller
                 ->limit(3)
                 ->get()
                 ->map(function($newsItem) {
+                    $imagePath = 'uploads/blog/' . $newsItem->thumbnail;
+                    $optimizedThumb = \App\Helpers\ImageOptimizer::optimizeImage($imagePath, 'news', 'blog');
+
                     $trans = $newsItem->translations->first();
                     return [
                         'id' => $newsItem->id,
                         'title' => $trans?->title ?? '',
                         'content' => $trans?->content ?? '',
                         'thumbnail' => $newsItem->thumbnail,
+                        'optimized_thumbnail' => $optimizedThumb,
+                        'webp_thumbnail' => \App\Helpers\ImageOptimizer::generateWebP($imagePath),
                         'created_at' => $newsItem->created_at?->format('F d, Y'),
                     ];
                 });

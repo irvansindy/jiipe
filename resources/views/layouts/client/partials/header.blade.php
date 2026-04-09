@@ -23,7 +23,7 @@
                                 srcset="{{ $logo1xUrl }} 1x, {{ $logo2xUrl }} 2x"
                                 width="390"
                                 height="90"
-                                alt="kawasan industri gresik jiipe"
+                                alt="Official Logo of JIIPE Gresik - Java Integrated Industrial and Ports Estate"
                                 class="img-fluid img"
                                 loading="lazy"
                                 decoding="async">
@@ -64,7 +64,8 @@
                     <div class="language-dropdown-wrapper">
                         <label for="language-select">@lang('system.choose language') : </label>
                         <div class="custom-select-wrapper">
-                            <button type="button" class="custom-select-trigger" id="languageSelectTrigger">
+                            <button type="button" class="custom-select-trigger" id="languageSelectTrigger" 
+                                aria-label="Change Language" aria-haspopup="listbox" aria-expanded="false">
                                 <span class="selected-language">
                                     @php
                                         $currentLocale = Mcamara\LaravelLocalization\Facades\LaravelLocalization::getCurrentLocale();
@@ -72,7 +73,7 @@
                                     @endphp
                                     {{ strtoupper($currentLocale) }}
                                 </span>
-                                <i class="fa fa-chevron-down dropdown-icon"></i>
+                                <i class="fa fa-chevron-down dropdown-icon" aria-hidden="true"></i>
                             </button>
                             <div class="custom-select-dropdown" id="languageDropdown">
                                 <ul class="language-options">
@@ -107,23 +108,23 @@
                         <div class="sticky-main d-none">
                             <a href="{{ route('home') }}" class="sticky-brand-new">
                                 <img src="{{ asset('asset/images/logo/JIIPE_SEZ_Logo.png') }}"
-                                    alt="kawasan industri gresik jiipe" class="img-fluid img" loading="lazy" decoding="async">
+                                    alt="JIIPE Gresik Sticky Logo" class="img-fluid img" loading="lazy" decoding="async">
                             </a>
                         </div>
                     </div>
                     <div class="header-right-nav">
                         <ul>
                             <li class="navbar-toggle-btn">
-                                <div class="navbar-toggler">
+                                <button class="navbar-toggler" aria-label="Toggle Navigation Menu" aria-controls="nav-menu" aria-expanded="false">
                                     <span></span>
                                     <span></span>
                                     <span></span>
-                                </div>
+                                </button>
                             </li>
                         </ul>
                     </div>
-                    <div class="nav-menu">
-                        <div class="navbar-close"><i class="fa fa-times"></i></div>
+                    <div class="nav-menu" id="nav-menu">
+                        <button class="navbar-close" aria-label="Close Menu"><i class="fa fa-times" aria-hidden="true"></i></button>
                         <!-- Main Menu -->
                         <nav class="main-menu main-menu-red">
                             <ul>
@@ -621,11 +622,13 @@
             function openDropdown() {
                 dropdown.classList.add('show');
                 trigger.classList.add('active');
+                trigger.setAttribute('aria-expanded', 'true');
             }
-
+ 
             function closeDropdown() {
                 dropdown.classList.remove('show');
                 trigger.classList.remove('active');
+                trigger.setAttribute('aria-expanded', 'false');
             }
 
             // Close when clicking outside
@@ -671,20 +674,26 @@
                 const overlay = createOverlay();
                 navMenu.classList.add('active');
                 document.body.classList.add('menu-open');
-
+ 
                 const toggler = toggleBtn.querySelector('.navbar-toggler');
-                if (toggler) toggler.classList.add('active');
-
+                if (toggler) {
+                    toggler.classList.add('active');
+                    toggler.setAttribute('aria-expanded', 'true');
+                }
+ 
                 setTimeout(() => overlay.classList.add('active'), 10);
             }
-
+ 
             function closeMenu() {
                 const overlay = document.querySelector('.nav-menu-overlay');
                 navMenu.classList.remove('active');
                 document.body.classList.remove('menu-open');
-
+ 
                 const toggler = toggleBtn.querySelector('.navbar-toggler');
-                if (toggler) toggler.classList.remove('active');
+                if (toggler) {
+                    toggler.classList.remove('active');
+                    toggler.setAttribute('aria-expanded', 'false');
+                }
 
                 if (overlay) {
                     overlay.classList.remove('active');

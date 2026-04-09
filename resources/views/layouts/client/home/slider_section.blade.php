@@ -5,151 +5,128 @@
 
 <section class="home-slider creative">
     <div class="homewrapper">
-        <div class="home-box owl-carousel owl-theme">
-            @foreach ($sliders as $slider)
-                <div class="item">
-                    <div class="embed-responsive embed-responsive-21by9">
-                        <video
-                            class="embed-responsive-item"
-                            muted
-                            playsinline
-                            webkit-playsinline
-                            preload="{{ $loop->first ? 'metadata' : 'none' }}"
-                            {{-- FIX 2: WAJIB ada poster — mencegah layar hitam & bantu LCP --}}
-                            poster="{{ asset('asset/images/slider-poster-' . $loop->index . '.webp') }}"
-                        >
-                            <source
-                                src="{{ asset('uploads/home-slider/' . $slider['file']) }}"
-                                type="video/mp4"
-                                @if($loop->first) fetchpriority="high" @else fetchpriority="low" @endif
-                            >
-                        </video>
-                        <div class="home-container">
-                            <div class="home-caption">
-                                <h2 class="title">{{ $slider['title'] }}</h2>
-                                <span class="sub-title">
-                                    <p>{{ $slider['description'] }}</p>
-                                </span>
-                                <ul class="button">
-                                    <li>
-                                        <a href="{{ route('contact') }}" class="btn_slider btn-light btn-red">
-                                            @lang('system.contact us')
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.jiipe.com/#videojiipe"
-                                            class="btn_slider btn-light btn-blue">
-                                            @lang('system.video profile')
-                                        </a>
-                                    </li>
-                                </ul>
+        <div class="home-box swiper">
+            <div class="swiper-wrapper">
+                @foreach ($sliders as $index => $slider)
+                    <div class="swiper-slide item">
+                        <div class="embed-responsive embed-responsive-21by9">
+                            @if ($slider['is_image'])
+                                <picture>
+                                    @if ($slider['webp_path'])
+                                        <source srcset="{{ asset($slider['webp_path']) }}" type="image/webp">
+                                    @endif
+                                    <img src="{{ asset($slider['optimized_file']) }}"
+                                        alt="{{ $slider['title'] }}"
+                                        class="embed-responsive-item slider-img"
+                                        {{ $index === 0 ? 'fetchpriority=high' : 'loading=lazy' }}
+                                        width="1920"
+                                        height="1080"
+                                        decoding="{{ $index === 0 ? 'sync' : 'async' }}">
+                                </picture>
+                            @else
+                                <video class="embed-responsive-item slider-video" autoplay muted loop playsinline
+                                    {{ $index === 0 ? 'fetchpriority=high preload=auto' : 'preload=none' }}
+                                    poster="{{ asset('asset/images/video-placeholder.jpg') }}">
+                                    <source src="{{ asset('uploads/home-slider/' . $slider['file']) }}" type="video/mp4">
+                                </video>
+                            @endif
+
+                            <div class="home-container">
+                                <div class="home-caption">
+                                    @if($slider['title'])
+                                        <h2 class="title" data-swiper-parallax="-300">{{ $slider['title'] }}</h2>
+                                    @endif
+                                    <span class="sub-title">
+                                        @if($slider['description'])
+                                            <p class="description" data-swiper-parallax="-200">{{ $slider['description'] }}</p>
+                                        @endif
+                                    </span>
+
+                                    <ul class="button mt-4">
+                                        <li>
+                                            <a href="{{ route('contact') }}" class="btn_slider btn-red">
+                                                @lang('system.contact us')
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/{{ app()->getLocale() }}#videojiipe" class="btn_slider btn-blue">
+                                                @lang('system.video profile')
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+
+            </div>
+
+            {{-- Controls --}}
+            <div class="swiper-button-next" aria-label="Next Slide"></div>
+            <div class="swiper-button-prev" aria-label="Previous Slide"></div>
+            <div class="swiper-pagination"></div>
         </div>
     </div>
+
     @include('layouts.client.home.partials.navigation_box')
 </section>
 
 @push('js')
-    {{-- FIX 3: Preload video pertama SAJA (bukan semua) --}}
     @if(!empty($sliders) && count($sliders) > 0)
         <link rel="preload" as="video" href="{{ asset('uploads/home-slider/' . $sliders[0]['file']) }}" type="video/mp4" fetchpriority="high">
     @endif
 
     <script>
-        $(document).ready(function() {
-            var $homeBox = $('.home-box');
-
-            if ($homeBox.hasClass('owl-loaded')) {
-                $homeBox.trigger('destroy.owl.carousel');
-                $homeBox.removeClass('owl-loaded owl-drag');
-            }
-
-            var homeSlider = $homeBox.owlCarousel({
-                items: 1,
+        document.addEventListener('DOMContentLoaded', function() {
+            const homeSwiper = new Swiper('.home-box', {
                 loop: true,
-                margin: 15,
-                nav: false,
-                dots: false,
-                autoplay: true,
-                autoplayTimeout: 8000,
-                autoplayHoverPause: true,
-                animateOut: 'fadeOut',
-                animateIn: 'fadeIn',
-                smartSpeed: 1000,
-                lazyLoad: false,
-                responsive: {
-                    0: { items: 1 },
-                    768: { items: 1 },
-                    1024: { items: 1 }
+                speed: 1000,
+                effect: 'fade',
+                fadeEffect: {
+                    crossFade: true
                 },
-                onInitialized: function(event) {
-                    prepareVideos();
-                    playCurrentVideo(event);
+                autoplay: {
+                    delay: 8000,
+                    disableOnInteraction: false,
                 },
-                onTranslated: function(event) {
-                    stopAllVideos();
-                    playCurrentVideo(event);
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
                 },
-                onChanged: function(event) {
-                    stopAllVideos();
+                on: {
+                    init: function () {
+                        playVideo(this.slides[this.activeIndex]);
+                    },
+                    slideChangeTransitionStart: function () {
+                        stopAllVideos();
+                        playVideo(this.slides[this.activeIndex]);
+                    }
                 }
             });
 
-            function prepareVideos() {
-                $('.home-box video').each(function() {
-                    this.muted = true;
-                    this.setAttribute('playsinline', '');
-                    this.setAttribute('webkit-playsinline', '');
-                });
-            }
-
-            function playCurrentVideo(event) {
-                var $activeItem = $('.home-box .owl-item.active');
-                var video = $activeItem.find('video').get(0);
-
-                if (video && video.getAttribute('preload') === 'none') {
-                    video.setAttribute('preload', 'metadata');
-                }
-
+            function playVideo(slide) {
+                const video = slide.querySelector('video');
                 if (video) {
+                    video.muted = true;
                     video.currentTime = 0;
-                    video.play().catch(function(error) {
-                        console.log('Video autoplay prevented:', error);
+                    video.play().catch(error => {
+                        console.warn('Autoplay prevented:', error);
                     });
                 }
             }
 
             function stopAllVideos() {
-                $('.home-box video').each(function() {
-                    this.pause();
-                    this.currentTime = 0;
-                    if (this.closest('.owl-item') && !this.closest('.owl-item').classList.contains('active')) {
-                        this.setAttribute('preload', 'none');
-                    }
+                document.querySelectorAll('.home-box video').forEach(video => {
+                    video.pause();
+                    video.currentTime = 0;
                 });
             }
 
-            $('.owl-prev').on('click', function(e) {
-                e.preventDefault();
-                homeSlider.trigger('prev.owl.carousel');
-            });
-
-            $('.owl-next').on('click', function(e) {
-                e.preventDefault();
-                homeSlider.trigger('next.owl.carousel');
-            });
-
-            $(document).on('keydown', function(e) {
-                if (e.keyCode == 37) homeSlider.trigger('prev.owl.carousel');
-                if (e.keyCode == 39) homeSlider.trigger('next.owl.carousel');
-            });
-
-            $('.home-box video').on('ended', function() {
-                homeSlider.trigger('next.owl.carousel');
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft') homeSwiper.slidePrev();
+                if (e.key === 'ArrowRight') homeSwiper.slideNext();
             });
         });
     </script>

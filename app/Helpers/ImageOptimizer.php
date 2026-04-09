@@ -9,20 +9,13 @@ use Illuminate\Support\Facades\File;
 class ImageOptimizer
 {
     /**
-     * Optimize tenant logo dengan auto-resize dan compress
-     * ULTRA-SAFE VERSION - Uses native PHP GD for large files
-     *
-     * @param string $imagePath - Path dari storage (uploads/tenant-logo/xxx.png)
-     * @param string $size - thumbnail|small|medium|large
-     * @param bool $forceRegenerate - Force regenerate meskipun sudah ada cache
-     * @return string - Path ke optimized image
+     * Optimize image dengan auto-resize dan compress (Generic Category)
      */
-    public static function optimizeTenantLogo($imagePath, $size = 'thumbnail', $forceRegenerate = false)
+    public static function optimizeImage($imagePath, $size = 'thumbnail', $category = 'tenant-logo', $forceRegenerate = false)
     {
-        // Cache key berdasarkan path dan size
-        $cacheKey = 'img_' . md5($imagePath . $size);
+        // Cache key berdasarkan path, category dan size
+        $cacheKey = 'img_' . md5($imagePath . $category . $size);
 
-        // Check cache dulu (kecuali force regenerate)
         if (!$forceRegenerate) {
             $cachedPath = Cache::get($cacheKey);
             if ($cachedPath && self::fileExists($cachedPath)) {
@@ -30,20 +23,21 @@ class ImageOptimizer
             }
         }
 
-        // Process image
-        $optimizedPath = self::processImage($imagePath, $size);
-
-        // Cache result
-        Cache::put($cacheKey, $optimizedPath, 86400); // 24 hours
+        $optimizedPath = self::processImage($imagePath, $size, $category);
+        Cache::put($cacheKey, $optimizedPath, 86400);
 
         return $optimizedPath;
     }
 
     /**
-     * Process image resize & compress
-     * ULTRA-SAFE: Bypass Intervention Image for files > 2MB
+     * Legacy support untuk optimizeTenantLogo
      */
-    protected static function processImage($imagePath, $size)
+    public static function optimizeTenantLogo($imagePath, $size = 'thumbnail', $forceRegenerate = false)
+    {
+        return self::optimizeImage($imagePath, $size, 'tenant-logo', $forceRegenerate);
+    }
+
+    protected static function processImage($imagePath, $size, $category = 'tenant-logo')
     {
         // Definisi ukuran berdasarkan kebutuhan di UI
         $dimensions = [
@@ -51,13 +45,18 @@ class ImageOptimizer
             'small' => ['width' => 300, 'quality' => 85],
             'medium' => ['width' => 600, 'quality' => 85],
             'large' => ['width' => 1200, 'quality' => 90],
+            'hero' => ['width' => 1920, 'quality' => 90],
+            'showcase' => ['width' => 1200, 'quality' => 85],
+            'news' => ['width' => 800, 'quality' => 85],
         ];
 
         $config = $dimensions[$size] ?? $dimensions['thumbnail'];
 
-        // Convert storage path ke public path
-        $publicPath = str_replace('storage/app/public/', '', $imagePath);
-        $publicPath = str_replace('uploads/', 'uploads/', $publicPath);
+        // Normalisasi Path
+        $publicPath = str_replace(['storage/app/public/', 'public/'], '', $imagePath);
+        if (!str_starts_with($publicPath, 'uploads/')) {
+            $publicPath = 'uploads/' . ltrim($publicPath, '/');
+        }
 
         // Full path check
         $fullPath = public_path($publicPath);
@@ -436,11 +435,11 @@ class ImageOptimizer
     }
 
     /**
-     * Get optimized image URL
+     * Get optimized image URL (Generic)
      */
-    public static function getOptimizedUrl($originalPath, $size = 'thumbnail')
+    public static function getOptimizedUrl($originalPath, $size = 'thumbnail', $category = 'general')
     {
-        $optimizedPath = self::optimizeTenantLogo($originalPath, $size);
+        $optimizedPath = self::optimizeImage($originalPath, $size, $category);
         return asset($optimizedPath);
     }
 }

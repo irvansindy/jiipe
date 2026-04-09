@@ -9,180 +9,131 @@
         </div>
         <div class="clear"></div>
 
-        <div class="testimonial-list owl-carousel owl-theme">
-            @forelse($reviews as $index => $review)
-                <div class="card text-center">
-                    <div class="card-body shadow-effect">
-                        <span class="icon"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
-                        <p class="description">{{ $review['description'] }}</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="profile-card__img">
-                            {{-- ⚡ HANYA TAMBAH LAZY LOADING - TAMPILAN TETAP SAMA --}}
-                            <img src="{{ asset('uploads/review/' . $review['photo']) }}" alt="{{ $review['name'] }}"
-                                loading="{{ $index < 3 ? 'eager' : 'lazy' }}">
+        <div class="testimonial-list swiper">
+            <div class="swiper-wrapper">
+                @forelse($reviews as $index => $review)
+                    <div class="swiper-slide card text-center">
+                        <div class="card-body shadow-effect">
+                            <span class="icon"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
+                            <p class="description">{{ $review['description'] }}</p>
                         </div>
-                        <div class="profile-card__info">
-                            <h6>{{ $review['name'] }}</h6>
-                            <p>{{ $review['position'] }}</p>
+                        <div class="card-footer">
+                            <div class="profile-card__img">
+                                <img src="{{ asset('uploads/review/' . $review['photo']) }}" alt="{{ $review['name'] }}"
+                                    loading="lazy" width="80" height="80">
+                            </div>
+                            <div class="profile-card__info">
+                                <h6>{{ $review['name'] }}</h6>
+                                <p>{{ $review['position'] }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @empty
-                <div class="card text-center">
-                    <div class="card-body">
-                        <p>No reviews available.</p>
+                @empty
+                    <div class="swiper-slide card text-center">
+                        <div class="card-body">
+                            <p>No reviews available.</p>
+                        </div>
                     </div>
-                </div>
-            @endforelse
+                @endforelse
+            </div>
+            {{-- Navigation --}}
+            <div class="swiper-button-next" aria-label="Next slide"></div>
+            <div class="swiper-button-prev" aria-label="Previous slide"></div>
+            {{-- Pagination --}}
+            <div class="swiper-pagination"></div>
         </div>
+
 
         <div class="clear"></div>
     </div>
 </section>
 
 <style>
-    /* ⚡ KEEP ORIGINAL STYLING - NO BLUR ON MOBILE */
+    /* Swiper custom styling for testimonials */
+    .testimonial-list {
+        padding: 40px 0 60px;
+    }
+
+    .testimonial-list .swiper-slide {
+        height: auto;
+        opacity: 0.4;
+        transition: transform 0.3s, opacity 0.3s;
+    }
+
+    .testimonial-list .swiper-slide-active,
+    .testimonial-list .swiper-slide-next,
+    .testimonial-list .swiper-slide-prev {
+        opacity: 1;
+    }
+
+    @media (min-width: 992px) {
+        .testimonial-list .swiper-slide-active {
+            transform: scale(1.1);
+            z-index: 2;
+        }
+        .testimonial-list .swiper-slide-active .card-body {
+            background: #53565a !important;
+            color: #fff !important;
+        }
+    }
+
     @media (max-width: 991px) {
-        .comment-jiipe .testimonial-list .owl-item {
+        .comment-jiipe .testimonial-list .swiper-slide {
             opacity: 1 !important;
-            filter: none !important;
-            transform: none !important;
             display: flex !important;
             flex-direction: column !important;
         }
 
-        .comment-jiipe .testimonial-list .owl-item .card {
-            background: transparent !important;
-            opacity: 1 !important;
-            filter: none !important;
-            display: flex !important;
-            flex-direction: column !important;
-            width: 100% !important;
-            box-sizing: border-box !important;
-        }
-
-        .comment-jiipe .testimonial-list .owl-item .card-body {
+        .comment-jiipe .testimonial-list .card-body {
             background: #53565a !important;
             color: #ffffff !important;
-            opacity: 1 !important;
-            filter: none !important;
             border-radius: 12px !important;
             padding: 24px 20px !important;
-            box-sizing: border-box !important;
-            width: 100% !important;
-            word-wrap: break-word !important;
-            overflow-wrap: break-word !important;
-            white-space: normal !important;
         }
 
-        .comment-jiipe .testimonial-list .owl-item .card-body * {
-            opacity: 1 !important;
+        .comment-jiipe .testimonial-list .card-body .description {
             color: #ffffff !important;
-        }
-
-        .comment-jiipe .testimonial-list .owl-item .card-body .description {
-            color: #ffffff !important;
-            /* opacity: 1 !important;
-            font-size: 12px !important;
-            line-height: 1.6 !important;
-            margin-bottom: 0 !important;
-            word-break: break-word !important;
-            overflow-wrap: break-word !important;
-            white-space: normal !important; */
             font-weight: 500 !important;
             font-size: 12px !important;
             line-height: 26px !important;
             text-align: center !important;
-            /* color: #53565a !important; */
-        }
-
-        .comment-jiipe .testimonial-list .owl-item .card-footer {
-            background: #ffffff !important;
-            opacity: 1 !important;
-        }
-
-        .comment-jiipe .testimonial-list .owl-item.cloned {
-            opacity: 1 !important;
-            filter: none !important;
-        }
-
-        .comment-jiipe .testimonial-list .owl-item.cloned .card-body {
-            opacity: 1 !important;
-            filter: none !important;
-        }
-
-        /* Fix owl stage agar tidak clip */
-        .comment-jiipe .testimonial-list .owl-stage {
-            display: flex !important;
-            align-items: stretch !important;
-        }
-    }
-
-    /* Desktop - CENTER MODE ACTIVE */
-    @media (min-width: 992px) {
-        .comment-jiipe .testimonial-list .owl-item.active.center .card-body {
-            background: #53565a !important;
         }
     }
 </style>
 
 <script>
-    // ⚡ Wait for jQuery and OwlCarousel to load
-    (function initReviewCarousel() {
-        if (typeof $ === 'undefined' || typeof $.fn.owlCarousel === 'undefined') {
-            setTimeout(initReviewCarousel, 100);
-            return;
-        }
-
-        $(document).ready(function() {
-            console.log('Initializing testimonial carousel...');
-
-            var $carousel = $('.testimonial-list');
-
-            // Destroy existing instance if any
-            if ($carousel.hasClass('owl-loaded')) {
-                $carousel.trigger('destroy.owl.carousel');
-                $carousel.removeClass('owl-loaded owl-drag');
+    document.addEventListener('DOMContentLoaded', function() {
+        const testimonialSwiper = new Swiper('.testimonial-list', {
+            loop: true,
+            speed: 800,
+            centeredSlides: true,
+            slidesPerView: 1,
+            spaceBetween: 20,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 40,
+                    centeredSlides: false,
+                },
+                992: {
+                    slidesPerView: 3,
+                    spaceBetween: 60,
+                    centeredSlides: true,
+                }
             }
-
-            // ⚡ Initialize dengan CENTER MODE untuk desktop
-            $carousel.owlCarousel({
-                loop: true,
-                margin: 60,
-                nav: true,
-                dots: true,
-                center: true, // ✅ CENTER MODE AKTIF untuk desktop
-                autoplay: true,
-                autoplayTimeout: 5000,
-                autoplayHoverPause: true,
-                navText: [
-                    '<i class="fa fa-chevron-left"></i>',
-                    '<i class="fa fa-chevron-right"></i>'
-                ],
-                responsive: {
-                    0: {
-                        items: 1,
-                        center: false, // ❌ Center OFF untuk mobile (agar tidak blur)
-                        margin: 20
-                    },
-                    768: {
-                        items: 2,
-                        center: false, // ❌ Center OFF untuk tablet
-                        margin: 40
-                    },
-                    992: {
-                        items: 3,
-                        center: true, // ✅ Center ON untuk desktop (sesuai foto 3)
-                        margin: 60
-                    }
-                },
-                onInitialized: function(event) {
-                    console.log('Owl Carousel initialized successfully!');
-                    console.log('Active items:', event.item.count);
-                },
-                onTranslated: function(event) {}
-            });
         });
-    })();
+    });
 </script>
+

@@ -11,16 +11,21 @@
                     <div class="items {{ $key == 0 ? 'active' : '' }} pb-lg-4 pb-sm-1">
                         <div class="gambar">
                             <a href="{{ route('blog.detail', $item['id']) }}">
-                                {{-- FIX: Tambah width, height, dan decoding untuk mencegah CLS --}}
-                                <img src="{{ asset('uploads/blog/' . $item['thumbnail']) }}"
-                                    alt="{{ $item['title'] }}"
-                                    class="img-fluid"
-                                    loading="lazy"
-                                    decoding="async"
-                                    width="{{ $key == 0 ? '800' : '400' }}"
-                                    height="{{ $key == 0 ? '450' : '225' }}">
+                                <picture>
+                                    @if ($item['webp_thumbnail'])
+                                        <source srcset="{{ asset($item['webp_thumbnail']) }}" type="image/webp">
+                                    @endif
+                                    <img src="{{ asset($item['optimized_thumbnail']) }}"
+                                        alt="{{ $item['title'] }}"
+                                        class="img-fluid"
+                                        loading="lazy"
+                                        decoding="async"
+                                        width="{{ $key == 0 ? '800' : '400' }}"
+                                        height="{{ $key == 0 ? '450' : '225' }}">
+                                </picture>
                             </a>
                         </div>
+
                         <div class="judul mt-3">
                             <a href="{{ route('blog.detail', $item['id']) }}">
                                 <h5>{{ $item['title'] }}</h5>

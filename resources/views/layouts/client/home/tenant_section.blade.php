@@ -126,53 +126,31 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        function initTenantSwiper() {
-            if (typeof Swiper === 'undefined') {
-                setTimeout(initTenantSwiper, 100);
-                return;
-            }
-
-            // ⚡ Swiper 12: Harus register modules dulu
-            if (Swiper.use) {
-                // Swiper < 9 style
-                Swiper.use([window.SwiperAutoplay].filter(Boolean));
-            }
-
-            var swiper = new Swiper("#tenants .mySwiper", {
-                modules: window.SwiperAutoplay ? [window.SwiperAutoplay] : [],
-                slidesPerView: 6,
-                spaceBetween: 30,
-                loop: true,
-                speed: 5000,
-                grabCursor: true,
-
-                autoplay: {
-                    delay: 3000,
-                    disableOnInteraction: false,
-                    pauseOnMouseEnter: true,
+        const tenantSwiper = new Swiper("#tenants .mySwiper", {
+            slidesPerView: 2,
+            spaceBetween: 15,
+            loop: true,
+            speed: 5000,
+            autoplay: {
+                delay: 0,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 3,
+                    spaceBetween: 20
                 },
-
-                breakpoints: {
-                    320: {
-                        slidesPerView: 2,
-                        spaceBetween: 15
-                    },
-                    640: {
-                        slidesPerView: 3,
-                        spaceBetween: 20
-                    },
-                    1024: {
-                        slidesPerView: 5,
-                        spaceBetween: 25
-                    },
-                    1200: {
-                        slidesPerView: 6,
-                        spaceBetween: 30
-                    },
-                }
-            });
-        }
-
-        initTenantSwiper();
+                1024: {
+                    slidesPerView: 5,
+                    spaceBetween: 25
+                },
+                1200: {
+                    slidesPerView: 6,
+                    spaceBetween: 30
+                },
+            }
+        });
     });
 </script>
+

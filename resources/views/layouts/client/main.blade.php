@@ -2,8 +2,16 @@
 <html lang="id">
 
 <head>
-    {{-- ⚡ 1. PRELOAD HINTS PERTAMA --}}
+    {{-- ⚡ 1. PRELOAD HINTS --}}
     @stack('preload')
+    @if(Request::is('/'))
+        @php
+            $firstSlider = \App\Models\HomeSlider::where('status', 1)->orderBy('sort', 'asc')->first();
+        @endphp
+        @if($firstSlider)
+             <link rel="preload" as="video" href="{{ asset('uploads/home-slider/' . $firstSlider->file) }}" type="video/mp4" fetchpriority="high">
+        @endif
+    @endif
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -114,20 +122,6 @@
         <link rel="stylesheet" href="{{ asset('asset/css/animate.css') }}">
     </noscript>
 
-    <!-- Owl Carousel CSS -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
-        media="print" onload="this.media='all'">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
-        media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-    </noscript>
-
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="{{ asset('asset/css/cdn/swiper.css') }}"
         media="print" onload="this.media='all'">
@@ -135,12 +129,6 @@
         <link rel="stylesheet" href="{{ asset('asset/css/cdn/swiper.css') }}">
     </noscript>
 
-    <!-- Slick CSS -->
-    <link rel="stylesheet" href="{{ asset('asset/css/slick/slick.css') }}"
-        media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="{{ asset('asset/css/slick/slick.css') }}">
-    </noscript>
 
     <!-- Flaticon -->
     <link rel="stylesheet" href="{{ asset('asset/fonts/flaticon/flaticon.css') }}"
