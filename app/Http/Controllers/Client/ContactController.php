@@ -29,7 +29,14 @@ class ContactController extends Controller
             // Ambil translation pertama
             $contactData->translation = $contactData->translations->first();
         }
-        return view('layouts.client.contact.index', compact('contactData'));
+        $data = [
+            'title' => __('Contact Us - JIIPE'),
+            'metaKey' => 'jiipe contact, jiipe office, PT Berkah Kawasan Manyar Sejahtera, gresik contact',
+            'metaDesc' => __('Get in touch with JIIPE for inquiries about our industrial estate, port services, and investment opportunities in Gresik, East Java.'),
+            'contactData' => $contactData
+        ];
+
+        return view('layouts.client.contact.index', $data);
     }
 
     /**

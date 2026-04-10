@@ -33,6 +33,8 @@ class HomeController extends Controller
                 'reviews' => $this->fetchReviews($locale),
                 'faqs' => $this->fetchFaqs($locale),
                 'news' => $this->fetchNews($locale),
+                'metaKey' => 'jiipe, industrial estate, gresik, port, indonesia, special economic zone, kawasan industri gresik',
+                'metaDesc' => __('JIIPE is the first integrated industrial estate in Indonesia, featuring a deep sea port and world-class infrastructure in Gresik, East Java.'),
             ];
         });
 

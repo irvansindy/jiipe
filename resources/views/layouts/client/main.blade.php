@@ -18,12 +18,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta name="language" content="{{ app()->getLocale() }}" />
-    <meta name="keywords" content="{{ $metaKey ?? '' }}">
-    <meta name="description" content="{{ $metaDesc ?? '' }}">
+    @php
+        $defaultDesc = "JIIPE (Java Integrated Industrial and Ports Estate) is Indonesia's first integrated industrial estate with a deep sea port, located in Gresik, East Java. Providing world-class facilities and connectivity.";
+        $currentDesc = $metaDesc ?? ($data['metaDesc'] ?? $defaultDesc);
+        $currentKey = $metaKey ?? ($data['metaKey'] ?? 'jiipe, industrial estate, gresik, port, indonesia, special economic zone');
+    @endphp
+    <meta name="keywords" content="{{ $currentKey }}">
+    <meta name="description" content="{{ $currentDesc }}">
 
     <!-- OPENGRAPH META TAGS FOR SOCIAL SHARING -->
     <meta property="og:title" content="{{ $data['ogMeta']['title'] ?? ($title ?? config('app.name')) }}" />
-    <meta property="og:description" content="{{ $data['ogMeta']['description'] ?? ($metaDesc ?? '') }}" />
+    <meta property="og:description" content="{{ $data['ogMeta']['description'] ?? $currentDesc }}" />
     <meta property="og:image" content="{{ $data['ogMeta']['image'] ?? url('asset/images/favicon.png') }}" />
     <meta property="og:url" content="{{ $data['ogMeta']['url'] ?? url()->current() }}" />
     <meta property="og:type" content="{{ $data['ogMeta']['type'] ?? 'website' }}" />
@@ -32,7 +37,7 @@
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{{ $data['ogMeta']['title'] ?? ($title ?? config('app.name')) }}" />
-    <meta name="twitter:description" content="{{ $data['ogMeta']['description'] ?? ($metaDesc ?? '') }}" />
+    <meta name="twitter:description" content="{{ $data['ogMeta']['description'] ?? $currentDesc }}" />
     <meta name="twitter:image" content="{{ $data['ogMeta']['image'] ?? url('asset/images/favicon.png') }}" />
 
     <!-- Favicon -->

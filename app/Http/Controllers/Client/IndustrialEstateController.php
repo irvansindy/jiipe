@@ -17,7 +17,14 @@ class IndustrialEstateController extends Controller
         }, 'zoneClass.translations' => function($query) {
             $query->where('locale', app()->getLocale());
         }])->where('zone_class_id', 1)->get();
-        return view('layouts.client.industrial-estate.index', compact('zones'));
+
+        $data = [
+            'title' => __('Industrial Estate - JIIPE'),
+            'metaKey' => 'jiipe industrial estate, kawasan industri gresik, industrial park east java',
+            'metaDesc' => __('Explore JIIPE Industrial Estate, the premier industrial park in East Java with integrated port and world-class utilities.'),
+            'zones' => $zones
+        ];
+        return view('layouts.client.industrial-estate.index', $data);
     }
 
     public function zoneDetail($id)
