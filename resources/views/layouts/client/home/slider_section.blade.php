@@ -10,13 +10,13 @@
                 @foreach ($sliders as $index => $slider)
                     <div class="swiper-slide item">
                         <div class="embed-responsive embed-responsive-21by9">
-                            @if ($slider['is_image'])
+                            @if (isset($slider['is_image']) && $slider['is_image'])
                                 <picture>
-                                    @if ($slider['webp_path'])
+                                    @if (isset($slider['webp_path']) && $slider['webp_path'])
                                         <source srcset="{{ asset($slider['webp_path']) }}" type="image/webp">
                                     @endif
-                                    <img src="{{ asset($slider['optimized_file']) }}"
-                                        alt="{{ $slider['title'] }}"
+                                    <img src="{{ asset($slider['optimized_file'] ?? ($slider['file'] ?? '')) }}"
+                                        alt="{{ $slider['title'] ?? '' }}"
                                         class="embed-responsive-item slider-img"
                                         {{ $index === 0 ? 'fetchpriority=high' : 'loading=lazy' }}
                                         width="1920"
@@ -27,17 +27,17 @@
                                 <video class="embed-responsive-item slider-video" autoplay muted loop playsinline
                                     {{ $index === 0 ? 'fetchpriority=high preload=auto' : 'preload=none' }}
                                     poster="{{ asset('asset/images/video-placeholder.jpg') }}">
-                                    <source src="{{ asset('uploads/home-slider/' . $slider['file']) }}" type="video/mp4">
+                                    <source src="{{ asset('uploads/home-slider/' . ($slider['file'] ?? '')) }}" type="video/mp4">
                                 </video>
                             @endif
 
                             <div class="home-container">
                                 <div class="home-caption">
-                                    @if($slider['title'])
+                                    @if(!empty($slider['title']))
                                         <h2 class="title" data-swiper-parallax="-300">{{ $slider['title'] }}</h2>
                                     @endif
                                     <span class="sub-title">
-                                        @if($slider['description'])
+                                        @if(!empty($slider['description']))
                                             <p class="description" data-swiper-parallax="-200">{{ $slider['description'] }}</p>
                                         @endif
                                     </span>

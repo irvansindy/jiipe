@@ -20,6 +20,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // ⚡ FORCE REFRESH: Jika ada parameter ?refresh=1, hapus cache
+        if (request()->has('refresh')) {
+            self::clearCache();
+        }
+
         $locale = app()->getLocale();
         $cacheKey = "home_all_data_{$locale}";
 
