@@ -131,7 +131,7 @@
 <section class="video-jiipe" id="videojiipe">
     <div class="embed-responsive embed-responsive-21by9">
         <video class="embed-responsive-item" id="jiipeVideo" loop playsinline controls preload="none"
-            poster="{{ asset('asset/images/video-placeholder.jpg') }}">
+            poster="{{ asset('asset/images/slider-poster-0.webp') }}">
             @if (app()->getLocale() == 'zh')
                 <source data-src="https://jiipe.com//Video_jiipe/Company%20Profile%20JIIPE%20CINA%20-%20SUB%20English.mp4"
                     type="video/mp4">

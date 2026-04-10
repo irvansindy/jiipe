@@ -26,7 +26,7 @@
                             @else
                                 <video class="embed-responsive-item slider-video" autoplay muted loop playsinline
                                     {{ $index === 0 ? 'fetchpriority=high preload=auto' : 'preload=none' }}
-                                    poster="{{ asset('asset/images/video-placeholder.jpg') }}">
+                                    poster="{{ asset('asset/images/slider-poster-0.webp') }}">
                                     <source src="{{ asset('uploads/home-slider/' . ($slider['file'] ?? '')) }}" type="video/mp4">
                                 </video>
                             @endif
@@ -73,9 +73,6 @@
 </section>
 
 @push('js')
-    @if(!empty($sliders) && count($sliders) > 0)
-        <link rel="preload" as="video" href="{{ asset('uploads/home-slider/' . $sliders[0]['file']) }}" type="video/mp4" fetchpriority="high">
-    @endif
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

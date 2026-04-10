@@ -6,12 +6,19 @@
     @stack('preload')
     @if(Request::is('/'))
         @php
-            $firstSlider = \App\Models\HomeSlider::where('status', 1)->orderBy('sort', 'asc')->first();
+            $firstSlider = \App\Models\HomeSlider::where('is_active', 1)->orderBy('id', 'asc')->first();
         @endphp
         @if($firstSlider)
-             <link rel="preload" as="video" href="{{ asset('uploads/home-slider/' . $firstSlider->file) }}" type="video/mp4" fetchpriority="high">
+             @php
+                 $ext = pathinfo($firstSlider->file, PATHINFO_EXTENSION);
+                 $isHeroVideo = in_array(strtolower($ext), ['mp4', 'webm', 'ogg']);
+                 $preloadAs = $isHeroVideo ? 'video' : 'image';
+             @endphp
+             <link rel="preload" as="{{ $preloadAs }}" href="{{ asset('uploads/home-slider/' . $firstSlider->file) }}" fetchpriority="high">
         @endif
     @endif
+
+    <meta http-equiv="Permissions-Policy" content="attribution-reporting=*">
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
