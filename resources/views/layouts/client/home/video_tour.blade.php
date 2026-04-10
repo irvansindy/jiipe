@@ -40,7 +40,8 @@
             <a href="{{ $videoTours[0] != null ? $videoTours[0]['embed_code'] : 'https://tours.jiipe.com/tours/5Ss66DNIH' }}"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="video-play-button">
+                class="video-play-button"
+                aria-label="Play JIIPE 360 Degree Virtual Tour">
 
                 <div class="play-circle">
 

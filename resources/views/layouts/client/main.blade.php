@@ -226,7 +226,9 @@
     </noscript>
 
     @include('layouts.client.partials.header')
-    @yield('content')
+    <main id="main-content">
+        @yield('content')
+    </main>
     @include('layouts.client.partials.footerv2')
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

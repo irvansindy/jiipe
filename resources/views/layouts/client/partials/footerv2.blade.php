@@ -183,3 +183,35 @@
     </div>
 
 </footer>
+
+<style>
+    /* Accessibility Fix: Footer Link Contrast */
+    .widget-menu li a {
+        color: #ddd !important;
+        font-weight: 500;
+        transition: color 0.2s ease;
+    }
+    .widget-menu li a:hover {
+        color: #fff !important;
+    }
+
+    /* Accessibility Fix: Social Media Spacing & Size */
+    .social-link {
+        display: flex;
+        gap: 15px;
+        padding-top: 10px;
+    }
+    .social-link li a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        transition: background 0.2s ease;
+    }
+    .social-link li a:hover {
+        background: #c7332a;
+    }
+</style>

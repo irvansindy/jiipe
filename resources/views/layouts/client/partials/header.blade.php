@@ -106,9 +106,9 @@
                     </div>
                     <div class="sticky-logo-branding d-inline-flex">
                         <div class="sticky-main d-none">
-                            <a href="{{ route('home') }}" class="sticky-brand-new">
+                            <a href="{{ route('home') }}" class="sticky-brand-new" aria-label="Go to JIIPE Home">
                                 <img src="{{ asset('asset/images/logo/JIIPE_SEZ_Logo.png') }}"
-                                    alt="JIIPE Gresik Sticky Logo" class="img-fluid img" loading="lazy" decoding="async">
+                                    alt="JIIPE Gresik" class="img-fluid img" loading="lazy" decoding="async">
                             </a>
                         </div>
                     </div>
@@ -174,6 +174,30 @@
         background-color: #ffffff;
         width: 100%;
         transition: none;
+    }
+
+    /* Accessibility Fix: Language Switcher touch targets */
+    .language .bahasa li a {
+        padding: 10px 8px;
+        display: inline-block;
+        min-width: 44px;
+        text-align: center;
+        text-decoration: none;
+        color: #333;
+        font-weight: 600;
+    }
+    .language .bahasa li a.active {
+        color: #c7332a;
+    }
+
+    /* Accessibility Fix: Navigation Contrast */
+    .main-menu ul li a {
+        color: #333 !important;
+        font-weight: 600 !important;
+        transition: color 0.2s ease;
+    }
+    .main-menu ul li a:hover {
+        color: #c7332a !important;
     }
 
     /* Header Sticky State */
